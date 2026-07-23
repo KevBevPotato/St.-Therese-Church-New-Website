@@ -96,7 +96,7 @@ const MAPS_PROXY_URL = `${FORGE_BASE_URL}/v1/maps/proxy`;
 let mapScriptPromise: Promise<void> | null = null;
 
 function loadMapScript() {
-  if (window.google?.maps) return Promise.resolve();
+  if (typeof window.google?.maps?.importLibrary === "function") return Promise.resolve();
   if (mapScriptPromise) return mapScriptPromise;
 
   mapScriptPromise = new Promise<void>((resolve, reject) => {
@@ -112,7 +112,10 @@ function loadMapScript() {
     script.src = `${MAPS_PROXY_URL}/maps/api/js?key=${API_KEY}&v=weekly&loading=async&libraries=marker,places,geocoding,geometry`;
     script.async = true;
     script.crossOrigin = "anonymous";
-    script.onload = () => resolve();
+    script.onload = () => {
+      script.dataset.loaded = "true";
+      resolve();
+    };
     script.onerror = () => {
       mapScriptPromise = null;
       reject(new Error("Failed to load Google Maps script"));
@@ -143,10 +146,22 @@ export function MapView({
   const init = usePersistFn(async () => {
     try {
       await loadMapScript();
-      if (!mapContainer.current || !window.google?.maps) {
-        throw new Error("Map container or Google Maps API unavailable");
+      const mapsApi = window.google?.maps;
+      if (!mapContainer.current || typeof mapsApi?.importLibrary !== "function") {
+        throw new Error("Map container or Google Maps library loader unavailable");
       }
-      map.current = new window.google.maps.Map(mapContainer.current, {
+
+      const [mapsLibrary] = await Promise.all([
+        mapsApi.importLibrary("maps") as Promise<google.maps.MapsLibrary>,
+        mapsApi.importLibrary("marker"),
+        mapsApi.importLibrary("geocoding"),
+      ]);
+      const MapConstructor = mapsLibrary.Map;
+      if (typeof MapConstructor !== "function") {
+        throw new Error("Google Maps library did not provide a Map constructor");
+      }
+
+      map.current = new MapConstructor(mapContainer.current, {
         zoom: initialZoom,
         center: initialCenter,
         mapTypeControl: true,
