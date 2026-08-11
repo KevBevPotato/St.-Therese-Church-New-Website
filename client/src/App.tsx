@@ -1,3 +1,4 @@
+// --- File: App.tsx ---
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -20,12 +21,17 @@ import NextWeekBulletin from "./components/NextWeekBulletin";
 import UpcomingEventsCalendar from "./components/UpcomingEventsCalendar"; 
 import EventDetail from "./pages/EventDetail";
 
+// Wednesday Night Supper landing page
+import WednesdaySupper from "./components/WednesdaySupper";
+
 function Router() {
   return (
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/get-involved"} component={GetInvolved} />
+      {/* IMPORTANT: supper-week MUST come before :id so wouter matches the specific route first */}
+      <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       

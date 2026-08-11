@@ -86,7 +86,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room A',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: 'kindergarten',
@@ -96,7 +96,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room B',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '1st-grade',
@@ -106,7 +106,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room C',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '2nd-grade',
@@ -116,7 +116,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room D',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '3rd-grade',
@@ -126,7 +126,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room E',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '4th-grade',
@@ -136,7 +136,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room F',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '5th-grade',
@@ -146,7 +146,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room G',
         contactName: 'Kevin Baltzer',
-        contactPhone: '(605) 354-2952'
+        contactPhone: ''
     },
     {
         id: '6th-grade',
@@ -156,7 +156,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room H',
         contactName: 'Bobby Myers',
-        contactPhone: '(605) 381-0053'
+        contactPhone: ''
     },
     {
         id: '7th-grade',
@@ -166,7 +166,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room I',
         contactName: 'Bobby Myers',
-        contactPhone: '(605) 381-0053'
+        contactPhone: ''
     },
     {
         id: '8th-grade',
@@ -176,7 +176,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Room J',
         contactName: 'Bobby Myers',
-        contactPhone: '(605) 381-0053'
+        contactPhone: ''
     },
     {
         id: '9th-grade',
@@ -186,7 +186,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Youth Room',
         contactName: 'Jane Doe',
-        contactPhone: '(605) 867-5309'
+        contactPhone: ''
     },
     {
         id: '10th-grade',
@@ -196,7 +196,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Youth Room',
         contactName: 'Jane Doe',
-        contactPhone: '(605) 867-5309'
+        contactPhone: ''
     },
     {
         id: '11th-grade',
@@ -206,7 +206,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Youth Room',
         contactName: 'Jane Doe',
-        contactPhone: '(605) 867-5309'
+        contactPhone: ''
     },
     {
         id: '12th-grade',
@@ -216,7 +216,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Youth Room',
         contactName: 'Jane Doe',
-        contactPhone: '(605) 867-5309'
+        contactPhone: ''
     },
     {
         id: 'adult',
@@ -226,7 +226,7 @@ const faithEvents: FaithEvent[] = [
         dayTime: 'Wednesdays 6:00 PM - 7:30 PM',
         location: 'Parish Hall - Library',
         contactName: 'Fr. Mark McCormick',
-        contactPhone: '(605) 484-2161'
+        contactPhone: ''
     },
 ];
 
@@ -530,9 +530,11 @@ export default function FaithFormation() {
                                                 <p className="text-[9px] text-muted-foreground">{event.contactPhone}</p>
                                             </div>
                                         </div>
-                                        <a href={`tel:${event.contactPhone.replace(/\D/g, '')}`} className="p-2 text-primary/40 hover:text-accent transition-colors">
-                                            <Phone size={16} />
-                                        </a>
+                                        {event.contactPhone && (
+                                            <a href={`tel:${event.contactPhone.replace(/\D/g, '')}`} className="p-2 text-primary/40 hover:text-accent transition-colors">
+                                                <Phone size={16} />
+                                            </a>
+                                        )}
                                     </div>
                                 </div>
                             </Card>
