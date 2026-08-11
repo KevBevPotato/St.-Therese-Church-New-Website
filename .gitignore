@@ -1,48 +1,45 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
+# Dependencies
+node_modules/
+.pnpm-store/
 
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
+# Build output
+dist/
+dist-ssr/
+build/
 
-# Configuration
-wp-config.php
+# Environment variables (NEVER commit these)
+.env
+.env.local
+.env.*.local
 
-# Example themes
-/wp-content/themes/twenty*/
-
-# Example plugin
-/wp-content/plugins/hello.php
-
-# Uploads
-/wp-content/uploads/
-
-# Log files
+# Logs
 *.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+dev.log
+preview.log
 
-# htaccess
-/.htaccess
+# Runtime/process files
+*.pid
+*.pid.sleep
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
+# OS files
+.DS_Store
+Thumbs.db
 
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Misc
+download/
+template.json
+SKILL.md
+ideas.md
+todo.md
+resources.md
+patches/
