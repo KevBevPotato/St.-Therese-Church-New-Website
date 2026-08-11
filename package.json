@@ -5,9 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host --port 3000",
-    "build": "vite build && esbuild server/index.ts --platform=node --packages=external --bundle --format=esm --outdir=dist",
-    "start": "NODE_ENV=production node dist/index.js",
-    "preview": "NODE_ENV=production node dist/index.js",
+    "build": "vite build",
     "check": "tsc --noEmit",
     "format": "prettier --write ."
   },
@@ -96,6 +94,10 @@
   "pnpm": {
     "patchedDependencies": {
       "wouter@3.7.1": "patches/wouter@3.7.1.patch"
-    }
+    },
+    "onlyBuiltDependencies": [
+      "@tailwindcss/oxide",
+      "esbuild"
+    ]
   }
 }
