@@ -413,10 +413,10 @@ export default function FaithFormation() {
                         <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]"><BookOpen className="size-4" aria-hidden="true" /> Growing in Faith</p>
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">Faith Formation Programs</h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">Nurturing faith at every stage of life. From young children to adults, discover programs designed to deepen your relationship with Christ and our parish community.</p>
-
-                        <div className="flex flex-wrap gap-4 mt-8">
+                         <div className="flex flex-wrap gap-4 mt-8">
                             <Button
                                 onClick={() => setIsFormOpen(true)}
+                                size="lg"
                                 className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
                             >
                                 Register Here
@@ -425,9 +425,9 @@ export default function FaithFormation() {
                                 href="/ChurchMap.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="flex items-center gap-2 bg-white border-2 border-primary/10 hover:border-primary/30 text-primary px-8 py-6 font-bold uppercase tracking-widest transition-all rounded-md"
+                                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
                             >
-                                <FileText size={18} className="text-accent" /> View Classroom Locations with Church Map
+                                <FileText size={18} /> View Classroom Locations with Church Map
                             </a>
                         </div>
                     </div>

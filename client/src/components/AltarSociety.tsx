@@ -16,7 +16,8 @@ import {
     Flower2,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
-import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/events';
+// ✅ Fixed: use relative path since events.ts is in the same directory
+import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 
 const FORM_URLS = {
@@ -38,8 +39,9 @@ function getAltarSocietyEvents(): CalendarEvent[] {
 
     return allEvents
         .filter(event => {
-            const isAltarSociety = event.title.toLowerCase().includes('altar society');
-            return isAltarSociety && event.date >= now && event.date <= cutoff;
+            // ✅ Pulls only events tagged with the 'altar-society' invisible org tag.
+            const tagged = event.organizationTags?.includes('altar-society') ?? false;
+            return tagged && event.date >= now && event.date <= cutoff;
         })
         .sort((a, b) => a.date.getTime() - b.date.getTime())
         .slice(0, 6);

@@ -11,6 +11,7 @@ import About from "./pages/About";
 import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
+import StaffDetail from "./pages/StaffDetail";  // ✅ ADDED
 
 import Bulletin from "./components/Bulletin";
 import PreviousBulletins from "./components/PreviousBulletins";
@@ -28,12 +29,12 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/get-involved"} component={GetInvolved} />
-      {/* ✅ Specific routes MUST come BEFORE /get-involved/:id */}
       <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
       <Route path={"/get-involved/altar-society"} component={AltarSociety} />
       <Route path={"/get-involved/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
+      <Route path={"/staff/:slug"} component={StaffDetail} />  {/* ✅ ADDED */}
       
       <Route path={"/bulletin"} component={Bulletin} />
       <Route path={"/bulletin/previous"} component={PreviousBulletins} />
@@ -43,7 +44,6 @@ function Router() {
       <Route path={"/events/:id"} component={EventDetail} />
 
       <Route path={"/404"} component={NotFound} />
-      {/* Final fallback route */}
       <Route component={NotFound} />
     </Switch>
   );
@@ -54,7 +54,6 @@ function App() {
     <ErrorBoundary>
       <ThemeProvider
         defaultTheme="light"
-        // switchable
       >
         <TooltipProvider>
           <Toaster />

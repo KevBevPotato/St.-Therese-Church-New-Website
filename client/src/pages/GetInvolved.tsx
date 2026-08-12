@@ -1,4 +1,4 @@
-// --- File: client/src/components/GetInvolved.tsx ---
+// GetInvolved.tsx
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -18,6 +18,9 @@ import {
     HandHeart,
     Shield,
     Flower,
+    LayoutGrid,
+    List as ListIcon,
+    ChevronRight,
 } from 'lucide-react';
 import { Link } from 'wouter';
 import SponsorshipCard from '@/components/SponsorshipCard';
@@ -30,8 +33,6 @@ type Tag =
     | 'Parish Events'
     | 'Parish Organizations';
 
-type AudienceTag = 'Family' | 'Youth' | "Women's" | "Men's";
-
 interface Role {
     name: string;
     needed: number;
@@ -43,7 +44,6 @@ interface Opportunity {
     title: string;
     categories: Category[];
     tags: Tag[];
-    audienceTags?: AudienceTag[];
     description: string;
     organization?: string;
     date?: string;
@@ -62,6 +62,8 @@ interface Opportunity {
     orgIcon?: 'shield' | 'flower';
 }
 
+type ViewMode = 'cards' | 'list';
+
 function createInitialOpportunities(): Opportunity[] {
     return [
         {
@@ -69,7 +71,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Nursery',
             categories: ['sponsor', 'help', 'join'],
             tags: ['Liturgy', 'Parish Events'],
-            audienceTags: ['Family'],
             organization: 'Parish Council',
             date: 'Ongoing Project',
             contactName: 'Kelly Whartman',
@@ -79,21 +80,9 @@ function createInitialOpportunities(): Opportunity[] {
             goalAmount: 2500,
             currentAmount: 1200,
             constructionItems: [
-                {
-                    category: '2x4 Lumber & Construction Screws',
-                    items: [{ name: '2x4 Lumber & Construction Screws', cost: '$79.30' }],
-                    subtotal: '$79.30',
-                },
-                {
-                    category: 'Sheetrock & Drywall Screws',
-                    items: [{ name: 'Sheetrock & Drywall Screws', cost: '$131.50' }],
-                    subtotal: '$131.50',
-                },
-                {
-                    category: 'Mudding, Tape & Sanding Supplies',
-                    items: [{ name: 'Mudding, Tape & Sanding Supplies', cost: '$31.50' }],
-                    subtotal: '$31.50',
-                },
+                { category: '2x4 Lumber & Construction Screws', items: [{ name: '2x4 Lumber & Construction Screws', cost: '$79.30' }], subtotal: '$79.30' },
+                { category: 'Sheetrock & Drywall Screws', items: [{ name: 'Sheetrock & Drywall Screws', cost: '$131.50' }], subtotal: '$131.50' },
+                { category: 'Mudding, Tape & Sanding Supplies', items: [{ name: 'Mudding, Tape & Sanding Supplies', cost: '$31.50' }], subtotal: '$31.50' },
             ],
             constructionTotal: '~$242.30',
         },
@@ -122,6 +111,18 @@ function createInitialOpportunities(): Opportunity[] {
                 'Ushers welcome parishioners, help people find seats in the pews—especially when the church is full—and assist with passing the offertory basket during Mass.',
         },
         {
+            id: 'altar-server',
+            title: 'Altar Server Sign-up',
+            categories: ['help'],
+            tags: ['Liturgy'],
+            organization: 'Liturgy Ministry',
+            date: 'Ongoing Ministry',
+            contactName: 'Parish Office',
+            contactPhone: '(605) 867-5309',
+            description:
+                'Serve at the altar during Mass. Altar servers assist the priest with liturgical functions such as carrying the Book of the Gospels, presenting the chalice, and other sacred items. Training is provided for all new servers, and adults and children (typically 4th grade and up) are both welcome.',
+        },
+        {
             id: 'music',
             title: 'Music Ministry Sign-up',
             categories: ['help'],
@@ -138,7 +139,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Wednesday Night Supper',
             categories: ['sponsor', 'help'],
             tags: ['Parish Events'],
-            audienceTags: ['Family'],
             organization: 'Parish Hospitality',
             date: 'Sept. 2, 2026 – May 19, 2027',
             contactName: 'Parish Office',
@@ -152,7 +152,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Youth Ministry Mentors',
             categories: ['help'],
             tags: ['Parish Organizations'],
-            audienceTags: ['Youth'],
             organization: 'Faith Formation',
             date: 'Starts Sept. 2026',
             contactName: 'Jane Doe',
@@ -164,7 +163,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Annual Parish Picnic',
             categories: ['help'],
             tags: ['Parish Events'],
-            audienceTags: ['Family'],
             organization: 'Knights of Columbus',
             date: 'August 23, 2026',
             contactName: 'John Doe',
@@ -176,7 +174,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'St. Vincent de Paul Food Drive',
             categories: ['join'],
             tags: ['Parish Organizations'],
-            audienceTags: ['Family'],
             organization: 'St. Vincent de Paul',
             date: 'Every 1st Sunday',
             contactName: 'Jane Doe',
@@ -188,7 +185,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Altar Society',
             categories: ['join'],
             tags: ['Parish Organizations'],
-            audienceTags: ["Women's"],
             organization: 'Altar Society',
             date: 'Quarterly',
             contactName: 'President',
@@ -203,7 +199,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Knights of Columbus',
             categories: ['join'],
             tags: ['Parish Organizations', 'Diocesan'],
-            audienceTags: ["Men's"],
             organization: 'Knights of Columbus',
             date: '1st Thursday of each month',
             contactName: 'Grand Knight',
@@ -218,7 +213,6 @@ function createInitialOpportunities(): Opportunity[] {
             title: 'Catholic Daughters of the Americas',
             categories: ['join'],
             tags: ['Diocesan'],
-            audienceTags: ["Women's"],
             organization: 'Catholic Daughters',
             date: 'Monthly – 2nd Tuesday',
             contactName: 'Jane Doe',
@@ -243,25 +237,18 @@ const tags: Tag[] = [
     'Diocesan',
 ];
 
-const audienceTags: AudienceTag[] = [
-    'Family',
-    'Youth',
-    "Women's",
-    "Men's",
-];
-
-// Microsoft Forms URLs
 const FORM_URLS = {
     contributeNursery: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMU5XQlRRNEE4TVFXOFdQM0JBODFXWUhURy4u',
     signUpToHelp: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UQkFRRTFRUDIzWkcwT0JOODc2MzdaNlVERy4u',
     suggestion: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMjBVRk5PNFk0S0lQS041NjdCNVo2QlkxNS4u',
     referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
+    supperWeekVolunteer: 'https://www.signupgenius.com/go/10C084BADA72BA5F4C61-65142421-wednesday#/',
 };
 
 export default function GetInvolved() {
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [activeInterest, setActiveInterest] = useState<Tag | 'all'>('all');
-    const [activeAudience, setActiveAudience] = useState<AudienceTag | 'all'>('all');
+    const [viewMode, setViewMode] = useState<ViewMode>('cards');
     const [opportunities] = useState<Opportunity[]>(createInitialOpportunities);
 
     const filteredOps = opportunities.filter((opportunity) => {
@@ -270,10 +257,7 @@ export default function GetInvolved() {
             (activeCategory !== 'request' && opportunity.categories.includes(activeCategory));
         const interestMatch =
             activeInterest === 'all' || opportunity.tags.includes(activeInterest);
-        const audienceMatch =
-            activeAudience === 'all' ||
-            (opportunity.audienceTags?.includes(activeAudience) ?? false);
-        return categoryMatch && interestMatch && audienceMatch;
+        return categoryMatch && interestMatch;
     });
 
     const handleContribute = (opportunityId: string) => {
@@ -284,6 +268,10 @@ export default function GetInvolved() {
 
     const handleSignUpToHelp = () => {
         window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer');
+    };
+
+    const handleSupperWeekSignup = () => {
+        window.open(FORM_URLS.supperWeekVolunteer, '_blank', 'noopener,noreferrer');
     };
 
     const handleSuggestion = () => {
@@ -327,7 +315,7 @@ export default function GetInvolved() {
 
             <main className="flex-grow py-16 md:py-24">
                 <div className="container mx-auto px-4">
-                    {/* ===== TIER 1: How You'll Serve ===== */}
+                    {/* TIER 1: How You'll Serve */}
                     <div className="mb-10">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
                             How Would You Like to Serve
@@ -349,84 +337,74 @@ export default function GetInvolved() {
                         </div>
                     </div>
 
-                    {/* ===== TIER 2: By Interest ===== */}
+                    {/* TIER 2: By Interest */}
                     <div className="mb-8">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
                             By Interest
                         </p>
-                        <div className="border-b border-primary/12 max-w-6xl mx-auto overflow-x-auto no-scrollbar">
-                            <div className="flex justify-center min-w-max px-4 gap-x-6">
+                        <div className="flex flex-wrap items-center justify-center gap-4">
+                            <button
+                                onClick={() => setActiveInterest('all')}
+                                className={`px-8 py-3 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all border-2 ${
+                                    activeInterest === 'all'
+                                        ? 'bg-primary border-primary text-white shadow-lg'
+                                        : 'bg-white border-primary/10 text-primary hover:border-primary/30'
+                                }`}
+                            >
+                                All Interests
+                            </button>
+                            {tags.map((tag) => (
                                 <button
-                                    onClick={() => setActiveInterest('all')}
-                                    className={`border-b-2 px-2 py-3 text-[9px] font-bold uppercase tracking-[0.12em] transition-colors whitespace-nowrap ${
-                                        activeInterest === 'all'
-                                            ? 'border-primary text-primary'
-                                            : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
+                                    key={tag}
+                                    onClick={() => setActiveInterest(tag)}
+                                    className={`px-8 py-3 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all border-2 ${
+                                        activeInterest === tag
+                                            ? 'bg-primary border-primary text-white shadow-lg'
+                                            : 'bg-white border-primary/10 text-primary hover:border-primary/30'
                                     }`}
                                 >
-                                    All Interests
+                                    {tag}
                                 </button>
-                                {tags.map((tag) => (
-                                    <button
-                                        key={tag}
-                                        onClick={() => setActiveInterest(tag)}
-                                        className={`border-b-2 px-2 py-3 text-[9px] font-bold uppercase tracking-[0.12em] transition-colors whitespace-nowrap ${
-                                            activeInterest === tag
-                                                ? 'border-primary text-primary'
-                                                : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
-                                    }`}
-                                    >
-                                        {tag}
-                                    </button>
-                                ))}
-                            </div>
+                            ))}
                         </div>
                     </div>
 
-                    {/* ===== TIER 3: By Audience (Age & Gender) ===== */}
-                    <div className="mb-16">
-                        <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
-                            By Audience
-                        </p>
-                        <div className="border-b border-primary/12 max-w-6xl mx-auto overflow-x-auto no-scrollbar">
-                            <div className="flex justify-center min-w-max px-4 gap-x-6">
-                                <button
-                                    onClick={() => setActiveAudience('all')}
-                                    className={`border-b-2 px-2 py-3 text-[9px] font-bold uppercase tracking-[0.12em] transition-colors whitespace-nowrap ${
-                                        activeAudience === 'all'
-                                            ? 'border-primary text-primary'
-                                            : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
-                                    }`}
-                                >
-                                    All Audiences
-                                </button>
-                                {audienceTags.map((tag) => (
-                                    <button
-                                        key={tag}
-                                        onClick={() => setActiveAudience(tag)}
-                                        className={`border-b-2 px-2 py-3 text-[9px] font-bold uppercase tracking-[0.12em] transition-colors whitespace-nowrap ${
-                                            activeAudience === tag
-                                                ? 'border-primary text-primary'
-                                                : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
-                                        }`}
-                                    >
-                                        {tag}
-                                    </button>
-                                ))}
-                            </div>
+                    {/* View-mode toggle */}
+                    {activeCategory !== 'request' && filteredOps.length > 0 && (
+                        <div className="flex items-center justify-end gap-2 mb-6">
+                            <span className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mr-2">View</span>
+                            <button
+                                onClick={() => setViewMode('cards')}
+                                className={`px-4 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all border-2 inline-flex items-center gap-1.5 ${
+                                    viewMode === 'cards'
+                                        ? 'bg-primary border-primary text-white shadow-lg'
+                                        : 'bg-white border-primary/10 text-primary hover:border-primary/30'
+                                }`}
+                            >
+                                <LayoutGrid size={12} /> Cards
+                            </button>
+                            <button
+                                onClick={() => setViewMode('list')}
+                                className={`px-4 py-2 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all border-2 inline-flex items-center gap-1.5 ${
+                                    viewMode === 'list'
+                                        ? 'bg-primary border-primary text-white shadow-lg'
+                                        : 'bg-white border-primary/10 text-primary hover:border-primary/30'
+                                }`}
+                            >
+                                <ListIcon size={12} /> List
+                            </button>
                         </div>
-                    </div>
+                    )}
 
-                    {activeCategory !== 'request' && (
+                    {activeCategory !== 'request' && viewMode === 'cards' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredOps.map((opportunity) => {
-                                // Custom landing pages (full-page components)
                                 if (opportunity.customPage === 'supper-week') {
                                     return (
                                         <SupperWeekCard
                                             key={opportunity.id}
                                             op={opportunity}
-                                            onSignUpToHelp={handleSignUpToHelp}
+                                            onSupperWeekSignup={handleSupperWeekSignup}
                                             onSuggestion={handleSuggestion}
                                             onRefer={handleRefer}
                                         />
@@ -443,7 +421,6 @@ export default function GetInvolved() {
                                         />
                                     );
                                 }
-
 
                                 if (opportunity.categories.includes('sponsor')) {
                                     return (
@@ -478,6 +455,14 @@ export default function GetInvolved() {
                                     />
                                 );
                             })}
+                        </div>
+                    )}
+
+                    {activeCategory !== 'request' && viewMode === 'list' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+                            {filteredOps.map((opportunity) => (
+                                <ListCard key={opportunity.id} op={opportunity} />
+                            ))}
                         </div>
                     )}
 
@@ -519,6 +504,35 @@ export default function GetInvolved() {
 
             <Footer />
         </div>
+    );
+}
+
+function ListCard({ op }: { op: Opportunity }) {
+    const linkHref = op.customPage
+        ? `/get-involved/${op.customPage}`
+        : `/get-involved/${op.id}`;
+
+    return (
+        <Link href={linkHref}>
+            <a className="flex items-center justify-between gap-4 bg-white border border-primary/10 rounded-2xl px-5 py-4 hover:border-primary/30 hover:shadow-md transition-all group h-full">
+                <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-1.5 mb-1">
+                        {op.tags.slice(0, 1).map((tag) => (
+                            <span key={tag} className="text-[8px] font-black uppercase tracking-widest px-1.5 py-0.5 bg-accent/10 text-accent rounded-full border border-accent/10">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                    <h3 className="font-serif text-base font-bold text-primary group-hover:text-accent transition-colors truncate">
+                        {op.title}
+                    </h3>
+                    {op.date && (
+                        <p className="text-[10px] text-muted-foreground mt-0.5 truncate">{op.date}</p>
+                    )}
+                </div>
+                <ChevronRight className="text-primary/30 group-hover:text-accent group-hover:translate-x-1 transition-all shrink-0" size={18} />
+            </a>
+        </Link>
     );
 }
 
@@ -614,12 +628,12 @@ function OpportunityCard({
 
 function SupperWeekCard({
     op,
-    onSignUpToHelp,
+    onSupperWeekSignup,
     onSuggestion,
     onRefer,
 }: {
     op: Opportunity;
-    onSignUpToHelp: () => void;
+    onSupperWeekSignup: () => void;
     onSuggestion: () => void;
     onRefer: () => void;
 }) {
@@ -674,20 +688,14 @@ function SupperWeekCard({
                 </div>
 
                 <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4 text-sm text-primary leading-relaxed">
-                    <span className="font-bold">View the full schedule →</span> See all 32 weeks with monthly breakdowns, sponsor a specific date, or sign up for volunteer roles.
+                    <span className="font-bold">Sponsor a week</span> for $200 to help feed our parish family. Sign up below to volunteer for grocery pick-up, food prep, serving, or cleanup.
                 </div>
             </div>
 
             <div className="p-8 pt-2 space-y-3">
-                <Link href="/get-involved/supper-week">
-                    <Button className="w-full bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-6 shadow-lg shadow-accent/20">
-                        <Heart size={14} className="mr-2" /> View Supper Schedule
-                    </Button>
-                </Link>
                 <Button
-                    onClick={onSignUpToHelp}
-                    variant="outline"
-                    className="w-full text-primary font-bold uppercase tracking-[0.1em] text-[9px] py-4 border-primary/20 hover:border-primary/40 bg-white hover:bg-white"
+                    onClick={onSupperWeekSignup}
+                    className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-[0.1em] text-[9px] py-4 border-2 border-blue-600 shadow-md hover:shadow-lg transition-all"
                 >
                     Sign Up to Volunteer
                 </Button>
@@ -721,12 +729,9 @@ function OrgCard({
     onSuggestion: () => void;
     onRefer: () => void;
 }) {
-    const org = organizations.find(o => o.id === op.customPage);
-
-    // External signup URLs per organization
     const EXTERNAL_SIGNUP_URLS: Record<string, string> = {
         'knights-of-columbus': 'https://www.kofc.org/get-involved/join-kofc/',
-        'altar-society': FORM_URLS.signUpToHelp, // fallback until they have their own
+        'altar-society': FORM_URLS.signUpToHelp,
     };
 
     const signupUrl = EXTERNAL_SIGNUP_URLS[op.id] || FORM_URLS.signUpToHelp;
@@ -810,5 +815,3 @@ function OrgCard({
         </Card>
     );
 }
-
-

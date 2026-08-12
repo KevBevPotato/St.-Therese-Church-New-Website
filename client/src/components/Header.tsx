@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Header() {
@@ -14,6 +14,9 @@ export default function Header() {
     { href: '/faith-formation', label: 'Faith Formation' },
     { href: 'https://gods-call.com/', label: 'Vocations' },
   ];
+
+  const FEEDBACK_FORM_URL =
+    'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNzVZOFdFTTBMVVVFS05aNEVBVTFSN0NHNC4u';
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm">
@@ -67,6 +70,23 @@ export default function Header() {
               alt="Facebook" 
               className="h-15 w-15 object-contain" 
             />
+          </a>
+
+          {/* Website comments/feedback Button */}
+          <a
+            href={FEEDBACK_FORM_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Website comments and feedback"
+          >
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
+            >
+              <MessageSquare className="mr-2 size-4" />
+              Website comments/feedback
+            </Button>
           </a>
 
           {/* Donate Button */}
@@ -134,6 +154,23 @@ export default function Header() {
                 Facebook
               </a>
             </div>
+
+            {/* Website comments/feedback Button - Mobile */}
+            <a
+              href={FEEDBACK_FORM_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={() => setIsMenuOpen(false)}
+              className="block"
+            >
+              <Button
+                variant="outline"
+                className="w-full border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
+              >
+                <MessageSquare className="mr-2 size-4" />
+                Website comments/feedback
+              </Button>
+            </a>
 
             <a
               href="https://secure.myvanco.com/L-ZAYT/home"

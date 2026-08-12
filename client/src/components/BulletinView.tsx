@@ -1,3 +1,4 @@
+// BulletinView.tsx
 import { ReactNode, useState } from 'react';
 import { Link } from 'wouter';
 import { Card } from '@/components/ui/card';
@@ -50,10 +51,6 @@ const defaultContactInfo: ContactInfo = {
     email: 'office@sttherese.org',
 };
 
-interface BulletinViewState {
-    selectedSections: Set<string>;
-}
-
 export default function BulletinView({
     bulletin,
     title,
@@ -63,9 +60,10 @@ export default function BulletinView({
     showEmptyPdfWarning = false,
     emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.",
 }: BulletinViewProps) {
-    const [selectedSections, setSelectedSections] = useState<Set<string>>(
-        new Set(bulletin.sections.map(s => s.id))
-    );
+    // ✅ Default state is now DESELECT ALL (empty Set).
+    //    Clicking a section turns it on, with the same accent-gold color
+    //    used by the "Select All" button.
+    const [selectedSections, setSelectedSections] = useState<Set<string>>(new Set());
 
     const toggleSection = (sectionId: string) => {
         const next = new Set(selectedSections);
@@ -158,38 +156,52 @@ export default function BulletinView({
                             </div>
 
                             <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
-                                {bulletin.sections.map(section => (
-                                    <button
-                                        key={section.id}
-                                        onClick={() => toggleSection(section.id)}
-                                        className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all border-2 ${
-                                            selectedSections.has(section.id)
-                                                ? 'bg-primary/10 border-primary text-primary'
-                                                : 'bg-gray-50 border-gray-200 text-gray-400 hover:border-primary/30'
-                                        }`}
-                                    >
-                                        {section.label}
-                                    </button>
-                                ))}
+                                {bulletin.sections.map(section => {
+                                    const isSelected = selectedSections.has(section.id);
+                                    return (
+                                        <button
+                                            key={section.id}
+                                            onClick={() => toggleSection(section.id)}
+                                            // ✅ Selected state now uses the accent (gold) color
+                                            //    that matches the "Select All" link styling.
+                                            className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all border-2 ${
+                                                isSelected
+                                                    ? 'bg-accent/15 border-accent text-accent shadow-sm'
+                                                    : 'bg-gray-50 border-gray-200 text-gray-400 hover:border-primary/30'
+                                            }`}
+                                        >
+                                            {section.label}
+                                        </button>
+                                    );
+                                })}
                             </div>
                         </div>
 
                         {/* Selected sections display */}
                         <div className="p-8 bg-white space-y-6">
-                            {bulletin.sections
-                                .filter(s => selectedSections.has(s.id))
-                                .map(section => (
-                                    <div key={section.id} className="pb-6 border-b border-primary/5 last:border-0">
-                                        <h4 className="font-bold text-primary mb-4 text-lg">{section.label}</h4>
-                                        <div className="text-muted-foreground">
-                                            {typeof section.content === 'string' ? (
-                                                <p className="text-sm">{section.content}</p>
-                                            ) : (
-                                                section.content
-                                            )}
+                            {selectedSections.size === 0 ? (
+                                <div className="text-center py-12 text-muted-foreground">
+                                    <Filter className="size-10 text-primary/15 mx-auto mb-3" />
+                                    <p className="text-sm font-bold uppercase tracking-widest">
+                                        No sections selected — pick one above to see content here
+                                    </p>
+                                </div>
+                            ) : (
+                                bulletin.sections
+                                    .filter(s => selectedSections.has(s.id))
+                                    .map(section => (
+                                        <div key={section.id} className="pb-6 border-b border-primary/5 last:border-0">
+                                            <h4 className="font-bold text-primary mb-4 text-lg">{section.label}</h4>
+                                            <div className="text-muted-foreground">
+                                                {typeof section.content === 'string' ? (
+                                                    <p className="text-sm">{section.content}</p>
+                                                ) : (
+                                                    section.content
+                                                )}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
+                                    ))
+                            )}
                         </div>
                     </>
                 )}

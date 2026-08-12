@@ -1,3 +1,4 @@
+// UpcomingEventsCalendar.tsx
 import { useState, useMemo } from 'react';
 import {
   ChevronLeft,
@@ -79,7 +80,7 @@ function CalendarDay({
 // ---- Main Upcoming Events Component ----
 export default function UpcomingEventsCalendar() {
   const [location, navigate] = useLocation();
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 1)); // August 2026
+  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 1));
   const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(
     new Set(Object.keys(EVENT_COLORS) as EventCategory[])
   );
@@ -87,7 +88,6 @@ export default function UpcomingEventsCalendar() {
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<TimeFilter>('all');
 
-  // Check if we are on a detail page (/events/:id)
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
   const allEvents = useMemo(() => {
@@ -195,7 +195,6 @@ export default function UpcomingEventsCalendar() {
   );
   const emptyDaysBefore = Array.from({ length: firstDayOfMonth(currentDate) }, (_, i) => i);
 
-  // ---- Detail View ----
   if (eventDetailId) {
     const event = allEvents.find((e) => e.id === eventDetailId);
     if (!event)
@@ -331,11 +330,9 @@ export default function UpcomingEventsCalendar() {
     );
   }
 
-  // ---- Main Calendar View ----
   return (
     <div className="min-h-screen bg-[#fbfaf6] py-12 lg:py-16">
       <div className="container mx-auto px-4">
-        {/* Restored Title and Spacing */}
         <div className="mb-10 text-center lg:text-left">
           <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
             Parish Calendar
@@ -456,20 +453,23 @@ export default function UpcomingEventsCalendar() {
                     key={event.id}
                     className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all hover:shadow-lg bg-white min-h-[140px] ${highlightedEventId === event.id ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'border-none ring-1 ring-black/5'}`}
                     onClick={() => {
-                      // 👇 NEW: Bridge Routing Logic added here
                       const destinationUrl = event.linkedOpportunityId 
                           ? `/get-involved/${event.linkedOpportunityId}` 
                           : `/events/${event.id}`;
                       navigate(destinationUrl);
                     }}
                   >
-                    {/* Date Block */}
+                    {/* Date Block — now includes day-of-week below the number */}
                     <div className="w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-4">
                       <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
                         {event.date.toLocaleDateString('en-US', { month: 'short' })}
                       </span>
                       <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">
                         {event.date.getDate()}
+                      </span>
+                      {/* ✅ Day of week — short name (Sun, Mon, Tue, ...) */}
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">
+                        {event.date.toLocaleDateString('en-US', { weekday: 'short' })}
                       </span>
                     </div>
 
@@ -544,7 +544,6 @@ export default function UpcomingEventsCalendar() {
                 getEventsForDay(expandedDay).map(event => (
                   <div key={event.id} onClick={() => {
                     setExpandedDay(null);
-                    // 👇 NEW: Bridge Routing Logic added here as well
                     const destinationUrl = event.linkedOpportunityId 
                         ? `/get-involved/${event.linkedOpportunityId}` 
                         : `/events/${event.id}`;

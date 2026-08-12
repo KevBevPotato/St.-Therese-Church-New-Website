@@ -1,7 +1,9 @@
+// events.ts
+
 // ---- 1. Types ----
 export type EventCategory =
     | 'sacramental'
-    | 'parishEvents'      // ✅ Single unified category (community + youth + family)
+    | 'parishEvents'
     | 'special'
     | 'meeting'
     | 'vocations'
@@ -26,6 +28,13 @@ export interface CalendarEvent {
     images?: string[];
     faqItems?: Array<{ question: string; answer: string }>;
     linkedOpportunityId?: string;
+    /**
+     * INVISIBLE organization tags — never shown as filter pills on the parish calendar.
+     * Used by organization landing pages (e.g. /get-involved/knights-of-columbus) to
+     * pull ONLY the events that belong to that org. Safe values: 'knights-of-columbus',
+     * 'altar-society', 'catholic-daughters', 'music-ministry', etc.
+     */
+    organizationTags?: string[];
 }
 
 // ---- 2. Category Styling Defaults ----
@@ -100,7 +109,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                     time: "7:00 PM",
                     location: "Church Basement",
                     categories: ["meeting"],
-                    description: "Monthly meeting for the Knights of Columbus Officers."
+                    description: "Monthly meeting for the Knights of Columbus Officers.",
+                    organizationTags: ["knights-of-columbus"],
                 });
             } else if (weekNum === 2) {
                 events.push({
@@ -110,7 +120,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                     time: "7:00 PM",
                     location: "Church Basement",
                     categories: ["meeting", "parishEvents"],
-                    description: "Monthly general meeting for all Knights of Columbus members."
+                    description: "Monthly general meeting for all Knights of Columbus members.",
+                    organizationTags: ["knights-of-columbus"],
                 });
             }
         }
@@ -140,6 +151,11 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 }
 
 // ---- 3. Static Parish & Diocesan Events ----
+//
+// 👇 You can insert events in ANY order below — the sort at the bottom
+//    of this file will arrange them chronologically. Just be sure each
+//    event has a valid `date` and (optionally) `organizationTags`.
+//
 export const staticEvents: CalendarEvent[] = [
     // --- August 2026 ---
     {
@@ -222,7 +238,8 @@ export const staticEvents: CalendarEvent[] = [
         time: "11:30 AM",
         location: "Parish Hall",
         categories: ["parishEvents", "special"],
-        description: "Reception provided by the Knights of Columbus. Please bring a side dish or dessert to share!"
+        description: "Reception provided by the Knights of Columbus. Please bring a side dish or dessert to share!",
+        organizationTags: ["knights-of-columbus"],
     },
     {
         id: "fall-festival",
@@ -240,7 +257,8 @@ export const staticEvents: CalendarEvent[] = [
         time: "After Morning Masses",
         location: "Parish Hall",
         categories: ["parishEvents"],
-        description: "Hosted by the Catholic Daughters."
+        description: "Hosted by the Catholic Daughters.",
+        organizationTags: ["catholic-daughters"],
     },
     {
         id: "black-elk-mass",
@@ -278,7 +296,7 @@ export const staticEvents: CalendarEvent[] = [
         categories: ["parishEvents", "diocesan"],
         description: "Discussion on 'The End of the Affair' by Graham Greene."
     },
-        {
+    {
         id: "new-catechist-orientation-2026",
         title: "New Catechist Orientation",
         date: new Date("2026-08-21T17:00:00"),
@@ -305,7 +323,8 @@ export const staticEvents: CalendarEvent[] = [
         time: "6:00 PM - 10:00 PM",
         location: "Central States Fair",
         categories: ["parishEvents" as EventCategory],
-        description: "Join the Knights for Bingo at the Central States Fair!"
+        description: "Join the Knights for Bingo at the Central States Fair!",
+        organizationTags: ["knights-of-columbus"],
     })),
     {
         id: "ocia-1",
@@ -399,7 +418,8 @@ export const staticEvents: CalendarEvent[] = [
         time: "10:15 AM",
         location: "Room 103",
         categories: ["meeting"],
-        description: "Monthly meeting."
+        description: "Monthly meeting.",
+        organizationTags: ["altar-society"],
     },
     {
         id: "sheen-pilgrimage",
@@ -538,3 +558,10 @@ export const staticEvents: CalendarEvent[] = [
         description: "International gathering of Catholic youth."
     }
 ];
+
+// ============================================================================
+// AUTO-SORT: Arranges staticEvents chronologically (ascending by date).
+// You can insert / paste events in ANY order above — this keeps the
+// Upcoming Events agenda cards in proper order on the home page calendar.
+// ============================================================================
+staticEvents.sort((a, b) => a.date.getTime() - b.date.getTime());

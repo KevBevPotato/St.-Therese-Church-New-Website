@@ -1,3 +1,4 @@
+// StaffDetail.tsx
 import { useParams, Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -9,13 +10,6 @@ export default function StaffDetail() {
   const params = useParams<{ slug: string }>();
   const slug = params?.slug;
   const member = slug ? getStaffBySlug(slug) : undefined;
-
-  // Find other people in the same primary category for the "You may also like" rail
-  const relatedMembers = member
-    ? staffMembers
-        .filter((m) => m.slug !== member.slug && m.categories.some((c) => member.categories.includes(c)))
-        .slice(0, 4)
-    : [];
 
   if (!member) {
     return (
@@ -166,60 +160,7 @@ export default function StaffDetail() {
         </div>
       </section>
 
-      {/* Related personnel */}
-      {relatedMembers.length > 0 && (
-        <section className="border-t border-primary/10 bg-secondary/20 py-14">
-          <div className="container mx-auto px-4">
-            <div className="max-w-6xl mx-auto">
-              <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3">
-                <Flower2 className="size-4" /> Continue exploring
-              </p>
-              <h2 className="font-serif text-3xl font-bold text-primary mb-8 md:text-4xl">
-                You may also like to meet
-              </h2>
-              <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
-                {relatedMembers.map((other: StaffMember) => (
-                  <Link
-                    key={other.slug}
-                    href={`/staff/${other.slug}`}
-                    className="group block"
-                  >
-                    <div className="aspect-[2/3] w-full overflow-hidden bg-primary/5 border border-primary/12">
-                      {other.photo ? (
-                        <img
-                          src={other.photo}
-                          alt={`${other.name} portrait`}
-                          loading="lazy"
-                          decoding="async"
-                          width={600}
-                          height={900}
-                          className={`h-full w-full ${
-                            other.photoFit === 'cover' ? 'object-cover' : 'object-contain'
-                          } transition-transform duration-700 group-hover:scale-105`}
-                          style={{ objectPosition: other.photoPosition ?? 'center 25%' }}
-                        />
-                      ) : (
-                        <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 text-primary p-4 text-center">
-                          <Flower2 className="size-8 text-primary/10 mb-2" />
-                          <p className="font-serif text-sm font-bold">Little Flower Team</p>
-                        </div>
-                      )}
-                    </div>
-                    <div className="mt-3">
-                      <p className="font-serif text-sm font-bold leading-tight text-primary group-hover:text-[#9b762f] transition-colors">
-                        {other.name}
-                      </p>
-                      <p className="mt-1 text-[10px] font-bold uppercase tracking-widest text-[#9b762f]">
-                        {other.titles[0]}
-                      </p>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* ✅ "You may also like to meet" section removed entirely */}
 
       <Footer />
     </div>
