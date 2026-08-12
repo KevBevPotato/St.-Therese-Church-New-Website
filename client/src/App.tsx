@@ -12,17 +12,15 @@ import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
 
-// Bulletin pages live in ./components/ alongside your existing setup
 import Bulletin from "./components/Bulletin";
 import PreviousBulletins from "./components/PreviousBulletins";
 import NextWeekBulletin from "./components/NextWeekBulletin";
-
-// Make sure to adjust these import paths to match exactly where your files are located!
 import UpcomingEventsCalendar from "./components/UpcomingEventsCalendar"; 
 import EventDetail from "./pages/EventDetail";
 
-// Wednesday Night Supper landing page
 import WednesdaySupper from "./components/WednesdaySupper";
+import KnightsOfColumbus from "./components/KnightsOfColumbus";
+import AltarSociety from "./components/AltarSociety";
 
 function Router() {
   return (
@@ -30,17 +28,17 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/get-involved"} component={GetInvolved} />
-      {/* IMPORTANT: supper-week MUST come before :id so wouter matches the specific route first */}
+      {/* ✅ Specific routes MUST come BEFORE /get-involved/:id */}
       <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
+      <Route path={"/get-involved/altar-society"} component={AltarSociety} />
+      <Route path={"/get-involved/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       
-      {/* Bulletin Routes */}
       <Route path={"/bulletin"} component={Bulletin} />
       <Route path={"/bulletin/previous"} component={PreviousBulletins} />
       <Route path={"/bulletin/next"} component={NextWeekBulletin} />
       
-      {/* New Event Routes */}
       <Route path={"/events"} component={UpcomingEventsCalendar} />
       <Route path={"/events/:id"} component={EventDetail} />
 
@@ -50,11 +48,6 @@ function Router() {
     </Switch>
   );
 }
-
-// NOTE: About Theme
-// - First choose a default theme according to your design style (dark or light bg), than change color palette in index.css
-//   to keep consistent foreground/background color across components
-// - If you want to make theme switchable, pass `switchable` ThemeProvider and use `useTheme` hook
 
 function App() {
   return (

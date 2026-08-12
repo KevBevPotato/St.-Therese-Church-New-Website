@@ -32,7 +32,7 @@ export default function NotFound() {
           <div className="absolute inset-0 bg-primary/5 rounded-[2.5rem] -rotate-1 scale-105" />
           <div className="relative overflow-hidden rounded-[2.5rem] border-4 border-white shadow-2xl shadow-primary/10 bg-white">
             <img
-              src="/404pagenotfound.png"
+              src="/404pagenotfound.jpg"
               alt="404 Page Not Found - Saint Therese Church"
               className="w-full h-auto object-cover"
             />

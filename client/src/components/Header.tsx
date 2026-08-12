@@ -21,9 +21,9 @@ export default function Header() {
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <img
-            src="/HeaderLogo.png"
+            src="/Logo.webp"
             alt="Saint Therese Church logo"
-            className="h-10 w-auto object-contain"
+            className="h-20 w-auto object-contain"
           />
           <span className="font-serif font-bold text-lg text-primary hidden sm:inline">
             Saint Therese
@@ -63,7 +63,7 @@ export default function Header() {
             aria-label="Facebook"
           >
             <img 
-              src="/FacebookLogo.png" 
+              src="/fb.webp" 
               alt="Facebook" 
               className="h-15 w-15 object-contain" 
             />
@@ -127,7 +127,7 @@ export default function Header() {
                 className="text-foreground hover:text-primary transition-colors flex items-center gap-2 font-medium"
               >
                 <img 
-                  src="/FacebookLogo.png" 
+                  src="/fb.webp" 
                   alt="Facebook" 
                   className="h-5 w-5 object-contain" 
                 /> 

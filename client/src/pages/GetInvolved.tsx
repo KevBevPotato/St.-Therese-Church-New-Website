@@ -1,5 +1,5 @@
-// --- File: GetInvolved.tsx ---
-import { useState, type FormEvent } from 'react';
+// --- File: client/src/components/GetInvolved.tsx ---
+import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
@@ -15,13 +15,13 @@ import {
     User,
     UserPlus,
     Heart,
+    HandHeart,
+    Shield,
+    Flower,
 } from 'lucide-react';
 import { Link } from 'wouter';
 import SponsorshipCard from '@/components/SponsorshipCard';
-import {
-    sponsorshipProjects,
-    type SponsorshipProject,
-} from '@/data/sponsorship-projects';
+import { organizations } from '@/data/organizations';
 
 type Category = 'all' | 'sponsor' | 'help' | 'join' | 'request';
 type Tag =
@@ -58,6 +58,8 @@ interface Opportunity {
         subtotal: string;
     }>;
     constructionTotal?: string;
+    customPage?: 'supper-week' | 'altar-society' | 'knights-of-columbus';
+    orgIcon?: 'shield' | 'flower';
 }
 
 function createInitialOpportunities(): Opportunity[] {
@@ -143,6 +145,7 @@ function createInitialOpportunities(): Opportunity[] {
             contactPhone: '(605) 867-5309',
             description:
                 'Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year.',
+            customPage: 'supper-week',
         },
         {
             id: 'youth-ministry-mentors',
@@ -179,6 +182,36 @@ function createInitialOpportunities(): Opportunity[] {
             contactName: 'Jane Doe',
             contactPhone: '(605) 867-5309',
             description: 'Help sort and distribute food donations to local families in need.',
+        },
+        {
+            id: 'altar-society',
+            title: 'Altar Society',
+            categories: ['join'],
+            tags: ['Parish Organizations'],
+            audienceTags: ["Women's"],
+            organization: 'Altar Society',
+            date: 'Quarterly',
+            contactName: 'President',
+            contactPhone: '(605) 867-5309',
+            description:
+                'The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.',
+            customPage: 'altar-society',
+            orgIcon: 'flower',
+        },
+        {
+            id: 'knights-of-columbus',
+            title: 'Knights of Columbus',
+            categories: ['join'],
+            tags: ['Parish Organizations', 'Diocesan'],
+            audienceTags: ["Men's"],
+            organization: 'Knights of Columbus',
+            date: '1st Thursday of each month',
+            contactName: 'Grand Knight',
+            contactPhone: '(605) 867-5309',
+            description:
+                "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Therese parish through charitable works, faith formation support, and community fellowship.",
+            customPage: 'knights-of-columbus',
+            orgIcon: 'shield',
         },
         {
             id: 'catholic-daughters',
@@ -225,20 +258,6 @@ const FORM_URLS = {
     referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
 };
 
-function opportunityToSponsorshipProject(op: Opportunity): SponsorshipProject {
-    return {
-        id: op.id,
-        title: op.title,
-        description: op.description,
-        organization: op.organization,
-        contactName: op.contactName,
-        contactPhone: op.contactPhone,
-        items: [],
-        constructionItems: op.constructionItems,
-        constructionTotal: op.constructionTotal,
-    };
-}
-
 export default function GetInvolved() {
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [activeInterest, setActiveInterest] = useState<Tag | 'all'>('all');
@@ -257,17 +276,10 @@ export default function GetInvolved() {
         return categoryMatch && interestMatch && audienceMatch;
     });
 
-    const getSponsorshipProject = (op: Opportunity): SponsorshipProject => {
-        const fromData = sponsorshipProjects.find((p) => p.id === op.id);
-        return fromData ?? opportunityToSponsorshipProject(op);
-    };
-
-    // Button handlers - open Microsoft Forms in new tab
     const handleContribute = (opportunityId: string) => {
         if (opportunityId === 'nursery') {
             window.open(FORM_URLS.contributeNursery, '_blank', 'noopener,noreferrer');
         }
-        // Other projects can be added here as they get their own forms
     };
 
     const handleSignUpToHelp = () => {
@@ -362,7 +374,7 @@ export default function GetInvolved() {
                                             activeInterest === tag
                                                 ? 'border-primary text-primary'
                                                 : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
-                                        }`}
+                                    }`}
                                     >
                                         {tag}
                                     </button>
@@ -408,8 +420,8 @@ export default function GetInvolved() {
                     {activeCategory !== 'request' && (
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                             {filteredOps.map((opportunity) => {
-                                // Wednesday Night Supper gets its own custom landing page
-                                if (opportunity.id === 'supper-week') {
+                                // Custom landing pages (full-page components)
+                                if (opportunity.customPage === 'supper-week') {
                                     return (
                                         <SupperWeekCard
                                             key={opportunity.id}
@@ -421,15 +433,37 @@ export default function GetInvolved() {
                                     );
                                 }
 
+                                if (opportunity.customPage === 'altar-society' || opportunity.customPage === 'knights-of-columbus') {
+                                    return (
+                                        <OrgCard
+                                            key={opportunity.id}
+                                            op={opportunity}
+                                            onSuggestion={handleSuggestion}
+                                            onRefer={handleRefer}
+                                        />
+                                    );
+                                }
+
+
                                 if (opportunity.categories.includes('sponsor')) {
                                     return (
                                         <SponsorshipCard
                                             key={opportunity.id}
-                                            project={getSponsorshipProject(opportunity)}
+                                            project={{
+                                                id: opportunity.id,
+                                                title: opportunity.title,
+                                                description: opportunity.description,
+                                                organization: opportunity.organization,
+                                                contactName: opportunity.contactName,
+                                                contactPhone: opportunity.contactPhone,
+                                                items: [],
+                                                constructionItems: opportunity.constructionItems,
+                                                constructionTotal: opportunity.constructionTotal,
+                                            }}
                                             onContribute={() => handleContribute(opportunity.id)}
                                             onSignUpToHelp={handleSignUpToHelp}
-                                            onSuggestion={handleSuggestion}
                                             onRefer={handleRefer}
+                                            onSuggestion={handleSuggestion}
                                         />
                                     );
                                 }
@@ -499,8 +533,6 @@ function OpportunityCard({
     onSuggestion: () => void;
     onRefer: () => void;
 }) {
-    const isHelp = op.categories.includes('help');
-
     return (
         <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/20 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
             <div className="p-8 pb-4 flex-grow">
@@ -679,3 +711,104 @@ function SupperWeekCard({
         </Card>
     );
 }
+
+function OrgCard({
+    op,
+    onSuggestion,
+    onRefer,
+}: {
+    op: Opportunity;
+    onSuggestion: () => void;
+    onRefer: () => void;
+}) {
+    const org = organizations.find(o => o.id === op.customPage);
+
+    // External signup URLs per organization
+    const EXTERNAL_SIGNUP_URLS: Record<string, string> = {
+        'knights-of-columbus': 'https://www.kofc.org/get-involved/join-kofc/',
+        'altar-society': FORM_URLS.signUpToHelp, // fallback until they have their own
+    };
+
+    const signupUrl = EXTERNAL_SIGNUP_URLS[op.id] || FORM_URLS.signUpToHelp;
+
+    return (
+        <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/20 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
+            <div className="p-8 pb-4 flex-grow">
+                <div className="flex justify-between items-start mb-4 gap-3">
+                    <div className="flex flex-wrap gap-1">
+                        {op.tags.map((tag) => (
+                            <span key={tag} className="text-[8px] font-black uppercase tracking-widest px-2 py-0.5 bg-accent/10 text-accent rounded-full border border-accent/10">
+                                {tag}
+                            </span>
+                        ))}
+                    </div>
+                    {op.organization && (
+                        <span className="shrink-0 flex items-center gap-1 text-[9px] font-bold text-primary/40 uppercase tracking-widest">
+                            {op.orgIcon === 'shield' ? <Shield size={10} /> : op.orgIcon === 'flower' ? <Flower size={10} /> : <Building2 size={10} />} {op.organization}
+                        </span>
+                    )}
+                </div>
+
+                <Link href={`/get-involved/${op.id}`}>
+                    <a className="block mb-3 group/title">
+                        <h3 className="font-serif text-2xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors cursor-pointer">
+                            {op.title}
+                        </h3>
+                    </a>
+                </Link>
+
+                {op.date && (
+                    <div className="flex items-center gap-1.5 text-[10px] font-bold text-primary/60 uppercase tracking-tight mb-4">
+                        <Calendar size={12} className="text-accent" /> {op.date}
+                    </div>
+                )}
+                <p className="text-muted-foreground leading-relaxed text-sm mb-6">{op.description}</p>
+
+                <div className="mb-6 p-4 bg-gray-50 rounded-2xl border border-gray-100">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                            <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+                                <User size={14} />
+                            </div>
+                            <div>
+                                <p className="text-xs font-bold text-primary">{op.contactName}</p>
+                                <p className="text-[10px] text-muted-foreground">{op.contactPhone}</p>
+                            </div>
+                        </div>
+                        <a href={`tel:${op.contactPhone.replace(/\D/g, '')}`} className="p-2 text-primary/40 hover:text-accent transition-colors" aria-label={`Call ${op.contactName}`}>
+                            <Phone size={14} />
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div className="p-8 pt-2 space-y-3">
+                <Button
+                    onClick={() => window.open(signupUrl, '_blank', 'noopener,noreferrer')}
+                    className="w-full bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-6 shadow-lg shadow-accent/20"
+                >
+                    {op.orgIcon === 'shield' ? <Shield size={14} className="mr-2" /> : <Flower size={14} className="mr-2" />}
+                    Join / Sign Up
+                </Button>
+                <div className="grid grid-cols-2 gap-2">
+                    <Button
+                        variant="outline"
+                        onClick={onSuggestion}
+                        className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest py-4 border-primary/10 hover:border-primary/30"
+                    >
+                        <MessageSquare size={12} /> Suggestion
+                    </Button>
+                    <Button
+                        variant="outline"
+                        onClick={onRefer}
+                        className="flex items-center gap-2 text-[9px] font-bold uppercase tracking-widest py-4 border-primary/10 hover:border-primary/30"
+                    >
+                        <UserPlus size={12} /> Refer
+                    </Button>
+                </div>
+            </div>
+        </Card>
+    );
+}
+
+
