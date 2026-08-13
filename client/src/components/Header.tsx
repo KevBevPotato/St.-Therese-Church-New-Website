@@ -72,23 +72,6 @@ export default function Header() {
             />
           </a>
 
-          {/* Website comments/feedback Button */}
-          <a
-            href={FEEDBACK_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label="Website comments and feedback"
-          >
-            <Button
-              size="sm"
-              variant="outline"
-              className="border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
-            >
-              <MessageSquare className="mr-2 size-4" />
-              Website comments/feedback
-            </Button>
-          </a>
-
           {/* Donate Button */}
           <a
             href="https://secure.myvanco.com/L-ZAYT/home"

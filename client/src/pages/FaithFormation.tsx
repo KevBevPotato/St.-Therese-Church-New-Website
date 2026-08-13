@@ -425,10 +425,11 @@ export default function FaithFormation() {
                                 href="/ChurchMap.pdf"
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
                             >
-                                <FileText size={18} /> View Classroom Locations with Church Map
+                                <FileText size={18} /> View Classroom Locations
                             </a>
+                            
                         </div>
                     </div>
                     <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">

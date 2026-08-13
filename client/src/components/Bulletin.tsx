@@ -477,7 +477,7 @@ export default function Bulletin() {
 
             <main className="flex-grow container mx-auto px-4 py-12">
                 {/* Hero Section */}
-                <div className="mb-12">
+                <div className="mt-16 mb-12">
                     <div className="flex items-center gap-3 mb-4">
                         <FileText className="text-accent" size={28} />
                         <h1 className="font-serif text-5xl md:text-6xl font-bold text-primary">Parish Bulletins</h1>

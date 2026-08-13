@@ -45,10 +45,10 @@ interface ContactInfo {
 }
 
 const defaultContactInfo: ContactInfo = {
-    name: 'Parish Office',
+    name: 'Connie Heeren',
     title: 'Bulletin Coordinator',
-    phone: '(605) 484-2161',
-    email: 'office@sttherese.org',
+    phone: '(605) 342-1556 Ext. 1',
+    email: 'cheeren@diorc.org',
 };
 
 export default function BulletinView({
