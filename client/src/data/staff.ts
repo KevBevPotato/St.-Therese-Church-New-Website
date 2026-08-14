@@ -292,6 +292,15 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     photoFit: 'cover',
   },
 ];
+const staffOverrides: Record<string, Pick<StaffMember, 'duties' | 'bio'>> = {
+  'anthony-flores': {
+    duties:
+      'Anthony serves as the OCIA Coordinator, guiding individuals through the process of becoming fully initiated members of the Catholic Church. He is passionate about helping others grow in their faith and understanding of Catholic teachings.',
+    bio:
+      "Anthony Flores is a dedicated member of the St. Thérèse the Little Flower parish community, serving as the OCIA Coordinator. With a deep commitment to faith formation, Anthony guides individuals through the process of becoming fully initiated members of the Catholic Church. His passion for helping others grow in their faith and understanding of Catholic teachings is evident in his work with catechumens and candidates. Anthony's approachable nature and knowledge of Church doctrine make him an invaluable resource for those seeking to deepen their spiritual journey.",
+  },
+  // future overrides go here
+};
 
 export const staffMembers: StaffMember[] = baseStaffMembers.map((m) => ({
   ...m,
