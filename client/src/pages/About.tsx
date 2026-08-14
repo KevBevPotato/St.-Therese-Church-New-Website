@@ -1,28 +1,31 @@
 // Sacred Minimalism: dignified editorial hierarchy, warm ivory space, and portrait-led community storytelling.
 import { Link } from 'wouter';
-import { useState, useMemo } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { Flower2, Mail, Phone } from 'lucide-react';
 import { staffMembers, staffCategories, StaffMember } from '@/data/staff';
 
-type CategoryId = (typeof staffCategories)[number]['id'];
-
 export default function About() {
-  const [selectedCategory, setSelectedCategory] = useState<CategoryId>('all');
+  // ✅ Publish-ready: only show staff with updated photos.
+  // To re-enable the full directory later, remove this filter and restore
+  // the category tabs section below.
+  const visibleStaffSlugs = new Set([
+    'fr-mark-mccormick',
+    'fr-todd-vandermay',
+    'dcn-don-moore',
+    'bobby-myers',
+    'connie-heeren',
+    'melanie-karp',
+    'kevin-baltzer',
+  ]);
 
-  const filteredStaff = useMemo(() => {
-    if (selectedCategory === 'all') return staffMembers;
-    return staffMembers.filter((m) =>
-      m.categories.includes(selectedCategory as Exclude<CategoryId, 'all'>)
-    );
-  }, [selectedCategory]);
+  const filteredStaff = staffMembers.filter((m) => visibleStaffSlugs.has(m.slug));
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <div className="pt-[69px]" />
+      <div className="pt-[var(--header-height)]" />
 
       {/* Hero Section */}
       <section className="relative overflow-hidden border-b border-primary/10 bg-[#fbfaf6] py-16 md:py-20">
@@ -36,7 +39,7 @@ export default function About() {
               The people behind our parish.
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Meet the clergy, staff, catechists, council members, and ministry leaders who accompany our parish family in prayer and service.
+              Meet the clergy and staff who accompany our parish family in prayer and service.
             </p>
           </div>
           <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">
@@ -50,27 +53,10 @@ export default function About() {
         </div>
       </section>
 
-      {/* Personnel Directory Section */}
+      {/* Personnel Directory Section — filter tabs hidden for publish */}
       <section className="py-10 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            {/* Category Tabs */}
-            <div className="mb-12 flex flex-wrap justify-start gap-x-5 gap-y-2 border-b border-primary/12">
-              {staffCategories.map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setSelectedCategory(cat.id)}
-                  className={`border-b-2 px-1 py-3 text-xs font-bold uppercase tracking-[0.12em] transition-colors md:text-sm ${
-                    selectedCategory === cat.id
-                      ? 'border-primary text-primary'
-                      : 'border-transparent text-muted-foreground hover:border-primary/35 hover:text-primary'
-                  }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-
             {/* Personnel Grid */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredStaff.map((member: StaffMember, idx: number) => (

@@ -403,7 +403,7 @@ export default function FaithFormation() {
     return (
         <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
             <Header />
-            <div className="pt-[69px]" />
+            <div className="pt-[var(--header-height)]" />
 
             {/* Hero Section */}
             <section className="relative overflow-hidden border-b border-primary/10 bg-[#fbfaf6] py-16 md:py-20">
@@ -442,7 +442,7 @@ export default function FaithFormation() {
             <main className="flex-grow py-12">
                 <div className="container mx-auto px-4">
                     {/* Filter Section */}
-                    <div className="mb-12">
+                    {/* <div className="mb-12">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                             <h2 className="font-serif text-3xl font-bold text-primary">Explore Our Programs</h2>
                             <button
@@ -476,10 +476,10 @@ export default function FaithFormation() {
                                 </button>
                             ))}
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Events Grid */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {/* <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                         {filteredEvents.map(event => (
                             <Card key={event.id} className="group flex flex-col border-2 border-primary/5 hover:border-primary/20 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
                                 <div className="p-8 pb-4 flex-grow">
@@ -540,7 +540,7 @@ export default function FaithFormation() {
                                 </div>
                             </Card>
                         ))}
-                    </div>
+                    </div> */}
 
                     {filteredEvents.length === 0 && (
                         <div className="text-center py-24 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200">

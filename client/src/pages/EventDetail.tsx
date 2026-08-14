@@ -89,7 +89,7 @@ export default function EventDetail() {
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
       <Header />
-      <div className="pt-[69px]" />
+      <div className="pt-[var(--header-height)]" />
 
       <main className="flex-grow container mx-auto px-4 py-12">
         {/* 👇 NEW: Smart back navigation row */}

@@ -11,16 +11,17 @@ import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 /**
  * Home Page
  *
- * Changes in this version:
- *   1. Quote "My vocation, at last I have found it..." is now placed at the
- *      bottom of the left content column, aligned with the bottom of the
- *      "View Mass Times" / "Meet Our Parish Team" buttons.
- *   2. The mass-times bar at the bottom of the hero now uses a ref, and a
- *      JavaScript scroll listener renders a duplicate "sticky" bar
- *      (position: fixed, top: 69px) once the user has scrolled past the hero.
- *   3. The "View Mass Times" button now uses element-relative scrolling
- *      (scrollTo with calculated offset) — no more hard-coded 1600px.
+ * Fix in this version:
+ *   The header is actually 113px tall (h-20 logo + py-4 padding), but the
+ *   original code used 69px for every offset. This caused the sticky mass-times
+ *   bar to appear partially behind the header when the user scrolled past
+ *   the hero. All 69px hardcoded values have been updated to 113px.
+ *
+ *   If the header height ever changes (logo size, padding, etc.), update the
+ *   HEADER_HEIGHT constant below to match.
  */
+
+const HEADER_HEIGHT = 113; // measured height of the fixed header
 
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
@@ -31,8 +32,8 @@ export default function Home() {
     const handleScroll = () => {
       if (!heroRef.current) return;
       const heroBottom = heroRef.current.getBoundingClientRect().bottom;
-      // Show sticky bar once the hero has scrolled past the header (69px)
-      setIsMassTimesStuck(heroBottom <= 69);
+      // Show sticky bar once the hero has scrolled past the full header
+      setIsMassTimesStuck(heroBottom <= HEADER_HEIGHT);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
@@ -42,8 +43,8 @@ export default function Home() {
   const scrollToMassTimes = () => {
     if (!massTimesRef.current) return;
     const elementTop = massTimesRef.current.getBoundingClientRect().top + window.scrollY;
-    // Place the bar right below the 69px header
-    const offset = 69;
+    // Place the bar right below the header
+    const offset = HEADER_HEIGHT;
     window.scrollTo({
       top: elementTop - offset,
       behavior: 'smooth',
@@ -80,7 +81,7 @@ export default function Home() {
       {/* Hero Section with Video Background */}
       <section
         ref={heroRef}
-        className="relative min-h-screen w-full overflow-hidden pt-[69px] text-white flex flex-col"
+        className="relative min-h-screen w-full overflow-hidden pt-[113px] text-white flex flex-col"
       >
         <div className="absolute inset-0 z-0">
           <video
@@ -134,7 +135,7 @@ export default function Home() {
               </Link>
             </div>
 
-            {/* ✅ Quote moved to the bottom of the left column, aligned with the bottom of the buttons */}
+            {/* Quote moved to the bottom of the left column, aligned with the bottom of the buttons */}
             <div className="mt-10 border-t border-white/30 pt-5 max-w-xl">
               <p className="font-serif text-xl italic leading-snug text-white/95 md:text-2xl">
                 "My vocation, at last I have found it; my vocation is love."
@@ -155,11 +156,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ✅ Sticky mass-times bar — appears once the hero is scrolled past */}
+      {/* Sticky mass-times bar — appears once the hero is scrolled past the FULL header */}
       {isMassTimesStuck && (
         <div
           id="mass-times-sticky"
-          className="fixed top-[69px] left-0 right-0 z-40 border-t border-primary/10 bg-[#fbfaf6]/98 text-primary backdrop-blur-md shadow-md"
+          className="fixed top-[113px] left-0 right-0 z-40 border-t border-primary/10 bg-[#fbfaf6]/98 text-primary backdrop-blur-md shadow-md"
         >
           {massTimesContent}
         </div>

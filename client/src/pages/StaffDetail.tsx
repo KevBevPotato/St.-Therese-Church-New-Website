@@ -15,7 +15,7 @@ export default function StaffDetail() {
     return (
       <div className="min-h-screen flex flex-col bg-background">
         <Header />
-        <div className="pt-[69px]" />
+        <div className="pt-[var(--header-height)]" />
         <section className="container mx-auto px-4 py-24 text-center">
           <p className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
             <Flower2 className="size-4" /> Not Found
@@ -43,7 +43,7 @@ export default function StaffDetail() {
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
-      <div className="pt-[69px]" />
+      <div className="pt-[var(--header-height)]" />
 
       {/* Breadcrumb back link */}
       <section className="container mx-auto px-4 pt-8 md:pt-10">

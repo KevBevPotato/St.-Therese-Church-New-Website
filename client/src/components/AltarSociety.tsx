@@ -55,7 +55,7 @@ export default function AltarSociety() {
         return (
             <div className="min-h-screen flex flex-col bg-background">
                 <Header />
-                <div className="pt-[69px]" />
+                <div className="pt-[var(--header-height)]" />
                 <main className="flex-grow py-20 text-center">
                     <p className="text-muted-foreground">Organization not found.</p>
                 </main>
@@ -67,7 +67,7 @@ export default function AltarSociety() {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
-            <div className="pt-[69px]" />
+            <div className="pt-[var(--header-height)]" />
 
             {/* Hero */}
             <section className="relative py-20 bg-[#fbfaf6] border-b border-primary/10 overflow-hidden">

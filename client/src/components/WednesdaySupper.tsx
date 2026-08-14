@@ -311,7 +311,7 @@ export default function WednesdaySupper() {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
-            <div className="pt-[69px]" />
+            <div className="pt-[var(--header-height)]" />
 
             {/* Hero */}
             <section className="relative py-20 bg-[#fbfaf6] border-b border-primary/10 overflow-hidden">
