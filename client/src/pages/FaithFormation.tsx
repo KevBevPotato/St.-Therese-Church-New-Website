@@ -414,13 +414,14 @@ export default function FaithFormation() {
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">Faith Formation Programs</h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">Nurturing faith at every stage of life. From young children to adults, discover programs designed to deepen your relationship with Christ and our parish community.</p>
                          <div className="flex flex-wrap gap-4 mt-8">
-                            <Button
-                                onClick={() => setIsFormOpen(true)}
-                                size="lg"
-                                className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
+                            <a
+                                href="/Register.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
                             >
-                                Register Here
-                            </Button>
+                                <FileText size={18} /> Register Now
+                            </a>
                             <a
                                 href="/ChurchMap.pdf"
                                 target="_blank"
@@ -428,6 +429,30 @@ export default function FaithFormation() {
                                 className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
                             >
                                 <FileText size={18} /> View Classroom Locations
+                            </a>
+                            <a
+                                href="/ActivityMedicalRelease.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                            >
+                                <FileText size={18} /> Activity & Medical Release Form
+                            </a>
+                            <a
+                                href="/FaithFormationSchedule.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                            >
+                                <Calendar size={18} /> Schedule
+                            </a>
+                            <a
+                                href="/ConfirmationRegistration.pdf"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                            >
+                                <FileText size={18} /> Confirmation Registration
                             </a>
                             
                         </div>

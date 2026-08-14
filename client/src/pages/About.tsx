@@ -1,5 +1,4 @@
 // Sacred Minimalism: dignified editorial hierarchy, warm ivory space, and portrait-led community storytelling.
-import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
@@ -57,14 +56,14 @@ export default function About() {
       <section className="py-10 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            {/* Personnel Grid */}
+            {/* Personnel Grid — staff landing pages disabled for publish */}
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredStaff.map((member: StaffMember, idx: number) => (
                 <Card
                   key={idx}
-                  className="group overflow-hidden rounded-none border border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"
+                  className="group overflow-hidden rounded-none border border-primary/12 bg-white shadow-sm"
                 >
-                  <Link href={`/staff/${member.slug}`} className="block">
+                  <div className="block">
                     <div className="relative aspect-[2/3] w-full overflow-hidden bg-primary/5 flex items-center justify-center">
                       {member.photo ? (
                         <img
@@ -74,9 +73,8 @@ export default function About() {
                           decoding="async"
                           width={600}
                           height={900}
-                          className={`h-full w-full ${
-                            member.photoFit === 'cover' ? 'object-cover' : 'object-contain'
-                          } transition-transform duration-700 group-hover:scale-105`}
+                          className={`h-full w-full ${member.photoFit === 'cover' ? 'object-cover' : 'object-contain'
+                            }`}
                           style={{ objectPosition: member.photoPosition ?? 'center 25%' }}
                         />
                       ) : (
@@ -119,7 +117,6 @@ export default function About() {
                         {member.email && (
                           <a
                             href={`mailto:${member.email}`}
-                            onClick={(e) => e.stopPropagation()}
                             className="flex items-center gap-2 text-xs text-muted-foreground hover:text-primary transition-colors"
                           >
                             <Mail className="size-3" /> {member.email}
@@ -131,12 +128,8 @@ export default function About() {
                           </div>
                         )}
                       </div>
-
-                      <p className="mt-3 text-[10px] font-bold uppercase tracking-[0.2em] text-primary/30 group-hover:text-primary/60 transition-colors">
-                        Read More →
-                      </p>
                     </div>
-                  </Link>
+                  </div>
                 </Card>
               ))}
             </div>

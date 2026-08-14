@@ -118,16 +118,19 @@ export default function Home() {
             </p>
 
             {/* Buttons */}
+            {/* Buttons */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <button
-                onClick={scrollToMassTimes}
+              <a
+                href="/BecomeAMember.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="inline-flex"
-                aria-label="Scroll to Mass Times"
+                aria-label="Become a Member — PDF opens in new tab"
               >
                 <Button size="lg" className="w-full bg-white text-primary shadow-lg hover:bg-[#f4ead5] sm:w-auto">
-                  View Mass Times
+                  Become a Member
                 </Button>
-              </button>
+              </a>
               <Link href="/about" className="inline-flex">
                 <Button size="lg" variant="outline" className="w-full border-white/65 bg-[#102a45]/15 text-white backdrop-blur-sm hover:bg-white/12 sm:w-auto">
                   Meet Our Parish Team

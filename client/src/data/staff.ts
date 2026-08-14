@@ -131,7 +131,7 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Kevin Baltzer',
     titles: ['Director of Evangelization & Adult & Family Formation'],
     email: 'kbaltzer@diorc.org',
-    categories: ['catechist', 'staff'],
+    categories: ['staff'],
     photo: '/Kevin-Baltzer.jpg',
     photoPosition: 'center 35%',
     photoFit: 'cover',

@@ -36,34 +36,26 @@ export default function Header() {
   const FEEDBACK_FORM_URL =
     'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNzVZOFdFTTBMVVVFS05aNEVBVTFSN0NHNC4u';
 
-  // NOTE FOR OTHER PAGES:
-  // Every page that renders <Header /> uses `<div className="pt-[69px]" />` afterward.
-  // That number is hardcoded and breaks when the header changes size (logo, padding, etc.).
-  // The fix: replace the hardcoded offset with `pt-[var(--header-height)]` so it always
-  // matches the real header height. The `useEffect` above keeps the CSS variable in sync.
-  // A one-time find-and-replace across all pages is the easiest cleanup:
-  //     `pt-[69px]` → `pt-[var(--header-height)]`
-
   return (
     <header
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm"
     >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
+        <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0">
           <img
             src="/Logo.webp"
             alt="Saint Therese Church logo"
             className="h-20 w-auto object-contain"
           />
-          <span className="font-serif font-bold text-lg text-primary hidden sm:inline">
+          <span className="font-serif font-bold text-lg text-primary hidden xl:inline">
             Saint Therese
           </span>
         </Link>
 
-        {/* Desktop Navigation */}
-        <nav className="hidden md:flex items-center gap-6 lg:gap-8">
+        {/* Desktop Navigation — fills the available space */}
+        <nav className="hidden md:flex items-center justify-end flex-1 gap-4 lg:gap-6 xl:gap-8">
           {navLinks.map((link) => (
             link.href.startsWith('http') ? (
               <a
@@ -71,7 +63,7 @@ export default function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors font-medium text-sm"
+                className="text-foreground hover:text-primary transition-colors font-semibold text-base whitespace-nowrap"
               >
                 {link.label}
               </a>
@@ -79,7 +71,7 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-foreground hover:text-primary transition-colors font-medium text-sm"
+                className="text-foreground hover:text-primary transition-colors font-semibold text-base whitespace-nowrap"
               >
                 {link.label}
               </Link>
@@ -91,13 +83,13 @@ export default function Header() {
             href="https://www.facebook.com/TheLittleFlowerRapidCity"
             target="_blank"
             rel="noopener noreferrer"
-            className="hover:opacity-80 transition-opacity"
+            className="hover:opacity-80 transition-opacity shrink-0"
             aria-label="Facebook"
           >
-            <img 
-              src="/fb.webp" 
-              alt="Facebook" 
-              className="h-15 w-15 object-contain" 
+            <img
+              src="/fb.webp"
+              alt="Facebook"
+              className="h-20 w-20 object-contain"
             />
           </a>
 
@@ -106,6 +98,7 @@ export default function Header() {
             href="https://secure.myvanco.com/L-ZAYT/home"
             target="_blank"
             rel="noopener noreferrer"
+            className="shrink-0"
           >
             <Button size="sm" className="bg-primary hover:bg-primary/90">
               Donate
@@ -116,7 +109,7 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={() => setIsMenuOpen(!isMenuOpen)}
-          className="md:hidden p-2 hover:bg-secondary rounded-lg transition-colors"
+          className="md:hidden p-2 hover:bg-secondary rounded-lg transition-colors shrink-0"
           aria-label="Toggle menu"
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -158,11 +151,11 @@ export default function Header() {
                 rel="noopener noreferrer"
                 className="text-foreground hover:text-primary transition-colors flex items-center gap-2 font-medium"
               >
-                <img 
-                  src="/fb.webp" 
-                  alt="Facebook" 
-                  className="h-5 w-5 object-contain" 
-                /> 
+                <img
+                  src="/fb.webp"
+                  alt="Facebook"
+                  className="h-20 w-20 object-contain"
+                />
                 Facebook
               </a>
             </div>
