@@ -454,9 +454,9 @@ export default function UpcomingEventsCalendar() {
                     className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all hover:shadow-lg bg-white min-h-[140px] ${highlightedEventId === event.id ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'border-none ring-1 ring-black/5'}`}
                     onClick={() => {
                       const destinationUrl = event.linkedOpportunityId 
-                          ? `/get-involved/${event.linkedOpportunityId}` 
-                          : `/events/${event.id}`;
-                      navigate(destinationUrl);
+                      //     ? `/get-involved/${event.linkedOpportunityId}` 
+                      //     : `/events/${event.id}`;
+                      // navigate(destinationUrl);
                     }}
                   >
                     {/* Date Block — now includes day-of-week below the number */}
@@ -544,10 +544,10 @@ export default function UpcomingEventsCalendar() {
                 getEventsForDay(expandedDay).map(event => (
                   <div key={event.id} onClick={() => {
                     setExpandedDay(null);
-                    const destinationUrl = event.linkedOpportunityId 
-                        ? `/get-involved/${event.linkedOpportunityId}` 
-                        : `/events/${event.id}`;
-                    navigate(destinationUrl);
+                    // const destinationUrl = event.linkedOpportunityId 
+                    //     ? `/get-involved/${event.linkedOpportunityId}` 
+                    //     : `/events/${event.id}`;
+                    // navigate(destinationUrl);
                   }} className="p-4 rounded-2xl border-2 border-primary/5 hover:border-primary/20 cursor-pointer transition-all flex justify-between items-center group">
                     <div>
                       <h5 className="font-bold text-primary group-hover:text-accent transition-colors">{event.title}</h5>
