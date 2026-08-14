@@ -302,11 +302,17 @@ const staffOverrides: Record<string, Pick<StaffMember, 'duties' | 'bio'>> = {
       "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation, I am thrilled to join Chesterton Academy of Blessed Alcuin of York to teach mathematics and bring both a technical foundation and a missionary heart into the classroom!\n\nHe currently lives in the Rapid Valley area with his wife Katie (married by Fr. Mark on 9/1/24) and their daughter Lucia, born June 26.",
   },
   // future overrides go here, e.g.:
-  // 'fr-mark-mccormick': { duties: '...', bio: '...' },
+  'fr-mark-mccormick': {
+    duties: 
+      'Fr. Mark is serving as Head Pastor of St. Thérèse the Little Flower & the St. Carlo Acutis Catholic Student Center, serving alongside Fr. Todd VanderMay.',
+    bio: 
+      'Fr. Mark was born in Rapid City, SD, and grew up in the Black Hills. He attended St. Martin\'s College in Lacey, WA, and graduated with a degree in Philosophy. He then attended Mount Angel Seminary in St. Benedict, OR, where he earned a Master of Divinity degree. Fr. Mark was ordained to the priesthood on May 30, 1999, and has served in various parishes throughout the Diocese of Rapid City.',
+  },
 };
 
 const defaultDuties = 'Serving the parish community with care and dedication.';
 const defaultBio = 'More information about this ministry role will be shared soon.';
+
 
 export const staffMembers: StaffMember[] = baseStaffMembers.map((m) => ({
   ...m,
