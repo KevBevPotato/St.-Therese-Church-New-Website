@@ -121,7 +121,7 @@ export default function Home() {
             {/* Buttons */}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <a
-                href="/BecomeAMember.pdf"
+                href="/OldSTCCWebsite/MemberRegistration.pdf"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex"
