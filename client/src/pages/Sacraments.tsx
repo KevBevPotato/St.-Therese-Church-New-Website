@@ -4,10 +4,8 @@ import { Card } from '@/components/ui/card';
 import {
     BookOpen,
     Droplet,
-    Flame,
     Wine,
     Heart,
-    HandHeart,
     Cross,
     Users,
     Phone,
@@ -29,13 +27,29 @@ interface Sacrament {
 
 const sacraments: Sacrament[] = [
     {
-        id: 'baptism',
-        name: 'Baptism',
-        tagline: 'Entry into the Family of God',
-        description: 'Through Baptism, we are freed from sin, reborn as children of God, and welcomed into the Catholic Church. It is the first of the three Sacraments of Initiation.',
+        id: 'marriage-preparation',
+        name: 'Marriage Preparation',
+        tagline: 'Preparing for the Sacrament of Matrimony',
+        description: 'Arrangements for the celebration of the Sacrament of Matrimony are to begin at least 6 months prior to the desired wedding date.',
         details: [
-            'Celebrated during any Sunday Mass or at a private ceremony',
-            'Parents and godparents attend a one-time preparation class',
+            'Contact the parish at least 6 months before your desired date',
+            'Pre-Cana or Engaged Encounter preparation is required',
+            'Couples will meet with the priest for guidance and formation',
+        ],
+        contactName: 'Fr. Mark McCormick',
+        contactPhone: '(605) 342-1556 Ext. 4',
+        contactEmail: 'mmccormick@diorc.org',
+        preparation: 'Begin arrangements at least 6 months prior',
+        icon: <Cross size={20} />,
+    },
+    {
+        id: 'baptism-class',
+        name: 'Baptism Class',
+        tagline: 'Welcoming New Members into the Faith',
+        description: 'Parents and godparents prepare for the baptism of their child through a one-time preparation class.',
+        details: [
+            'Call the parish office to register for the next class',
+            'Baptisms are celebrated during Sunday Mass or at a private ceremony',
             'At least one godparent must be a confirmed, practicing Catholic',
         ],
         contactName: 'Parish Office',
@@ -45,101 +59,53 @@ const sacraments: Sacrament[] = [
         icon: <Droplet size={20} />,
     },
     {
-        id: 'confirmation',
-        name: 'Confirmation',
-        tagline: 'Sealed with the Gift of the Holy Spirit',
-        description: 'Confirmation perfects Baptismal grace and strengthens the bond between the confirmed and the Church. It is one of the three Sacraments of Initiation.',
+        id: 'first-eucharist',
+        name: 'First Eucharist & First Reconciliation',
+        tagline: 'First Steps in the Sacramental Life',
+        description: 'First Holy Communion and First Reconciliation are typically received in the 2nd grade, but may be received at any age.',
         details: [
-            'Typically received in the teen years through our Faith Formation program',
-            'Adult preparation is available through the OCIA process',
-            'The Bishop is the ordinary minister of this sacrament',
+            'Typically received in the 2nd grade',
+            'May be received at any age — contact us for adult preparation',
+            'Religious education classes begin in late September and go through late April',
         ],
-        contactName: 'Bobby Myers',
+        contactName: 'Fr. Mark McCormick / Parish Office',
         contactPhone: '(605) 342-1556',
-        contactEmail: 'bmyers@diorc.org',
-        preparation: 'Two-year preparation process for teens',
-        icon: <Flame size={20} />,
-    },
-    {
-        id: 'eucharist',
-        name: 'Eucharist',
-        tagline: 'The Source and Summit of Our Faith',
-        description: 'The Eucharist is the Body and Blood of Jesus Christ, the greatest gift we receive this side of Heaven. First Holy Communion is a milestone moment in the life of every Catholic.',
-        details: [
-            'First Communion is typically received in the 2nd grade',
-            'Children must complete two years of Faith Formation prior',
-            'The Most Holy Eucharist is received at every Mass',
-        ],
-        contactName: 'Bobby Myers',
-        contactPhone: '(605) 342-1556',
-        contactEmail: 'bmyers@diorc.org',
-        preparation: 'Two-year Faith Formation prerequisite',
+        contactEmail: 'sttherese@diorc.org',
+        preparation: 'Religious education classes (Sept – late April)',
         icon: <Wine size={20} />,
     },
     {
-        id: 'reconciliation',
-        name: 'Reconciliation',
-        tagline: 'The Healing Sacrament of Confession',
-        description: 'Through Confession, we receive God\'s infinite mercy and are restored to grace after sin. This sacrament is offered regularly and is also available by appointment.',
+        id: 'confirmation',
+        name: 'Confirmation',
+        tagline: 'Sealed with the Gift of the Holy Spirit',
+        description: 'Confirmation is typically received in the 6th–7th grade, but may be received at any age. Those who have not been confirmed past 7th grade are encouraged to sign up for Confirmation preparation.',
         details: [
-            'Saturday 3:00 – 4:00 PM',
-            'Sunday 8:00 AM & 4:30 PM',
-            'Or by appointment any time',
-            'First Reconciliation typically received in the 2nd grade',
+            'Typically received in the 6th–7th grade through our Faith Formation program',
+            'May be received at any age — adult preparation is available',
+            'If out of high school, it is usually through OCIA',
+            'Those who have not been confirmed past 7th grade should sign up for Confirmation preparation',
         ],
-        contactName: 'Parish Office',
+        contactName: 'Bobby Myers / Parish Office',
         contactPhone: '(605) 342-1556',
-        contactEmail: 'sttherese@diorc.org',
-        preparation: 'First Reconciliation preparation included in 2nd grade year',
+        contactEmail: 'bmyers@diorc.org',
+        preparation: 'Two-year preparation process for teens',
         icon: <Heart size={20} />,
     },
     {
-        id: 'anointing',
-        name: 'Anointing of the Sick',
-        tagline: 'Strength and Peace in Times of Illness',
-        description: 'This sacrament brings the healing power of Christ to those who are sick, elderly, or preparing for surgery. It can be received more than once.',
+        id: 'ocia',
+        name: 'OCIA (Becoming Catholic)',
+        tagline: 'The Order of Christian Initiation of Adults',
+        description: 'OCIA (otherwise known as RCIA) is the process by which adults are welcomed into the Catholic Church. Classes begin in September and continue through the Easter Vigil.',
         details: [
-            'Available after any Mass by request',
-            'Please notify the parish office before hospitalization',
-            'Communal celebration typically held each fall',
+            'Classes begin in September and continue through the Easter Vigil',
+            'Open to anyone exploring the Catholic faith',
+            'A journey of formation, prayer, and discernment',
         ],
-        contactName: 'Fr. Mark McCormick',
-        contactPhone: '(605) 342-1556',
-        contactEmail: 'mmccormick@diorc.org',
-        preparation: 'No formal preparation required',
-        icon: <HandHeart size={20} />,
-    },
-    {
-        id: 'holy-orders',
-        name: 'Holy Orders',
-        tagline: 'A Vocation of Service to the Church',
-        description: 'Holy Orders is the sacrament by which bishops, priests, and deacons are ordained to serve the People of God. If you feel called to priesthood or diaconate, we would love to walk with you in discernment.',
-        details: [
-            'Diocesan Vocations Office: gods-call.com',
-            'Speak with a priest or deacon at any time about a possible call',
-            'St. Therese has hosted several discernment events',
-        ],
-        contactName: 'Fr. Mark McCormick',
-        contactPhone: '(605) 342-1556',
-        contactEmail: 'mmccormick@diorc.org',
-        preparation: 'Multiple years of seminary formation',
-        icon: <Cross size={20} />,
-    },
-    {
-        id: 'matrimony',
-        name: 'Matrimony',
-        tagline: 'A Sacramental Bond for Life',
-        description: 'Matrimony is the union of a man and a woman in a lifelong covenant of love, witnessed by the Church and blessed by God. Couples are encouraged to prepare well.',
-        details: [
-            'Contact the parish at least 6–9 months before your desired date',
-            'Pre-Cana retreat required (Becoming One retreat offered locally)',
-            'Engaged Encounter weekend also satisfies preparation',
-        ],
-        contactName: 'Parish Office',
-        contactPhone: '(605) 342-1556',
+        contactName: 'Fr. Mark McCormick / Parish Office / Anthony Flores',
+        contactPhone: '(605) 484-3190',
         contactEmail: 'sttherese@diorc.org',
-        preparation: '6–9 month preparation including Pre-Cana',
-        icon: <Users size={20} />,
+        preparation: 'Year-long formation process (Sept – Easter Vigil)',
+        icon: <BookOpen size={20} />,
     },
 ];
 
@@ -155,13 +121,13 @@ export default function Sacraments() {
                 <div className="container relative grid gap-10 md:grid-cols-[1.18fr_0.82fr] md:items-end mx-auto px-4">
                     <div>
                         <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-                            <BookOpen className="size-4" aria-hidden="true" /> Seven Sacred Gifts
+                            <BookOpen className="size-4" aria-hidden="true" /> Sacramental Preparation
                         </p>
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-                            The Seven Sacraments.
+                            Sacraments at St. Therese.
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                            The seven sacraments are the ordinary ways the Lord Jesus Christ dispenses the grace of the Holy Spirit to his people. Each one meets us at a particular moment of life to give us what we need most.
+                            Information on preparation for the sacraments of Marriage, Baptism, First Eucharist, Reconciliation, Confirmation, and OCIA (becoming Catholic). Contact the parish office or the person listed for each sacrament to begin.
                         </p>
                     </div>
                     <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">
@@ -202,7 +168,7 @@ export default function Sacraments() {
                                     {sacrament.description}
                                 </p>
 
-                                <div className="mb-5">
+                                <div>
                                     <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mb-2">
                                         Details
                                     </p>
@@ -214,40 +180,6 @@ export default function Sacraments() {
                                             </li>
                                         ))}
                                     </ul>
-                                </div>
-
-                                <div className="mb-5 p-4 rounded-2xl bg-accent/5 border border-accent/15">
-                                    <p className="text-[10px] font-bold uppercase tracking-widest text-accent/80 mb-1">
-                                        Preparation
-                                    </p>
-                                    <p className="text-xs text-primary font-medium">
-                                        {sacrament.preparation}
-                                    </p>
-                                </div>
-
-                                <div className="pt-4 border-t border-primary/10 flex flex-wrap items-center gap-x-4 gap-y-2">
-                                    <div className="flex items-center gap-2">
-                                        <div className="size-8 rounded-full bg-primary/10 flex items-center justify-center text-primary">
-                                            <Users size={12} />
-                                        </div>
-                                        <div>
-                                            <p className="text-xs font-bold text-primary">{sacrament.contactName}</p>
-                                        </div>
-                                    </div>
-                                    <a
-                                        href={`tel:${sacrament.contactPhone.replace(/\D/g, '')}`}
-                                        className="inline-flex items-center gap-1 text-xs text-accent hover:underline"
-                                    >
-                                        <Phone size={12} /> {sacrament.contactPhone}
-                                    </a>
-                                    {sacrament.contactEmail && (
-                                        <a
-                                            href={`mailto:${sacrament.contactEmail}`}
-                                            className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-primary"
-                                        >
-                                            <Mail size={12} /> Email
-                                        </a>
-                                    )}
                                 </div>
                             </Card>
                         ))}

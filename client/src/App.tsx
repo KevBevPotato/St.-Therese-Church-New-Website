@@ -23,6 +23,10 @@ import WednesdaySupper from "./components/WednesdaySupper";
 import KnightsOfColumbus from "./components/KnightsOfColumbus";
 import AltarSociety from "./components/AltarSociety";
 
+import Sacraments from "./pages/Sacraments";
+// import Resources from "./pages/Resources";
+
+
 function Router() {
   return (
     <Switch>
@@ -39,6 +43,8 @@ function Router() {
       <Route path={"/bulletin"} component={Bulletin} />
       <Route path={"/bulletin/previous"} component={PreviousBulletins} />
       <Route path={"/bulletin/next"} component={NextWeekBulletin} />
+
+      <Route path={"/sacraments"} component={Sacraments} />
       
       <Route path={"/events"} component={UpcomingEventsCalendar} />
       {/* <Route path={"/events/:id"} component={EventDetail} /> */}
