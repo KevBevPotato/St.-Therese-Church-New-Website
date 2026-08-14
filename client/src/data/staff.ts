@@ -292,15 +292,6 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     photoFit: 'cover',
   },
 ];
-const staffOverrides: Record<string, Pick<StaffMember, 'duties' | 'bio'>> = {
-  'anthony-flores': {
-    duties:
-      'Anthony serves as the OCIA Coordinator, guiding individuals through the process of becoming fully initiated members of the Catholic Church. He is passionate about helping others grow in their faith and understanding of Catholic teachings.',
-    bio:
-      "Anthony Flores is a dedicated member of the St. Thérèse the Little Flower parish community, serving as the OCIA Coordinator. With a deep commitment to faith formation, Anthony guides individuals through the process of becoming fully initiated members of the Catholic Church. His passion for helping others grow in their faith and understanding of Catholic teachings is evident in his work with catechumens and candidates. Anthony's approachable nature and knowledge of Church doctrine make him an invaluable resource for those seeking to deepen their spiritual journey.",
-  },
-  // future overrides go here
-};
 
 // Custom overrides keyed by slug — anything left out falls back to the default
 const staffOverrides: Record<string, Pick<StaffMember, 'duties' | 'bio'>> = {
@@ -316,6 +307,12 @@ const staffOverrides: Record<string, Pick<StaffMember, 'duties' | 'bio'>> = {
       'Fr. Mark is serving as Head Pastor of St. Thérèse the Little Flower & the St. Carlo Acutis Catholic Student Center, serving alongside Fr. Todd VanderMay.',
     bio: 
       'Fr. Mark was born in Rapid City, SD, and grew up in the Black Hills. He attended St. Martin\'s College in Lacey, WA, and graduated with a degree in Philosophy. He then attended Mount Angel Seminary in St. Benedict, OR, where he earned a Master of Divinity degree. Fr. Mark was ordained to the priesthood on May 30, 1999, and has served in various parishes throughout the Diocese of Rapid City.',
+  },
+    'anthony-flores': {
+    duties:
+      'Anthony serves as the OCIA Coordinator, guiding individuals through the process of becoming fully initiated members of the Catholic Church. He is passionate about helping others grow in their faith and understanding of Catholic teachings.',
+    bio:
+      "Anthony Flores is a dedicated member of the St. Thérèse the Little Flower parish community, serving as the OCIA Coordinator. With a deep commitment to faith formation, Anthony guides individuals through the process of becoming fully initiated members of the Catholic Church. His passion for helping others grow in their faith and understanding of Catholic teachings is evident in his work with catechumens and candidates. Anthony's approachable nature and knowledge of Church doctrine make him an invaluable resource for those seeking to deepen their spiritual journey.",
   },
 };
 
