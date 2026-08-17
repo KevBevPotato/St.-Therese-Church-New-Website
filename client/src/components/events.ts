@@ -7,7 +7,8 @@ export type EventCategory =
     | 'special'
     | 'meeting'
     | 'vocations'
-    | 'diocesan';
+    | 'diocesan'
+    | 'carloAcutis';
 
 export type TimeFilter = 'all' | 'thisMonth' | 'nextMonth' | 'twoPlus';
 
@@ -45,6 +46,7 @@ export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; d
     meeting:      { bg: 'bg-slate-50',    border: 'border-slate-400',    dot: 'bg-slate-500',    label: 'Meeting',          labelColor: 'text-slate-700' },
     vocations:    { bg: 'bg-purple-50',   border: 'border-purple-400',   dot: 'bg-purple-500',   label: 'Vocations',        labelColor: 'text-purple-700' },
     diocesan:     { bg: 'bg-blue-50',     border: 'border-blue-400',     dot: 'bg-blue-500',     label: 'Diocesan',         labelColor: 'text-blue-700' },
+    carloAcutis: { bg: 'bg-indigo-50', border: 'border-indigo-400', dot: 'bg-indigo-500', label: 'St. Carlo Acutis CSC', labelColor: 'text-indigo-700' },
 };
 
 /**
@@ -59,6 +61,53 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         const d = new Date(year, month, day);
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
+        // Daily Mass — Monday through Friday
+        if (d.getDay() >= 1 && d.getDay() <= 5) {
+            events.push({
+                id: `mass-daily-${dateStr}`,
+                title: 'Daily Mass',
+                date: new Date(year, month, day, 7, 30),
+                time: '7:30 AM',
+                location: 'Main Sanctuary',
+                categories: ['sacramental'],
+                description: 'Daily Mass — Monday through Friday at 7:30 AM. All are welcome.',
+            });
+        }
+
+        // Saturday Vigil — 4:30 PM
+        if (d.getDay() === 6) {
+            events.push({
+                id: `mass-saturday-${dateStr}`,
+                title: 'Saturday Vigil Mass',
+                date: new Date(year, month, day, 16, 30),
+                time: '4:30 PM',
+                location: 'Main Sanctuary',
+                categories: ['sacramental'],
+                description: 'Saturday Vigil Mass. Confessions begin at 3:00 PM.',
+            });
+        }
+
+        // Sunday Masses — 9:00 AM and 5:30 PM
+        if (d.getDay() === 0) {
+            events.push({
+                id: `mass-sunday-am-${dateStr}`,
+                title: 'Sunday Mass (9:00 AM)',
+                date: new Date(year, month, day, 9, 0),
+                time: '9:00 AM',
+                location: 'Main Sanctuary',
+                categories: ['sacramental'],
+                description: 'Sunday Mass. Confessions begin at 8:00 AM.',
+            });
+            events.push({
+                id: `mass-sunday-pm-${dateStr}`,
+                title: 'Sunday Mass (5:30 PM)',
+                date: new Date(year, month, day, 17, 30),
+                time: '5:30 PM',
+                location: 'Main Sanctuary',
+                categories: ['sacramental'],
+                description: 'Sunday Mass. Confessions begin at 4:30 PM.',
+            });
+        }
         // 7 am Rosary (M-F) - "forever"
         if (d.getDay() >= 1 && d.getDay() <= 5) {
             events.push({

@@ -36,7 +36,7 @@ function Router() {
       <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
       <Route path={"/get-involved/altar-society"} component={AltarSociety} />
       <Route path={"/get-involved/knights-of-columbus"} component={KnightsOfColumbus} />
-      {/* <Route path={"/get-involved/:id"} component={OpportunityDetail} /> */}
+      <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       <Route path={"/staff/:slug"} component={StaffDetail} />  {/* ✅ ADDED */}
       
@@ -47,7 +47,7 @@ function Router() {
       <Route path={"/sacraments"} component={Sacraments} />
       
       <Route path={"/events"} component={UpcomingEventsCalendar} />
-      {/* <Route path={"/events/:id"} component={EventDetail} /> */}
+      <Route path={"/events/:id"} component={EventDetail} />
 
       <Route path={"/404"} component={NotFound} />
       <Route component={NotFound} />

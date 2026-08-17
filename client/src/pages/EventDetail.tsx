@@ -1,15 +1,22 @@
-import { useRoute, Link, useLocation } from 'wouter';  // 👈 ADDED useLocation
-import { ChevronLeft, MapPin, Clock, Calendar as CalendarIcon, ExternalLink, User, Mail, Phone, Home, ArrowLeft } from 'lucide-react';
+// client/src/pages/EventDetail.tsx
+import { Suspense, useState } from 'react';
+import { useRoute, Link, useLocation } from 'wouter';
+import {
+  ChevronLeft, MapPin, Clock, Calendar as CalendarIcon,
+  ExternalLink, User, Mail, Phone, Home, ArrowLeft,
+} from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
-import { staticEvents, generateRecurringEventsForMonth, EVENT_COLORS } from '@/components/events';  // 👈 FIXED PATH
+import { staticEvents, generateRecurringEventsForMonth, EVENT_COLORS } from '@/components/events';
+import { getCustomLandingPage } from '@/data/eventLandingPages';
 
 export default function EventDetail() {
   const [match, params] = useRoute('/events/:id');
-  const [, navigate] = useLocation();  // 👈 ADDED for smart back nav
+  const [, navigate] = useLocation();
+  const [hasLoadedCustomPage, setHasLoadedCustomPage] = useState(false);
 
   // 1. Handle "not a match" gracefully
   if (!match || !params) {
@@ -76,23 +83,36 @@ export default function EventDetail() {
     );
   }
 
-  // 👇 NEW: Smart back handler — uses browser history if available, falls back to home
+  // Smart back handler
   const handleBack = () => {
-    if (window.history.length > 1) {
-      window.history.back();  // Takes you back to wherever you came from
-    } else {
-      navigate('/');  // Fresh load — go home
-    }
+    if (window.history.length > 1) window.history.back();
+    else navigate('/');
   };
 
-  // 4. Render the Event Detail UI
+  // 4a. NEW: Check for a custom landing page FIRST.
+  // If one exists, render it instead of the generic detail UI.
+  const CustomPage = getCustomLandingPage(event.id);
+  if (CustomPage) {
+    return (
+      <Suspense fallback={
+        <div className="min-h-screen flex items-center justify-center bg-[#fbfaf6]">
+          <div className="text-primary/40 text-sm font-bold uppercase tracking-widest">
+            Loading…
+          </div>
+        </div>
+      }>
+        <CustomPage />
+      </Suspense>
+    );
+  }
+
+  // 4b. Otherwise render the generic Event Detail UI
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
       <Header />
       <div className="pt-[var(--header-height)]" />
 
       <main className="flex-grow container mx-auto px-4 py-12">
-        {/* 👇 NEW: Smart back navigation row */}
         <div className="flex flex-wrap items-center justify-between gap-3 mb-8">
           <Button
             variant="ghost"
@@ -102,7 +122,6 @@ export default function EventDetail() {
             <ChevronLeft className="mr-2" /> Back
           </Button>
 
-          {/* Breadcrumb-style links for clarity */}
           <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-muted-foreground">
             <Link href="/" className="hover:text-accent transition-colors flex items-center gap-1">
               <Home className="size-3.5" /> Home
@@ -117,7 +136,6 @@ export default function EventDetail() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
-          {/* Left Column: Title and Details */}
           <div className="lg:col-span-2 space-y-8">
             <div className="space-y-4">
               <div className="flex flex-wrap gap-2">
@@ -166,7 +184,6 @@ export default function EventDetail() {
             )}
           </div>
 
-          {/* Right Column: Time, Location, Contact */}
           <div className="space-y-6">
             <Card className="p-8 border-none shadow-lg bg-primary text-white rounded-[2rem]">
               <h3 className="font-serif text-2xl font-bold mb-6">Event Details</h3>
