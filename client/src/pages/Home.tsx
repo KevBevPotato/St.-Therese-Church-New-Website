@@ -26,30 +26,6 @@ const HEADER_HEIGHT = 113; // measured height of the fixed header
 export default function Home() {
   const heroRef = useRef<HTMLElement>(null);
   const massTimesRef = useRef<HTMLDivElement>(null);
-  const [isMassTimesStuck, setIsMassTimesStuck] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      if (!heroRef.current) return;
-      const heroBottom = heroRef.current.getBoundingClientRect().bottom;
-      // Show sticky bar once the hero has scrolled past the full header
-      setIsMassTimesStuck(heroBottom <= HEADER_HEIGHT);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  const scrollToMassTimes = () => {
-    if (!massTimesRef.current) return;
-    const elementTop = massTimesRef.current.getBoundingClientRect().top + window.scrollY;
-    // Place the bar right below the header
-    const offset = HEADER_HEIGHT;
-    window.scrollTo({
-      top: elementTop - offset,
-      behavior: 'smooth',
-    });
-  };
 
   // The mass-times content as a single block so we can render it in two places
   // (bottom of hero + sticky on scroll) without duplicating JSX.
@@ -81,7 +57,7 @@ export default function Home() {
       {/* Hero Section with Video Background */}
       <section
         ref={heroRef}
-        className="relative min-h-screen w-full overflow-hidden pt-[113px] text-white flex flex-col"
+        className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden pt-[113px] text-white flex flex-col"
       >
         <div className="absolute inset-0 z-0">
           <video
@@ -158,16 +134,6 @@ export default function Home() {
           {massTimesContent}
         </div>
       </section>
-
-      {/* Sticky mass-times bar — appears once the hero is scrolled past the FULL header */}
-      {isMassTimesStuck && (
-        <div
-          id="mass-times-sticky"
-          className="fixed top-[113px] left-0 right-0 z-40 border-t border-primary/10 bg-[#fbfaf6]/98 text-primary backdrop-blur-md shadow-md"
-        >
-          {massTimesContent}
-        </div>
-      )}
 
       {/* Upcoming Events Calendar Section */}
       <UpcomingEventsCalendar />
