@@ -160,23 +160,6 @@ export default function Header() {
               </a>
             </div>
 
-            {/* Website comments/feedback Button - Mobile */}
-            <a
-              href={FEEDBACK_FORM_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              onClick={() => setIsMenuOpen(false)}
-              className="block"
-            >
-              <Button
-                variant="outline"
-                className="w-full border-primary/40 text-primary hover:bg-primary/5 hover:border-primary"
-              >
-                <MessageSquare className="mr-2 size-4" />
-                Website comments/feedback
-              </Button>
-            </a>
-
             <a
               href="https://secure.myvanco.com/L-ZAYT/home"
               target="_blank"

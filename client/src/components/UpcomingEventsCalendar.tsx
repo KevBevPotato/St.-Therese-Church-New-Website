@@ -11,7 +11,8 @@ import {
   User,
   Mail,
   Phone,
-  ExternalLink
+  ExternalLink,
+  LayoutGrid,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -23,10 +24,10 @@ import {
   TimeFilter,
   EVENT_COLORS,
   generateRecurringEventsForMonth,
-  staticEvents
+  staticEvents,
 } from '@/components/events';
 
-// ---- Calendar Day Sub-Component ----
+// ---- Calendar Day Sub-Component (only used on lg+) ----
 function CalendarDay({
   date,
   today,
@@ -195,6 +196,53 @@ export default function UpcomingEventsCalendar() {
   );
   const emptyDaysBefore = Array.from({ length: firstDayOfMonth(currentDate) }, (_, i) => i);
 
+  // ---- Reusable: Category pills filter row ----
+  const CategoryFilterRow = (
+    <div className="p-3 sm:p-4 bg-gray-50/50 border-b-2 border-primary/20">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
+        <div className="flex items-center gap-2 mr-1 sm:mr-2 shrink-0">
+          <Filter className="size-3.5 text-primary/60" />
+          <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">Filter</span>
+        </div>
+        <div className="flex flex-wrap gap-1.5 flex-1">
+          {(Object.entries(EVENT_COLORS) as [EventCategory, any][]).map(([type, colors]) => (
+            <button
+              key={type}
+              onClick={() => toggleEventType(type)}
+              className={`flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 text-[10px] font-bold transition-all border-2 ${selectedTypes.has(type)
+                ? `${colors.bg} ${colors.border} ${colors.labelColor} shadow-sm`
+                : 'bg-white border-gray-200 text-gray-400 opacity-60'
+                }`}
+            >
+              <span className={`size-1.5 rounded-full ${colors.dot}`} />
+              {colors.label}
+            </button>
+          ))}
+        </div>
+        <div className="flex gap-3 ml-auto shrink-0">
+          <button onClick={selectAll} className="text-[9px] font-black text-primary hover:underline uppercase">All</button>
+          <button onClick={deselectAll} className="text-[9px] font-black text-muted-foreground hover:underline uppercase">None</button>
+        </div>
+      </div>
+    </div>
+  );
+
+  // ---- Reusable: Month navigation header ----
+  const MonthHeader = (
+    <div className="bg-primary p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
+      <div className="flex items-center gap-4">
+        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handlePrev}>
+          <ChevronLeft className="size-6" />
+        </Button>
+        <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-wide min-w-[160px] text-center">{monthName}</h3>
+        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handleNext}>
+          <ChevronRight className="size-6" />
+        </Button>
+      </div>
+    </div>
+  );
+
+  // ---- EVENT DETAIL ROUTE (unchanged) ----
   if (eventDetailId) {
     const event = allEvents.find((e) => e.id === eventDetailId);
     if (!event)
@@ -331,57 +379,169 @@ export default function UpcomingEventsCalendar() {
   }
 
   return (
-    <div className="min-h-screen bg-[#fbfaf6] py-12 lg:py-16">
+    <div className="min-h-screen bg-[#fbfaf6] py-10 lg:py-16">
       <div className="container mx-auto px-4">
-        <div className="mb-10 text-center lg:text-left">
-          <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary">
+        <div className="mb-8 text-center lg:text-left">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
             Parish Calendar
           </h2>
+          <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">
+            Browse upcoming events. Use the filters below to narrow by category.
+          </p>
         </div>
 
-        <div className="flex flex-col lg:flex-row gap-12 items-start w-full relative">
-          {/* LEFT SIDE: Calendar Grid */}
-          <div className="w-full lg:w-7/12 flex flex-col">
-            <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">
-              <div className="bg-primary p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
-                <div className="flex items-center gap-4">
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handlePrev}>
-                    <ChevronLeft className="size-6" />
-                  </Button>
-                  <h3 className="font-serif text-2xl font-bold tracking-wide min-w-[160px] text-center">{monthName}</h3>
-                  <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handleNext}>
-                    <ChevronRight className="size-6" />
-                  </Button>
-                </div>
+        {/* ============================================================ */}
+        {/* MOBILE-ONLY LAYOUT: filter pills + scrollable event list    */}
+        {/* ============================================================ */}
+        <div className="lg:hidden space-y-4">
+          {/* Category filter (above Upcoming Events, as requested) */}
+          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">
+            {CategoryFilterRow}
+          </div>
+
+          {/* Upcoming Events — scrollable, prominent */}
+          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">
+            {/* Sticky header inside the scroll container */}
+            <div className="sticky top-0 z-10 bg-white border-b-2 border-primary/10 p-4">
+              <div className="flex items-center justify-between gap-3">
+                <h4 className="font-serif text-xl font-bold text-primary tracking-tight">
+                  Upcoming Events
+                </h4>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => {
+                    setCurrentDate(new Date(2026, 7, 1));
+                    const list = document.getElementById('events-scroll-container-mobile');
+                    if (list) list.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3"
+                >
+                  Back to Today
+                </Button>
               </div>
 
-              <div className="p-4 bg-gray-50/50 border-b-2 border-primary/20">
-                <div className="flex flex-wrap items-center gap-3">
-                  <div className="flex items-center gap-2 mr-2">
-                    <Filter className="size-3.5 text-primary/60" />
-                    <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">Filter</span>
-                  </div>
-                  <div className="flex flex-wrap gap-1.5 flex-1">
-                    {(Object.entries(EVENT_COLORS) as [EventCategory, any][]).map(([type, colors]) => (
-                      <button
-                        key={type}
-                        onClick={() => toggleEventType(type)}
-                        className={`flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold transition-all border-2 ${selectedTypes.has(type)
-                          ? `${colors.bg} ${colors.border} ${colors.labelColor} shadow-sm`
-                          : 'bg-white border-gray-200 text-gray-400 opacity-60'
-                          }`}
-                      >
-                        <span className={`size-1.5 rounded-full ${colors.dot}`} />
-                        {colors.label}
-                      </button>
-                    ))}
-                  </div>
-                  <div className="flex gap-3 ml-auto">
-                    <button onClick={selectAll} className="text-[9px] font-black text-primary hover:underline uppercase">All</button>
-                    <button onClick={deselectAll} className="text-[9px] font-black text-muted-foreground hover:underline uppercase">None</button>
-                  </div>
-                </div>
+              {/* Time filter pills */}
+              <div className="flex gap-2 flex-wrap mt-3">
+                {(['all', 'thisMonth', 'nextMonth', 'twoPlus'] as TimeFilter[]).map(filter => (
+                  <button
+                    key={filter}
+                    onClick={() => setTimeFilter(filter)}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${timeFilter === filter
+                      ? 'bg-primary text-white shadow-md'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                  >
+                    {filter === 'all' ? 'All' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : '2+ Months Away'}
+                  </button>
+                ))}
               </div>
+            </div>
+
+            {/* Scrollable list — taller & with visible scroll affordance */}
+            <div
+              id="events-scroll-container-mobile"
+              className="flex flex-col gap-3 min-h-[600px] max-h-[80vh] overflow-y-auto p-4 pb-6 custom-scrollbar"
+              style={{
+                // iOS-style scrollbar that's more obvious on mobile
+                scrollbarWidth: 'thin',
+                scrollbarColor: 'rgba(58, 74, 111, 0.4) transparent',
+              }}
+            >
+              {sortedUpcomingEvents.length === 0 ? (
+                <div className="text-center py-16 bg-gray-50/50 rounded-xl border-2 border-dashed border-primary/10">
+                  <CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" />
+                  <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p>
+                </div>
+              ) : (
+                sortedUpcomingEvents.map(event => (
+                  <Card
+                    id={`event-card-${event.id}`}
+                    key={event.id}
+                    className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all bg-white min-h-[120px] ${highlightedEventId === event.id
+                      ? 'border-accent ring-2 ring-accent/20 scale-[1.01]'
+                      : 'border border-gray-200'
+                      }`}
+                    onClick={() => {
+                      const destinationUrl = event.linkedOpportunityId
+                        ? `/get-involved/${event.linkedOpportunityId}`
+                        : `/events/${event.id}`;
+                      navigate(destinationUrl);
+                    }}
+                  >
+                    {/* Date Block */}
+                    <div className="w-16 sm:w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-3">
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
+                        {event.date.toLocaleDateString('en-US', { month: 'short' })}
+                      </span>
+                      <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">
+                        {event.date.getDate()}
+                      </span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">
+                        {event.date.toLocaleDateString('en-US', { weekday: 'short' })}
+                      </span>
+                    </div>
+
+                    {/* Content Block */}
+                    <div className="flex-1 px-3 sm:px-4 py-3 flex flex-col min-w-0">
+                      <div className="flex flex-wrap items-center gap-1.5 mb-3">
+                        {event.categories.map(cat => {
+                          const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
+                          return (
+                            <span
+                              key={cat}
+                              className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}
+                            >
+                              {colors.label}
+                            </span>
+                          );
+                        })}
+                      </div>
+
+
+                      {/* ✅ Title wraps to 2 lines instead of truncating */}
+                      <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2 break-words leading-snug">
+                        {event.title}
+                      </h5>
+
+                      <div className="flex gap-3 text-[10px] mt-auto">
+                        <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0">
+                          <Clock className="size-3 text-primary/40 flex-shrink-0" />
+                          <span className="truncate">{event.time}</span>
+                        </div>
+                        <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0">
+                          <MapPin className="size-3 text-primary/30 flex-shrink-0" />
+                          <span className="truncate">{event.location}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center">
+                      <ChevronRight className="size-5 text-primary/40" />
+                    </div>
+                  </Card>
+                ))
+              )}
+            </div>
+
+            {/* Scroll affordance hint */}
+            <div className="border-t border-primary/10 bg-primary/5 px-4 py-2 text-center">
+              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/60 flex items-center justify-center gap-1.5">
+                <span className="animate-bounce">↓</span> Scroll for more events
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* ============================================================ */}
+        {/* DESKTOP LAYOUT: side-by-side calendar grid + event list    */}
+        {/* ============================================================ */}
+        <div className="hidden lg:flex flex-col lg:flex-row gap-12 items-start w-full relative">
+          {/* LEFT: Calendar Grid */}
+          <div className="w-full lg:w-7/12 flex flex-col">
+            <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">
+              {MonthHeader}
+              {CategoryFilterRow}
             </div>
 
             <div className="grid grid-cols-7 bg-white shadow-xl rounded-b-2xl overflow-hidden border-l-2 border-t-2 border-primary/30">
@@ -407,8 +567,8 @@ export default function UpcomingEventsCalendar() {
             </div>
           </div>
 
-          {/* RIGHT SIDE: Events List */}
-          <div className="w-full lg:w-5/12 space-y-6 lg:pt-0 pt-8">
+          {/* RIGHT: Events List (desktop unchanged) */}
+          <div className="w-full lg:w-5/12 space-y-6 lg:pt-0 pt-8 lg:sticky lg:top-20">
             <div className="flex items-center justify-between pb-4 border-b-2 border-primary/10">
               <h4 className="font-serif text-3xl font-bold text-primary tracking-tight">Upcoming Events</h4>
               <Button
@@ -440,7 +600,7 @@ export default function UpcomingEventsCalendar() {
               ))}
             </div>
 
-            <div id="events-scroll-container" className="flex flex-col gap-4 min-h-[700px] max-h-[900px] overflow-y-auto pr-4 pb-8 custom-scrollbar">
+            <div id="events-scroll-container" className="flex flex-col gap-4 lg:max-h-[calc(100vh-12rem)] overflow-y-auto pr-4 pb-8 custom-scrollbar">
               {sortedUpcomingEvents.length === 0 ? (
                 <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-primary/10">
                   <CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" />
@@ -453,13 +613,13 @@ export default function UpcomingEventsCalendar() {
                     key={event.id}
                     className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all hover:shadow-lg bg-white min-h-[140px] ${highlightedEventId === event.id ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'border-none ring-1 ring-black/5'}`}
                     onClick={() => {
-                      const destinationUrl = event.linkedOpportunityId 
-                          ? `/get-involved/${event.linkedOpportunityId}` 
-                          : `/events/${event.id}`;
+                      const destinationUrl = event.linkedOpportunityId
+                        ? `/get-involved/${event.linkedOpportunityId}`
+                        : `/events/${event.id}`;
                       navigate(destinationUrl);
                     }}
                   >
-                    {/* Date Block — now includes day-of-week below the number */}
+                    {/* Date Block */}
                     <div className="w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-4">
                       <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
                         {event.date.toLocaleDateString('en-US', { month: 'short' })}
@@ -467,7 +627,6 @@ export default function UpcomingEventsCalendar() {
                       <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">
                         {event.date.getDate()}
                       </span>
-                      {/* ✅ Day of week — short name (Sun, Mon, Tue, ...) */}
                       <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">
                         {event.date.toLocaleDateString('en-US', { weekday: 'short' })}
                       </span>
@@ -475,7 +634,7 @@ export default function UpcomingEventsCalendar() {
 
                     {/* Content Block */}
                     <div className="flex-1 px-6 py-4 flex flex-col min-w-0">
-                      <div className="flex items-center gap-2 mb-3">
+                      <div className="flex items-center gap-2 mb-5">
                         {event.categories.map(cat => {
                           const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
                           return (
@@ -513,7 +672,7 @@ export default function UpcomingEventsCalendar() {
         </div>
       </div>
 
-      {/* Day Expanded Modal */}
+      {/* Day Expanded Modal (unchanged) */}
       {expandedDay && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setExpandedDay(null)}>
           <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
@@ -544,9 +703,9 @@ export default function UpcomingEventsCalendar() {
                 getEventsForDay(expandedDay).map(event => (
                   <div key={event.id} onClick={() => {
                     setExpandedDay(null);
-                    const destinationUrl = event.linkedOpportunityId 
-                        ? `/get-involved/${event.linkedOpportunityId}` 
-                        : `/events/${event.id}`;
+                    const destinationUrl = event.linkedOpportunityId
+                      ? `/get-involved/${event.linkedOpportunityId}`
+                      : `/events/${event.id}`;
                     navigate(destinationUrl);
                   }} className="p-4 rounded-2xl border-2 border-primary/5 hover:border-primary/20 cursor-pointer transition-all flex justify-between items-center group">
                     <div>
