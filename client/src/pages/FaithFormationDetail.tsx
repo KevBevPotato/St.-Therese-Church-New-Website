@@ -275,7 +275,7 @@ export default function FaithFormationDetail() {
                                                 className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-accent transition-colors mt-2 pt-2 border-t border-primary/5"
                                             >
                                                 <Shield size={11} className="text-green-600" />
-                                                Safe Environment Verified
+                                                Safe Environment Link
                                             </a>
                                         )}
                                     </div>
