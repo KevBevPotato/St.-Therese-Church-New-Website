@@ -12,6 +12,8 @@ import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
 import StaffDetail from "./pages/StaffDetail";  // ✅ ADDED
+import FaithFormationDetail from './pages/FaithFormationDetail';
+
 
 import Bulletin from "./components/Bulletin";
 import PreviousBulletins from "./components/PreviousBulletins";
@@ -39,6 +41,8 @@ function Router() {
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       <Route path={"/staff/:slug"} component={StaffDetail} />  {/* ✅ ADDED */}
+      <Route path="/faith-formation/:categoryId" component={FaithFormationDetail} />
+
       
       <Route path={"/bulletin"} component={Bulletin} />
       <Route path={"/bulletin/previous"} component={PreviousBulletins} />

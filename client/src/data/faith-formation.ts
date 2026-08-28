@@ -1,12 +1,15 @@
 // 2026-2027 Wednesday Night Catechists & Faith Formation Programs
 
 export interface Catechist {
-    id: string;
+    id?: string;                       // ✅ you already have this on objects
     name: string;
     photo?: string;
     photoPosition?: string;
-    safeEnvironmentPdf?: string;
     role?: string;
+    email?: string;                    // ✅ for landing-page contact display
+    phone?: string;                    // optional, helpful for parish office
+    safeEnvironmentPdf?: string;       // ✅ for "Safe Environment Verified" link
+    bio?: string;                      // optional, for future bio expansion
 }
 
 export interface Resource {
