@@ -470,7 +470,7 @@ export const faithCategories: FaithCategory[] = [
         shortDescription: 'For adults seeking full initiation into the Catholic Church.',
         longDescription:
             'OCIA (Order of Christian Initiation of Adults) is the process by which adults are welcomed into the Catholic Church. It is a journey of faith, study, prayer, and discernment — open to unbaptized adults, baptized Christians from other denominations, and baptized Catholics seeking Confirmation and Eucharist.',
-        meetingTime: MEETING_TIME,
+        meetingTime: 'Mondays 6:15 PM - 7:30 PM',
         location: 'Parish Hall – OCIA Room',
         catechists: [
             { id: 'anthony-flores', name: 'Anthony Flores', role: 'OCIA Coordinator', photo: '/AnthonyFlores.jpg', safeEnvironmentPdf: '/safe-env/anthony-flores.pdf' },

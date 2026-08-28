@@ -11,14 +11,9 @@ import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 /**
  * Home Page
  *
- * Fix in this version:
- *   The header is actually 113px tall (h-20 logo + py-4 padding), but the
- *   original code used 69px for every offset. This caused the sticky mass-times
- *   bar to appear partially behind the header when the user scrolled past
- *   the hero. All 69px hardcoded values have been updated to 113px.
- *
- *   If the header height ever changes (logo size, padding, etc.), update the
- *   HEADER_HEIGHT constant below to match.
+ * The header is 113px tall. The hero video is contained in an aspect-ratio box
+ * (16:9) with a max height of 85vh so the Mass Times bar is always visible.
+ * Hero text uses clamp() to scale fluidly with viewport size.
  */
 
 const HEADER_HEIGHT = 113; // measured height of the fixed header
@@ -54,74 +49,102 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
-      {/* Hero Section with Video Background */}
+      {/* Hero Section with Video Background — contained within aspect ratio */}
       <section
         ref={heroRef}
-        className="relative min-h-[100svh] md:min-h-screen w-full overflow-hidden pt-[113px] text-white flex flex-col"
+        className="relative w-full overflow-hidden pt-[113px] text-white"
       >
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            loop
-            muted
-            playsInline
-            className="h-full w-full object-cover object-center"
-          >
-            <source src="/StThereseHeroMovie.mp4" type="video/mp4" />
-            <img
-              src="/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png"
-              alt="Saint Therese Church"
-              className="h-full w-full object-cover"
-            />
-          </video>
+        <div
+          className="relative w-full bg-[#102a45] overflow-hidden"
+          style={{ aspectRatio: '16 / 9', maxHeight: '85vh', minHeight: '500px' }}
+        >
+          {/* Video background */}
+          <div className="absolute inset-0 z-0">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="absolute inset-0 h-full w-full object-cover"
+            >
+              <source src="/StThereseHeroMovie.mp4" type="video/mp4" />
+              <img
+                src="/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png"
+                alt="Saint Therese Church"
+                className="h-full w-full object-cover"
+              />
+            </video>
 
-          <div className="absolute inset-0 bg-gradient-to-r from-[#102a45]/92 via-[#102a45]/58 to-[#102a45]/10" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#102a45]/65 via-transparent to-[#102a45]/20" />
-        </div>
+            <div className="absolute inset-0 bg-gradient-to-r from-[#102a45]/92 via-[#102a45]/58 to-[#102a45]/10" />
+            <div className="absolute inset-0 bg-gradient-to-t from-[#102a45]/65 via-transparent to-[#102a45]/20" />
+          </div>
 
-        {/* Hero Content — single column, vertically centered, with quote at the bottom */}
-        <div className="container relative z-10 flex-grow flex items-center pb-20 pt-24">
-          <div className="max-w-3xl border-l-2 border-[#d4b36a] pl-6 md:pl-9">
-            <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
-              <Flower2 className="size-4" aria-hidden="true" />
-              Saint Therese · The Little Flower
-            </p>
-            <h1 className="mt-5 font-serif text-5xl font-bold leading-[0.96] text-white sm:text-6xl md:text-7xl lg:text-[5.4rem]">
-              A parish family formed by prayer and little ways of love.
-            </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-white/86 md:text-xl">
-              Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.
-            </p>
+          {/* Hero Content — fluid sizing, contained within video */}
+          <div className="absolute inset-0 z-10 flex items-center">
+            <div className="container">
+              <div className="max-w-3xl border-l-2 border-[#d4b36a] pl-4 md:pl-6 lg:pl-9 h-full flex flex-col justify-center">
+                <p className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
+                  <Flower2 className="size-4" aria-hidden="true" />
+                  Saint Therese · The Little Flower
+                </p>
 
-            {/* Buttons */}
-            {/* Buttons */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a
-                href="/OldSTCCWebsite/MemberRegistration.pdf"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex"
-                aria-label="Become a Member — PDF opens in new tab"
-              >
-                <Button size="lg" className="w-full bg-white text-primary shadow-lg hover:bg-[#f4ead5] sm:w-auto">
-                  Become a Member
-                </Button>
-              </a>
-              <Link href="/about" className="inline-flex">
-                <Button size="lg" variant="outline" className="w-full border-white/65 bg-[#102a45]/15 text-white backdrop-blur-sm hover:bg-white/12 sm:w-auto">
-                  Meet Our Parish Team
-                </Button>
-              </Link>
-            </div>
+                <h1
+                  className="mt-3 sm:mt-4 lg:mt-5 font-serif font-bold leading-[0.96] text-white"
+                  style={{ fontSize: 'clamp(1.75rem, 4.5vw, 5.4rem)' }}
+                >
+                  A parish family formed by prayer and little ways of love.
+                </h1>
 
-            {/* Quote moved to the bottom of the left column, aligned with the bottom of the buttons */}
-            <div className="mt-10 border-t border-white/30 pt-5 max-w-xl">
-              <p className="font-serif text-xl italic leading-snug text-white/95 md:text-2xl">
-                "My vocation, at last I have found it; my vocation is love."
-              </p>
-              <p className="mt-2 text-xs font-bold uppercase tracking-[0.18em] text-[#f1d99d]">
-                Saint Thérèse of Lisieux
-              </p>
+                <p
+                  className="mt-4 sm:mt-5 lg:mt-6 max-w-2xl leading-relaxed text-white/86"
+                  style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.25rem)' }}
+                >
+                  Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.
+                </p>
+
+                <div className="mt-5 sm:mt-6 lg:mt-8 flex flex-col gap-3 sm:flex-row">
+                  <a
+                    href="/OldSTCCWebsite/MemberRegistration.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex"
+                    aria-label="Become a Member — PDF opens in new tab"
+                  >
+                    <Button
+                      size="lg"
+                      className="w-full bg-white text-primary shadow-lg hover:bg-[#f4ead5] sm:w-auto"
+                      style={{ fontSize: 'clamp(0.75rem, 1.2vw, 1rem)' }}
+                    >
+                      Become a Member
+                    </Button>
+                  </a>
+                  <Link href="/about" className="inline-flex">
+                    <Button
+                      size="lg"
+                      variant="outline"
+                      className="w-full border-white/65 bg-[#102a45]/15 text-white backdrop-blur-sm hover:bg-white/12 sm:w-auto"
+                      style={{ fontSize: 'clamp(0.75rem, 1.2vw, 1rem)' }}
+                    >
+                      Meet Our Parish Team
+                    </Button>
+                  </Link>
+                </div>
+
+                <div className="mt-6 sm:mt-8 lg:mt-10 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
+                  <p
+                    className="font-serif italic leading-snug text-white/95"
+                    style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}
+                  >
+                    "My vocation, at last I have found it; my vocation is love."
+                  </p>
+                  <p
+                    className="mt-2 font-bold uppercase tracking-[0.18em] text-[#f1d99d]"
+                    style={{ fontSize: 'clamp(0.65rem, 1vw, 0.75rem)' }}
+                  >
+                    Saint Thérèse of Lisieux
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </div>

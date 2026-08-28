@@ -6,7 +6,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
     Calendar,
-    Users,
     BookOpen,
     X,
     FileText,
@@ -14,8 +13,6 @@ import {
     User,
     Heart,
     ArrowRight,
-    GraduationCap,
-    Sparkles,
 } from 'lucide-react';
 import {
     faithCategories,
@@ -98,20 +95,6 @@ const defaultChildData: ChildData = {
     contactPreference: 'email',
 };
 
-const groupBadgeColors: Record<FaithGroup, string> = {
-    elementary: 'bg-emerald-100 text-emerald-800 border-emerald-200',
-    'middle-school': 'bg-blue-100 text-blue-800 border-blue-200',
-    'high-school': 'bg-purple-100 text-purple-800 border-purple-200',
-    adult: 'bg-amber-100 text-amber-800 border-amber-200',
-};
-
-const groupBadgeLabels: Record<FaithGroup, string> = {
-    elementary: 'Elementary',
-    'middle-school': 'Middle School',
-    'high-school': 'High School',
-    adult: 'Adult',
-};
-
 export default function FaithFormation() {
     const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(new Set(['all']));
     const [isFormOpen, setIsFormOpen] = useState(false);
@@ -191,7 +174,7 @@ export default function FaithFormation() {
         if (field === 'sacraments') {
             newChildren[childIndex].sacraments = value;
         } else {
-            newChildren[childIndex][field] = value;
+            (newChildren[childIndex] as any)[field] = value;
         }
         setFormData((prev) => ({ ...prev, children: newChildren }));
     };
@@ -300,20 +283,14 @@ export default function FaithFormation() {
                     <div className="mb-12">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                             <h2 className="font-serif text-3xl font-bold text-primary">Explore Our Programs</h2>
-                            <button
-                                onClick={deselectAll}
-                                className="text-xs font-bold text-primary/40 hover:text-accent uppercase tracking-widest transition-colors self-end md:self-auto"
-                            >
-                                Deselect All
-                            </button>
                         </div>
 
                         <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                             <button
                                 onClick={() => toggleGroup('all')}
                                 className={`px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs transition-all border-2 ${selectedGroups.has('all')
-                                        ? 'bg-primary border-primary text-white shadow-lg'
-                                        : 'bg-white border-primary/10 text-primary hover:border-primary/30'
+                                    ? 'bg-primary border-primary text-white shadow-lg'
+                                    : 'bg-white border-primary/10 text-primary hover:border-primary/30'
                                     }`}
                             >
                                 All Programs
@@ -325,13 +302,21 @@ export default function FaithFormation() {
                                         key={g.id}
                                         onClick={() => toggleGroup(g.id as FaithGroup)}
                                         className={`px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs transition-all border-2 ${selectedGroups.has(g.id)
-                                                ? 'bg-primary border-primary text-white shadow-lg'
-                                                : 'bg-white border-primary/10 text-primary hover:border-primary/30'
+                                            ? 'bg-primary border-primary text-white shadow-lg'
+                                            : 'bg-white border-primary/10 text-primary hover:border-primary/30'
                                             }`}
                                     >
                                         {g.label}
                                     </button>
                                 ))}
+
+                            {/* 👇 ADD YOUR BUTTON HERE */}
+                            <button
+                                onClick={deselectAll}
+                                className="text-xs font-bold text-primary/40 hover:text-accent uppercase tracking-widest transition-colors"
+                            >
+                                Deselect All
+                            </button>
                         </div>
                     </div>
 
@@ -603,24 +588,8 @@ function CategoryCard({ category }: { category: FaithCategory }) {
 
     return (
         <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
-            {/* Top accent bar */}
-            <div className={`h-1.5 w-full ${groupBadgeColors[category.group].split(' ')[0]}`} />
-
+            {/* Top: title, age, description, time, location */}
             <div className="p-8 pb-4 flex-grow flex flex-col">
-                {/* Badges */}
-                <div className="flex flex-wrap items-center gap-2 mb-5">
-                    <span
-                        className={`text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full border ${groupBadgeColors[category.group]}`}
-                    >
-                        {groupBadgeLabels[category.group]}
-                    </span>
-                    {category.programName && (
-                        <span className="text-[9px] font-black uppercase tracking-widest px-2.5 py-1 rounded-full bg-primary/10 text-primary border border-primary/20">
-                            {category.programName}
-                        </span>
-                    )}
-                </div>
-
                 <Link href={`/faith-formation/${category.id}`} className="block mb-2 group/title">
                     <h3 className="font-serif text-3xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors">
                         {category.title}
@@ -631,10 +600,6 @@ function CategoryCard({ category }: { category: FaithCategory }) {
                         )}
                     </h3>
                 </Link>
-
-                <p className="text-xs font-bold text-accent uppercase tracking-widest mb-4">
-                    Ages {category.ageRange}
-                </p>
 
                 <p className="text-muted-foreground leading-relaxed text-sm mb-6 flex-grow">
                     {category.shortDescription}
@@ -662,11 +627,11 @@ function CategoryCard({ category }: { category: FaithCategory }) {
                 </div>
             </div>
 
-            {/* Catechist preview + CTA */}
+            {/* Bottom: catechist + CTA */}
             <div className="p-8 pt-2 bg-gray-50/50 border-t border-gray-100">
                 {primaryCatechist && (
                     <div className="flex items-center gap-3 mb-4">
-                        <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">
+                        {/* <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">
                             {primaryCatechist.photo ? (
                                 <img
                                     src={primaryCatechist.photo}
@@ -679,7 +644,7 @@ function CategoryCard({ category }: { category: FaithCategory }) {
                                     <User size={16} className="text-primary/30" />
                                 </div>
                             )}
-                        </div>
+                        </div> */}
                         <div className="min-w-0">
                             <p className="text-[9px] font-bold text-primary/40 uppercase tracking-widest">Catechist</p>
                             <p className="text-sm font-bold text-primary truncate">
