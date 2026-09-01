@@ -20,6 +20,7 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Fr. Mark McCormick',
     titles: ['Pastor'],
     email: 'mark.mccormick@strcstaff.org',
+    phone: '(595) 100 2009',
     categories: ['clergy'],
     photo: '/FrMark.jpg',
     photoPosition: 'center 24%',

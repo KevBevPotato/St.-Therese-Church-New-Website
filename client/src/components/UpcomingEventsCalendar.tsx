@@ -25,7 +25,7 @@ import {
   EVENT_COLORS,
   generateRecurringEventsForMonth,
   staticEvents,
-} from '@/components/events';
+} from './events';
 
 // ---- Calendar Day Sub-Component (only used on lg+) ----
 function CalendarDay({
@@ -60,7 +60,8 @@ function CalendarDay({
 
       <div className="flex flex-col space-y-1 pointer-events-auto">
         {events.map((event) => {
-          const colors = EVENT_COLORS[event.categories[0]] || EVENT_COLORS['parishEvents'];
+          // ✅ ADD "as EventCategory" here to fix the colors error
+          const colors = EVENT_COLORS[event.categories[0] as EventCategory] || EVENT_COLORS['parishEvents'];
           return (
             <button
               key={event.id}
@@ -268,7 +269,7 @@ export default function UpcomingEventsCalendar() {
             <div className="lg:col-span-2 space-y-8">
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {event.categories.map((cat) => {
+                  {event.categories.map((cat: EventCategory) => {
                     const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
                     return (
                       <span
@@ -302,7 +303,7 @@ export default function UpcomingEventsCalendar() {
                 <div className="space-y-6">
                   <h3 className="font-serif text-3xl font-bold text-primary">Frequently Asked Questions</h3>
                   <div className="grid gap-4">
-                    {event.faqItems.map((faq, i) => (
+                    {event.faqItems.map((faq: { question: string; answer: string }, i: number) => (
                       <Card key={i} className="p-6 border-2 border-primary/5 bg-white rounded-2xl">
                         <h4 className="font-bold text-primary mb-2">{faq.question}</h4>
                         <p className="text-muted-foreground text-sm">{faq.answer}</p>
@@ -485,7 +486,7 @@ export default function UpcomingEventsCalendar() {
                     {/* Content Block */}
                     <div className="flex-1 px-3 sm:px-4 py-3 flex flex-col min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                        {event.categories.map(cat => {
+                        {event.categories.map((cat: EventCategory) => {
                           const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
                           return (
                             <span
@@ -635,7 +636,7 @@ export default function UpcomingEventsCalendar() {
                     {/* Content Block */}
                     <div className="flex-1 px-6 py-4 flex flex-col min-w-0">
                       <div className="flex items-center gap-2 mb-5">
-                        {event.categories.map(cat => {
+                        {event.categories.map((cat: EventCategory) => {
                           const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
                           return (
                             <span key={cat} className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}>
