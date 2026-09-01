@@ -48,7 +48,7 @@ const defaultContactInfo: ContactInfo = {
     name: 'Connie Heeren',
     title: 'Bulletin Coordinator',
     phone: '(605) 342-1556 Ext. 1',
-    email: 'cheeren@diorc.org',
+    email: 'connie.heeren@strcstaff.org',
 };
 
 export default function BulletinView({

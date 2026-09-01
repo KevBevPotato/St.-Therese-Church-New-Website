@@ -62,8 +62,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-2">
                 <Mail size={16} />
-                <a href="mailto:sttherese@diorc.org" className="hover:opacity-80 transition-opacity">
-                  sttherese@diorc.org
+                <a href="connie.heeren@strcstaff.org" className="hover:opacity-80 transition-opacity">
+                  connie.heeren@strcstaff.org
                 </a>
               </div>
             </div>

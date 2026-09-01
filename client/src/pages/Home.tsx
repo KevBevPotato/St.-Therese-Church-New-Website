@@ -191,7 +191,7 @@ export default function Home() {
                   <Mail className="mt-0.5 size-5 shrink-0 text-[#9b762f]" aria-hidden="true" />
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Email</p>
-                    <a href="mailto:sttherese@diorc.org" className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75">sttherese@diorc.org</a>
+                    <a href="mailto:connie.heeren@strcstaff.org" className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75">connie.heeren@strcstaff.org</a>
                   </div>
                 </div>
                 <div className="flex gap-3 pt-4">

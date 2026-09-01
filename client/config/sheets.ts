@@ -24,7 +24,7 @@ export const SHEETS_CONFIG = {
     apiKey: 'parishpledge2026',
 
     /** Email for parish coordinator (where pledges are also notified) */
-    toEmail: 'kbaltzer@diorc.org',
+    toEmail: 'kevin.baltzer@strcstaff.org',
 
     /** Sheet URL for "View all pledges" in notification emails — fill in after creating */
     sheetUrl: 'https://docs.google.com/spreadsheets/d/YOUR_SHEET_ID_HERE/edit',

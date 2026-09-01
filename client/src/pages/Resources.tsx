@@ -337,7 +337,7 @@ export default function Resources() {
                                         <Phone size={12} /> (605) 342-1556
                                     </a>
                                     <a
-                                        href="mailto:sttherese@diorc.org"
+                                        href="mailto:connie.heeren@strcstaff.org"
                                         className="inline-flex items-center gap-2 bg-white border border-primary/20 text-primary hover:bg-primary/5 px-5 py-2.5 rounded-full font-bold uppercase tracking-widest text-[10px]"
                                     >
                                         <Mail size={12} /> Email Office

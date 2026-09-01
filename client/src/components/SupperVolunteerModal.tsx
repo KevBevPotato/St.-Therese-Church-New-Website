@@ -127,7 +127,7 @@ export default function SupperVolunteerModal({
         } catch (err: any) {
             console.error('Supper volunteer POST error:', err);
             setStatus('error');
-            setErrorMessage('There was an issue submitting. Please email kbaltzer@diorc.org directly.');
+            setErrorMessage('There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.');
         }
     };
 

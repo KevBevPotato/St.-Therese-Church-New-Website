@@ -126,7 +126,7 @@ export default function PledgeModal({
             console.error('Sheets POST error:', err);
             setStatus({
                 state: 'error',
-                message: 'There was an issue submitting your pledge. Please email kbaltzer@diorc.org directly.',
+                message: 'There was an issue submitting your pledge. Please email kevin.baltzer@strcstaff.org directly.',
             });
         }
     };
