@@ -1,4 +1,4 @@
-// --- File: App.tsx ---
+// App.tsx
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
@@ -11,9 +11,8 @@ import About from "./pages/About";
 import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
-import StaffDetail from "./pages/StaffDetail";  // ✅ ADDED
+import StaffDetail from "./pages/StaffDetail"; 
 import FaithFormationDetail from './pages/FaithFormationDetail';
-
 
 import Bulletin from "./components/Bulletin";
 import PreviousBulletins from "./components/PreviousBulletins";
@@ -26,8 +25,6 @@ import KnightsOfColumbus from "./components/KnightsOfColumbus";
 import AltarSociety from "./components/AltarSociety";
 
 import Sacraments from "./pages/Sacraments";
-// import Resources from "./pages/Resources";
-
 
 function Router() {
   return (
@@ -40,10 +37,11 @@ function Router() {
       <Route path={"/get-involved/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
-      <Route path={"/staff/:slug"} component={StaffDetail} />  {/* ✅ ADDED */}
       <Route path="/faith-formation/:categoryId" component={FaithFormationDetail} />
-
       
+      {/* ✅ Ensure this path matches the <Link href={`/staff/${member.slug}`}> in About.tsx */}
+      <Route path={"/staff/:slug"} component={StaffDetail} /> 
+
       <Route path={"/bulletin"} component={Bulletin} />
       <Route path={"/bulletin/previous"} component={PreviousBulletins} />
       <Route path={"/bulletin/next"} component={NextWeekBulletin} />
@@ -62,9 +60,7 @@ function Router() {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider
-        defaultTheme="light"
-      >
+      <ThemeProvider defaultTheme="light">
         <TooltipProvider>
           <Toaster />
           <Router />
