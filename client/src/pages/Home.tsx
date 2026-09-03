@@ -49,16 +49,20 @@ export default function Home() {
     <div className="min-h-screen flex flex-col bg-background">
       <Header />
 
-      {/* Hero Section with Video Background — contained within aspect ratio */}
+      {/* Hero Section */}
       <section
         ref={heroRef}
         className="relative w-full overflow-hidden pt-[113px] text-white"
       >
-        <div
-          className="relative w-full bg-[#102a45] overflow-hidden"
-          style={{ aspectRatio: '16 / 9', maxHeight: '85vh', minHeight: '500px' }}
-        >
-          {/* Video background */}
+        {/* 
+            CONTAINER CHANGE: 
+            1. Removed 'aspectRatio' and 'maxHeight'.
+            2. Added 'min-h-[600px]' (or whatever minimum height you like).
+            3. This container now grows automatically if the text wraps!
+        */}
+        <div className="relative w-full bg-[#102a45] min-h-[600px] flex items-center py-20">
+
+          {/* Video background - Now purely a background layer */}
           <div className="absolute inset-0 z-0">
             <video
               autoPlay
@@ -79,30 +83,32 @@ export default function Home() {
             <div className="absolute inset-0 bg-gradient-to-t from-[#102a45]/65 via-transparent to-[#102a45]/20" />
           </div>
 
-          {/* Hero Content — fluid sizing, contained within video */}
-          <div className="absolute inset-0 z-10 flex items-center">
-            <div className="container">
-              <div className="max-w-3xl border-l-2 border-[#d4b36a] pl-4 md:pl-6 lg:pl-9 h-full flex flex-col justify-center">
+          {/* Hero Content - Now 'relative' so it pushes the height of the parent */}
+          <div className="container relative z-10 px-6 mx-auto">
+            <div className="max-w-3xl py-12 pr-10">
+
+              <div className="border-l-2 border-[#d4b36a] pl-4 md:pl-6 lg:pl-9">
+
                 <p className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
                   <Flower2 className="size-4" aria-hidden="true" />
                   Saint Therese · The Little Flower
                 </p>
 
                 <h1
-                  className="mt-3 sm:mt-4 lg:mt-5 font-serif font-bold leading-[0.96] text-white"
+                  className="mt-6 sm:mt-8 lg:mt-10 font-serif font-bold leading-tight text-white"
                   style={{ fontSize: 'clamp(1.75rem, 4.5vw, 5.4rem)' }}
                 >
                   A parish family formed by prayer and little ways of love.
                 </h1>
 
                 <p
-                  className="mt-4 sm:mt-5 lg:mt-6 max-w-2xl leading-relaxed text-white/86"
+                  className="mt-6 sm:mt-8 lg:mt-10 max-w-2xl leading-relaxed text-white/86"
                   style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.25rem)' }}
                 >
                   Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.
                 </p>
 
-                <div className="mt-5 sm:mt-6 lg:mt-8 flex flex-col gap-3 sm:flex-row">
+                <div className="mt-8 sm:mt-10 lg:mt-12 flex flex-col gap-3 sm:flex-row">
                   <a
                     href="/OldSTCCWebsite/MemberRegistration.pdf"
                     target="_blank"
@@ -130,7 +136,7 @@ export default function Home() {
                   </Link>
                 </div>
 
-                <div className="mt-6 sm:mt-8 lg:mt-10 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
+                <div className="mt-12 sm:mt-16 lg:mt-20 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
                   <p
                     className="font-serif italic leading-snug text-white/95"
                     style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}
@@ -148,7 +154,6 @@ export default function Home() {
             </div>
           </div>
         </div>
-
         {/* Mass Times bar at the bottom of the hero (ref'd for scroll target) */}
         <div
           ref={massTimesRef}
