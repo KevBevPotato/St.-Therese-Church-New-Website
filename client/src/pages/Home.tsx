@@ -155,13 +155,25 @@ export default function Home() {
           </div>
         </div>
         {/* Mass Times bar at the bottom of the hero (ref'd for scroll target) */}
-        <div
-          ref={massTimesRef}
-          className="relative z-20 border-t border-white/20 bg-[#fbfaf6]/96 text-primary backdrop-blur-md w-full"
-        >
-          {massTimesContent}
-        </div>
       </section>
+      <div
+        ref={massTimesRef}
+        /* 
+           Removed 'border-b' from here because we are using a physical div instead.
+           Added 'pb-0' to ensure no extra space is pushing the line away.
+        */
+        className="relative z-30 border-t border-white/20 bg-[#fbfaf6]/96 text-primary backdrop-blur-md w-full pb-0"
+      >
+        {massTimesContent}
+
+        {/* 
+              THE PHYSICAL LINE:
+              - h-px: Exactly 1 pixel tall
+              - w-full: Spans the entire width
+              - bg-primary/20: The color (adjust /20 to /30 if you want it slightly darker)
+          */}
+        <div className="h-px w-full bg-primary/10" />
+      </div>
 
       {/* Upcoming Events Calendar Section */}
       <UpcomingEventsCalendar />
