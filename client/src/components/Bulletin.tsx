@@ -110,7 +110,7 @@ const announcementsData = [
 ];
 
 // ====== New Parishioners ======
-const newParishionersData = []; 
+const newParishionersData: { name: string }[] = [];
 
 // ====== Mass Intentions ======
 const massIntentionsData: MassIntention[] = [

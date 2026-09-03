@@ -1,14 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 import { Link } from 'wouter';
-import { Menu, X, MessageSquare } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Menu as MenuIcon, X as XIcon } from 'lucide-react';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const headerRef = useRef<HTMLElement>(null);
   const [headerHeight, setHeaderHeight] = useState(69);
 
-  // Measure the actual header height so content below can offset correctly
   useEffect(() => {
     const measure = () => {
       if (headerRef.current) {
@@ -34,29 +34,26 @@ export default function Header() {
     { href: 'https://gods-call.com/', label: 'Vocations' },
   ];
 
-  const FEEDBACK_FORM_URL =
-    'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNzVZOFdFTTBMVVVFS05aNEVBVTFSN0NHNC4u';
-
   return (
     <header
       ref={headerRef}
       className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-border shadow-sm"
     >
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between gap-6">
-        {/* Logo */}
+      <div className="container mx-auto px-4 py-3 flex items-center justify-between gap-2">
+        {/* Logo - shrink-0 prevents it from being squished */}
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0">
           <img
             src="/Logo.webp"
             alt="Saint Thérèse Church logo"
-            className="h-20 w-auto object-contain"
+            className="h-16 w-auto object-contain"
           />
           <span className="font-serif font-bold text-lg text-primary hidden xl:inline">
             Saint Thérèse
           </span>
         </Link>
 
-        {/* Desktop Navigation — fills the available space */}
-        <nav className="hidden md:flex items-center justify-end flex-1 gap-4 lg:gap-6 xl:gap-8">
+        {/* Desktop Navigation */}
+        <nav className="hidden md:flex items-center justify-end flex-1 gap-x-3 lg:gap-x-4 xl:gap-x-6">
           {navLinks.map((link) => (
             link.href.startsWith('http') ? (
               <a
@@ -64,7 +61,9 @@ export default function Header() {
                 href={link.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-foreground hover:text-primary transition-colors font-semibold text-base whitespace-nowrap"
+                // CLAMP FUNCTION: Font size scales between 13px and 16px based on screen width
+                className="text-foreground hover:text-primary transition-colors font-semibold whitespace-nowrap"
+                style={{ fontSize: 'clamp(0.8125rem, 0.8vw + 0.5rem, 1rem)' }}
               >
                 {link.label}
               </a>
@@ -72,14 +71,16 @@ export default function Header() {
               <Link
                 key={link.href}
                 href={link.href}
-                className="text-foreground hover:text-primary transition-colors font-semibold text-base whitespace-nowrap"
+                // CLAMP FUNCTION: Font size scales between 13px and 16px based on screen width
+                className="text-foreground hover:text-primary transition-colors font-semibold whitespace-nowrap"
+                style={{ fontSize: 'clamp(0.8125rem, 0.8vw + 0.5rem, 1rem)' }}
               >
                 {link.label}
               </Link>
             )
           ))}
 
-          {/* Facebook Link */}
+          {/* Facebook Link - REDUCED SIZE from h-20 to h-6 */}
           <a
             href="https://www.facebook.com/TheLittleFlowerRapidCity"
             target="_blank"
@@ -90,7 +91,7 @@ export default function Header() {
             <img
               src="/fb.webp"
               alt="Facebook"
-              className="h-20 w-20 object-contain"
+              className="h-6 w-6 object-contain"
             />
           </a>
 
@@ -101,7 +102,7 @@ export default function Header() {
             rel="noopener noreferrer"
             className="shrink-0"
           >
-            <Button size="sm" className="bg-primary hover:bg-primary/90">
+            <Button size="sm" className="bg-primary hover:bg-primary/90 text-white px-4 py-1 text-xs uppercase tracking-widest font-bold">
               Donate
             </Button>
           </a>
@@ -155,7 +156,7 @@ export default function Header() {
                 <img
                   src="/fb.webp"
                   alt="Facebook"
-                  className="h-20 w-20 object-contain"
+                  className="h-6 w-6 object-contain"
                 />
                 Facebook
               </a>
