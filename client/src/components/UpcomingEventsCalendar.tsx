@@ -1,4 +1,3 @@
-// UpcomingEventsCalendar.tsx
 import { useState, useMemo } from 'react';
 import {
   ChevronLeft,
@@ -12,7 +11,6 @@ import {
   Mail,
   Phone,
   ExternalLink,
-  LayoutGrid,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -27,7 +25,19 @@ import {
   staticEvents,
 } from './events';
 
-// ---- Calendar Day Sub-Component (only used on lg+) ----
+type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
+
+// ---- SUB-COMPONENT: Category Pill ----
+function EventCategoryPill({ category }: { category: EventCategory }) {
+  const colors = EVENT_COLORS[category] || EVENT_COLORS['parishEvents'];
+  return (
+    <span className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}>
+      {colors.label}
+    </span>
+  );
+}
+
+// ---- SUB-COMPONENT: Calendar Day ----
 function CalendarDay({
   date,
   today,
@@ -60,14 +70,13 @@ function CalendarDay({
 
       <div className="flex flex-col space-y-1 pointer-events-auto">
         {events.map((event) => {
-          // ✅ ADD "as EventCategory" here to fix the colors error
           const colors = EVENT_COLORS[event.categories[0] as EventCategory] || EVENT_COLORS['parishEvents'];
           return (
             <button
               key={event.id}
               onClick={(e) => onEventClick(e, event)}
               className={`block w-full rounded px-1.5 py-1 text-left line-clamp-2 ${colors.bg} border-l-2 ${colors.border} ${colors.labelColor} hover:brightness-95 transition-all font-bold ${isPast ? 'opacity-30' : 'opacity-100'
-                } text-[9px] leading-tight`} // Added leading-tight to make wrapped text look tighter
+                } text-[9px] leading-tight`}
               title={`${event.time}: ${event.title}`}
             >
               {event.title}
@@ -79,7 +88,6 @@ function CalendarDay({
   );
 }
 
-// ---- Main Upcoming Events Component ----
 export default function UpcomingEventsCalendar() {
   const [location, navigate] = useLocation();
   const [currentDate, setCurrentDate] = useState(new Date());
@@ -88,7 +96,8 @@ export default function UpcomingEventsCalendar() {
   );
   const [expandedDay, setExpandedDay] = useState<Date | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
-  const [timeFilter, setTimeFilter] = useState<TimeFilter>('all');
+  const [timeFilter, setTimeFilter] = useState<ExtendedTimeFilter>('all');
+  const [filterDate, setFilterDate] = useState<Date | null>(null);
 
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
@@ -124,6 +133,7 @@ export default function UpcomingEventsCalendar() {
     if (timeFilter === 'all') return eventsToFilter;
     const now = new Date();
     now.setHours(0, 0, 0, 0);
+
     const currentMonth = now.getMonth();
     const currentYear = now.getFullYear();
     const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
@@ -131,10 +141,16 @@ export default function UpcomingEventsCalendar() {
 
     return eventsToFilter.filter((event) => {
       const eventDate = new Date(event.date);
+      eventDate.setHours(0, 0, 0, 0);
       const eventMonth = eventDate.getMonth();
       const eventYear = eventDate.getFullYear();
 
       switch (timeFilter) {
+        case 'thisWeek': {
+          const weekEnd = new Date(now);
+          weekEnd.setDate(now.getDate() + 7);
+          return eventDate.getTime() >= now.getTime() && eventDate.getTime() <= weekEnd.getTime();
+        }
         case 'thisMonth':
           return eventMonth === currentMonth && eventYear === currentYear;
         case 'nextMonth':
@@ -142,8 +158,13 @@ export default function UpcomingEventsCalendar() {
         case 'twoPlus': {
           const twoMonthsFromNow = new Date(now);
           twoMonthsFromNow.setMonth(twoMonthsFromNow.getMonth() + 2);
-          return eventDate >= twoMonthsFromNow;
+          return eventDate.getTime() >= twoMonthsFromNow.getTime();
         }
+        case 'calendarMonth':
+          return eventMonth === currentDate.getMonth() && eventYear === currentDate.getFullYear();
+        case 'specificDay':
+          if (!filterDate) return true;
+          return eventDate.getTime() === filterDate.getTime();
         default:
           return true;
       }
@@ -153,15 +174,17 @@ export default function UpcomingEventsCalendar() {
   const sortedUpcomingEvents = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
+
     const upcoming = filteredEvents
       .sort((a, b) => a.date.getTime() - b.date.getTime())
       .filter((e) => {
+        if (timeFilter === 'calendarMonth' || timeFilter === 'specificDay') return true;
         const eDate = new Date(e.date);
         eDate.setHours(0, 0, 0, 0);
-        return eDate >= today;
+        return eDate.getTime() >= today.getTime();
       });
     return getTimeFilteredEvents(upcoming);
-  }, [filteredEvents, timeFilter]);
+  }, [filteredEvents, timeFilter, currentDate, filterDate]);
 
   const getEventsForDay = (date: Date) => {
     return filteredEvents.filter((e) => {
@@ -176,7 +199,14 @@ export default function UpcomingEventsCalendar() {
 
   const handlePrev = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   const handleNext = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  const handleDayClick = (day: Date) => setExpandedDay(day);
+
+  const handleDayClick = (day: Date) => {
+    const normalizedDay = new Date(day);
+    normalizedDay.setHours(0, 0, 0, 0);
+    setExpandedDay(normalizedDay);
+    setFilterDate(normalizedDay);
+    setTimeFilter('specificDay');
+  };
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
     e.stopPropagation();
@@ -197,7 +227,6 @@ export default function UpcomingEventsCalendar() {
   );
   const emptyDaysBefore = Array.from({ length: firstDayOfMonth(currentDate) }, (_, i) => i);
 
-  // ---- Reusable: Category pills filter row ----
   const CategoryFilterRow = (
     <div className="p-3 sm:p-4 bg-gray-50/50 border-b-2 border-primary/20">
       <div className="flex flex-wrap items-center gap-2 sm:gap-3">
@@ -228,7 +257,6 @@ export default function UpcomingEventsCalendar() {
     </div>
   );
 
-  // ---- Reusable: Month navigation header ----
   const MonthHeader = (
     <div className="bg-primary p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
       <div className="flex items-center gap-4">
@@ -243,18 +271,9 @@ export default function UpcomingEventsCalendar() {
     </div>
   );
 
-  // ---- EVENT DETAIL ROUTE (unchanged) ----
   if (eventDetailId) {
     const event = allEvents.find((e) => e.id === eventDetailId);
-    if (!event)
-      return (
-        <div className="p-8 min-h-screen bg-[#fbfaf6] pt-[100px] text-center">
-          <p className="text-xl font-bold text-primary mb-4">Event not found.</p>
-          <Link href="/events">
-            <Button variant="outline">Back to All Events</Button>
-          </Link>
-        </div>
-      );
+    if (!event) return <div className="p-8 min-h-screen bg-[#fbfaf6] pt-[100px] text-center"><p className="text-xl font-bold text-primary mb-4">Event not found.</p><Link href="/events"><Button variant="outline">Back to All Events</Button></Link></div>;
 
     return (
       <div className="min-h-screen bg-[#fbfaf6] pt-[69px]">
@@ -264,46 +283,32 @@ export default function UpcomingEventsCalendar() {
               <ChevronLeft className="mr-2" /> Back to All Events
             </Button>
           </Link>
-
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
               <div className="space-y-4">
                 <div className="flex flex-wrap gap-2">
-                  {event.categories.map((cat: EventCategory) => {
-                    const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
-                    return (
-                      <span
-                        key={cat}
-                        className={`text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}
-                      >
-                        {colors.label}
-                      </span>
-                    );
-                  })}
+                  {event.categories.map((cat: EventCategory) => (
+                    <EventCategoryPill key={cat} category={cat} />
+                  ))}
                 </div>
                 <h1 className="font-serif text-5xl font-bold text-primary leading-tight">{event.title}</h1>
               </div>
-
               <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
                 <h2 className="font-serif text-2xl font-bold text-primary mb-4">About this Event</h2>
                 <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">
                   {event.description || event.about || 'No additional information available for this event.'}
                 </p>
-
                 {event.signupLink && (
                   <Button className="mt-8 bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest w-full sm:w-auto" asChild>
-                    <a href={event.signupLink} target="_blank" rel="noopener noreferrer">
-                      <ExternalLink className="mr-2 size-5" /> Register / More Info
-                    </a>
+                    <a href={event.signupLink} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-2 size-5" /> Register / More Info</a>
                   </Button>
                 )}
               </Card>
-
               {event.faqItems && event.faqItems.length > 0 && (
                 <div className="space-y-6">
                   <h3 className="font-serif text-3xl font-bold text-primary">Frequently Asked Questions</h3>
                   <div className="grid gap-4">
-                    {event.faqItems.map((faq: { question: string; answer: string }, i: number) => (
+                    {event.faqItems.map((faq, i) => (
                       <Card key={i} className="p-6 border-2 border-primary/5 bg-white rounded-2xl">
                         <h4 className="font-bold text-primary mb-2">{faq.question}</h4>
                         <p className="text-muted-foreground text-sm">{faq.answer}</p>
@@ -313,42 +318,24 @@ export default function UpcomingEventsCalendar() {
                 </div>
               )}
             </div>
-
             <div className="space-y-6">
               <Card className="p-8 border-none shadow-lg bg-primary text-white rounded-[2rem]">
                 <h3 className="font-serif text-2xl font-bold mb-6">Event Details</h3>
                 <div className="space-y-6">
                   <div className="flex items-start gap-4">
                     <CalendarIcon className="size-6 text-accent shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Date</p>
-                      <p className="font-bold">
-                        {event.date.toLocaleDateString('default', {
-                          weekday: 'long',
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric',
-                        })}
-                      </p>
-                    </div>
+                    <div><p className="text-[10px] font-black uppercase tracking-widest text-white/40">Date</p><p className="font-bold">{event.date.toLocaleDateString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}</p></div>
                   </div>
                   <div className="flex items-start gap-4">
                     <Clock className="size-6 text-accent shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Time</p>
-                      <p className="font-bold">{event.time}</p>
-                    </div>
+                    <div><p className="text-[10px] font-black uppercase tracking-widest text-white/40">Time</p><p className="font-bold">{event.time}</p></div>
                   </div>
                   <div className="flex items-start gap-4">
                     <MapPin className="size-6 text-accent shrink-0" />
-                    <div>
-                      <p className="text-[10px] font-black uppercase tracking-widest text-white/40">Location</p>
-                      <p className="font-bold">{event.location}</p>
-                    </div>
+                    <div><p className="text-[10px] font-black uppercase tracking-widest text-white/40">Location</p><p className="font-bold">{event.location}</p></div>
                   </div>
                 </div>
               </Card>
-
               {(event.contactPerson || event.contactEmail || event.contactPhone) && (
                 <Card className="p-8 border-2 border-primary/10 bg-white rounded-[2rem]">
                   <h3 className="font-serif text-xl font-bold text-primary mb-6">Contact Information</h3>
@@ -383,178 +370,76 @@ export default function UpcomingEventsCalendar() {
     <div className="min-h-screen bg-[#fbfaf6] py-10 lg:py-16">
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center lg:text-left">
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">
-            Parish Calendar
-          </h2>
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Parish Calendar</h2>
           <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">
             Browse upcoming events. Use the filters below to narrow by category.
           </p>
         </div>
 
-        {/* ============================================================ */}
-        {/* MOBILE-ONLY LAYOUT: filter pills + scrollable event list    */}
-        {/* ============================================================ */}
         <div className="lg:hidden space-y-4">
-          {/* Category filter (above Upcoming Events, as requested) */}
+          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">{CategoryFilterRow}</div>
           <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">
-            {CategoryFilterRow}
-          </div>
-
-          {/* Upcoming Events — scrollable, prominent */}
-          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">
-            {/* Sticky header inside the scroll container */}
             <div className="sticky top-0 z-10 bg-white border-b-2 border-primary/10 p-4">
               <div className="flex items-center justify-between gap-3">
-                <h4 className="font-serif text-xl font-bold text-primary tracking-tight">
-                  Upcoming Events
-                </h4>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  onClick={() => {
-                    setCurrentDate(new Date(2026, 7, 1));
-                    const list = document.getElementById('events-scroll-container-mobile');
-                    if (list) list.scrollTo({ top: 0, behavior: 'smooth' });
-                  }}
-                  className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3"
-                >
-                  Back to Today
-                </Button>
+                <h4 className="font-serif text-xl font-bold text-primary tracking-tight">Upcoming Events</h4>
+                <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); }} className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3">Reset</Button>
               </div>
-
-              {/* Time filter pills */}
               <div className="flex gap-2 flex-wrap mt-3">
-                {(['all', 'thisMonth', 'nextMonth', 'twoPlus'] as TimeFilter[]).map(filter => (
+                {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
                   <button
                     key={filter}
                     onClick={() => setTimeFilter(filter)}
-                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${timeFilter === filter
-                      ? 'bg-primary text-white shadow-md'
-                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                      }`}
+                    className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${timeFilter === filter ? 'bg-primary text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                   >
-                    {filter === 'all' ? 'All' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : '2+ Months Away'}
+                    {filter === 'all' ? 'All' : filter === 'thisWeek' ? 'This Week' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : filter === 'twoPlus' ? '2+ Months' : 'Calendar Month'}
                   </button>
                 ))}
               </div>
             </div>
-
-            {/* Scrollable list — taller & with visible scroll affordance */}
-            <div
-              id="events-scroll-container-mobile"
-              className="flex flex-col gap-3 min-h-[600px] max-h-[80vh] overflow-y-auto p-4 pb-6 custom-scrollbar"
-              style={{
-                // iOS-style scrollbar that's more obvious on mobile
-                scrollbarWidth: 'thin',
-                scrollbarColor: 'rgba(58, 74, 111, 0.4) transparent',
-              }}
-            >
+            <div id="events-scroll-container-mobile" className="flex flex-col gap-3 min-h-[600px] max-h-[80vh] overflow-y-auto p-4 pb-6 custom-scrollbar">
               {sortedUpcomingEvents.length === 0 ? (
-                <div className="text-center py-16 bg-gray-50/50 rounded-xl border-2 border-dashed border-primary/10">
-                  <CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" />
-                  <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p>
-                </div>
+                <div className="text-center py-16 bg-gray-50/50 rounded-xl border-2 border-dashed border-primary/10"><CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" /><p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p></div>
               ) : (
                 sortedUpcomingEvents.map(event => (
                   <Card
                     id={`event-card-${event.id}`}
                     key={event.id}
-                    className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all bg-white min-h-[120px] ${highlightedEventId === event.id
-                      ? 'border-accent ring-2 ring-accent/20 scale-[1.01]'
-                      : 'border border-gray-200'
-                      }`}
-                    onClick={() => {
-                      const destinationUrl = event.linkedOpportunityId
-                        ? `/get-involved/${event.linkedOpportunityId}`
-                        : `/events/${event.id}`;
-                      navigate(destinationUrl);
-                    }}
+                    className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all bg-white min-h-[120px] ${highlightedEventId === event.id ? 'border-accent ring-2 ring-accent/20 scale-[1.01]' : 'border border-gray-200'}`}
+                    onClick={() => navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`)}
                   >
-                    {/* Date Block */}
                     <div className="w-16 sm:w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-3">
-                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
-                        {event.date.toLocaleDateString('en-US', { month: 'short' })}
-                      </span>
-                      <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">
-                        {event.date.getDate()}
-                      </span>
-                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">
-                        {event.date.toLocaleDateString('en-US', { weekday: 'short' })}
-                      </span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">{event.date.toLocaleDateString('en-US', { month: 'short' })}</span>
+                      <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">{event.date.getDate()}</span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">{event.date.toLocaleDateString('en-US', { weekday: 'short' })}</span>
                     </div>
-
-                    {/* Content Block */}
                     <div className="flex-1 px-3 sm:px-4 py-3 flex flex-col min-w-0">
                       <div className="flex flex-wrap items-center gap-1.5 mb-3">
-                        {event.categories.map((cat: EventCategory) => {
-                          const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
-                          return (
-                            <span
-                              key={cat}
-                              className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}
-                            >
-                              {colors.label}
-                            </span>
-                          );
-                        })}
+                        {event.categories.map((cat: EventCategory) => (
+                          <EventCategoryPill key={cat} category={cat} />
+                        ))}
                       </div>
-
-
-                      {/* ✅ Title wraps to 2 lines instead of truncating */}
-                      <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2 break-words leading-snug">
-                        {event.title}
-                      </h5>
-
+                      <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2 break-words leading-snug">{event.title}</h5>
                       <div className="flex gap-3 text-[10px] mt-auto">
-                        <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0">
-                          <Clock className="size-3 text-primary/40 flex-shrink-0" />
-                          <span className="truncate">{event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0">
-                          <MapPin className="size-3 text-primary/30 flex-shrink-0" />
-                          <span className="truncate">{event.location}</span>
-                        </div>
+                        <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0"><Clock className="size-3 text-primary/40 flex-shrink-0" /><span className="truncate">{event.time}</span></div>
+                        <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0"><MapPin className="size-3 text-primary/30 flex-shrink-0" /><span className="truncate">{event.location}</span></div>
                       </div>
                     </div>
-
-                    <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center">
-                      <ChevronRight className="size-5 text-primary/40" />
-                    </div>
+                    <div className="pr-3 opacity-0 group-hover:opacity-100 transition-opacity hidden sm:flex items-center"><ChevronRight className="size-5 text-primary/40" /></div>
                   </Card>
                 ))
               )}
             </div>
-
-            {/* Scroll affordance hint */}
-            <div className="border-t border-primary/10 bg-primary/5 px-4 py-2 text-center">
-              <p className="text-[10px] font-bold uppercase tracking-widest text-primary/60 flex items-center justify-center gap-1.5">
-                <span className="animate-bounce">↓</span> Scroll for more events
-              </p>
-            </div>
           </div>
         </div>
 
-        {/* ============================================================ */}
-        {/* DESKTOP LAYOUT: side-by-side calendar grid + event list    */}
-        {/* ============================================================ */}
         <div className="hidden lg:flex flex-col lg:flex-row gap-12 items-start w-full relative">
-          {/* LEFT: Calendar Grid */}
           <div className="w-full lg:w-7/12 flex flex-col">
-            <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">
-              {MonthHeader}
-              {CategoryFilterRow}
-            </div>
-
+            <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">{MonthHeader}{CategoryFilterRow}</div>
             <div className="grid grid-cols-7 bg-white shadow-xl rounded-b-2xl overflow-hidden border-l-2 border-t-2 border-primary/30">
               {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                <div key={day} className="relative p-3 text-center text-[10px] font-black uppercase tracking-widest text-primary/60 bg-gray-100 border-r-2 border-b-2 border-primary/30">
-                  {day}
-                </div>
+                <div key={day} className="relative p-3 text-center text-[10px] font-black uppercase tracking-widest text-primary/60 bg-gray-100 border-r-2 border-b-2 border-primary/30">{day}</div>
               ))}
-
-              {emptyDaysBefore.map(i => (
-                <div key={`empty-${i}`} className="aspect-square border-r-2 border-b-2 border-primary/30 bg-gray-50/10" />
-              ))}
+              {emptyDaysBefore.map(i => (<div key={`empty-${i}`} className="aspect-square border-r-2 border-b-2 border-primary/30 bg-gray-50/10" />))}
               {monthDays.map(date => (
                 <CalendarDay
                   key={date.toISOString()}
@@ -568,103 +453,53 @@ export default function UpcomingEventsCalendar() {
             </div>
           </div>
 
-          {/* RIGHT: Events List (desktop unchanged) */}
           <div className="w-full lg:w-5/12 space-y-6 lg:pt-0 pt-8 lg:sticky lg:top-20">
             <div className="flex items-center justify-between pb-4 border-b-2 border-primary/10">
               <h4 className="font-serif text-3xl font-bold text-primary tracking-tight">Upcoming Events</h4>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => {
-                  setCurrentDate(new Date(2026, 7, 1));
-                  const list = document.getElementById('events-scroll-container');
-                  if (list) list.scrollTo({ top: 0, behavior: 'smooth' });
-                }}
-                className="rounded-full font-bold text-xs uppercase tracking-widest border-2"
-              >
-                Back to Today
-              </Button>
+              <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); }} className="rounded-full font-bold text-xs uppercase tracking-widest border-2">Reset</Button>
             </div>
 
             <div className="flex gap-2 flex-wrap">
-              {(['all', 'thisMonth', 'nextMonth', 'twoPlus'] as TimeFilter[]).map(filter => (
+              {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
                 <button
                   key={filter}
                   onClick={() => setTimeFilter(filter)}
-                  className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${timeFilter === filter
-                    ? 'bg-primary text-white shadow-md'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
+                  className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${timeFilter === filter ? 'bg-primary text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 >
-                  {filter === 'all' ? 'All' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : '2+ Months Away'}
+                  {filter === 'all' ? 'All' : filter === 'thisWeek' ? 'This Week' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : filter === 'twoPlus' ? '2+ Months' : 'Calendar Month'}
                 </button>
               ))}
             </div>
 
             <div id="events-scroll-container" className="flex flex-col gap-4 lg:max-h-[calc(100vh-12rem)] overflow-y-auto pr-4 pb-8 custom-scrollbar">
               {sortedUpcomingEvents.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-primary/10">
-                  <CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" />
-                  <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p>
-                </div>
+                <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-primary/10"><CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" /><p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p></div>
               ) : (
                 sortedUpcomingEvents.map(event => (
                   <Card
                     id={`event-card-${event.id}`}
                     key={event.id}
                     className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all hover:shadow-lg bg-white min-h-[140px] ${highlightedEventId === event.id ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'border-none ring-1 ring-black/5'}`}
-                    onClick={() => {
-                      const destinationUrl = event.linkedOpportunityId
-                        ? `/get-involved/${event.linkedOpportunityId}`
-                        : `/events/${event.id}`;
-                      navigate(destinationUrl);
-                    }}
+                    onClick={() => navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`)}
                   >
-                    {/* Date Block */}
                     <div className="w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-4">
-                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
-                        {event.date.toLocaleDateString('en-US', { month: 'short' })}
-                      </span>
-                      <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">
-                        {event.date.getDate()}
-                      </span>
-                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">
-                        {event.date.toLocaleDateString('en-US', { weekday: 'short' })}
-                      </span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">{event.date.toLocaleDateString('en-US', { month: 'short' })}</span>
+                      <span className="text-2xl font-serif font-bold text-primary leading-none mt-1">{event.date.getDate()}</span>
+                      <span className="text-[10px] font-black uppercase tracking-tighter text-primary/50 mt-1">{event.date.toLocaleDateString('en-US', { weekday: 'short' })}</span>
                     </div>
-
-                    {/* Content Block */}
                     <div className="flex-1 px-6 py-4 flex flex-col min-w-0">
                       <div className="flex items-center gap-2 mb-5">
-                        {event.categories.map((cat: EventCategory) => {
-                          const colors = EVENT_COLORS[cat] || EVENT_COLORS['parishEvents'];
-                          return (
-                            <span key={cat} className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}>
-                              {colors.label}
-                            </span>
-                          );
-                        })}
+                        {event.categories.map((cat: EventCategory) => (
+                          <EventCategoryPill key={cat} category={cat} />
+                        ))}
                       </div>
-
-                      <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2">
-                        {event.title}
-                      </h5>
-
+                      <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2">{event.title}</h5>
                       <div className="flex gap-4 text-[10px]">
-                        <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0">
-                          <Clock className="size-3 text-primary/40 flex-shrink-0" />
-                          <span className="truncate">{event.time}</span>
-                        </div>
-                        <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0">
-                          <MapPin className="size-3 text-primary/30 flex-shrink-0" />
-                          <span className="truncate">{event.location}</span>
-                        </div>
+                        <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0"><Clock className="size-3 text-primary/40 flex-shrink-0" /><span className="truncate">{event.time}</span></div>
+                        <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0"><MapPin className="size-3 text-primary/30 flex-shrink-0" /><span className="truncate">{event.location}</span></div>
                       </div>
                     </div>
-
-                    <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center">
-                      <ChevronRight className="size-5 text-primary/40" />
-                    </div>
+                    <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center"><ChevronRight className="size-5 text-primary/40" /></div>
                   </Card>
                 ))
               )}
@@ -673,7 +508,6 @@ export default function UpcomingEventsCalendar() {
         </div>
       </div>
 
-      {/* Day Expanded Modal (unchanged) */}
       {expandedDay && (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setExpandedDay(null)}>
           <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
@@ -696,7 +530,6 @@ export default function UpcomingEventsCalendar() {
               </div>
               <button onClick={() => setExpandedDay(null)} className="p-2 hover:bg-white/10 rounded-full transition-colors"><X size={24} /></button>
             </div>
-
             <div className="p-6 max-h-[60vh] overflow-y-auto space-y-4 custom-scrollbar">
               {getEventsForDay(expandedDay).length === 0 ? (
                 <p className="text-center py-10 text-muted-foreground font-bold uppercase tracking-widest text-xs">No events scheduled</p>
@@ -704,10 +537,7 @@ export default function UpcomingEventsCalendar() {
                 getEventsForDay(expandedDay).map(event => (
                   <div key={event.id} onClick={() => {
                     setExpandedDay(null);
-                    const destinationUrl = event.linkedOpportunityId
-                      ? `/get-involved/${event.linkedOpportunityId}`
-                      : `/events/${event.id}`;
-                    navigate(destinationUrl);
+                    navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`);
                   }} className="p-4 rounded-2xl border-2 border-primary/5 hover:border-primary/20 cursor-pointer transition-all flex justify-between items-center group">
                     <div>
                       <h5 className="font-bold text-primary group-hover:text-accent transition-colors">{event.title}</h5>
