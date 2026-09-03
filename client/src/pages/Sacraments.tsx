@@ -124,7 +124,7 @@ export default function Sacraments() {
                             <BookOpen className="size-4" aria-hidden="true" /> Sacramental Preparation
                         </p>
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-                            Sacraments at St. Therese.
+                            Sacraments at St. Thérèse.
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
                             Information on preparation for the sacraments of Marriage, Baptism, First Eucharist, Reconciliation, Confirmation, and OCIA (becoming Catholic). Contact the parish office or the person listed for each sacrament to begin.

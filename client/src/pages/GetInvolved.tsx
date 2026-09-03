@@ -204,7 +204,7 @@ function createInitialOpportunities(): Opportunity[] {
         //     contactName: 'Grand Knight',
         //     contactPhone: '(605) 867-5309',
         //     description:
-        //         "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Therese parish through charitable works, faith formation support, and community fellowship.",
+        //         "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
         //     customPage: 'knights-of-columbus',
         //     orgIcon: 'shield',
         // },

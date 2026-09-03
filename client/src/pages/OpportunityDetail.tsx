@@ -58,7 +58,7 @@ export default function OpportunityDetail() {
             default:
                 return {
                     title: "Parish Opportunity",
-                    organization: "St. Therese Parish",
+                    organization: "St. Thérèse Parish",
                     contact: { name: "Parish Office", phone: "(605) 348-6808", email: "office@sttherese.org" },
                     description: "Join this vital parish mission to serve our community and grow in faith together.",
                     faqs: [

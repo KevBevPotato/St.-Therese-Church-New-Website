@@ -29,7 +29,7 @@ export default function ChurchMap() {
         allowFullScreen
         loading="lazy"
         referrerPolicy="no-referrer-when-downgrade"
-        title="Saint Therese Church Location"
+        title="Saint Thérèse Church Location"
       ></iframe>
     </div>
   );

@@ -394,7 +394,7 @@ export default function FaithFormation() {
 
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-primary uppercase tracking-widest">
-                                        Are you a member at St. Therese?
+                                        Are you a member at St. Thérèse?
                                     </label>
                                     <div className="flex gap-4 pt-2">
                                         {['Yes', 'No'].map((opt) => (

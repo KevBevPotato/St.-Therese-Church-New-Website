@@ -545,7 +545,7 @@ export const faithCategories: FaithCategory[] = [
             },
         ],
         aboutText:
-            'Adult Education at St. Therese provides ongoing formation for adults at every stage of their faith journey. Classes meet on Wednesdays during the school year, and additional studies are offered seasonally (Advent, Lent).',
+            'Adult Education at St. Thérèse provides ongoing formation for adults at every stage of their faith journey. Classes meet on Wednesdays during the school year, and additional studies are offered seasonally (Advent, Lent).',
     },
 ];
 

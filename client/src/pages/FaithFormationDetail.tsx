@@ -167,7 +167,7 @@ export default function FaithFormationDetail() {
                                 <div>
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-1">Location</p>
                                     <p className="text-lg font-serif font-bold text-primary">
-                                        {category.location ?? 'St. Therese Parish'}
+                                        {category.location ?? 'St. Thérèse Parish'}
                                     </p>
                                     <p className="text-sm text-muted-foreground mt-1">See classroom map for details.</p>
                                 </div>

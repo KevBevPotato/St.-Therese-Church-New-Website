@@ -43,7 +43,7 @@ export const organizations: Organization[] = [
         name: 'Knights of Columbus',
         tagline: 'Charity, Unity, Fraternity, and Patriotism',
         description:
-            'The Knights of Columbus is the world\'s largest Catholic fraternal service organization. Our local council serves Saint Therese parish through charitable works, faith formation support, and community fellowship. All Catholic men 18 and older are invited to join.',
+            'The Knights of Columbus is the world\'s largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship. All Catholic men 18 and older are invited to join.',
         audienceTag: "Men's",
         audience: 'Catholic Men of the Parish',
         founded: 1900, // Replace with actual founding year of your council
@@ -52,7 +52,7 @@ export const organizations: Organization[] = [
         contactPhone: '(605) 867-5309',
         stats: [
             { label: 'Active Members', value: '60+' },
-            { label: 'Years at Saint Therese', value: '50+' },
+            { label: 'Years at Saint Thérèse', value: '50+' },
             { label: 'Charity Funds Raised', value: '$15K+' },
         ],
         officers: [
@@ -111,7 +111,7 @@ export const organizations: Organization[] = [
         name: 'Altar Society',
         tagline: 'Serving the Altar, Serving the Parish',
         description:
-            'The Altar Society is a long-standing tradition at Saint Therese, where the women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. It is a beautiful way to serve the Lord through care of His house.',
+            'The Altar Society is a long-standing tradition at Saint Thérèse, where the women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. It is a beautiful way to serve the Lord through care of His house.',
         audienceTag: "Women's",
         audience: 'Catholic Women of the Parish',
         founded: 1950, // Replace with actual founding year
@@ -120,7 +120,7 @@ export const organizations: Organization[] = [
         contactPhone: '(605) 867-5309',
         stats: [
             { label: 'Active Members', value: '40+' },
-            { label: 'Years at Saint Therese', value: '70+' },
+            { label: 'Years at Saint Thérèse', value: '70+' },
             { label: 'Altars Cared For', value: '2' },
         ],
         officers: [

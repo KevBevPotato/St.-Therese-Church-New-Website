@@ -84,7 +84,7 @@ const announcementsData = [
         description: 'August 31st at 6:30 pm in Room 103. First class begins September 14th at 6:30 pm.',
     },
     {
-        title: 'St. Therese Fall Festival',
+        title: 'St. Thérèse Fall Festival',
         description: 'September 27th, 10:30 am to 1:30 pm. Roast Beef Dinner, Silent Auction, Bake Sale. All proceeds to Building Fund.',
     },
     {

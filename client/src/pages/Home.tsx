@@ -74,7 +74,7 @@ export default function Home() {
               <source src="/StThereseHeroMovie.mp4" type="video/mp4" />
               <img
                 src="/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png"
-                alt="Saint Therese Church"
+                alt="Saint Thérèse Church"
                 className="h-full w-full object-cover"
               />
             </video>
@@ -91,7 +91,7 @@ export default function Home() {
 
                 <p className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
                   <Flower2 className="size-4" aria-hidden="true" />
-                  Saint Therese · The Little Flower
+                  Saint Thérèse · The Little Flower
                 </p>
 
                 <h1
@@ -183,7 +183,7 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-14">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#9b762f]">Visit Saint Therese</p>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#9b762f]">Visit Saint Thérèse</p>
               <h2 className="mt-3 font-serif text-4xl font-bold text-primary md:text-5xl">Come pray with us.</h2>
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
                 Whether you are joining us for Mass, stopping by the parish office, or visiting for the first time, we look forward to welcoming you.

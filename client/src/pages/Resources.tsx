@@ -37,7 +37,7 @@ const categories: ResourceCategory[] = [
     {
         id: 'parish',
         title: 'Parish Life',
-        description: 'Stay connected with what is happening at St. Therese.',
+        description: 'Stay connected with what is happening at St. Thérèse.',
         links: [
             {
                 id: 'bulletin',

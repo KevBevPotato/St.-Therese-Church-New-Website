@@ -47,11 +47,11 @@ export default function Header() {
         <Link href="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0">
           <img
             src="/Logo.webp"
-            alt="Saint Therese Church logo"
+            alt="Saint Thérèse Church logo"
             className="h-20 w-auto object-contain"
           />
           <span className="font-serif font-bold text-lg text-primary hidden xl:inline">
-            Saint Therese
+            Saint Thérèse
           </span>
         </Link>
 

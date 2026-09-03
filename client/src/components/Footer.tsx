@@ -8,9 +8,9 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* About */}
           <div>
-            <h3 className="font-serif font-bold text-lg mb-4">Saint Therese Church</h3>
+            <h3 className="font-serif font-bold text-lg mb-4">Saint Thérèse Church</h3>
             <p className="text-sm opacity-90">
-              The Church of St. Therese the Little Flower, serving the Rapid City community with faith, worship, and service.
+              The Church of St. Thérèse the Little Flower, serving the Rapid City community with faith, worship, and service.
             </p>
           </div>
 
@@ -71,7 +71,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-primary-foreground/20 pt-8 text-center text-sm opacity-80">
-          <p>&copy; 2026 Saint Therese Church. All rights reserved.</p>
+          <p>&copy; 2026 Saint Thérèse Church. All rights reserved.</p>
         </div>
       </div>
     </footer>
