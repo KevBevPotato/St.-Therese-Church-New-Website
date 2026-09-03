@@ -28,8 +28,9 @@ export default function Header() {
     { href: '/about', label: 'About & Staff' },
     { href: '/bulletin', label: 'Bulletin' },
     { href: '/sacraments', label: 'Sacraments' },
-    // { href: '/resources', label: 'Resources' },
+    { href: '/resources', label: 'Resources' },
     { href: '/faith-formation', label: 'Faith Formation' },
+    { href: '/get-involved', label: 'Get Involved' },
     { href: 'https://gods-call.com/', label: 'Vocations' },
   ];
 
