@@ -10,13 +10,13 @@ export interface CalendarEvent {
     location: string;
     categories: EventCategory[];
     description?: string;
-    image?: string;
+    image?: string; // This is for the Hero image
     about?: string;
     contactPerson?: string;
     contactEmail?: string;
     contactPhone?: string;
     signupLink?: string;
-    images?: string[];
+    photos?: string[]; // <--- CHANGE THIS from 'images' to 'photos'
     faqItems?: Array<{ question: string; answer: string }>;
     linkedOpportunityId?: string;
     organizationTags?: string[];

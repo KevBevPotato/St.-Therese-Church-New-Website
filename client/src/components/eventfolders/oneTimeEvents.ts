@@ -25,6 +25,20 @@ export const oneTimeEvents: CalendarEvent[] = [
         description: "Bishop Bullock's film festival featuring 'La Strada' (1954).",
         about: "Join us for a special film screening and discussion with Bishop Bullock.",
         contactPerson: "Bishop Bullock",
+
+        // --- PHOTO SECTION ---
+        // This is the main large photo at the top
+        image: "/images/events/la-strada-hero.jpg",
+
+        // This is the grid of photos at the bottom
+        photos: [
+            "/images/events/la-strada-1.jpg",
+            "/images/events/la-strada-2.jpg",
+            "/images/events/la-strada-3.jpg",
+            "/images/events/la-strada-4.jpg",
+        ],
+        // ---------------------
+
         faqItems: [
             { question: "What time should I arrive?", answer: "Please arrive 15 minutes early." },
             { question: "Is there a cost?", answer: "Admission is free." }
@@ -385,7 +399,7 @@ export const oneTimeEvents: CalendarEvent[] = [
     {
         id: "fall-festival-2026",
         title: "Fall Festival Planning",
-        date: new Date("2026-08-16T10:15:00"),
+        date: new Date("2026-09-27T10:15:00"),
         time: "10:15 AM",
         location: "Parish Hall",
         categories: ["parishEvents", "meeting"],
@@ -393,6 +407,17 @@ export const oneTimeEvents: CalendarEvent[] = [
         contactPerson: "Melanie Karp",
         contactEmail: "melanie@strcstaff.org",
         contactPhone: "(605) 123-4567",
+        // --- PHOTO SECTION ---
+        // This is the main large photo at the top
+        image: "/images/events/la-strada-hero.jpg",
+
+        // This is the grid of photos at the bottom
+        photos: [
+            "/images/events/la-strada-1.jpg",
+            "/images/events/la-strada-2.jpg",
+            "/images/events/la-strada-3.jpg",
+            "/images/events/la-strada-4.jpg",
+        ],
         faqItems: [
             { question: "Is lunch provided?", answer: "Yes, a light lunch will be served." },
             { question: "Can I bring a spouse?", answer: "Absolutely! Spouses are welcome." },

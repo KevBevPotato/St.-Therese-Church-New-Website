@@ -4,6 +4,7 @@ import { useRoute, Link, useLocation } from 'wouter';
 import {
   ChevronLeft, MapPin, Clock, Calendar as CalendarIcon,
   ExternalLink, User, Mail, Phone, Home, ArrowLeft,
+  Image as ImageIcon,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -16,9 +17,7 @@ import { getCustomLandingPage } from '@/data/eventLandingPages';
 export default function EventDetail() {
   const [match, params] = useRoute('/events/:id');
   const [, navigate] = useLocation();
-  const [hasLoadedCustomPage, setHasLoadedCustomPage] = useState(false);
 
-  // 1. Handle "not a match" gracefully
   if (!match || !params) {
     return (
       <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -44,8 +43,6 @@ export default function EventDetail() {
   }
 
   const eventId = params.id;
-
-  // 2. Build full events list
   const allEvents = [...staticEvents];
   const currentDate = new Date();
   const startMonth = currentDate.getMonth();
@@ -58,7 +55,6 @@ export default function EventDetail() {
 
   const event = allEvents.find((e) => e.id === eventId);
 
-  // 3. Handle "event not found" gracefully
   if (!event) {
     return (
       <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -83,14 +79,11 @@ export default function EventDetail() {
     );
   }
 
-  // Smart back handler
   const handleBack = () => {
     if (window.history.length > 1) window.history.back();
     else navigate('/');
   };
 
-  // 4a. NEW: Check for a custom landing page FIRST.
-  // If one exists, render it instead of the generic detail UI.
   const CustomPage = getCustomLandingPage(event.id);
   if (CustomPage) {
     return (
@@ -106,7 +99,6 @@ export default function EventDetail() {
     );
   }
 
-  // 4b. Otherwise render the generic Event Detail UI
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
       <Header />
@@ -154,6 +146,17 @@ export default function EventDetail() {
               <h1 className="font-serif text-5xl font-bold text-primary leading-tight">{event.title}</h1>
             </div>
 
+            {/* --- HERO IMAGE SECTION --- */}
+            {event.image && (
+              <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-3xl shadow-xl">
+                <img
+                  src={event.image}
+                  alt={event.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+            )}
+
             <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">About this Event</h2>
               <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">
@@ -168,6 +171,23 @@ export default function EventDetail() {
                 </Button>
               )}
             </Card>
+
+            {/* --- PHOTO GALLERY SECTION --- */}
+            {event.photos && event.photos.length > 0 && (
+              <div className="space-y-6">
+                <div className="flex items-center gap-2">
+                  <ImageIcon className="text-primary size-5" />
+                  <h3 className="font-serif text-3xl font-bold text-primary">Event Gallery</h3>
+                </div>
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                  {event.photos.map((photo, idx) => (
+                    <div key={idx} className="aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer">
+                      <img src={photo} alt={`${event.title} gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
 
             {event.faqItems && event.faqItems.length > 0 && (
               <div className="space-y-6">
