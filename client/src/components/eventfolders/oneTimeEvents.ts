@@ -86,15 +86,6 @@ export const oneTimeEvents: CalendarEvent[] = [
         organizationTags: ["knights-of-columbus"],
     },
     {
-        id: "fall-festival",
-        title: "Fall Festival Planning",
-        date: new Date("2026-08-16T10:15:00"),
-        time: "10:15 AM",
-        location: "Parish Hall",
-        categories: ["parishEvents", "meeting"],
-        description: "Everyone is welcome to help plan our annual festival."
-    },
-    {
         id: "rhubarb-sale",
         title: "Everything Rhubarb Sale",
         date: new Date("2026-08-16T09:00:00"),
@@ -390,5 +381,21 @@ export const oneTimeEvents: CalendarEvent[] = [
         location: "Seoul, Korea",
         categories: ["parishEvents", "special", "diocesan"],
         description: "International gathering of Catholic youth."
+    },
+    {
+        id: "fall-festival-2026",
+        title: "Fall Festival Planning",
+        date: new Date("2026-08-16T10:15:00"),
+        time: "10:15 AM",
+        location: "Parish Hall",
+        categories: ["parishEvents", "meeting"],
+        description: "Everyone is welcome to help plan our annual festival.",
+        contactPerson: "Melanie Karp",
+        contactEmail: "melanie@strcstaff.org",
+        contactPhone: "(605) 123-4567",
+        faqItems: [
+            { question: "Is lunch provided?", answer: "Yes, a light lunch will be served." },
+            { question: "Can I bring a spouse?", answer: "Absolutely! Spouses are welcome." },
+        ],
     },
 ];

@@ -66,8 +66,8 @@ function CalendarDay({
             <button
               key={event.id}
               onClick={(e) => onEventClick(e, event)}
-              className={`block w-full truncate rounded px-1.5 py-1 text-left ${colors.bg} border-l-2 ${colors.border} ${colors.labelColor} hover:brightness-95 transition-all font-bold ${isPast ? 'opacity-30' : 'opacity-100'
-                } text-[9px]`}
+              className={`block w-full rounded px-1.5 py-1 text-left line-clamp-2 ${colors.bg} border-l-2 ${colors.border} ${colors.labelColor} hover:brightness-95 transition-all font-bold ${isPast ? 'opacity-30' : 'opacity-100'
+                } text-[9px] leading-tight`} // Added leading-tight to make wrapped text look tighter
               title={`${event.time}: ${event.title}`}
             >
               {event.title}
@@ -82,7 +82,7 @@ function CalendarDay({
 // ---- Main Upcoming Events Component ----
 export default function UpcomingEventsCalendar() {
   const [location, navigate] = useLocation();
-  const [currentDate, setCurrentDate] = useState(new Date(2026, 7, 1));
+  const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(
     new Set(Object.keys(EVENT_COLORS) as EventCategory[])
   );

@@ -8,10 +8,11 @@
  */
 
 export const bulletinPdfManifest: Record<string, string> = {
-    '2026-08-01': '/August1.1-8.8.26.pdf',
-    '2026-08-08': '/August8.8-15.26.pdf',
-    // '2026-08-15': '/August15.8-22.26.pdf',  ← add when you upload
-    // '2026-08-22': '/August22.8-29.26.pdf',  ← add when you upload
+    '2026-08-01': '/ParishBulletins/August1.1-8.8.26.pdf',
+    '2026-08-08': '/ParishBulletins/August8.8-15.26.pdf',
+    '2026-08-15': '/ParishBulletins/August15.8-22.26.pdf',
+    '2026-08-22': '/ParishBulletins/August22.8-29.26.pdf',
+    '2026-08-29': '/ParishBulletins/August8.29-September9.5.pdf'
 };
 
 /**

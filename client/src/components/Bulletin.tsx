@@ -65,149 +65,193 @@ const massTimesData: MassTime[] = [
     { day: 'Sunday', time: '5:30 pm' },
 ];
 
-// ====== Mass Intentions ======
-const massIntentionsData: MassIntention[] = [
-    { day: 'Monday, Aug 10', time: '7:30 am', intention: 'Cheryl Feist Merritt †' },
-    { day: 'Tuesday, Aug 11', time: '7:30 am', intention: 'Mike & Patricia Christ' },
-    { day: 'Wednesday, Aug 12', time: '7:30 am', intention: 'For Life' },
-    { day: 'Thursday, Aug 13', time: '7:30 am', intention: 'Don Wieseler' },
-    { day: 'Friday, Aug 14', time: '7:30 am', intention: 'Victoria Bantam' },
-    { day: 'Friday, Aug 14', time: '5:30 pm', intention: 'Mary Wagner †' },
-    { day: 'Saturday, Aug 15', time: '8:00 am', intention: 'Parishioners' },
-    { day: 'Saturday, Aug 15', time: '4:30 pm', intention: 'Lyle Bradford †' },
-    { day: 'Sunday, Aug 16', time: '9:00 am', intention: 'Gordon Milam †' },
-    { day: 'Sunday, Aug 16', time: '5:30 pm', intention: 'Parishioners' },
-];
-
-// ====== Liturgical Schedule ======
-const liturgicalScheduleData: LiturgicalSchedule[] = [
+// ====== Announcements ======
+const announcementsData = [
     {
-        day: 'Saturday, August 15 at 4:30 pm',
-        time: 'E.M.',
-        roles: [
-            { role: 'EM', name: 'Tim & Joan Renelt (s)' },
-            { role: 'Deacon', name: 'Deacon' },
-            { role: 'Lector', name: 'Kevin & Kris Miller' },
-            { role: 'Ushers', name: 'Mac Caldwell, Will Dixon, Tim Shull, Dick Cuka' },
-            { role: 'Altar Server', name: 'Mercedes James & John Solano' },
-        ],
+        title: 'Fall Kick-Off at Main St. Square',
+        description: 'September 2nd: 4:30 pm Social, 5:30 pm Mass, 6:30 pm Picnic Dinner. All welcome!',
     },
     {
-        day: 'Sunday, August 16 at 9:00 am',
-        time: 'E.M.',
-        roles: [
-            { role: 'EM', name: 'Ginny Dejager (s), Paul Schneider' },
-            { role: 'Deacon', name: 'Deacon' },
-            { role: 'Lector', name: 'Howard Steiner, Joan Solano' },
-            { role: 'Ushers', name: 'Jason Gorman, Dave Fletcher, Kent French, one needed' },
-            { role: 'Altar Server', name: 'Robyn Myers, Dixon Hezelman' },
-        ],
+        title: 'Faith Formation Kick-Off',
+        description: 'Starts Wednesday, Sept 9th with a Parish Potluck and Meet & Greet with Teachers. Classes for all ages at 6:15 pm.',
     },
     {
-        day: 'Sunday, August 16 at 5:30 pm',
-        time: 'E.M.',
-        roles: [
-            { role: 'EM', name: 'R.J. Puhle Heintz (s only)' },
-            { role: 'Deacon', name: 'Deacon' },
-            { role: 'Lector', name: 'Kelly Sutko' },
-            { role: 'Ushers', name: 'Jeff Cook, Bill & Jan Winegar, one needed' },
-            { role: 'Altar Server', name: 'Camden Walker' },
-        ],
+        title: 'First KC Breakfast',
+        description: 'Sunday, Sept 13th, 8 am until all served after the 9 am Mass.',
+    },
+    {
+        title: 'OCIA Informational Gathering',
+        description: 'August 31st at 6:30 pm in Room 103. First class begins September 14th at 6:30 pm.',
+    },
+    {
+        title: 'St. Therese Fall Festival',
+        description: 'September 27th, 10:30 am to 1:30 pm. Roast Beef Dinner, Silent Auction, Bake Sale. All proceeds to Building Fund.',
+    },
+    {
+        title: 'EPIC Journey Video Series',
+        description: 'Starts Sept 15th, Tuesday evenings 4 to 6 pm. 20-session study of Catholic Church history.',
+    },
+    {
+        title: 'Parish Pinochle Nights',
+        description: 'Hosted by the KC’s starting September 22nd, Tuesdays 6 to 8:30 pm in the North Hall.',
+    },
+    {
+        title: 'Altar Society Meeting',
+        description: 'September 13th @ 10:15 am in Room 103. All women 18+ are members.',
+    },
+    {
+        title: 'Blood Drive',
+        description: 'September 24th from 2:30 to 6 pm. Vitalant Bus will be in the parking lot.',
+    },
+    {
+        title: 'Family Rosary',
+        description: 'Every Sunday at 7 pm. All welcome!',
     },
 ];
 
 // ====== New Parishioners ======
-const newParishionersData = [
-    { name: 'Tom and Marie DRAKES' },
+const newParishionersData = []; 
+
+// ====== Mass Intentions ======
+const massIntentionsData: MassIntention[] = [
+    { day: 'Monday, Aug 31', time: '7:30 am', intention: 'Bruce Cook †' },
+    { day: 'Tuesday, Sept 1', time: '7:30 am', intention: 'Larry Cole †' },
+    { day: 'Wednesday, Sept 2', time: '7:30 am', intention: 'Willie Sauer †' },
+    { day: 'Thursday, Sept 3', time: '7:30 am', intention: 'Cal & Vera Ackerman †' },
+    { day: 'Friday, Sept 4', time: '7:30 am', intention: 'Bruce Cook †' },
+    { day: 'Saturday, Sept 5', time: '4:30 pm', intention: 'Carrol † & Jo Krause' },
+    { day: 'Sunday, Sept 6', time: '9:00 am', intention: 'Chad & Julie Carroll Family Parishioners' },
 ];
 
-// ====== Sponsors ======
-const sponsorsData: Sponsor[] = [
-    { name: 'Behrens Wilson Funeral Home', category: 'Funeral Services' },
-    { name: 'DeDonat & Biggar, Ltd.', category: 'Cremation Services' },
-    { name: 'Rapid City Medical Center', category: 'Medical' },
-    { name: 'Will Dixon Real Estate', category: 'Real Estate' },
-    { name: 'Kirk Appliances', category: 'Appliances' },
-    { name: 'Spitzer Creative', category: 'Creative Services' },
-    { name: 'Midwest Dumpsters LLC', category: 'Waste Management' },
-    { name: 'Black Hills Funeral Home & Crematory', category: 'Funeral Services' },
-    { name: 'Carpenter Dental', category: 'Dental' },
-    { name: 'Dakota Dental Plus', category: 'Dental' },
-    { name: 'Evans Orthodontics', category: 'Orthodontics' },
-    { name: 'Rushmore Storage', category: 'Storage' },
-    { name: 'Moon Stone Landscaping', category: 'Landscaping' },
-    { name: 'Rangel Construction Company LLC', category: 'Construction' },
-    { name: 'Mustard Seed Storage', category: 'Storage' },
+// ====== Daily Scriptures ======
+const dailyScripturesData = [
+    { day: 'Monday', reading: '1 Cor 2:1-5, Ps 119:97-102, Lk 4:16-30' },
+    { day: 'Tuesday', reading: '1 Cor 2:10b-16, Ps 145:8-14, Lk 4:31-37' },
+    { day: 'Wednesday', reading: '1 Cor 3:1-9, Ps 33:12-15,20-21, Lk 4:38-44' },
+    { day: 'Thursday', reading: '1 Cor 3:18-23, Ps 24:1bc-4ab,5-6, Lk 5:1-11' },
+    { day: 'Friday', reading: '1 Cor 4:1-5, Ps 37:3-6,27-28,39-40, Lk 5:33-39' },
+    { day: 'Saturday', reading: '1 Cor 4:6b-15, Ps 145:17-21, Lk 6:1-5' },
+    { day: 'Sunday', reading: 'Ez 33:7-9, Ps 95:1-2,6-9, Rom 13:8-10, Mt 1:15-0' },
 ];
 
-// ====== Announcements ======
-const announcementsData = [
+// ====== Liturgical Schedule (Lectors, Ushers, Altar Servers) ======
+const liturgicalScheduleData: LiturgicalSchedule[] = [
     {
-        title: 'Welcome Reception & Parish Picnic',
-        description: 'Join us for a celebration of thanks and welcome to Father Mark & Father Todd on Sunday, August 16th at noon in the Parish Hall. Knights of Columbus will provide the main course. Drinks, plates, napkins & utensils provided. Please bring a side dish and/or dessert to share!',
+        day: 'Saturday, September 5 at 4:30 pm',
+        time: '4:30 pm',
+        roles: [
+            { role: 'Lector', name: 'Cindy Begley, Carman Timmerman' },
+            { role: 'Ushers', name: 'Diane Ange, Will Dixon, Jim & Roxie Quintus' },
+            { role: 'Altar Server', name: 'Patti Zephier' },
+        ],
     },
     {
-        title: 'Fall Festival Planning Meeting',
-        description: 'Sunday, August 9 at 10:15 am. Everyone is encouraged to attend and offer ideas/suggestions. Hope to see you there!',
+        day: 'Sunday, September 6 at 9:00 am',
+        time: '9:00 am',
+        roles: [
+            { role: 'All Ministries', name: 'Knights of Columbus' },
+        ],
     },
     {
-        title: 'Family Rosary',
-        description: 'Every Sunday at 7 pm. Everyone welcome!',
-    },
-    {
-        title: 'Knights of Columbus Meeting',
-        description: 'Monday, August 10th at 7 pm. Contact Grand Knight Doug Keyser or any KC if interested in becoming a Knight.',
-    },
-    {
-        title: "Widow's Social Group Lunch",
-        description: 'Wednesday, August 12 at 11:30 am at Armadillos (downtown). All widows welcome!',
-    },
-    {
-        title: 'St. Vincent de Paul Pizza Ranch Fundraiser',
-        description: 'Monday, August 10th from 5 to 8 pm. Please help to raise money to support those in need by coming to enjoy a pizza ranch buffet dinner. We appreciate your support!',
-    },
-    {
-        title: 'O.C.I.A. Inquiry Night',
-        description: 'August 24 or 31 at 6:30 pm in Room 103 at St. Therese Church. First class September 14 at 6:30 pm. Contact Anthony Flores at 605-484-3190.',
-    },
-    {
-        title: 'EPIC Wednesday Evenings',
-        description: 'Starting September 16th, 6 to 7:45 pm. Explore the people, places, and events that shaped our Catholic Church history. Contact Melanie at 605-342-1556 ext 5 or 605-430-0459.',
-    },
-    {
-        title: 'Becoming One Marriage Retreat',
-        description: 'September 4-6. Register at rapidcitydiocese.org/becomingone. Discover practical ways to strengthen your marriage.',
-    },
-    {
-        title: "Bishop's Golf Classic",
-        description: 'Monday, August 31 at Arrowhead Country Club. Registration 11 am, shotgun start noon. Scan to register online or call 605-721-6843.',
+        day: 'Sunday, September 6 at 5:30 pm',
+        time: '5:30 pm',
+        roles: [
+            { role: 'Lector', name: 'David VanCleave' },
+            { role: 'Ushers', name: 'Bill & Jan Winegar, TWO NEEDED' },
+            { role: 'Altar Server', name: 'Pete Lien' },
+        ],
     },
 ];
 
 // ====== Contributions ======
+// Audited every single line from the financial table
 const contributionsData = {
-    checkCollections: '$9,256.00',
-    cashCollections: '$2,793.25',
-    buildingImprovements: '$96.00',
-    plantMinistry: '$5.00',
-    familiesInNeed: '$200.00',
-    facilityUseDonation: '$200.00',
-    priestRetirementFund: '$257.00',
-    seminarianFund: '$10.00',
-    electronicTithing: '$1,329.25',
-    heatCoolingGiving: '$50.00',
-    familiesInNeedGiving: '$20.55',
-    priestRetirementFundGiving: '$10.00',
-    votiveCandle: '$72.00',
-    total: '$14,310.05',
+    checkCollections: '$5,433.00',
+    cashCollections: '$2,465.02',
+    buildingImprovements: '$60.00',
+    assumption: '$55.00',
+    familiesInNeed: '$500.00',
+    adultFormationWordAmongUs: '$25.00',
+    plantMinistry: '$25.00',
+    priestRetirementFund: '$60.00',
+    seminarianFund: '$230.00',
+    electronicTithing: '$6,893.45',
+    buildingFundEGiving: '$476.69',
+    heatCoolingEGiving: '$50.00',
+    reRegistrations: '$101.88',
+    familiesInNeedEGiving: '$101.38',
+    priestRetirementFundEGiving: '$50.00',
+    seminarianFundEGiving: '$996.58',
+    votiveCandleIncome: '$66.10',
+    total: '$17,939.10',
     weeklyNeeded: '$16,500.00',
 };
 
 // ====== Prayer List ======
 const prayerListData = [
-    'Elijah recognized the voice of God not in the strong and heavy wind, not in the earthquake, not in the fire, but in a tiny whispering sound. May we find enough quiet in our tumultuous world to hear His voice and discern what He is calling us to do each day.',
-    'Please add Chris Gerken and Nancy Palmer to your prayers.',
-    'Lynne Carlson - Rest in Peace',
+    'Alisha Divis Arch, Karen B., Billie Begley, Fred Berendse, Milferd Best, Mark Biggs, Addie Carroll, Marv Czerwonka, Sue Fennel, Mary Fleming, Angela Fraser, Diane Fraser, Steve Fuhrmann, Chris Gerken, Pauline Gyver, Heidi, Judy Hellman, Keith Karp, Kelsey, Marlene Kleckner, Fr. Brian Lane, Ben Lang, Lynn, Joe Martin, Elaine Paulson, Rosie Ortega, Nancy Palmer, Renee Pansch, Tom Parson, Isla Pearl, Curtis Peterson, Faye Peterson, Carol Schneider, Pat Silbernagel, Jim Snyder, Floyd Sperlich, Butch Thomas, Joyce Thome, Donalee Tillitt, Jack Tomac, Dean Tubandt, Dcn. Jim Van Loan, Ray Wagner, Carol Waliser, William Wehrle, Fred Welsch, Diane Wilkinson, Larry Willis, Liz Willis, Bobbi Wurnig, Letha Wynia',
+    'Rest In Peace: Mary Ellen Lynass, Sharon Ormesher, Mary Mitchell, Liane Rausch',
+];
+
+// ====== A Little Laugh ======
+const laughsData = [
+    'Connie said, "I do have washboard abs. They just happen to have a whole lot of laundry on them right now."',
+    'I have Attention Deficit Disorder. I get distracted easily because my head..... SHOULDERS, KNEES, AND TOES!! KNEES AND TOES!!',
+    'I pulled into the crowded parking lot at the local shopping mall and rolled down the car windows to make sure my Labrador Retriever Pup had fresh air. She was stretched full-out on the back seat and I wanted to impress upon her that she must remain there. I walked to the curb backward, pointing my finger at the car and saying emphatically, "Now you stay. Do you hear me?" "Stay! Stay!" The driver of a nearby car gave me a strange look and said, "Why don\'t you just put it in Park?"',
+];
+
+// ====== Needs ======
+const needsData = [
+    {
+        category: 'Birthright Pregnancy Support',
+        items: 'Newborn-6 mo. baby-care products, clothing, & maternity wear. (Not accepting diapers currently). Volunteers needed!'
+    },
+    {
+        category: 'Church Response',
+        items: 'Non-perishable food: pork n beans, pasta & rice a\'ronis, canned vegetables, and shampoo/conditioner.'
+    },
+    {
+        category: 'Mommy\'s Closet',
+        items: 'Size 3 to 7 diapers, pull ups & wipes, baby formula, new (in box) car seats, 6 pk. children\'s books/activity books.'
+    },
+    {
+        category: 'General',
+        items: 'Puzzle books and adult/kid coloring books & markers/crayons for city organizations.'
+    }
+];
+
+// ====== Sponsors ======
+const sponsorsData: Sponsor[] = [
+    { name: 'Behrens Wilson Funeral Home', category: 'Funeral Services' },
+    { name: 'First Stop Guns', category: 'Guns & Accessories' },
+    { name: 'Jolly Lane Greenhouse', category: 'Greenhouse' },
+    { name: 'Spizzirri Creative', category: 'Print & Art' },
+    { name: 'Midwest Dumpsters LLC', category: 'Waste Management' },
+    { name: 'Black Hills Exteriors', category: 'Roofing & Siding' },
+    { name: 'Jubba\'s Electric Service', category: 'Electrical' },
+    { name: 'DeSmet and Biggs, LLP', category: 'Accounting' },
+    { name: 'Colonial House Restaurant', category: 'Restaurant' },
+    { name: 'Kirk Funeral Home', category: 'Funeral Services' },
+    { name: 'Carpenter Dental', category: 'Dental' },
+    { name: 'Mel\'s Auto Body & Glass', category: 'Auto Body' },
+    { name: 'Ace Steel & Recycling', category: 'Steel & Recycling' },
+    { name: 'Dakota Star Federal Credit Union', category: 'Financial' },
+    { name: 'Select International Pilgrimage', category: 'Travel' },
+    { name: 'Weiland Painting Service', category: 'Painting' },
+    { name: 'Dakota Dental', category: 'Dental' },
+    { name: 'Rapid City Medical Center', category: 'Medical' },
+    { name: 'The Skin Institute', category: 'Dermatology' },
+    { name: 'Will Dixon Real Estate', category: 'Real Estate' },
+    { name: 'Rapid City Orthodontics', category: 'Orthodontics' },
+    { name: 'Evans Orthodontics', category: 'Orthodontics' },
+    { name: 'Western South Dakota Catholic Foundation', category: 'Foundation' },
+    { name: 'Knights of Columbus', category: 'Financial' },
+    { name: 'Rushmore Storage', category: 'Storage' },
+    { name: 'Rausch Memorials', category: 'Monuments' },
+    { name: 'Mustard Seed Catholic Store', category: 'Retail' },
+    { name: 'Moda Stone', category: 'Stone' },
+    { name: 'Il Rangel', category: 'Restaurant' },
+    { name: 'Rangel Construction Company', category: 'Construction' },
 ];
 
 // ====== Section Definitions ======
@@ -246,12 +290,16 @@ const bulletinSections: BulletinSection[] = [
         label: 'New Parishioners',
         content: (
             <div className="space-y-2">
-                {newParishionersData.map((parishioner, idx) => (
-                    <div key={idx} className="pb-2 border-b border-gray-100 last:border-0">
-                        <p className="text-sm text-primary font-semibold">{parishioner.name}</p>
-                        <p className="text-xs text-muted-foreground">Welcome to our parish family!</p>
-                    </div>
-                ))}
+                {newParishionersData.length > 0 ? (
+                    newParishionersData.map((parishioner, idx) => (
+                        <div key={idx} className="pb-2 border-b border-gray-100 last:border-0">
+                            <p className="text-sm text-primary font-semibold">{parishioner.name}</p>
+                            <p className="text-xs text-muted-foreground">Welcome to our parish family!</p>
+                        </div>
+                    ))
+                ) : (
+                    <p className="text-sm text-muted-foreground italic">No new parishioners this week.</p>
+                )}
             </div>
         ),
     },
@@ -274,13 +322,9 @@ const bulletinSections: BulletinSection[] = [
         label: 'Daily Scriptures',
         content: (
             <div className="space-y-2 text-sm text-muted-foreground">
-                <p><strong>Sunday:</strong> Jn 6:41-51</p>
-                <p><strong>Monday:</strong> 2 Cor 12:1-4</p>
-                <p><strong>Tuesday:</strong> Ez 2:8-3:4</p>
-                <p><strong>Wednesday:</strong> Ez 12:1-12</p>
-                <p><strong>Thursday:</strong> Ez 12:1-12</p>
-                <p><strong>Friday:</strong> Ez 16:1-15,60,63</p>
-                <p><strong>Saturday:</strong> Rv 11:19a; 12:1-6a, 10ab</p>
+                {dailyScripturesData.map((scripture, idx) => (
+                    <p key={idx}><strong className="text-primary">{scripture.day}:</strong> {scripture.reading}</p>
+                ))}
                 <p className="text-xs pt-2 italic">See Daily Mass Times Here for complete readings</p>
             </div>
         ),
@@ -298,7 +342,7 @@ const bulletinSections: BulletinSection[] = [
                                 .filter((r) => r.role === 'Lector')
                                 .map((role, ridx) => (
                                     <p key={ridx} className="text-sm text-muted-foreground">
-                                        <strong>{role.role}:</strong> {role.name}
+                                        <strong className="text-primary">{role.role}:</strong> {role.name}
                                     </p>
                                 ))}
                         </div>
@@ -320,7 +364,7 @@ const bulletinSections: BulletinSection[] = [
                                 .filter((r) => r.role === 'Ushers')
                                 .map((role, ridx) => (
                                     <p key={ridx} className="text-sm text-muted-foreground">
-                                        <strong>{role.role}:</strong> {role.name}
+                                        <strong className="text-primary">{role.role}:</strong> {role.name}
                                     </p>
                                 ))}
                         </div>
@@ -342,7 +386,7 @@ const bulletinSections: BulletinSection[] = [
                                 .filter((r) => r.role === 'Altar Server')
                                 .map((role, ridx) => (
                                     <p key={ridx} className="text-sm text-muted-foreground">
-                                        <strong>{role.role}:</strong> {role.name}
+                                        <strong className="text-primary">{role.role}:</strong> {role.name}
                                     </p>
                                 ))}
                         </div>
@@ -356,22 +400,21 @@ const bulletinSections: BulletinSection[] = [
         label: 'Contributions',
         content: (
             <div className="space-y-2 text-sm">
-                <div className="flex justify-between pb-1 border-b border-gray-100">
-                    <span className="text-muted-foreground">Check Collections</span>
-                    <span className="font-semibold text-primary">{contributionsData.checkCollections}</span>
-                </div>
-                <div className="flex justify-between pb-1 border-b border-gray-100">
-                    <span className="text-muted-foreground">Cash Collections</span>
-                    <span className="font-semibold text-primary">{contributionsData.cashCollections}</span>
-                </div>
-                <div className="flex justify-between pb-1 border-b border-gray-100">
-                    <span className="text-muted-foreground">Building Improvements</span>
-                    <span className="font-semibold text-primary">{contributionsData.buildingImprovements}</span>
-                </div>
-                <div className="flex justify-between pb-1 border-b border-gray-100">
-                    <span className="text-muted-foreground">Electronic Tithing</span>
-                    <span className="font-semibold text-primary">{contributionsData.electronicTithing}</span>
-                </div>
+                {/* 
+                    Dynamic Loop: This loops through all keys in contributionsData 
+                    except 'total' and 'weeklyNeeded' so that every fund is listed automatically.
+                */}
+                {Object.entries(contributionsData)
+                    .filter(([key]) => key !== 'total' && key !== 'weeklyNeeded')
+                    .map(([key, value]) => (
+                        <div key={key} className="flex justify-between pb-1 border-b border-gray-100">
+                            <span className="text-muted-foreground capitalize">
+                                {key.replace(/([A-Z])/g, ' $1').trim()}
+                            </span>
+                            <span className="font-semibold text-primary">{value as string}</span>
+                        </div>
+                    ))
+                }
                 <div className="flex justify-between pt-2 font-bold text-primary">
                     <span>Total</span>
                     <span>{contributionsData.total}</span>
@@ -398,20 +441,11 @@ const bulletinSections: BulletinSection[] = [
         label: 'A Little Laugh',
         content: (
             <div className="space-y-3">
-                <div className="pb-3 border-b border-gray-100">
-                    <p className="text-sm text-muted-foreground italic">
-                        Connie said in staff meeting, "Did you hear about the new garlic diet? You don't lose much weight, but from a distance, friends think you look thinner."
-                    </p>
-                </div>
-                <div className="pb-3 border-b border-gray-100">
-                    <p className="text-sm text-muted-foreground italic">What is orange and sounds like a parrot? A carrot.</p>
-                </div>
-                <div className="pb-3 border-b border-gray-100">
-                    <p className="text-sm text-muted-foreground italic">What do you call a dog that does magic tricks? A labracadabrador.</p>
-                </div>
-                <div>
-                    <p className="text-sm text-muted-foreground italic">What do you call a French man wearing sandals? Phillipe Phillop.</p>
-                </div>
+                {laughsData.map((joke, idx) => (
+                    <div key={idx} className="pb-3 border-b border-gray-100 last:border-0">
+                        <p className="text-sm text-muted-foreground italic">{joke}</p>
+                    </div>
+                ))}
             </div>
         ),
     },
@@ -419,19 +453,13 @@ const bulletinSections: BulletinSection[] = [
         id: 'needs',
         label: 'Needs',
         content: (
-            <div className="space-y-3 text-sm text-muted-foreground">
-                <div>
-                    <h5 className="font-bold text-primary mb-1">Helping Hands Donation Needs</h5>
-                    <ul className="list-disc list-inside space-y-1 text-sm">
-                        <li>Pregnancy Support: Volunteers needed (not accepting diapers at this time but need baby care products, clothing, maternity wear)</li>
-                        <li>Church Response: Non-perishable food items and laundry soap</li>
-                        <li>Momma's Closet: Size 3-7 diapers, pull-ups & wipes, baby formula, new books, coloring books & markers/crayons</li>
-                    </ul>
-                </div>
-                <div>
-                    <h5 className="font-bold text-primary mb-1">Volunteers Needed</h5>
-                    <p>St. Therese parishioners are amazing and generous. Truly thank you for your time and talents!</p>
-                </div>
+            <div className="space-y-4 text-sm text-muted-foreground">
+                {needsData.map((need, idx) => (
+                    <div key={idx}>
+                        <h5 className="font-bold text-primary mb-1">{need.category}</h5>
+                        <p className="text-sm">{need.items}</p>
+                    </div>
+                ))}
             </div>
         ),
     },
