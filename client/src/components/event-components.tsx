@@ -1,12 +1,11 @@
 import { ChevronRight, Clock, MapPin } from 'lucide-react';
-import { Card } from '@/components/ui/card';
 import { CalendarEvent, EventCategory, EVENT_COLORS } from './events';
 
 // ---- 1. CATEGORY PILL ----
 export function EventCategoryPill({ category }: { category: EventCategory }) {
   const colors = EVENT_COLORS[category] || EVENT_COLORS['parishEvents'];
   return (
-    <span className={`text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}>
+    <span className={`inline-flex shrink-0 items-center whitespace-nowrap text-[7px] font-black uppercase tracking-widest px-1.5 py-0.5 rounded-full ${colors.bg} ${colors.labelColor} border border-black/5`}>
       {colors.label}
     </span>
   );
@@ -37,6 +36,33 @@ export function CalendarCellEvent({
   );
 }
 
+function EventCategoryPills({ categories }: { categories: EventCategory[] }) {
+  return (
+    <div className="min-w-0">
+      <div className="flex flex-wrap items-center gap-1.5">
+        {categories.map((cat) => (
+          <EventCategoryPill key={cat} category={cat} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function EventCardMeta({ event }: { event: CalendarEvent }) {
+  return (
+    <div className="grid grid-cols-1 gap-x-4 gap-y-1 text-[10px] sm:grid-cols-2">
+      <div className="flex min-w-0 items-start gap-1.5 font-bold uppercase tracking-tight text-gray-500">
+        <Clock className="mt-0.5 size-3 shrink-0 text-primary/40" />
+        <span className="break-words leading-snug">{event.time}</span>
+      </div>
+      <div className="flex min-w-0 items-start gap-1.5 font-bold uppercase tracking-tight text-gray-400">
+        <MapPin className="mt-0.5 size-3 shrink-0 text-primary/30" />
+        <span className="break-words leading-snug">{event.location}</span>
+      </div>
+    </div>
+  );
+}
+
 // ---- 3. EVENT LIST CARD (Flexible, Wrapping) ----
 export function EventCard({ 
   event, 
@@ -48,12 +74,12 @@ export function EventCard({
   navigate: (url: string) => void 
 }) {
   return (
-    <Card
+    <div
       id={`event-card-${event.id}`}
-      className={`group flex flex-row items-stretch overflow-hidden cursor-pointer transition-all hover:shadow-lg bg-white min-h-[140px] h-auto ${highlighted ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'border-none ring-1 ring-black/5'}`}
+      className={`group relative self-start h-fit min-h-[140px] w-full flex flex-row items-stretch gap-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-0 shadow-sm cursor-pointer transition-all hover:shadow-lg ${highlighted ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'ring-1 ring-black/5'}`}
       onClick={() => navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`)}
     >
-      <div className="w-16 sm:w-20 flex flex-col items-center justify-center border-r border-gray-100 bg-white shrink-0 px-2 py-3">
+      <div className="w-16 sm:w-20 shrink-0 rounded-l-2xl border-r border-gray-100 bg-white px-2 py-3 flex flex-col items-center justify-center">
         <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
           {event.date.toLocaleDateString('en-US', { month: 'short' })}
         </span>
@@ -65,29 +91,19 @@ export function EventCard({
         </span>
       </div>
 
-      <div className="flex-1 px-3 sm:px-6 py-4 flex flex-col min-w-0">
-        <div className="flex items-center gap-2 mb-5">
-          {event.categories.map((cat: EventCategory) => (
-            <EventCategoryPill key={cat} category={cat} />
-          ))}
-        </div>
-        <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left mb-2 break-words leading-snug">
+      <div className="self-center h-fit min-w-0 flex flex-1 flex-col justify-center gap-y-3 px-3 py-4 sm:px-6">
+        <EventCategoryPills categories={event.categories as EventCategory[]} />
+
+        <h5 className="font-serif font-bold text-lg text-primary group-hover:text-accent transition-colors text-left break-words leading-snug">
           {event.title}
         </h5>
-        <div className="flex gap-4 text-[10px] mt-auto">
-          <div className="flex items-center gap-1.5 font-bold text-gray-500 uppercase tracking-tight flex-1 min-w-0">
-            <Clock className="size-3 text-primary/40 flex-shrink-0" />
-            <span className="truncate">{event.time}</span>
-          </div>
-          <div className="flex items-center gap-1.5 font-bold text-gray-400 uppercase tracking-tight flex-1 min-w-0">
-            <MapPin className="size-3 text-primary/30 flex-shrink-0" />
-            <span className="truncate">{event.location}</span>
-          </div>
-        </div>
+
+        <EventCardMeta event={event} />
       </div>
-      <div className="pr-4 opacity-0 group-hover:opacity-100 transition-opacity hidden md:flex items-center">
+
+      <div className="pointer-events-none absolute right-4 top-1/2 hidden -translate-y-1/2 opacity-0 transition-opacity group-hover:opacity-100 md:flex">
         <ChevronRight className="size-5 text-primary/40" />
       </div>
-    </Card>
+    </div>
   );
 }

@@ -1,92 +1,24 @@
 import { useState, useMemo } from 'react';
-import {
-  ChevronLeft,
-  ChevronRight,
-  MapPin,
-  Clock,
-  Calendar as CalendarIcon,
-  Filter,
-  X,
-  User,
-  Mail,
-  Phone,
-  ExternalLink,
-} from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, ExternalLink, MapPin, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useLocation, Link } from 'wouter';
 
 import {
-  CalendarEvent,
-  EventCategory,
-  TimeFilter,
-  EVENT_COLORS,
-  generateRecurringEventsForMonth,
-  staticEvents,
+  CalendarEvent, EventCategory, TimeFilter, EVENT_COLORS,
+  generateRecurringEventsForMonth, staticEvents,
 } from './events';
 
-import { EventCategoryPill, CalendarCellEvent, EventCard } from './event-components';
+import { EventCategoryPill } from './event-components';
+import { CalendarView } from './CalendarView';
+import { EventsListView } from './EventsListView';
 
 type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
-
-function CalendarDay({
-  date,
-  today,
-  events,
-  onEventClick,
-  onDayClick,
-}: {
-  date: Date;
-  today: Date;
-  events: CalendarEvent[];
-  onEventClick: (e: React.MouseEvent, event: CalendarEvent) => void;
-  onDayClick: (day: Date) => void;
-}) {
-  const isToday =
-    date.getDate() === today.getDate() &&
-    date.getMonth() === today.getMonth() &&
-    date.getFullYear() === today.getFullYear();
-
-  const isPast = date < today && !isToday;
-
-  const getFontSize = () => {
-    const count = events.length;
-    if (count <= 2) return 'text-[9px]';
-    if (count <= 4) return 'text-[8px]';
-    return 'text-[7px]';
-  };
-
-  return (
-    <div
-      onClick={() => onDayClick(date)}
-      className={`aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'
-        } cursor-pointer flex flex-col overflow-hidden`}
-    >
-      <div className={`text-xs font-black mb-1 flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>
-        {date.getDate()}
-      </div>
-
-      <div className="flex flex-col space-y-0.5 pointer-events-auto flex-1 min-h-0">
-        {events.map((event) => (
-          <CalendarCellEvent 
-            key={event.id} 
-            event={event} 
-            isPast={isPast} 
-            fontSize={getFontSize()} 
-            onEventClick={onEventClick} 
-          />
-        ))}
-      </div>
-    </div>
-  );
-}
 
 export default function UpcomingEventsCalendar() {
   const [location, navigate] = useLocation();
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(
-    new Set(Object.keys(EVENT_COLORS) as EventCategory[])
-  );
+  const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(new Set(Object.keys(EVENT_COLORS) as EventCategory[]));
   const [expandedDay, setExpandedDay] = useState<Date | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<ExtendedTimeFilter>('all');
@@ -94,6 +26,7 @@ export default function UpcomingEventsCalendar() {
 
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
+  // 1. Data generation
   const allEvents = useMemo(() => {
     const events = [...staticEvents];
     const startMonth = currentDate.getMonth();
@@ -109,154 +42,79 @@ export default function UpcomingEventsCalendar() {
     return allEvents.filter((event) => event.categories.some((cat) => selectedTypes.has(cat)));
   }, [allEvents, selectedTypes]);
 
-  const toggleEventType = (type: EventCategory) => {
-    const next = new Set(selectedTypes);
-    if (next.has(type)) next.delete(type); else next.add(type);
-    setSelectedTypes(next);
-  };
-
-  const selectAll = () => setSelectedTypes(new Set(Object.keys(EVENT_COLORS) as EventCategory[]));
-  const deselectAll = () => setSelectedTypes(new Set());
-
+  // 2. Time Filtering Logic
   const getTimeFilteredEvents = (eventsToFilter: CalendarEvent[]) => {
-    if (timeFilter === 'all') return eventsToFilter;
-    
-    const now = new Date();
-    now.setHours(0, 0, 0, 0);
-    const currentMonth = now.getMonth();
-    const currentYear = now.getFullYear();
+    if (timeFilter === 'all' || timeFilter === 'specificDay') return eventsToFilter;
+    const now = new Date(); now.setHours(0, 0, 0, 0);
+    const currentMonth = now.getMonth(); const currentYear = now.getFullYear();
     const nextMonth = currentMonth === 11 ? 0 : currentMonth + 1;
     const nextMonthYear = currentMonth === 11 ? currentYear + 1 : currentYear;
 
     return eventsToFilter.filter((event) => {
-      const eventDate = new Date(event.date);
-      eventDate.setHours(0,0,0,0);
-      const eventMonth = eventDate.getMonth();
-      const eventYear = eventDate.getFullYear();
-
+      const eventDate = new Date(event.date); eventDate.setHours(0,0,0,0);
+      const eventMonth = eventDate.getMonth(); const eventYear = eventDate.getFullYear();
       switch (timeFilter) {
         case 'thisWeek': {
-          const weekEnd = new Date(now);
-          weekEnd.setDate(now.getDate() + 7);
+          const weekEnd = new Date(now); weekEnd.setDate(now.getDate() + 7);
           return eventDate.getTime() >= now.getTime() && eventDate.getTime() <= weekEnd.getTime();
         }
         case 'thisMonth': return eventMonth === currentMonth && eventYear === currentYear;
         case 'nextMonth': return eventMonth === nextMonth && eventYear === nextMonthYear;
         case 'twoPlus': {
-          const twoMonthsFromNow = new Date(now);
-          twoMonthsFromNow.setMonth(twoMonthsFromNow.getMonth() + 2);
+          const twoMonthsFromNow = new Date(now); twoMonthsFromNow.setMonth(twoMonthsFromNow.getMonth() + 2);
           return eventDate.getTime() >= twoMonthsFromNow.getTime();
         }
         case 'calendarMonth': return eventMonth === currentDate.getMonth() && eventYear === currentDate.getFullYear();
-        // 'specificDay' is handled in the main sortedUpcomingEvents loop to ensure chronological order
-        case 'specificDay': return true; 
         default: return true;
       }
     });
   };
 
+  // 3. Chronological and Start-Date Sort
   const sortedUpcomingEvents = useMemo(() => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    
-    // 1. Start with Category filtered events, sorted chronologically
+    const today = new Date(); today.setHours(0, 0, 0, 0);
     let baseList = filteredEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    // 2. Handle Date Filtering
     if (timeFilter === 'specificDay' && filterDate) {
-      // Filter: Only events on or AFTER the clicked date
-      const normalizedFilterDate = new Date(filterDate);
-      normalizedFilterDate.setHours(0,0,0,0);
-      
+      const normalizedFilterDate = new Date(filterDate); normalizedFilterDate.setHours(0,0,0,0);
       baseList = baseList.filter(e => {
-        const eDate = new Date(e.date);
-        eDate.setHours(0,0,0,0);
+        const eDate = new Date(e.date); eDate.setHours(0,0,0,0);
         return eDate.getTime() >= normalizedFilterDate.getTime();
       });
     } else {
-      // Standard Time Filtering (thisWeek, thisMonth, etc.)
       baseList = baseList.filter((e) => {
-        if (timeFilter === 'calendarMonth') return true; // Handled by getTimeFilteredEvents
-        const eDate = new Date(e.date);
-        eDate.setHours(0, 0, 0, 0);
+        if (timeFilter === 'calendarMonth') return true;
+        const eDate = new Date(e.date); eDate.setHours(0, 0, 0, 0);
         return eDate.getTime() >= today.getTime();
       });
       baseList = getTimeFilteredEvents(baseList);
     }
-
     return baseList;
   }, [filteredEvents, timeFilter, currentDate, filterDate]);
 
-  const getEventsForDay = (date: Date) => {
-    return filteredEvents.filter((e) => {
-      const eDate = new Date(e.date);
-      return (eDate.getDate() === date.getDate() && eDate.getMonth() === date.getMonth() && eDate.getFullYear() === date.getFullYear());
-    });
-  };
+  const getEventsForDay = (date: Date) => filteredEvents.filter((e) => {
+    const eDate = new Date(e.date);
+    return (eDate.getDate() === date.getDate() && eDate.getMonth() === date.getMonth() && eDate.getFullYear() === date.getFullYear());
+  });
 
-  const handlePrev = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
-  const handleNext = () => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
-  
   const handleDayClick = (day: Date) => {
-    const normalizedDay = new Date(day);
-    normalizedDay.setHours(0,0,0,0);
-    setExpandedDay(normalizedDay);
-    setFilterDate(normalizedDay);
-    setTimeFilter('specificDay');
+    const normalizedDay = new Date(day); normalizedDay.setHours(0,0,0,0);
+    setExpandedDay(normalizedDay); setFilterDate(normalizedDay); setTimeFilter('specificDay');
   };
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
-    e.stopPropagation();
-    setHighlightedEventId(event.id);
+    e.stopPropagation(); setHighlightedEventId(event.id);
     const card = document.getElementById(`event-card-${event.id}`);
     if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const monthName = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
+  const resetFilters = () => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); };
 
+  const today = new Date(); today.setHours(0, 0, 0, 0);
   const daysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   const firstDayOfMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   const monthDays = Array.from({ length: daysInMonth(currentDate) }, (_, i) => new Date(currentDate.getFullYear(), currentDate.getMonth(), i + 1));
   const emptyDaysBefore = Array.from({ length: firstDayOfMonth(currentDate) }, (_, i) => i);
-
-  const renderCategoryFilter = () => (
-    <div className="p-3 sm:p-4 bg-gray-50/50 border-b-2 border-primary/20">
-      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
-        <div className="flex items-center gap-2 mr-1 sm:mr-2 shrink-0">
-          <Filter className="size-3.5 text-primary/60" />
-          <span className="text-[10px] font-black uppercase tracking-widest text-primary/60">Filter</span>
-        </div>
-        <div className="flex flex-wrap gap-1.5 flex-1">
-          {(Object.entries(EVENT_COLORS) as [EventCategory, any][]).map(([type, colors]) => (
-            <button
-              key={type}
-              onClick={() => toggleEventType(type)}
-              className={`flex items-center gap-1.5 rounded-full px-2.5 sm:px-3 py-1 text-[10px] font-bold transition-all border-2 ${selectedTypes.has(type) ? `${colors.bg} ${colors.border} ${colors.labelColor} shadow-sm` : 'bg-white border-gray-200 text-gray-400 opacity-60'}`}
-            >
-              <span className={`size-1.5 rounded-full ${colors.dot}`} />
-              {colors.label}
-            </button>
-          ))}
-        </div>
-        <div className="flex gap-3 ml-auto shrink-0">
-          <button onClick={selectAll} className="text-[9px] font-black text-primary hover:underline uppercase">All</button>
-          <button onClick={deselectAll} className="text-[9px] font-black text-muted-foreground hover:underline uppercase">None</button>
-        </div>
-      </div>
-    </div>
-  );
-
-  const renderMonthHeader = () => (
-    <div className="bg-primary p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
-      <div className="flex items-center gap-4">
-        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handlePrev}><ChevronLeft className="size-6" /></Button>
-        <h3 className="font-serif text-xl sm:text-2xl font-bold tracking-wide min-w-[160px] text-center">{monthName}</h3>
-        <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={handleNext}><ChevronRight className="size-6" /></Button>
-      </div>
-    </div>
-  );
 
   if (eventDetailId) {
     const event = allEvents.find((e) => e.id === eventDetailId);
@@ -278,14 +136,6 @@ export default function UpcomingEventsCalendar() {
                 <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">{event.description || event.about || 'No additional information available for this event.'}</p>
                 {event.signupLink && (<Button className="mt-8 bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest w-full sm:w-auto" asChild><a href={event.signupLink} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-2 size-5" /> Register / More Info</a></Button>)}
               </Card>
-              {event.faqItems && event.faqItems.length > 0 && (
-                <div className="space-y-6">
-                  <h3 className="font-serif text-3xl font-bold text-primary">Frequently Asked Questions</h3>
-                  <div className="grid gap-4">
-                    {event.faqItems.map((faq, i) => (<Card key={i} className="p-6 border-2 border-primary/5 bg-white rounded-2xl"><h4 className="font-bold text-primary mb-2">{faq.question}</h4><p className="text-muted-foreground text-sm">{faq.answer}</p></Card>))}
-                  </div>
-                </div>
-              )}
             </div>
             <div className="space-y-6">
               <Card className="p-8 border-none shadow-lg bg-primary text-white rounded-[2rem]">
@@ -296,16 +146,6 @@ export default function UpcomingEventsCalendar() {
                   <div className="flex items-start gap-4"><MapPin className="size-6 text-accent shrink-0" /><div><p className="text-[10px] font-black uppercase tracking-widest text-white/40">Location</p><p className="font-bold">{event.location}</p></div></div>
                 </div>
               </Card>
-              {(event.contactPerson || event.contactEmail || event.contactPhone) && (
-                <Card className="p-8 border-2 border-primary/10 bg-white rounded-[2rem]">
-                  <h3 className="font-serif text-xl font-bold text-primary mb-6">Contact Information</h3>
-                  <div className="space-y-4">
-                    {event.contactPerson && (<div className="flex items-center gap-3"><User size={18} className="text-accent" /><span className="text-sm font-bold text-primary">{event.contactPerson}</span></div>)}
-                    {event.contactEmail && (<a href={`mailto:${event.contactEmail}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-accent transition-colors"><Mail size={18} /> {event.contactEmail}</a>)}
-                    {event.contactPhone && (<a href={`tel:${event.contactPhone.replace(/\D/g, '')}`} className="flex items-center gap-3 text-sm text-muted-foreground hover:text-accent transition-colors"><Phone size={18} /> {event.contactPhone}</a>)}
-                  </div>
-                </Card>
-              )}
             </div>
           </div>
         </div>
@@ -321,69 +161,29 @@ export default function UpcomingEventsCalendar() {
           <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">Browse upcoming events. Use the filters below to narrow by category.</p>
         </div>
 
-        <div className="lg:hidden space-y-4">
-          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">{renderCategoryFilter()}</div>
-          <div className="bg-white rounded-2xl border-2 border-primary/20 shadow-sm overflow-hidden">
-            <div className="sticky top-0 z-10 bg-white border-b-2 border-primary/10 p-4">
-              <div className="flex items-center justify-between gap-3">
-                <h4 className="font-serif text-xl font-bold text-primary tracking-tight">Upcoming Events</h4>
-                <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); }} className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3">Reset</Button>
-              </div>
-              <div className="flex gap-2 flex-wrap mt-3">
-                {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
-                  <button key={filter} onClick={() => setTimeFilter(filter)} className={`px-3 py-1.5 rounded-full text-xs font-bold transition-all ${timeFilter === filter ? 'bg-primary text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    {filter === 'all' ? 'All' : filter === 'thisWeek' ? 'This Week' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : filter === 'twoPlus' ? '2+ Months' : 'Calendar Month'}
-                  </button>
-                ))}
-              </div>
-            </div>
-            <div id="events-scroll-container-mobile" className="flex flex-col gap-3 min-h-[600px] max-h-[80vh] overflow-y-auto p-4 pb-6 custom-scrollbar">
-              {sortedUpcomingEvents.length === 0 ? (
-                <div className="text-center py-16 bg-gray-50/50 rounded-xl border-2 border-dashed border-primary/10"><CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" /><p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p></div>
-              ) : (
-                sortedUpcomingEvents.map(event => (<EventCard key={event.id} event={event} highlighted={highlightedEventId === event.id} navigate={navigate} />))
-              )}
-            </div>
-          </div>
+        <div className="lg:hidden w-full">
+          <EventsListView 
+            sortedUpcomingEvents={sortedUpcomingEvents}
+            timeFilter={timeFilter} setTimeFilter={setTimeFilter}
+            highlightedEventId={highlightedEventId} navigate={navigate}
+            onReset={resetFilters}
+          />
         </div>
 
-        <div className="hidden lg:flex flex-col lg:flex-row gap-12 items-start w-full relative">
-          <div className="w-full lg:w-7/12 flex-shrink-0 flex flex-col">
-            <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">
-              {renderMonthHeader()}
-              {renderCategoryFilter()}
-            </div>
-            <div className="grid grid-cols-7 bg-white shadow-xl rounded-b-2xl overflow-hidden border-l-2 border-t-2 border-primary/30">
-              {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-                <div key={day} className="relative p-3 text-center text-[10px] font-black uppercase tracking-widest text-primary/60 bg-gray-100 border-r-2 border-b-2 border-primary/30">{day}</div>
-              ))}
-              {emptyDaysBefore.map(i => (<div key={`empty-${i}`} className="aspect-square border-r-2 border-b-2 border-primary/30 bg-gray-50/10" />))}
-              {monthDays.map(date => (
-                <CalendarDay key={date.toISOString()} date={date} today={today} events={getEventsForDay(date)} onEventClick={handleEventClick} onDayClick={handleDayClick} />
-              ))}
-            </div>
-          </div>
-
-          <div className="w-full lg:w-5/12 space-y-6 lg:pt-0 pt-8 lg:sticky lg:top-20">
-            <div className="flex items-center justify-between pb-4 border-b-2 border-primary/10">
-              <h4 className="font-serif text-3xl font-bold text-primary tracking-tight">Upcoming Events</h4>
-              <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); }} className="rounded-full font-bold text-xs uppercase tracking-widest border-2">Reset</Button>
-            </div>
-            <div className="flex gap-2 flex-wrap">
-              {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
-                <button key={filter} onClick={() => setTimeFilter(filter)} className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${timeFilter === filter ? 'bg-primary text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                  {filter === 'all' ? 'All' : filter === 'thisWeek' ? 'This Week' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : filter === 'twoPlus' ? '2+ Months' : 'Calendar Month'}
-                </button>
-              ))}
-            </div>
-            <div id="events-scroll-container" className="flex flex-col gap-4 lg:max-h-[calc(100vh-12rem)] overflow-y-auto pr-4 pb-8 custom-scrollbar">
-              {sortedUpcomingEvents.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-primary/10"><CalendarIcon className="size-12 text-primary/10 mx-auto mb-4" /><p className="text-gray-400 font-bold uppercase tracking-widest text-xs">No events found</p></div>
-              ) : (
-                sortedUpcomingEvents.map(event => (<EventCard key={event.id} event={event} highlighted={highlightedEventId === event.id} navigate={navigate} />))
-              )}
-            </div>
-          </div>
+        <div className="hidden lg:grid lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] gap-12 items-start w-full relative">
+          <CalendarView 
+            currentDate={currentDate} setCurrentDate={setCurrentDate}
+            selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes}
+            monthDays={monthDays} emptyDaysBefore={emptyDaysBefore}
+            getEventsForDay={getEventsForDay} onDayClick={handleDayClick}
+            onEventClick={handleEventClick} today={today}
+          />
+          <EventsListView 
+            sortedUpcomingEvents={sortedUpcomingEvents}
+            timeFilter={timeFilter} setTimeFilter={setTimeFilter}
+            highlightedEventId={highlightedEventId} navigate={navigate}
+            onReset={resetFilters}
+          />
         </div>
       </div>
 
