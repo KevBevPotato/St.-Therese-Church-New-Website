@@ -5,10 +5,9 @@ import { Card } from '@/components/ui/card';
 import { useLocation, Link } from 'wouter';
 
 // DIRECT IMPORTS - Bypassing events.ts as requested
-import { CalendarEvent, EventCategory, TimeFilter } from './eventfolders/types';
-import { oneTimeEvents } from './eventfolders/oneTimeEvents';
+import { CalendarEvent, EventCategory, TimeFilter, EVENT_COLORS } from './eventfolders/types'; import { oneTimeEvents } from './eventfolders/oneTimeEvents';
 import { irregularEvents } from './eventfolders/irregularEvents';
-import { EVENT_COLORS, EventCategoryPill } from './event-components';
+import { EventCategoryPill } from './event-components'; 
 import { CalendarView } from './CalendarView';
 import { EventsListView } from './EventsListView';
 

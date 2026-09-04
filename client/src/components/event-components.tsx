@@ -1,5 +1,6 @@
 import { ChevronRight, Clock, MapPin } from 'lucide-react';
-import { CalendarEvent, EventCategory, EVENT_COLORS } from './events';
+import { CalendarEvent, EventCategory, EVENT_COLORS } from './eventfolders/types';
+
 
 // ---- 1. CATEGORY PILL ----
 export function EventCategoryPill({ category }: { category: EventCategory }) {
