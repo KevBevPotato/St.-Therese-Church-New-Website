@@ -25,12 +25,10 @@ import {
   staticEvents,
 } from './events';
 
-// Import the split components
 import { EventCategoryPill, CalendarCellEvent, EventCard } from './event-components';
 
 type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
 
-// ---- SUB-COMPONENT: Calendar Day Wrapper ----
 function CalendarDay({
   date,
   today,
@@ -122,6 +120,7 @@ export default function UpcomingEventsCalendar() {
 
   const getTimeFilteredEvents = (eventsToFilter: CalendarEvent[]) => {
     if (timeFilter === 'all') return eventsToFilter;
+    
     const now = new Date();
     now.setHours(0, 0, 0, 0);
     const currentMonth = now.getMonth();
@@ -149,7 +148,8 @@ export default function UpcomingEventsCalendar() {
           return eventDate.getTime() >= twoMonthsFromNow.getTime();
         }
         case 'calendarMonth': return eventMonth === currentDate.getMonth() && eventYear === currentDate.getFullYear();
-        case 'specificDay': if (!filterDate) return true; return eventDate.getTime() === filterDate.getTime();
+        // 'specificDay' is handled in the main sortedUpcomingEvents loop to ensure chronological order
+        case 'specificDay': return true; 
         default: return true;
       }
     });
@@ -158,15 +158,33 @@ export default function UpcomingEventsCalendar() {
   const sortedUpcomingEvents = useMemo(() => {
     const today = new Date();
     today.setHours(0, 0, 0, 0);
-    const upcoming = filteredEvents
-      .sort((a, b) => a.date.getTime() - b.date.getTime())
-      .filter((e) => {
-        if (timeFilter === 'calendarMonth' || timeFilter === 'specificDay') return true;
+    
+    // 1. Start with Category filtered events, sorted chronologically
+    let baseList = filteredEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+    // 2. Handle Date Filtering
+    if (timeFilter === 'specificDay' && filterDate) {
+      // Filter: Only events on or AFTER the clicked date
+      const normalizedFilterDate = new Date(filterDate);
+      normalizedFilterDate.setHours(0,0,0,0);
+      
+      baseList = baseList.filter(e => {
+        const eDate = new Date(e.date);
+        eDate.setHours(0,0,0,0);
+        return eDate.getTime() >= normalizedFilterDate.getTime();
+      });
+    } else {
+      // Standard Time Filtering (thisWeek, thisMonth, etc.)
+      baseList = baseList.filter((e) => {
+        if (timeFilter === 'calendarMonth') return true; // Handled by getTimeFilteredEvents
         const eDate = new Date(e.date);
         eDate.setHours(0, 0, 0, 0);
         return eDate.getTime() >= today.getTime();
       });
-    return getTimeFilteredEvents(upcoming);
+      baseList = getTimeFilteredEvents(baseList);
+    }
+
+    return baseList;
   }, [filteredEvents, timeFilter, currentDate, filterDate]);
 
   const getEventsForDay = (date: Date) => {
@@ -309,7 +327,7 @@ export default function UpcomingEventsCalendar() {
             <div className="sticky top-0 z-10 bg-white border-b-2 border-primary/10 p-4">
               <div className="flex items-center justify-between gap-3">
                 <h4 className="font-serif text-xl font-bold text-primary tracking-tight">Upcoming Events</h4>
-                <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); }} className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3">Reset</Button>
+                <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); }} className="rounded-full font-bold text-[10px] uppercase tracking-widest border-2 h-7 px-3">Reset</Button>
               </div>
               <div className="flex gap-2 flex-wrap mt-3">
                 {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
@@ -349,7 +367,7 @@ export default function UpcomingEventsCalendar() {
           <div className="w-full lg:w-5/12 space-y-6 lg:pt-0 pt-8 lg:sticky lg:top-20">
             <div className="flex items-center justify-between pb-4 border-b-2 border-primary/10">
               <h4 className="font-serif text-3xl font-bold text-primary tracking-tight">Upcoming Events</h4>
-              <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); }} className="rounded-full font-bold text-xs uppercase tracking-widest border-2">Reset</Button>
+              <Button variant="outline" size="sm" onClick={() => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); }} className="rounded-full font-bold text-xs uppercase tracking-widest border-2">Reset</Button>
             </div>
             <div className="flex gap-2 flex-wrap">
               {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
