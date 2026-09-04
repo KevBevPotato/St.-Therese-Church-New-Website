@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useLocation, Link } from 'wouter';
 
-// DIRECT IMPORTS - Bypassing events.ts
+// DIRECT IMPORTS - Bypassing events.ts as requested
 import { CalendarEvent, EventCategory, TimeFilter } from './eventfolders/types';
 import { oneTimeEvents } from './eventfolders/oneTimeEvents';
 import { irregularEvents } from './eventfolders/irregularEvents';
@@ -14,7 +14,7 @@ import { EventsListView } from './EventsListView';
 
 type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
 
-// Moved recurring logic here so we don't need events.ts
+// Recurring logic kept inside the Brain for independence from events.ts
 function generateRecurringEventsForMonth(month: number, year: number): CalendarEvent[] {
     const events: CalendarEvent[] = [];
     const daysInMonth = new Date(year, month + 1, 0).getDate();
@@ -34,7 +34,7 @@ function generateRecurringEventsForMonth(month: number, year: number): CalendarE
             events.push({ id: `rosary-sun-${dateStr}`, title: "Family Rosary", date: new Date(year, month, day, 19, 0), time: "7:00 PM", location: "Main Sanctuary", categories: ["sacramental", "parishEvents"] });
         }
         if (d.getDay() === 5) {
-            events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
+            events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: 'Main Sanctuary', categories: ['sacramental'] });
         }
     }
     return events;
@@ -51,6 +51,7 @@ export default function UpcomingEventsCalendar() {
 
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
+  // 1. MERGE ALL DATA SOURCES
   const allEvents = useMemo(() => {
     const events = [...oneTimeEvents, ...irregularEvents];
     const startMonth = currentDate.getMonth();
@@ -66,27 +67,39 @@ export default function UpcomingEventsCalendar() {
     return allEvents.filter((event) => event.categories.some((cat) => selectedTypes.has(cat)));
   }, [allEvents, selectedTypes]);
 
+  // 2. SYNC LOGIC: The "Start Date" calculation
   const sortedUpcomingEvents = useMemo(() => {
-    const today = new Date(); today.setHours(0, 0, 0, 0);
+    const today = new Date(); 
+    today.setHours(0, 0, 0, 0);
+    
+    // Always maintain strict chronological order first
     let list = [...filteredEvents].sort((a, b) => a.date.getTime() - b.date.getTime());
 
     if (timeFilter === 'specificDay' && filterDate) {
-      const start = new Date(filterDate); start.setHours(0,0,0,0);
+      // SYNC: Filter out everything BEFORE the clicked date
+      const startLimit = new Date(filterDate);
+      startLimit.setHours(0,0,0,0);
+      
       list = list.filter(e => {
-        const d = new Date(e.date); d.setHours(0,0,0,0);
-        return d.getTime() >= start.getTime();
+        const eDate = new Date(e.date);
+        eDate.setHours(0,0,0,0);
+        return eDate.getTime() >= startLimit.getTime();
       });
     } else {
-      list = list.filter((e) => {
-        if (timeFilter === 'calendarMonth') return true;
-        const d = new Date(e.date); d.setHours(0, 0, 0, 0);
-        return d.getTime() >= today.getTime();
+      // Standard view: Only show events today and in the future
+      list = list.filter(e => {
+        const eDate = new Date(e.date);
+        eDate.setHours(0,0,0,0);
+        return eDate.getTime() >= today.getTime();
       });
-      // Simplified time filtering for brevity
+
+      // Apply additional time filters if active (This Week, etc)
       if (timeFilter === 'thisWeek') {
-        const weekEnd = new Date(today); weekEnd.setDate(today.getDate() + 7);
+        const weekEnd = new Date(today);
+        weekEnd.setDate(today.getDate() + 7);
         list = list.filter(e => new Date(e.date).getTime() <= weekEnd.getTime());
       }
+      // Note: 'thisMonth' etc. can be added here similarly
     }
     return list;
   }, [filteredEvents, timeFilter, filterDate]);
@@ -97,19 +110,25 @@ export default function UpcomingEventsCalendar() {
   });
 
   const handleDayClick = (day: Date) => {
-    const normalizedDay = new Date(day); normalizedDay.setHours(0,0,0,0);
+    const normalizedDay = new Date(day); 
+    normalizedDay.setHours(0,0,0,0);
     setExpandedDay(normalizedDay); 
     setFilterDate(normalizedDay); 
-    setTimeFilter('specificDay'); 
+    setTimeFilter('specificDay'); // This triggers the list update
   };
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
-    e.stopPropagation(); setHighlightedEventId(event.id);
+    e.stopPropagation(); 
+    setHighlightedEventId(event.id);
     const card = document.getElementById(`event-card-${event.id}`);
     if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
 
-  const resetFilters = () => { setCurrentDate(new Date()); setTimeFilter('all'); setFilterDate(null); };
+  const resetFilters = () => { 
+    setCurrentDate(new Date()); 
+    setTimeFilter('all'); 
+    setFilterDate(null); 
+  };
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
   const daysInMonth = (date: Date) => new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
