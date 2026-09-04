@@ -90,7 +90,6 @@ export default function Home() {
               <div className="border-l-2 border-[#d4b36a] pl-4 md:pl-6 lg:pl-9">
 
                 <p className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
-                  <Flower2 className="size-4" aria-hidden="true" />
                   Saint Thérèse · The Little Flower
                 </p>
 
