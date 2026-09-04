@@ -86,10 +86,10 @@ export function CalendarView({
             <div
               key={date.toISOString()}
               onClick={() => onDayClick(date)}
-              className={`aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-hidden`}
+              className={`aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
             >
               <div className={`text-xs font-black mb-1 flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>{date.getDate()}</div>
-              <div className="flex flex-col space-y-0.5 pointer-events-auto flex-1 min-h-0">
+              <div className="flex flex-col space-y-0.5 pointer-events-auto">
                 {events.map(event => (
                   <CalendarCellEvent key={event.id} event={event} isPast={isPast} fontSize={fontSize} onEventClick={onEventClick} />
                 ))}
