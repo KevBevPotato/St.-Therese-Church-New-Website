@@ -21,24 +21,17 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-06T18:30:00"),
         time: "6:30 PM",
         location: "St. Joseph Hall, Cathedral",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Bishop Bullock's film festival featuring 'La Strada' (1954).",
         about: "Join us for a special film screening and discussion with Bishop Bullock.",
         contactPerson: "Bishop Bullock",
-
-        // --- PHOTO SECTION ---
-        // This is the main large photo at the top
         image: "/images/events/la-strada-hero.jpg",
-
-        // This is the grid of photos at the bottom
         photos: [
             "/images/events/la-strada-1.jpg",
             "/images/events/la-strada-2.jpg",
             "/images/events/la-strada-3.jpg",
             "/images/events/la-strada-4.jpg",
         ],
-        // ---------------------
-
         faqItems: [
             { question: "What time should I arrive?", answer: "Please arrive 15 minutes early." },
             { question: "Is there a cost?", answer: "Admission is free." }
@@ -68,7 +61,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-14T17:30:00"),
         time: "5:30 PM",
         location: "Main Sanctuary",
-        categories: ["sacramental", "special"],
+        categories: ["sacramental"], // Removed 'special'
         description: "Holy Day of Obligation Vigil Mass."
     },
     {
@@ -77,7 +70,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-15T08:00:00"),
         time: "8:00 AM",
         location: "Main Sanctuary",
-        categories: ["sacramental", "special"],
+        categories: ["sacramental"], // Removed 'special'
         description: "Holy Day of Obligation Mass."
     },
     {
@@ -86,7 +79,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-15T09:00:00"),
         time: "9:00 AM - 4:00 PM",
         location: "olvconference.com",
-        categories: ["special", "parishEvents", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Featuring Msgr. Charles Pope & Jesse Romero."
     },
     {
@@ -95,7 +88,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-16T11:30:00"),
         time: "11:30 AM",
         location: "Parish Hall",
-        categories: ["parishEvents", "special"],
+        categories: ["parishEvents"], // Removed 'special'
         description: "Reception provided by the Knights of Columbus. Please bring a side dish or dessert to share!",
         organizationTags: ["knights-of-columbus"],
     },
@@ -115,7 +108,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-17T10:30:00"),
         time: "10:30 AM",
         location: "Holy Rosary Church, Pine Ridge",
-        categories: ["sacramental", "special", "diocesan"],
+        categories: ["sacramental", "diocesan"], // Removed 'special'
         description: "Anniversary Mass followed by a picnic."
     },
     {
@@ -151,7 +144,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-21T17:00:00"),
         time: "5:00 PM - 9:00 PM",
         location: "Terra Sancta Retreat Center",
-        categories: ["diocesan", "special"],
+        categories: ["diocesan"], // Removed 'special'
         description: "Orientation for new (and new-ish) catechists.",
         signupLink: "https://rapidcitydiocese.ccbchurch.com/goto/forms/456/responses/new"
     },
@@ -161,11 +154,10 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-22T08:00:00"),
         time: "8:00 AM - 3:00 PM",
         location: "Terra Sancta Retreat Center",
-        categories: ["diocesan", "special"],
+        categories: ["diocesan"], // Removed 'special'
         description: "Join us as we gather together as catechists.",
         signupLink: "https://rapidcitydiocese.ccbchurch.com/goto/forms/455/responses/new"
     },
-    // Bingo Fair Expansion
     { id: "bingo-fair-21", title: "Bingo with the Knights of Columbus", date: new Date(2026, 7, 21, 18, 0), time: "6:00 PM - 10:00 PM", location: "Central States Fair", categories: ["parishEvents"], description: "Join the Knights for Bingo!", organizationTags: ["knights-of-columbus"] },
     { id: "bingo-fair-22", title: "Bingo with the Knights of Columbus", date: new Date(2026, 7, 22, 18, 0), time: "6:00 PM - 10:00 PM", location: "Central States Fair", categories: ["parishEvents"], description: "Join the Knights for Bingo!", organizationTags: ["knights-of-columbus"] },
     { id: "bingo-fair-23", title: "Bingo with the Knights of Columbus", date: new Date(2026, 7, 23, 18, 0), time: "6:00 PM - 10:00 PM", location: "Central States Fair", categories: ["parishEvents"], description: "Join the Knights for Bingo!", organizationTags: ["knights-of-columbus"] },
@@ -217,7 +209,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-08-29T09:00:00"),
         time: "9:00 AM",
         location: "Raider Park",
-        categories: ["parishEvents", "special"],
+        categories: ["parishEvents"], // Removed 'special'
         description: "Benefit for Raider Park. Website: https://www.tompfeifle5k.org/"
     },
     {
@@ -235,7 +227,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-01T18:30:00"),
         time: "6:30 PM",
         location: "St. Joseph Hall, Cathedral",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Bishop Bullock's film festival featuring 'Bicycle Thieves' (1948)."
     },
     {
@@ -254,7 +246,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-13T10:00:00"),
         time: "10:00 AM - 3:00 PM",
         location: "Terra Sancta Retreat Center",
-        categories: ["vocations", "diocesan", "special"],
+        categories: ["vocations", "diocesan"], // Removed 'special'
         description: "Annual Day of Renewal and Prayer for Spiritual Mothers. Mass celebrated by Fr. Todd VanderMay. Lunch provided.",
         signupLink: "https://rapidcitydiocese.ccbchurch.com/goto/forms/494/responses/new"
     },
@@ -274,7 +266,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-22T00:00:00"),
         time: "Sept 22-25",
         location: "St. Louis, MO",
-        categories: ["special", "sacramental", "diocesan"],
+        categories: ["sacramental", "diocesan"], // Removed 'special'
         description: "Diocesan Pilgrimage. Website: https://www.rapidcitydiocese.org/sheen-pilgrimage/"
     },
     {
@@ -292,7 +284,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-25T19:00:00"),
         time: "7:00 PM",
         location: "Our Lady of the Black Hills Church, Piedmont, SD",
-        categories: ["special", "parishEvents", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Presentation by Father Ricky Manalo."
     },
     {
@@ -301,7 +293,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-27T00:00:00"),
         time: "All Day",
         location: "Parish Wide",
-        categories: ["vocations", "special"],
+        categories: ["vocations"], // Removed 'special'
         description: "A chance to honor the priests in your life.",
         signupLink: "https://gods-call.com/ia-events/priesthood-sunday-2/"
     },
@@ -311,7 +303,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-09-28T00:00:00"),
         time: "Sept 28 - Oct 13",
         location: "Bratislava, Vienna, Regensburg, & Prague",
-        categories: ["special", "diocesan"],
+        categories: ["diocesan"], // Removed 'special'
         description: "Cavins Tours with Jeff and Emily Cavins.",
     },
     {
@@ -329,7 +321,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-10-27T18:30:00"),
         time: "6:30 PM",
         location: "St. Joseph Hall, Cathedral",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Bishop Bullock's film festival featuring 'Burmese Harp' (1956)."
     },
     {
@@ -338,7 +330,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-11-03T18:30:00"),
         time: "6:30 PM",
         location: "St. Joseph Hall, Cathedral",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Bishop Bullock's film festival featuring 'The Wizard of Oz' (1939)."
     },
     {
@@ -347,7 +339,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-11-06T00:00:00"),
         time: "Nov 6 - Nov 9",
         location: "Immaculate Heart of Mary Seminary, Winona, MN",
-        categories: ["vocations", "special", "diocesan"],
+        categories: ["vocations", "diocesan"], // Removed 'special'
         description: "Experience life at an undergraduate seminary program.",
         signupLink: "https://gods-call.com/ia-events/immaculate-heart-of-mary-seminary-come-and-see-weekend-fall-2024/"
     },
@@ -366,13 +358,13 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2026-12-01T18:30:00"),
         time: "6:30 PM",
         location: "St. Joseph Hall, Cathedral",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Bishop Bullock's film festival featuring 'Babette's Feast' (1987)."
     },
     {
         id: "bookclub-dec",
         title: "Bishop's Bookclub: Wheat that Springeth Green",
-        date: new Date("2026-12-15T12:00:00"),
+        date: new Date("2026-12-15T00:00:00"),
         time: "Podcast Release",
         location: "Online / Podcast",
         categories: ["parishEvents", "diocesan"],
@@ -384,7 +376,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2027-01-29T00:00:00"),
         time: "Jan 29-31, 2027",
         location: "Terra Sancta Retreat Center",
-        categories: ["special", "parishEvents", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "Registration Information Coming Soon."
     },
     {
@@ -393,7 +385,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         date: new Date("2027-07-31T00:00:00"),
         time: "July 31 - Aug 13, 2027",
         location: "Seoul, Korea",
-        categories: ["parishEvents", "special", "diocesan"],
+        categories: ["parishEvents", "diocesan"], // Removed 'special'
         description: "International gathering of Catholic youth."
     },
     {
@@ -407,11 +399,7 @@ export const oneTimeEvents: CalendarEvent[] = [
         contactPerson: "Melanie Karp",
         contactEmail: "melanie@strcstaff.org",
         contactPhone: "(605) 123-4567",
-        // --- PHOTO SECTION ---
-        // This is the main large photo at the top
         image: "/images/events/la-strada-hero.jpg",
-
-        // This is the grid of photos at the bottom
         photos: [
             "/images/events/la-strada-1.jpg",
             "/images/events/la-strada-2.jpg",

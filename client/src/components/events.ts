@@ -1,4 +1,3 @@
-// src/data/events/events.ts
 import { CalendarEvent, EventCategory, TimeFilter } from './eventfolders/types';
 import { oneTimeEvents } from './eventfolders/oneTimeEvents';
 import { irregularEvents } from './eventfolders/irregularEvents';
@@ -8,11 +7,9 @@ export type { CalendarEvent, EventCategory, TimeFilter };
 export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; dot: string; label: string; labelColor: string }> = {
     sacramental:  { bg: 'bg-amber-50',    border: 'border-amber-400',    dot: 'bg-amber-500',    label: 'Sacramental Life', labelColor: 'text-amber-700' },
     parishEvents: { bg: 'bg-emerald-50',  border: 'border-emerald-400',  dot: 'bg-emerald-500',  label: 'Parish Events',    labelColor: 'text-emerald-700' },
-    special:      { bg: 'bg-rose-50',     border: 'border-rose-400',     dot: 'bg-rose-500',     label: 'Special',          labelColor: 'text-rose-700' },
     meeting:      { bg: 'bg-slate-50',    border: 'border-slate-400',    dot: 'bg-slate-500',    label: 'Meeting',          labelColor: 'text-slate-700' },
     vocations:    { bg: 'bg-purple-50',   border: 'border-purple-400',   dot: 'bg-purple-500',   label: 'Vocations',        labelColor: 'text-purple-700' },
     diocesan:     { bg: 'bg-blue-50',     border: 'border-blue-400',     dot: 'bg-blue-500',     label: 'Diocesan',         labelColor: 'text-blue-700' },
-    carloAcutis: { bg: 'bg-indigo-50', border: 'border-indigo-400', dot: 'bg-indigo-500', label: 'St. Carlo Acutis CSC', labelColor: 'text-indigo-700' },
 };
 
 // HUB: Combine all static lists. The sort at the bottom handles the order.

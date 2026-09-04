@@ -1,5 +1,5 @@
 // src/data/events/types.ts
-export type EventCategory = 'sacramental' | 'parishEvents' | 'special' | 'meeting' | 'vocations' | 'diocesan' | 'carloAcutis';
+export type EventCategory = 'sacramental' | 'parishEvents' | 'meeting' | 'vocations' | 'diocesan'; // Removed 'special' and 'carloAcutis'
 export type TimeFilter = 'all' | 'thisMonth' | 'nextMonth' | 'twoPlus';
 
 export interface CalendarEvent {
