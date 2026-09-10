@@ -92,7 +92,7 @@ export default function DailyRosary() {
                     <aside className="flex justify-center md:justify-end">
                         <div className="w-full max-w-md aspect-square overflow-hidden rounded-3xl border-2 border-primary/10 shadow-xl bg-white">
                             <img
-                                src="/rosary.jpg"
+                                src="/landingpagephotos/Rosary.png"
                                 alt="The Rosary"
                                 loading="eager"
                                 decoding="async"
@@ -108,11 +108,11 @@ export default function DailyRosary() {
                 <div className="container mx-auto px-4 max-w-5xl">
                     <div className="grid gap-10 md:grid-cols-[0.4fr_1fr] md:items-center">
                         <div className="flex justify-center">
-                            <div className="size-48 md:size-56 rounded-full overflow-hidden border-4 border-white shadow-xl bg-primary/5">
+                            <div className="w-full max-w-[240px] overflow-hidden rounded-3xl border-4 border-white shadow-xl bg-primary/5">
                                 <img
-                                    src="/fr-mark-mary-ames.jpg"
+                                    src="/landingpagephotos/Fr.MarkMary.png"
                                     alt="Fr. Mark-Mary Ames, CFR"
-                                    className="h-full w-full object-cover"
+                                    className="h-full w-full object-contain"
                                     loading="lazy"
                                 />
                             </div>
@@ -169,9 +169,6 @@ export default function DailyRosary() {
 
                     <div className="grid gap-5 md:grid-cols-2">
                         <Card className="p-8 border-2 border-primary/10 bg-white rounded-3xl shadow-sm">
-                            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                <Heart size={20} />
-                            </div>
                             <h3 className="font-serif text-xl font-bold text-primary mb-2">
                                 Padre Pio
                             </h3>
@@ -184,9 +181,6 @@ export default function DailyRosary() {
                         </Card>
 
                         <Card className="p-8 border-2 border-primary/10 bg-white rounded-3xl shadow-sm">
-                            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                <Heart size={20} />
-                            </div>
                             <h3 className="font-serif text-xl font-bold text-primary mb-2">
                                 St. Louis de Montfort
                             </h3>
@@ -197,9 +191,6 @@ export default function DailyRosary() {
                         </Card>
 
                         <Card className="p-8 border-2 border-primary/10 bg-white rounded-3xl shadow-sm">
-                            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                <Heart size={20} />
-                            </div>
                             <h3 className="font-serif text-xl font-bold text-primary mb-2">
                                 St. John Paul II
                             </h3>
@@ -211,9 +202,6 @@ export default function DailyRosary() {
                         </Card>
 
                         <Card className="p-8 border-2 border-primary/10 bg-white rounded-3xl shadow-sm">
-                            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4">
-                                <Heart size={20} />
-                            </div>
                             <h3 className="font-serif text-xl font-bold text-primary mb-2">
                                 St. Thérèse of Lisieux
                             </h3>

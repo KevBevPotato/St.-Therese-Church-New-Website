@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, ExternalLink, MapPin, X } from 'lucide-react';
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, ExternalLink, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { useLocation, useSearch, Link } from 'wouter';
@@ -22,12 +22,10 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
   const calendarViewRequested = new URLSearchParams(search).get('view') === 'calendar';
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(new Set(Object.keys(EVENT_COLORS) as EventCategory[]));
-  const [expandedDay, setExpandedDay] = useState<Date | null>(null);
+  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<ExtendedTimeFilter>('all');
-  const [filterDate, setFilterDate] = useState<Date | null>(null);
   const [eventSearchQuery, setEventSearchQuery] = useState('');
-  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
@@ -55,15 +53,25 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
     // Always maintain strict chronological order first
     let list = [...filteredEvents].sort((a, b) => a.date.getTime() - b.date.getTime());
 
-    if (timeFilter === 'specificDay' && filterDate) {
-      // SYNC: Filter out everything BEFORE the clicked date
-      const startLimit = new Date(filterDate);
-      startLimit.setHours(0,0,0,0);
-      
-      list = list.filter(e => {
-        const eDate = new Date(e.date);
-        eDate.setHours(0,0,0,0);
-        return eDate.getTime() >= startLimit.getTime();
+    const anchorDate = selectedDate;
+
+    if (anchorDate) {
+      const anchorDayTime = new Date(anchorDate.getFullYear(), anchorDate.getMonth(), anchorDate.getDate()).getTime();
+      list = list.filter(event => {
+        const eventDayTime = new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()).getTime();
+        return eventDayTime >= anchorDayTime;
+      });
+      list.sort((firstEvent, secondEvent) => {
+        const firstEventDayTime = new Date(firstEvent.date.getFullYear(), firstEvent.date.getMonth(), firstEvent.date.getDate()).getTime();
+        const secondEventDayTime = new Date(secondEvent.date.getFullYear(), secondEvent.date.getMonth(), secondEvent.date.getDate()).getTime();
+        const firstIsAnchor = firstEventDayTime === anchorDayTime;
+        const secondIsAnchor = secondEventDayTime === anchorDayTime;
+
+        if (firstIsAnchor !== secondIsAnchor) {
+          return firstIsAnchor ? -1 : 1;
+        }
+
+        return firstEvent.date.getTime() - secondEvent.date.getTime();
       });
     } else {
       // Standard view: Only show events today and in the future
@@ -95,22 +103,8 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
       ].filter(Boolean).join(' ').toLowerCase().includes(query));
     }
 
-    if (hoveredDate) {
-      const hoveredDayTime = new Date(hoveredDate.getFullYear(), hoveredDate.getMonth(), hoveredDate.getDate()).getTime();
-      list = list.filter(event => {
-        const eventDayTime = new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()).getTime();
-        return eventDayTime >= hoveredDayTime;
-      });
-      list.sort((firstEvent, secondEvent) => {
-        const firstIsHovered = new Date(firstEvent.date.getFullYear(), firstEvent.date.getMonth(), firstEvent.date.getDate()).getTime() === hoveredDayTime;
-        const secondIsHovered = new Date(secondEvent.date.getFullYear(), secondEvent.date.getMonth(), secondEvent.date.getDate()).getTime() === hoveredDayTime;
-        if (firstIsHovered !== secondIsHovered) return firstIsHovered ? -1 : 1;
-        return firstEvent.date.getTime() - secondEvent.date.getTime();
-      });
-    }
-
     return list;
-  }, [filteredEvents, timeFilter, filterDate, currentDate, eventSearchQuery, hoveredDate]);
+  }, [filteredEvents, timeFilter, currentDate, eventSearchQuery, selectedDate]);
 
   const getEventsForDay = (date: Date) => filteredEvents.filter((e) => {
     const eDate = new Date(e.date);
@@ -118,11 +112,16 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
   });
 
   const handleDayClick = (day: Date) => {
-    const normalizedDay = new Date(day); 
-    normalizedDay.setHours(0,0,0,0);
-    setExpandedDay(normalizedDay); 
-    setFilterDate(normalizedDay); 
-    setTimeFilter('specificDay'); // This triggers the list update
+    const normalizedDay = new Date(day);
+    normalizedDay.setHours(0, 0, 0, 0);
+
+    setSelectedDate((currentSelectedDate) => {
+      if (currentSelectedDate && currentSelectedDate.getTime() === normalizedDay.getTime()) {
+        return null;
+      }
+
+      return normalizedDay;
+    });
   };
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
@@ -135,7 +134,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
   const resetFilters = () => { 
     setCurrentDate(new Date()); 
     setTimeFilter('all'); 
-    setFilterDate(null); 
+    setSelectedDate(null);
     setEventSearchQuery('');
   };
 
@@ -191,49 +190,17 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
         </div>
         <div className="lg:hidden w-full">
           {calendarViewRequested && (
-            <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={setHoveredDate} onDayLeave={() => setHoveredDate(null)} onEventClick={handleEventClick} today={today} />
+            <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={() => {}} onDayLeave={() => {}} onEventClick={handleEventClick} today={today} selectedDate={selectedDate} />
           )}
         </div>
         <div className={calendarViewRequested ? 'hidden' : 'lg:hidden w-full'}>
           <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} showCalendarLink={homeView} eventSearchQuery={eventSearchQuery} setEventSearchQuery={setEventSearchQuery} />
         </div>
         <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start w-full relative">
-          <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={setHoveredDate} onDayLeave={() => setHoveredDate(null)} onEventClick={handleEventClick} today={today} />
+          <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={() => {}} onDayLeave={() => {}} onEventClick={handleEventClick} today={today} selectedDate={selectedDate} />
           <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} showCalendarLink={homeView} eventSearchQuery={eventSearchQuery} setEventSearchQuery={setEventSearchQuery} />
         </div>
       </div>
-      {expandedDay && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200" onClick={() => setExpandedDay(null)}>
-          <div className="bg-white rounded-[2rem] shadow-2xl w-full max-w-lg overflow-hidden animate-in zoom-in-95 duration-200" onClick={e => e.stopPropagation()}>
-            <div className="bg-primary p-6 text-white flex justify-between items-center">
-              <div className="flex items-center gap-4">
-                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={() => { const next = new Date(expandedDay); next.setDate(expandedDay.getDate() - 1); setExpandedDay(next); }}><ChevronLeft /></Button>
-                <div className="text-center">
-                  <h3 className="font-serif text-2xl font-bold">{expandedDay.toLocaleDateString('default', { weekday: 'long' })}</h3>
-                  <p className="text-xs text-white/70 uppercase tracking-widest">{expandedDay.toLocaleDateString('default', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-                </div>
-                <Button variant="ghost" size="sm" className="text-white hover:bg-white/10" onClick={() => { const next = new Date(expandedDay); next.setDate(expandedDay.getDate() + 1); setExpandedDay(next); }}><ChevronRight /></Button>
-              </div>
-              <button onClick={() => setExpandedDay(null)} className="p-2 hover:bg-white/10 rounded-full transition-colors"><X size={24} /></button>
-            </div>
-            <div className="p-6 max-h-[60vh] overflow-y-auto space-y-4 custom-scrollbar">
-              {getEventsForDay(expandedDay).length === 0 ? (
-                <p className="text-center py-10 text-muted-foreground font-bold uppercase tracking-widest text-xs">No events scheduled</p>
-              ) : (
-                getEventsForDay(expandedDay).map(event => (
-                  <div key={event.id} onClick={() => { setExpandedDay(null); navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`); }} className="p-4 rounded-2xl border-2 border-primary/5 hover:border-primary/20 cursor-pointer transition-all flex justify-between items-center group">
-                    <div>
-                      <h5 className="font-bold text-primary group-hover:text-accent transition-colors">{event.title}</h5>
-                      <p className="text-xs text-muted-foreground font-bold uppercase tracking-tight mt-1">{event.time} • {event.location}</p>
-                    </div>
-                    <ChevronRight className="size-4 text-primary/20 group-hover:text-accent transition-colors" />
-                  </div>
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }

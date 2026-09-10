@@ -26,8 +26,116 @@ const searchablePages: SearchResult[] = [
   { title: 'Next Week Bulletin', type: 'Page', href: '/bulletin/next', searchableText: 'next week bulletin' },
   { title: 'Sacraments', type: 'Page', href: '/sacraments', searchableText: 'sacraments baptism reconciliation marriage communion confirmation' },
   { title: 'Faith Formation', type: 'Page', href: '/faith-formation', searchableText: 'faith formation catechism religious education' },
-  { title: 'Get Involved', type: 'Page', href: '/get-involved', searchableText: 'get involved ministries volunteer organizations' },
+  { title: 'Get Involved', type: 'Page', href: '/get-involved', searchableText: 'get involved ministries volunteer organizations lector usher altar server music ministry volunteer opportunities' },
   { title: 'Parish Calendar', type: 'Page', href: '/events', searchableText: 'parish calendar events schedule' },
+];
+
+const searchableSacraments: SearchResult[] = [
+  {
+    title: 'Marriage Preparation',
+    type: 'Sacrament',
+    href: '/sacraments#marriage-preparation',
+    searchableText: 'marriage preparation matrimony wedding pre-cana engaged encounter',
+  },
+  {
+    title: 'Baptism Class',
+    type: 'Sacrament',
+    href: '/sacraments#baptism-class',
+    searchableText: 'baptism class infant baptism godparents preparation',
+  },
+  {
+    title: 'First Eucharist & First Reconciliation',
+    type: 'Sacrament',
+    href: '/sacraments#first-eucharist',
+    searchableText: 'first eucharist first reconciliation communion confession second grade religious education',
+  },
+  {
+    title: 'Confirmation',
+    type: 'Sacrament',
+    href: '/sacraments#confirmation',
+    searchableText: 'confirmation sixth seventh grade holy spirit confirmation preparation ocia',
+  },
+  {
+    title: 'OCIA (Becoming Catholic)',
+    type: 'Sacrament',
+    href: '/sacraments#ocia',
+    searchableText: 'ocia becoming catholic rcia adult initiation classes september easter vigil',
+  },
+];
+
+const searchableOpportunities: SearchResult[] = [
+  {
+    title: 'Lector Sign-up',
+    type: 'Get Involved',
+    href: '/get-involved/lector',
+    searchableText: 'lector sign up liturgy ministry proclaim the scriptures prayers of the faithful training scheduling support',
+  },
+  {
+    title: 'Usher Sign-up',
+    type: 'Get Involved',
+    href: '/get-involved/usher',
+    searchableText: 'usher sign up liturgy ministry welcome parishioners help with pews offertory basket',
+  },
+  {
+    title: 'Altar Server Sign-up',
+    type: 'Get Involved',
+    href: '/get-involved/altar-server',
+    searchableText: 'altar server sign up liturgy ministry serve at the altar book of the gospels chalice sacred items',
+  },
+  {
+    title: 'Music Ministry Sign-up',
+    type: 'Get Involved',
+    href: '/get-involved/music',
+    searchableText: 'music ministry sign up choir instrumentalist cantor sung prayer',
+  },
+  {
+    title: 'Wednesday Night Supper',
+    type: 'Get Involved',
+    href: '/get-involved/supper-week',
+    searchableText: 'wednesday night supper sponsor volunteer grocery pick-up food prep serving cleanup parish hospitality',
+  },
+  {
+    title: 'Nursery',
+    type: 'Get Involved',
+    href: '/get-involved/nursery',
+    searchableText: 'nursery parish council side chapel mothers during mass donations volunteers',
+  },
+  {
+    title: 'Youth Ministry Mentors',
+    type: 'Get Involved',
+    href: '/get-involved/youth-ministry-mentors',
+    searchableText: 'youth ministry mentors faith formation guide high school students small-group leader',
+  },
+  {
+    title: 'Annual Parish Picnic',
+    type: 'Get Involved',
+    href: '/get-involved/annual-parish-picnic',
+    searchableText: 'annual parish picnic knights of columbus community event help host largest community event',
+  },
+  {
+    title: 'St. Vincent de Paul Food Drive',
+    type: 'Get Involved',
+    href: '/get-involved/st-vincent-de-paul-food-drive',
+    searchableText: 'st vincent de paul food drive sort and distribute food donations local families in need',
+  },
+  {
+    title: 'Altar Society',
+    type: 'Get Involved',
+    href: '/get-involved/altar-society',
+    searchableText: 'altar society women of the parish care for sacred linens altar vessels flowers decorations church service',
+  },
+  {
+    title: 'Knights of Columbus',
+    type: 'Get Involved',
+    href: '/get-involved/knights-of-columbus',
+    searchableText: 'knights of columbus catholic fraternal service organization charitable works faith formation support community fellowship',
+  },
+  {
+    title: 'Catholic Daughters of the Americas',
+    type: 'Get Involved',
+    href: '/get-involved/catholic-daughters',
+    searchableText: 'catholic daughters of the americas prayer fellowship charitable works',
+  },
 ];
 
 export default function Header({ showMassTimes = false }: HeaderProps) {
@@ -81,6 +189,8 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
 
     const results = [
       ...searchablePages,
+      ...searchableSacraments,
+      ...searchableOpportunities,
       ...organizations.map((organization) => ({
         title: organization.name,
         type: 'Organization',
@@ -110,8 +220,26 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
     ];
 
     return results
-      .filter((result) => result.searchableText.toLowerCase().includes(query))
-      .filter((result, index, allResults) => allResults.findIndex((item) => item.title === result.title && item.href === result.href) === index)
+      .map((result) => {
+        const title = result.title.toLowerCase();
+        const searchableText = result.searchableText.toLowerCase();
+
+        let score = 0;
+
+        if (title.includes(query)) score += 100;
+        if (title === query || title.startsWith(query)) score += 40;
+        if (searchableText.includes(query)) score += 30;
+        if (searchableText.startsWith(query)) score += 20;
+
+        return { result, score };
+      })
+      .filter(({ result, score }) => score > 0 && result.searchableText.toLowerCase().includes(query))
+      .filter(({ result, score }, index, allResults) => {
+        const firstMatchIndex = allResults.findIndex((item) => item.result.title === result.title && item.result.href === result.href);
+        return firstMatchIndex === index;
+      })
+      .sort((a, b) => b.score - a.score || a.result.title.localeCompare(b.result.title))
+      .map(({ result }) => result)
       .slice(0, 8);
   }, [searchQuery]);
 
@@ -131,12 +259,13 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
         >
           <span className="block text-sm font-semibold text-primary">{result.title}</span>
           <span className="mt-0.5 block text-[10px] font-bold uppercase tracking-widest text-muted-foreground">{result.type}</span>
+          <span className="mt-1 block text-[10px] text-muted-foreground/80">{result.href}</span>
         </Link>
       ))}
     </div>
   ) : searchQuery.trim().length >= 2 ? (
     <div className="absolute right-0 top-full z-[60] mt-2 w-80 rounded-md border border-border bg-white px-4 py-5 text-sm text-muted-foreground shadow-xl">
-      No matching pages or events found.
+      No matching pages, people, opportunities, or events found.
     </div>
   ) : null;
 
@@ -157,7 +286,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
             className="h-20 w-auto object-contain"
           />
           <span className="font-serif font-bold text-lg text-primary hidden xl:inline">
-            Saint Thérèse
+              Saint Thérèse · The Little Flower
           </span>
         </Link>
 

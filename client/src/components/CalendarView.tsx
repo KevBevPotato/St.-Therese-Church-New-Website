@@ -1,5 +1,7 @@
+import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'wouter';
 import { EventCategory, EVENT_COLORS, CalendarEvent } from './events';
 import { CalendarCellEvent } from './event-components';
 
@@ -16,13 +18,16 @@ interface CalendarViewProps {
   onDayLeave: () => void;
   onEventClick: (e: React.MouseEvent, event: CalendarEvent) => void;
   today: Date;
+  selectedDate?: Date | null;
 }
 
 export function CalendarView({
   currentDate, setCurrentDate, selectedTypes, setSelectedTypes,
-  monthDays, emptyDaysBefore, getEventsForDay, onDayClick, onDayHover, onDayLeave, onEventClick, today
+  monthDays, emptyDaysBefore, getEventsForDay, onDayClick, onDayHover, onDayLeave, onEventClick, today, selectedDate
 }: CalendarViewProps) {
   const monthName = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
+  const [popupDate, setPopupDate] = useState<Date | null>(null);
 
   const toggleEventType = (type: EventCategory) => {
     const next = new Set(selectedTypes);
@@ -31,7 +36,7 @@ export function CalendarView({
   };
 
   return (
-    <div className="w-full flex-shrink-0 flex flex-col">
+    <div className="w-full flex-shrink-0 flex flex-col relative">
       <div className="bg-white rounded-t-2xl border-x-2 border-t-2 border-primary/30 shadow-sm overflow-hidden">
         <div className="bg-primary p-5 sm:p-6 flex flex-col sm:flex-row items-center justify-between gap-4 text-white">
           <div className="flex items-center gap-4">
@@ -81,6 +86,8 @@ export function CalendarView({
         {monthDays.map(date => {
           const events = getEventsForDay(date);
           const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
+          const isSelected = selectedDate && date.getFullYear() === selectedDate.getFullYear() && date.getMonth() === selectedDate.getMonth() && date.getDate() === selectedDate.getDate();
+          const isHovered = hoveredDate && date.getFullYear() === hoveredDate.getFullYear() && date.getMonth() === hoveredDate.getMonth() && date.getDate() === hoveredDate.getDate();
           const isPast = date < today && !isToday;
           const fontSize = events.length <= 2 ? 'text-[9px]' : events.length <= 4 ? 'text-[8px]' : 'text-[7px]';
 
@@ -88,11 +95,33 @@ export function CalendarView({
             <div
               key={date.toISOString()}
               onClick={() => onDayClick(date)}
-              onMouseEnter={() => onDayHover(date)}
-              onMouseLeave={onDayLeave}
-              className={`aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
+              onMouseEnter={() => {
+                setHoveredDate(date);
+                onDayHover(date);
+              }}
+              onMouseLeave={() => {
+                setHoveredDate(null);
+                onDayLeave();
+              }}
+              className={`relative aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isSelected ? 'bg-accent/10 border-accent' : isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
             >
-              <div className={`text-xs font-black mb-1 flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>{date.getDate()}</div>
+              <div className="mb-1 flex items-start justify-between gap-1">
+                <div className={`text-xs font-black flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>{date.getDate()}</div>
+                {isHovered && (
+                  <button
+                    type="button"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setPopupDate(date);
+                    }}
+                    className="inline-flex items-center justify-center text-[10px] font-black uppercase tracking-[0.14em] text-primary/60 hover:text-accent"
+                    title="Open day details"
+                    aria-label={`Open day details for ${date.toDateString()}`}
+                  >
+                    ↗
+                  </button>
+                )}
+              </div>
               <div className="flex flex-col space-y-0.5 pointer-events-auto">
                 {events.map(event => (
                   <CalendarCellEvent key={event.id} event={event} isPast={isPast} fontSize={fontSize} onEventClick={onEventClick} />
@@ -102,6 +131,82 @@ export function CalendarView({
           );
         })}
       </div>
+
+      {popupDate && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center bg-[#fbfaf6]/80 p-4 backdrop-blur-sm"
+          onClick={() => setPopupDate(null)}
+        >
+          <div
+            className="w-full max-w-2xl rounded-[2rem] border-2 border-primary/20 bg-white p-5 shadow-2xl ring-1 ring-black/5 max-h-[85vh] overflow-y-auto"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="mb-5 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-[10px] font-black uppercase tracking-[0.22em] text-primary/40">Day details</p>
+                <h3 className="font-serif text-3xl font-bold text-primary">
+                  {popupDate.toLocaleDateString('default', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}
+                </h3>
+              </div>
+              <div className="flex items-center gap-2">
+                <button
+                  type="button"
+                  onClick={() => onDayClick(popupDate)}
+                  className="text-[10px] font-black uppercase tracking-[0.16em] text-accent hover:text-accent/80"
+                >
+                  Select day
+                </button>
+                <button
+                  type="button"
+                  onClick={() => setPopupDate(null)}
+                  className="text-[10px] font-black uppercase tracking-[0.18em] text-primary hover:text-accent"
+                >
+                  Close
+                </button>
+              </div>
+            </div>
+
+            <div className="space-y-4">
+              {getEventsForDay(popupDate).length > 0 ? (
+                getEventsForDay(popupDate).map((event) => {
+                  const eventHref = event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`;
+
+                  return (
+                    <Link
+                      key={event.id}
+                      href={eventHref}
+                      className="block rounded-[1.5rem] border border-primary/10 bg-primary/5 p-4 transition-all hover:border-accent hover:bg-accent/5 hover:shadow-md"
+                    >
+                      <div className="mb-3 flex flex-wrap items-center gap-2">
+                        {event.categories.map((category) => (
+                          <span
+                            key={`${event.id}-${category}`}
+                            className="rounded-full border border-primary/20 bg-white px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.18em] text-primary/70"
+                          >
+                            {category}
+                          </span>
+                        ))}
+                      </div>
+
+                      <h4 className="font-serif text-2xl font-bold text-primary">{event.title}</h4>
+
+                      <div className="mt-4 space-y-2 text-sm text-muted-foreground">
+                        <p><strong className="text-primary">Time:</strong> {event.time}</p>
+                        <p><strong className="text-primary">Location:</strong> {event.location}</p>
+                        <p className="whitespace-pre-line"><strong className="text-primary">About:</strong> {event.description || event.about || 'No additional information available.'}</p>
+                      </div>
+                    </Link>
+                  );
+                })
+              ) : (
+                <div className="rounded-[1.5rem] border border-dashed border-primary/20 bg-gray-50/60 p-6 text-center">
+                  <p className="text-sm text-muted-foreground">No events scheduled for this day.</p>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

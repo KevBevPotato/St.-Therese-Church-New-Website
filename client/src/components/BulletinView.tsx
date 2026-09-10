@@ -25,6 +25,7 @@ export interface Bulletin {
     endDate: Date;
     pdfUrl?: string;
     sections: BulletinSection[];
+    hasContent?: boolean;
 }
 
 interface BulletinViewProps {
@@ -83,7 +84,8 @@ export default function BulletinView({
     };
 
     const hasPdf = !!bulletin.pdfUrl;
-    const sectionsLocked = hideSectionsWithoutPdf && !hasPdf;
+    const hasContent = bulletin.hasContent ?? true;
+    const sectionsLocked = (hideSectionsWithoutPdf && !hasPdf) || !hasContent;
 
     return (
         <div className="space-y-8">
@@ -196,7 +198,9 @@ export default function BulletinView({
                                 <div className="py-12 text-center text-muted-foreground">
                                     <FileText className="mx-auto mb-3 size-10 text-primary/15" />
                                     <p className="text-sm font-bold uppercase tracking-widest">
-                                        Section information will appear when this bulletin is uploaded
+                                        {hasContent
+                                            ? 'Section information will appear when this bulletin is uploaded'
+                                            : 'There is yet to be information added for this week.'}
                                     </p>
                                 </div>
                             ) : selectedSections.size === 0 ? (

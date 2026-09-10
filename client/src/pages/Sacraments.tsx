@@ -148,7 +148,8 @@ export default function Sacraments() {
                         {sacraments.map((sacrament) => (
                             <Card
                                 key={sacrament.id}
-                                className="group overflow-hidden rounded-3xl border-2 border-primary/10 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl p-8"
+                                id={sacrament.id}
+                                className="group scroll-mt-[calc(var(--header-height)+1rem)] overflow-hidden rounded-3xl border-2 border-primary/10 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30 hover:shadow-xl p-8"
                             >
                                 <div className="flex items-start gap-4 mb-4">
                                     <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary shrink-0">

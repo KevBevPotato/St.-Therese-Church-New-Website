@@ -8,7 +8,6 @@
  */
 
 export const bulletinPdfManifest: Record<string, string> = {
-    '2026-08-01': '/ParishBulletins/August1.1-8.8.26.pdf',
     '2026-08-08': '/ParishBulletins/August8.8-15.26.pdf',
     '2026-08-15': '/ParishBulletins/August15.8-22.26.pdf',
     '2026-08-22': '/ParishBulletins/August22.8-29.26.pdf',
@@ -27,10 +26,6 @@ export const bulletinPdfManifest: Record<string, string> = {
  * Add a new entry each Saturday so the system knows what week is next.
  */
 export const bulletinWeekSchedule: Record<string, { startDate: Date; endDate: Date }> = {
-    '2026-08-01': {
-        startDate: new Date(2026, 7, 1),
-        endDate: new Date(2026, 7, 8),
-    },
     '2026-08-08': {
         startDate: new Date(2026, 7, 8),
         endDate: new Date(2026, 7, 15),
