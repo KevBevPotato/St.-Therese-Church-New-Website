@@ -278,7 +278,7 @@ export default function FaithFormationDetail() {
                                                 Safe Environment Link
                                             </a>
                                         )}
-                                    </div>
+                                    </div> 
                                 </Card>
                             ))}
                         </div>
