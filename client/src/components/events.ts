@@ -3,6 +3,7 @@ import { oneTimeEvents } from './eventfolders/oneTimeEvents';
 import { irregularEvents } from './eventfolders/irregularEvents';
 
 export type { CalendarEvent, EventCategory, TimeFilter };
+export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
 
 export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; dot: string; label: string; labelColor: string }> = {
     sacramental: { bg: 'bg-amber-50', border: 'border-amber-400', dot: 'bg-amber-500', label: 'Sacramental Life', labelColor: 'text-amber-700' },

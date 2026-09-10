@@ -539,6 +539,7 @@ export default function Bulletin() {
                             bulletin={currentBulletin}
                             title="This Week's Bulletin"
                             subtitle="Current Week"
+                            hideSectionsWithoutPdf
                         />
                     </div>
 

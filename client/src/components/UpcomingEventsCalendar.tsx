@@ -2,57 +2,38 @@ import { useState, useMemo } from 'react';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, ExternalLink, MapPin, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { useLocation, Link } from 'wouter';
+import { useLocation, useSearch, Link } from 'wouter';
 
-// DIRECT IMPORTS - Bypassing events.ts as requested
-import { CalendarEvent, EventCategory, TimeFilter, EVENT_COLORS } from './eventfolders/types'; import { oneTimeEvents } from './eventfolders/oneTimeEvents';
-import { irregularEvents } from './eventfolders/irregularEvents';
-import { EventCategoryPill } from './event-components'; 
+import { CalendarEvent, EventCategory } from './eventfolders/types';
+import { staticEvents, generateRecurringEventsForMonth, ExtendedTimeFilter, EVENT_COLORS } from './events';
+import { EventCategoryPill } from './event-components';
 import { CalendarView } from './CalendarView';
 import { EventsListView } from './EventsListView';
 
-type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
+type UpcomingEventsCalendarProps = {
+  homeView?: boolean;
+  params?: Record<number, string | undefined>;
+};
 
-// Recurring logic kept inside the Brain for independence from events.ts
-function generateRecurringEventsForMonth(month: number, year: number): CalendarEvent[] {
-    const events: CalendarEvent[] = [];
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    for (let day = 1; day <= daysInMonth; day++) {
-        const d = new Date(year, month, day);
-        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-        if (d.getDay() >= 1 && d.getDay() <= 5) {
-            events.push({ id: `mass-daily-${dateStr}`, title: 'Daily Mass', date: new Date(year, month, day, 7, 30), time: '7:30 AM', location: 'Main Sanctuary', categories: ['sacramental'], description: 'Daily Mass' });
-            events.push({ id: `rosary-daily-${dateStr}`, title: "Daily Rosary", date: new Date(year, month, day, 7, 0), time: "7:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
-        }
-        if (d.getDay() === 6) {
-            events.push({ id: `mass-saturday-${dateStr}`, title: 'Saturday Vigil Mass', date: new Date(year, month, day, 16, 30), time: '4:30 PM', location: 'Main Sanctuary', categories: ['sacramental'] });
-        }
-        if (d.getDay() === 0) {
-            events.push({ id: `mass-sunday-am-${dateStr}`, title: 'Sunday Mass (9:00 AM)', date: new Date(year, month, day, 9, 0), time: '9:00 AM', location: 'Main Sanctuary', categories: ['sacramental'] });
-            events.push({ id: `mass-sunday-pm-${dateStr}`, title: 'Sunday Mass (5:30 PM)', date: new Date(year, month, day, 17, 30), time: '5:30 PM', location: 'Main Sanctuary', categories: ['sacramental'] });
-            events.push({ id: `rosary-sun-${dateStr}`, title: "Family Rosary", date: new Date(year, month, day, 19, 0), time: "7:00 PM", location: "Main Sanctuary", categories: ["sacramental", "parishEvents"] });
-        }
-        if (d.getDay() === 5) {
-            events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: 'Main Sanctuary', categories: ['sacramental'] });
-        }
-    }
-    return events;
-}
-
-export default function UpcomingEventsCalendar() {
+export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProps) {
+  const homeView = props.homeView === true;
   const [location, navigate] = useLocation();
+  const search = useSearch();
+  const calendarViewRequested = new URLSearchParams(search).get('view') === 'calendar';
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedTypes, setSelectedTypes] = useState<Set<EventCategory>>(new Set(Object.keys(EVENT_COLORS) as EventCategory[]));
   const [expandedDay, setExpandedDay] = useState<Date | null>(null);
   const [highlightedEventId, setHighlightedEventId] = useState<string | null>(null);
   const [timeFilter, setTimeFilter] = useState<ExtendedTimeFilter>('all');
   const [filterDate, setFilterDate] = useState<Date | null>(null);
+  const [eventSearchQuery, setEventSearchQuery] = useState('');
+  const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
   const eventDetailId = location.startsWith('/events/') ? location.split('/events/')[1] : null;
 
   // 1. MERGE ALL DATA SOURCES
   const allEvents = useMemo(() => {
-    const events = [...oneTimeEvents, ...irregularEvents];
+    const events = [...staticEvents];
     const startMonth = currentDate.getMonth();
     const startYear = currentDate.getFullYear();
     for (let i = -1; i <= 12; i++) {
@@ -98,10 +79,38 @@ export default function UpcomingEventsCalendar() {
         weekEnd.setDate(today.getDate() + 7);
         list = list.filter(e => new Date(e.date).getTime() <= weekEnd.getTime());
       }
-      // Note: 'thisMonth' etc. can be added here similarly
+      if (timeFilter === 'calendarMonth') {
+        list = list.filter(e => e.date.getFullYear() === currentDate.getFullYear() && e.date.getMonth() === currentDate.getMonth());
+      }
     }
+
+    const query = eventSearchQuery.trim().toLowerCase();
+    if (query) {
+      list = list.filter(event => [
+        event.title,
+        event.location,
+        event.description,
+        event.about,
+        event.categories.join(' '),
+      ].filter(Boolean).join(' ').toLowerCase().includes(query));
+    }
+
+    if (hoveredDate) {
+      const hoveredDayTime = new Date(hoveredDate.getFullYear(), hoveredDate.getMonth(), hoveredDate.getDate()).getTime();
+      list = list.filter(event => {
+        const eventDayTime = new Date(event.date.getFullYear(), event.date.getMonth(), event.date.getDate()).getTime();
+        return eventDayTime >= hoveredDayTime;
+      });
+      list.sort((firstEvent, secondEvent) => {
+        const firstIsHovered = new Date(firstEvent.date.getFullYear(), firstEvent.date.getMonth(), firstEvent.date.getDate()).getTime() === hoveredDayTime;
+        const secondIsHovered = new Date(secondEvent.date.getFullYear(), secondEvent.date.getMonth(), secondEvent.date.getDate()).getTime() === hoveredDayTime;
+        if (firstIsHovered !== secondIsHovered) return firstIsHovered ? -1 : 1;
+        return firstEvent.date.getTime() - secondEvent.date.getTime();
+      });
+    }
+
     return list;
-  }, [filteredEvents, timeFilter, filterDate]);
+  }, [filteredEvents, timeFilter, filterDate, currentDate, eventSearchQuery, hoveredDate]);
 
   const getEventsForDay = (date: Date) => filteredEvents.filter((e) => {
     const eDate = new Date(e.date);
@@ -127,6 +136,7 @@ export default function UpcomingEventsCalendar() {
     setCurrentDate(new Date()); 
     setTimeFilter('all'); 
     setFilterDate(null); 
+    setEventSearchQuery('');
   };
 
   const today = new Date(); today.setHours(0, 0, 0, 0);
@@ -180,11 +190,16 @@ export default function UpcomingEventsCalendar() {
           <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">Browse upcoming events. Use the filters below to narrow by category.</p>
         </div>
         <div className="lg:hidden w-full">
-          <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} />
+          {calendarViewRequested && (
+            <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={setHoveredDate} onDayLeave={() => setHoveredDate(null)} onEventClick={handleEventClick} today={today} />
+          )}
+        </div>
+        <div className={calendarViewRequested ? 'hidden' : 'lg:hidden w-full'}>
+          <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} showCalendarLink={homeView} eventSearchQuery={eventSearchQuery} setEventSearchQuery={setEventSearchQuery} />
         </div>
         <div className="hidden lg:grid lg:grid-cols-[1.1fr_0.9fr] gap-12 items-start w-full relative">
-          <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onEventClick={handleEventClick} today={today} />
-          <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} />
+          <CalendarView currentDate={currentDate} setCurrentDate={setCurrentDate} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} monthDays={monthDays} emptyDaysBefore={emptyDaysBefore} getEventsForDay={getEventsForDay} onDayClick={handleDayClick} onDayHover={setHoveredDate} onDayLeave={() => setHoveredDate(null)} onEventClick={handleEventClick} today={today} />
+          <EventsListView sortedUpcomingEvents={sortedUpcomingEvents} timeFilter={timeFilter} setTimeFilter={setTimeFilter} highlightedEventId={highlightedEventId} navigate={navigate} onReset={resetFilters} selectedTypes={selectedTypes} setSelectedTypes={setSelectedTypes} showCalendarLink={homeView} eventSearchQuery={eventSearchQuery} setEventSearchQuery={setEventSearchQuery} />
         </div>
       </div>
       {expandedDay && (
@@ -222,4 +237,3 @@ export default function UpcomingEventsCalendar() {
     </div>
   );
 }
-// blah blah blah

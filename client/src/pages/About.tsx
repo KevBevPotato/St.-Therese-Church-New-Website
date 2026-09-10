@@ -53,7 +53,7 @@ export default function About() {
       <section className="py-10 bg-secondary/20">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
-            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            <div className="grid grid-cols-3 gap-2 sm:gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
               {filteredStaff.map((member: StaffMember, idx: number) => (
                 <Card
                   key={idx}
@@ -78,17 +78,17 @@ export default function About() {
                       )}
                     </div>
 
-                    <div className="p-5">
-                      <h3 className="text-lg font-serif font-bold text-primary mb-1">{member.name}</h3>
-                      <div className="mb-4 space-y-1">
+                    <div className="p-2 sm:p-5">
+                      <h3 className="break-words text-sm font-serif font-bold text-primary mb-1 sm:text-lg">{member.name}</h3>
+                      <div className="mb-2 space-y-1 sm:mb-4">
                         {member.titles.map((title, titleIdx) => (
-                          <p key={titleIdx} className="text-xs font-bold text-accent uppercase tracking-wide">
+                          <p key={titleIdx} className="break-words text-[8px] font-bold text-accent uppercase tracking-wide sm:text-xs">
                             {title}
                           </p>
                         ))}
                       </div>
 
-                      <div className="space-y-2 pt-4 border-t border-primary/5">
+                      <div className="hidden space-y-2 border-t border-primary/5 pt-4 sm:block">
                         {member.email && (
                           <a
                             href={`mailto:${member.email}`}

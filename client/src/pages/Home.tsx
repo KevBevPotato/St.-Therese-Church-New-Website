@@ -1,5 +1,4 @@
 // Home.tsx
-import { useState, useEffect, useRef } from 'react';
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -16,43 +15,15 @@ import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
  * Hero text uses clamp() to scale fluidly with viewport size.
  */
 
-const HEADER_HEIGHT = 113; // measured height of the fixed header
-
 export default function Home() {
-  const heroRef = useRef<HTMLElement>(null);
-  const massTimesRef = useRef<HTMLDivElement>(null);
-
-  // The mass-times content as a single block so we can render it in two places
-  // (bottom of hero + sticky on scroll) without duplicating JSX.
-  const massTimesContent = (
-    <div className="container grid divide-y divide-primary/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-      <div className="py-4 sm:pr-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9b762f]">Sunday Mass</p>
-        <p className="mt-1 font-serif text-base lg:text-lg font-bold">
-          9:00 AM · 5:30 PM <span className="block text-[10px] lg:inline lg:text-xs font-sans font-medium opacity-80 lg:ml-2">| Confession starts 8 AM, 4:30 PM</span>
-        </p>
-      </div>
-      <div className="py-4 sm:px-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9b762f]">Saturday Vigil</p>
-        <p className="mt-1 font-serif text-base lg:text-lg font-bold">
-          4:30 PM <span className="block text-[10px] lg:inline lg:text-xs font-sans font-medium opacity-80 lg:ml-2">| Confession starts 3 PM</span>
-        </p>
-      </div>
-      <div className="py-4 sm:pl-6">
-        <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-[#9b762f]">Daily Mass</p>
-        <p className="mt-1 font-serif text-base lg:text-lg font-bold">7:30 AM (Mon - Fri)</p>
-      </div>
-    </div>
-  );
-
+  
   return (
     <div className="min-h-screen flex flex-col bg-background">
-      <Header />
+      <Header showMassTimes />
 
       {/* Hero Section */}
       <section
-        ref={heroRef}
-        className="relative w-full overflow-hidden pt-[113px] text-white"
+        className="relative w-full overflow-hidden pt-[var(--header-height)] text-white"
       >
         {/* 
             CONTAINER CHANGE: 
@@ -153,29 +124,9 @@ export default function Home() {
             </div>
           </div>
         </div>
-        {/* Mass Times bar at the bottom of the hero (ref'd for scroll target) */}
       </section>
-      <div
-        ref={massTimesRef}
-        /* 
-           Removed 'border-b' from here because we are using a physical div instead.
-           Added 'pb-0' to ensure no extra space is pushing the line away.
-        */
-        className="relative z-30 border-t border-white/20 bg-[#fbfaf6]/96 text-primary backdrop-blur-md w-full pb-0"
-      >
-        {massTimesContent}
-
-        {/* 
-              THE PHYSICAL LINE:
-              - h-px: Exactly 1 pixel tall
-              - w-full: Spans the entire width
-              - bg-primary/20: The color (adjust /20 to /30 if you want it slightly darker)
-          */}
-        <div className="h-px w-full bg-primary/10" />
-      </div>
-
       {/* Upcoming Events Calendar Section */}
-      <UpcomingEventsCalendar />
+      <UpcomingEventsCalendar homeView />
 
       {/* Contact Section */}
       <section id="contact" className="scroll-mt-20 bg-secondary/30 py-20">

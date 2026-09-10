@@ -66,26 +66,26 @@ type ViewMode = 'cards' | 'list';
 
 function createInitialOpportunities(): Opportunity[] {
     return [
-        // {
-        //     id: 'nursery',
-        //     title: 'Nursery',
-        //     categories: ['sponsor', 'help', 'join'],
-        //     tags: ['Liturgy', 'Parish Events'],
-        //     organization: 'Parish Council',
-        //     date: 'Ongoing Project',
-        //     contactName: 'Kelly Whartman',
-        //     contactPhone: '(605) 867-5309',
-        //     description:
-        //         'We are looking to update the old side chapel into a nursery while retaining a space for mothers during Mass. Donations and volunteers are welcome.',
-        //     goalAmount: 2500,
-        //     currentAmount: 1200,
-        //     constructionItems: [
-        //         { category: '2x4 Lumber & Construction Screws', items: [{ name: '2x4 Lumber & Construction Screws', cost: '$79.30' }], subtotal: '$79.30' },
-        //         { category: 'Sheetrock & Drywall Screws', items: [{ name: 'Sheetrock & Drywall Screws', cost: '$131.50' }], subtotal: '$131.50' },
-        //         { category: 'Mudding, Tape & Sanding Supplies', items: [{ name: 'Mudding, Tape & Sanding Supplies', cost: '$31.50' }], subtotal: '$31.50' },
-        //     ],
-        //     constructionTotal: '~$242.30',
-        // },
+        {
+            id: 'nursery',
+            title: 'Nursery',
+            categories: ['sponsor', 'help', 'join'],
+            tags: ['Liturgy', 'Parish Events'],
+            organization: 'Parish Council',
+            date: 'Ongoing Project',
+            contactName: 'Kelly Whartman',
+            contactPhone: '(605) 867-5309',
+            description:
+                'We are looking to update the old side chapel into a nursery while retaining a space for mothers during Mass. Donations and volunteers are welcome.',
+            goalAmount: 2500,
+            currentAmount: 1200,
+            constructionItems: [
+                { category: '2x4 Lumber & Construction Screws', items: [{ name: '2x4 Lumber & Construction Screws', cost: '$79.30' }], subtotal: '$79.30' },
+                { category: 'Sheetrock & Drywall Screws', items: [{ name: 'Sheetrock & Drywall Screws', cost: '$131.50' }], subtotal: '$131.50' },
+                { category: 'Mudding, Tape & Sanding Supplies', items: [{ name: 'Mudding, Tape & Sanding Supplies', cost: '$31.50' }], subtotal: '$31.50' },
+            ],
+            constructionTotal: '~$242.30',
+        },
         {
             id: 'lector',
             title: 'Lector Sign-up',
@@ -134,91 +134,91 @@ function createInitialOpportunities(): Opportunity[] {
             description:
                 'Help lead the parish in sung prayer. We welcome people interested in joining the choir, serving as an instrumentalist, or becoming a cantor.',
         },
-        // {
-        //     id: 'supper-week',
-        //     title: 'Wednesday Night Supper',
-        //     categories: ['sponsor', 'help'],
-        //     tags: ['Parish Events'],
-        //     organization: 'Parish Hospitality',
-        //     date: 'Sept. 2, 2026 – May 19, 2027',
-        //     contactName: 'Parish Office',
-        //     contactPhone: '(605) 867-5309',
-        //     description:
-        //         'Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year.',
-        //     customPage: 'supper-week',
-        // },
-        // {
-        //     id: 'youth-ministry-mentors',
-        //     title: 'Youth Ministry Mentors',
-        //     categories: ['help'],
-        //     tags: ['Parish Organizations'],
-        //     organization: 'Faith Formation',
-        //     date: 'Starts Sept. 2026',
-        //     contactName: 'Jane Doe',
-        //     contactPhone: '(605) 867-5309',
-        //     description: 'Guide high school students in their faith journey as a small-group leader.',
-        // },
-        // {
-        //     id: 'annual-parish-picnic',
-        //     title: 'Annual Parish Picnic',
-        //     categories: ['help'],
-        //     tags: ['Parish Events'],
-        //     organization: 'Knights of Columbus',
-        //     date: 'August 23, 2026',
-        //     contactName: 'John Doe',
-        //     contactPhone: '(605) 867-5309',
-        //     description: 'Help host our largest community event of the year.',
-        // },
-        // {
-        //     id: 'st-vincent-de-paul-food-drive',
-        //     title: 'St. Vincent de Paul Food Drive',
-        //     categories: ['join'],
-        //     tags: ['Parish Organizations'],
-        //     organization: 'St. Vincent de Paul',
-        //     date: 'Every 1st Sunday',
-        //     contactName: 'Jane Doe',
-        //     contactPhone: '(605) 867-5309',
-        //     description: 'Help sort and distribute food donations to local families in need.',
-        // },
-        // {
-        //     id: 'altar-society',
-        //     title: 'Altar Society',
-        //     categories: ['join'],
-        //     tags: ['Parish Organizations'],
-        //     organization: 'Altar Society',
-        //     date: 'Quarterly',
-        //     contactName: 'President',
-        //     contactPhone: '(605) 867-5309',
-        //     description:
-        //         'The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.',
-        //     customPage: 'altar-society',
-        //     orgIcon: 'flower',
-        // },
-        // {
-        //     id: 'knights-of-columbus',
-        //     title: 'Knights of Columbus',
-        //     categories: ['join'],
-        //     tags: ['Parish Organizations', 'Diocesan'],
-        //     organization: 'Knights of Columbus',
-        //     date: '1st Thursday of each month',
-        //     contactName: 'Grand Knight',
-        //     contactPhone: '(605) 867-5309',
-        //     description:
-        //         "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
-        //     customPage: 'knights-of-columbus',
-        //     orgIcon: 'shield',
-        // },
-        // {
-        //     id: 'catholic-daughters',
-        //     title: 'Catholic Daughters of the Americas',
-        //     categories: ['join'],
-        //     tags: ['Diocesan'],
-        //     organization: 'Catholic Daughters',
-        //     date: 'Monthly – 2nd Tuesday',
-        //     contactName: 'Jane Doe',
-        //     contactPhone: '(605) 867-5309',
-        //     description: 'Join us for prayer, fellowship, and planning charitable works.',
-        // },
+        {
+            id: 'supper-week',
+            title: 'Wednesday Night Supper',
+            categories: ['sponsor', 'help'],
+            tags: ['Parish Events'],
+            organization: 'Parish Hospitality',
+            date: 'Sept. 2, 2026 – May 19, 2027',
+            contactName: 'Parish Office',
+            contactPhone: '(605) 867-5309',
+            description:
+                'Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year.',
+            customPage: 'supper-week',
+        },
+        {
+            id: 'youth-ministry-mentors',
+            title: 'Youth Ministry Mentors',
+            categories: ['help'],
+            tags: ['Parish Organizations'],
+            organization: 'Faith Formation',
+            date: 'Starts Sept. 2026',
+            contactName: 'Jane Doe',
+            contactPhone: '(605) 867-5309',
+            description: 'Guide high school students in their faith journey as a small-group leader.',
+        },
+        {
+            id: 'annual-parish-picnic',
+            title: 'Annual Parish Picnic',
+            categories: ['help'],
+            tags: ['Parish Events'],
+            organization: 'Knights of Columbus',
+            date: 'August 23, 2026',
+            contactName: 'John Doe',
+            contactPhone: '(605) 867-5309',
+            description: 'Help host our largest community event of the year.',
+        },
+        {
+            id: 'st-vincent-de-paul-food-drive',
+            title: 'St. Vincent de Paul Food Drive',
+            categories: ['join'],
+            tags: ['Parish Organizations'],
+            organization: 'St. Vincent de Paul',
+            date: 'Every 1st Sunday',
+            contactName: 'Jane Doe',
+            contactPhone: '(605) 867-5309',
+            description: 'Help sort and distribute food donations to local families in need.',
+        },
+        {
+            id: 'altar-society',
+            title: 'Altar Society',
+            categories: ['join'],
+            tags: ['Parish Organizations'],
+            organization: 'Altar Society',
+            date: 'Quarterly',
+            contactName: 'President',
+            contactPhone: '(605) 867-5309',
+            description:
+                'The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.',
+            customPage: 'altar-society',
+            orgIcon: 'flower',
+        },
+        {
+            id: 'knights-of-columbus',
+            title: 'Knights of Columbus',
+            categories: ['join'],
+            tags: ['Parish Organizations', 'Diocesan'],
+            organization: 'Knights of Columbus',
+            date: '1st Thursday of each month',
+            contactName: 'Grand Knight',
+            contactPhone: '(605) 867-5309',
+            description:
+                "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
+            customPage: 'knights-of-columbus',
+            orgIcon: 'shield',
+        },
+        {
+            id: 'catholic-daughters',
+            title: 'Catholic Daughters of the Americas',
+            categories: ['join'],
+            tags: ['Diocesan'],
+            organization: 'Catholic Daughters',
+            date: 'Monthly – 2nd Tuesday',
+            contactName: 'Jane Doe',
+            contactPhone: '(605) 867-5309',
+            description: 'Join us for prayer, fellowship, and planning charitable works.',
+        },
     ];
 }
 
@@ -316,7 +316,7 @@ export default function GetInvolved() {
             <main className="flex-grow py-16 md:py-24">
                 <div className="container mx-auto px-4">
                     {/* TIER 1: How You'll Serve */}
-                    {/* <div className="mb-10">
+                    <div className="mb-10">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
                             How Would You Like to Serve
                         </p>
@@ -335,10 +335,10 @@ export default function GetInvolved() {
                                 </button>
                             ))}
                         </div>
-                    </div> */}
+                    </div>
 
                     {/* TIER 2: By Interest */}
-                    {/* <div className="mb-8">
+                    <div className="mb-8">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
                             By Interest
                         </p>
@@ -367,7 +367,7 @@ export default function GetInvolved() {
                                 </button>
                             ))}
                         </div>
-                    </div> */}
+                    </div>
 
                     {/* View-mode toggle */}
                     {activeCategory !== 'request' && filteredOps.length > 0 && (

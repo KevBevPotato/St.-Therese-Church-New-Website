@@ -12,13 +12,15 @@ interface CalendarViewProps {
   emptyDaysBefore: number[];
   getEventsForDay: (date: Date) => CalendarEvent[];
   onDayClick: (date: Date) => void;
+  onDayHover: (date: Date) => void;
+  onDayLeave: () => void;
   onEventClick: (e: React.MouseEvent, event: CalendarEvent) => void;
   today: Date;
 }
 
 export function CalendarView({
   currentDate, setCurrentDate, selectedTypes, setSelectedTypes,
-  monthDays, emptyDaysBefore, getEventsForDay, onDayClick, onEventClick, today
+  monthDays, emptyDaysBefore, getEventsForDay, onDayClick, onDayHover, onDayLeave, onEventClick, today
 }: CalendarViewProps) {
   const monthName = currentDate.toLocaleString('default', { month: 'long', year: 'numeric' });
 
@@ -86,6 +88,8 @@ export function CalendarView({
             <div
               key={date.toISOString()}
               onClick={() => onDayClick(date)}
+              onMouseEnter={() => onDayHover(date)}
+              onMouseLeave={onDayLeave}
               className={`aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
             >
               <div className={`text-xs font-black mb-1 flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>{date.getDate()}</div>

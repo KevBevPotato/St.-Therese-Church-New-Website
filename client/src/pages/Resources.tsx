@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -21,9 +22,10 @@ interface ResourceLink {
     id: string;
     title: string;
     description: string;
-    href: string;
+    href?: string;
     external: boolean;
     icon: React.ReactNode;
+    image?: string;
 }
 
 interface ResourceCategory {
@@ -175,7 +177,110 @@ const categories: ResourceCategory[] = [
     },
 ];
 
+const additionalCategories: ResourceCategory[] = [
+    {
+        id: 'daily-walk',
+        title: 'The Daily Walk',
+        description: 'Prayer and digital wellness resources for building a faithful daily rhythm.',
+        links: [
+            { id: 'daily-readings', title: 'USCCB Daily Readings', description: "Stay in sync with the Church's liturgical cycle. Find today's readings and prepare your heart for Mass.", href: 'https://bible.usccb.org/readings/calendar', external: true, icon: <BookOpen size={20} /> },
+            { id: 'kindle-ebooks', title: 'Kindle Ebooks', description: 'Download digital versions of Mass times, Lauds, and Vespers for portable, traditional prayer.', external: false, icon: <BookOpen size={20} /> },
+            { id: 'formed', title: 'FORMED', description: 'The Catholic Netflix: a large library of high-quality videos, movies, and books for the whole family.', href: 'https://formed.org', external: true, icon: <BookOpen size={20} /> },
+            { id: 'hallow', title: 'Hallow', description: 'A Catholic app for meditation, prayer, and sleep.', href: 'https://hallow.com', external: true, icon: <Heart size={20} /> },
+            { id: 'ibreviary', title: 'iBreviary', description: 'The Liturgy of the Hours, Mass readings, and prayers in your pocket.', href: 'https://ibreviary.com', external: true, icon: <BookOpen size={20} /> },
+            { id: 'mybible', title: 'MyBible App', description: 'A powerful Bible tool available in almost any language.', href: 'https://mybible.zone', external: true, icon: <BookOpen size={20} /> },
+            { id: 'shift', title: 'Shift', description: 'Take back your time and return to the physical world by removing digital distractions. Includes a free phone pornography blocker with one-time, lifetime access.', href: 'https://shiftyourphone.com', external: true, icon: <Shield size={20} /> },
+        ],
+    },
+    {
+        id: 'search-for-truth',
+        title: 'The Search for Truth',
+        description: 'Apologetics, Catholic answers, and tools for finding trustworthy sources.',
+        links: [
+            { id: 'catholic-com', title: 'Catholic Answers Resource Hub', description: 'Find quick guides, visual learning, magazines, and practical answers about the Catholic faith.', href: 'https://catholic.com', external: true, icon: <HelpCircle size={20} /> },
+            { id: 'bible-navigator', title: 'Bible Navigator', description: 'Find the scriptural roots of Catholic teaching.', href: 'https://catholic.com/bible-navigator', external: true, icon: <BookOpen size={20} /> },
+            { id: 'catholic-qa', title: 'Catholic Answers Q&A', description: 'Explore a large archive of common questions about the faith.', href: 'https://catholic.com/qa', external: true, icon: <HelpCircle size={20} /> },
+            { id: 'justin-ai', title: 'Justin AI', description: 'A 24/7 Catholic assistant for theological answers.', href: 'https://justin.ai', external: true, icon: <HelpCircle size={20} /> },
+            { id: 'magisterium-ai', title: 'Magisterium AI', description: 'Query official Church documents for exact sources.', href: 'https://www.magisterium.com', external: true, icon: <FileText size={20} /> },
+            { id: 'truthly', title: 'Truthly', description: 'Accessible, bite-sized Catholic truths for the modern age.', href: 'https://truthly.app', external: true, icon: <BookOpen size={20} /> },
+            { id: 'school-apologetics', title: 'School of Apologetics', description: 'Structured courses to help you explain and defend the faith with confidence and charity.', href: 'https://schoolofapologetics.com', external: true, icon: <GraduationCap size={20} /> },
+            { id: 'new-advent', title: 'NewAdvent.org', description: 'A heritage library featuring the Catholic Encyclopedia and writings of the Early Church Fathers.', href: 'https://www.newadvent.org', external: true, icon: <BookOpen size={20} /> },
+        ],
+    },
+    {
+        id: 'growth-discipleship',
+        title: 'Growth & Discipleship',
+        description: 'Bible study, missionary discipleship, and podcasts for continuing formation.',
+        links: [
+            { id: 'focus', title: 'FOCUS Bible Study Path', description: 'Explore The Crux, Story of Salvation, and Life in Christ, plus studies in Theology of the Body, Catholic Social Teaching, and Feminine Genius.', href: 'https://focus.org', external: true, icon: <GraduationCap size={20} /> },
+            { id: 'focus-foundations', title: 'FOCUS Foundations for Discipleship', description: 'WIN: encounter the Gospel. BUILD: grow in prayer, Eucharistic devotion, friendship, and Confession. SEND: accompany others and lead them to conversion.', href: 'https://focus.org', external: true, icon: <Users size={20} /> },
+            { id: 'ascension-presents', title: 'Ascension Presents', description: 'Join Fr. Mike Schmitz for Bible in a Year, Catechism in a Year, or Rosary in a Year.', href: 'https://media.ascensionpress.com/category/ascension-presents', external: true, icon: <BookOpen size={20} /> },
+            { id: 'pints-aquinas', title: 'Pints with Aquinas', description: 'Deep conversations on faith, culture, and politics with Matt Fradd.', href: 'https://www.dailywire.com/hosts/matt-fradd', external: true, icon: <BookOpen size={20} /> },
+            { id: 'how-christian', title: 'How to Be Christian', description: 'A witty, engaging, step-by-step guide for those seeking the Truth.', href: 'https://www.youtube.com/@HowToBeChristian', external: true, icon: <BookOpen size={20} /> },
+            { id: 'counsel-trent', title: 'The Counsel of Trent', description: 'Logic and wit used to break down tough apologetic arguments.', href: 'https://www.catholic.com/audio/cot', external: true, icon: <HelpCircle size={20} /> },
+            { id: 'catholic-answers-suite', title: 'The Catholic Answers Suite', description: 'CA Live, Shameless Popery, The Jimmy Akin Podcast, Jimmy Akin’s Mysterious World, Dr. Karlo, Daily Defense, and more.', href: 'https://catholic.com/audio', external: true, icon: <BookOpen size={20} /> },
+            { id: 'other-podcasts', title: 'Other Great Podcasts', description: 'Explore Word on Fire, Godsplaining, and Abiding Together.', href: 'https://www.wordonfire.org', external: true, icon: <BookOpen size={20} /> },
+        ],
+    },
+    {
+        id: 'domestic-church',
+        title: 'The Domestic Church',
+        description: 'Homeschooling, family catechesis, and supplemental resources for the home.',
+        links: [
+            { id: 'bear-good-fruits', title: 'Bear Good Fruits', description: 'A Charlotte Mason-inspired, family-style liturgical curriculum integrating Scripture, saint stories, nature study, art, and hands-on projects from PreK through high school.', href: 'https://www.beargoodfruits.com', external: true, icon: <GraduationCap size={20} /> },
+            { id: 'into-the-deep', title: 'Into the Deep', description: 'A thorough catechesis program centered on a personal relationship with God, sound doctrine, art, hymns, and poetry.', external: false, icon: <BookOpen size={20} /> },
+            { id: 'spirit-of-truth', title: 'Spirit of Truth', description: 'Sophia Institute materials designed to help children encounter Christ through beauty and goodness, with grades K–8 and sacramental preparation.', href: 'https://sophiainstituteforteachers.org', external: true, icon: <GraduationCap size={20} /> },
+            { id: 'our-holy-faith', title: 'Our Holy Faith', description: 'Tan Books religion textbooks balancing intellectual knowledge with spiritual growth and practical activities.', href: 'https://tanbooks.com', external: true, icon: <BookOpen size={20} /> },
+            { id: 'sophia-teachers', title: 'SophiaTeachers eLessons', description: 'Ready-to-use lessons on the liturgical year, current events, identity, beauty, nature, and family Bible study.', href: 'https://sophiainstituteforteachers.org', external: true, icon: <GraduationCap size={20} /> },
+            { id: 'family-bible-study', title: 'Family Bible Study', description: 'USCCB guides for using the Old Testament in daily family prayer.', href: 'https://www.usccb.org/bible', external: true, icon: <BookOpen size={20} /> },
+        ],
+    },
+    {
+        id: 'local-community',
+        title: 'Local Community',
+        description: 'Rapid City, diocesan, and local Catholic resources for spiritual life and connection.',
+        links: [
+            { id: 'mustard-seed', title: 'Mustard Seed Catholic Bookstore', description: 'A Rapid City destination for books, sacramentals, and religious gifts.', href: 'https://www.mustardseedcatholicstore.com', external: true, icon: <BookOpen size={20} /> },
+            { id: 'adoration', title: 'Perpetual Adoration', description: 'Find peace and silence in the 24/7 presence of the Blessed Sacrament.', external: false, icon: <Church size={20} /> },
+            { id: 'family-rosary', title: 'Family Rosary at St. Thérèse', description: 'A community prayer event and a welcoming way to introduce children to the Rosary.', href: '/events', external: false, icon: <Heart size={20} /> },
+            { id: 'terra-sancta', title: 'Terra Sancta', description: 'Local events and education exploring the Holy Land.', href: 'https://terrasancta.org', external: true, icon: <Church size={20} /> },
+            { id: 'diocesan-retreats', title: 'Diocesan Retreats', description: 'Scheduled opportunities to unplug and renew your spirit.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <Heart size={20} /> },
+            { id: 'relevant-radio', title: 'Relevant Radio', description: 'Daily inspiration and Catholic content, with an app for on-demand shows.', href: 'https://relevantradio.com', external: true, icon: <Phone size={20} /> },
+            { id: 'ewtn', title: 'EWTN', description: 'Global Catholic news, Mass, and teaching. Download the app for access worldwide.', href: 'https://www.ewtn.com', external: true, icon: <Church size={20} /> },
+            { id: 'bishops-podcast', title: 'Bishop’s Podcast', description: 'Catholic conversation and formation from the Diocese of Rapid City.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <BookOpen size={20} /> },
+            { id: 'bishops-bookclub', title: 'Bishop’s Bookclub', description: 'Books and conversations for growing in faith and understanding.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <BookOpen size={20} /> },
+            { id: 'bishops-movie-nights', title: 'Bishop’s Movie Nights', description: 'Film and conversation from the Diocese of Rapid City.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <Church size={20} /> },
+        ],
+    },
+];
+
+const allCategories = [...categories, ...additionalCategories];
+
 export default function Resources() {
+    const [activeCategory, setActiveCategory] = useState(allCategories[0]?.id ?? '');
+
+    useEffect(() => {
+        const sections = allCategories
+            .map((category) => document.getElementById(`resource-section-${category.id}`))
+            .filter((section): section is HTMLElement => Boolean(section));
+
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const visibleSections = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+
+                if (visibleSections[0]) {
+                    setActiveCategory(visibleSections[0].target.id.replace('resource-section-', ''));
+                }
+            },
+            { rootMargin: '-18% 0px -68% 0px', threshold: 0 },
+        );
+
+        sections.forEach((section) => observer.observe(section));
+        return () => observer.disconnect();
+    }, []);
+
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -250,10 +355,31 @@ export default function Resources() {
             </section>
 
             {/* Resources by Category */}
-            <main className="flex-grow py-16 md:py-20 bg-secondary/20">
-                <div className="container mx-auto px-4 max-w-6xl space-y-16">
-                    {categories.map((category) => (
-                        <section key={category.id}>
+            <main className="flex-grow bg-secondary/20 py-16 md:py-20">
+                <div className="container mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
+                    <aside className="hidden lg:block">
+                        <nav className="sticky top-[calc(var(--header-height)+2rem)] max-h-[calc(100vh-var(--header-height)-4rem)] overflow-y-auto pr-2" aria-label="Resources outline">
+                            <p className="mb-4 text-[10px] font-black uppercase tracking-[0.18em] text-primary/50">On this page</p>
+                            <div className="space-y-1 border-l border-primary/10">
+                                {allCategories.map((category) => {
+                                    const isActive = activeCategory === category.id;
+                                    return (
+                                        <a
+                                            key={category.id}
+                                            href={`#resource-section-${category.id}`}
+                                            className={`block border-l-2 py-2 pl-4 text-sm font-semibold transition-all ${isActive ? 'border-accent text-primary' : 'border-transparent text-primary/40 hover:border-primary/30 hover:text-primary/75'}`}
+                                        >
+                                            {category.title}
+                                        </a>
+                                    );
+                                })}
+                            </div>
+                        </nav>
+                    </aside>
+
+                    <div className="space-y-16">
+                    {allCategories.map((category) => (
+                        <section key={category.id} id={`resource-section-${category.id}`} className="scroll-mt-[calc(var(--header-height)+2rem)]">
                             <div className="mb-8">
                                 <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-2">
                                     {category.title}
@@ -266,25 +392,33 @@ export default function Resources() {
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
                                 {category.links.map((link) => {
                                     const className =
-                                        'group flex flex-col h-full bg-white rounded-2xl border-2 border-primary/10 hover:border-primary/30 p-6 transition-all hover:-translate-y-0.5 hover:shadow-lg';
+                                        `group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 border-primary/10 p-6 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg ${link.image ? 'bg-primary text-white' : 'bg-white'}`;
 
                                     const content = (
                                         <>
-                                            <div className="size-12 rounded-2xl bg-primary/10 flex items-center justify-center text-primary mb-4 group-hover:bg-primary group-hover:text-white transition-colors">
-                                                {link.icon}
+                                            {link.image && (
+                                                <>
+                                                    <img src={link.image} alt="" aria-hidden="true" className="absolute inset-0 size-full object-cover opacity-25 transition-opacity group-hover:opacity-35" />
+                                                    <div className="absolute inset-0 bg-primary/70" aria-hidden="true" />
+                                                </>
+                                            )}
+                                            <div className="relative z-10 flex h-full flex-col">
+                                                <div className={`mb-4 flex size-12 items-center justify-center rounded-2xl transition-colors ${link.image ? 'bg-white/15 text-white group-hover:bg-white group-hover:text-primary' : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'}`}>
+                                                    {link.icon}
+                                                </div>
+                                                <h3 className={`mb-2 font-serif text-xl font-bold transition-colors ${link.image ? 'text-white group-hover:text-accent' : 'text-primary group-hover:text-accent'}`}>
+                                                    {link.title}
+                                                    {link.external && (
+                                                        <ExternalLink
+                                                            size={12}
+                                                            className={`ml-1.5 inline-block -mt-0.5 ${link.image ? 'text-white/70 group-hover:text-accent' : 'text-muted-foreground group-hover:text-accent'}`}
+                                                        />
+                                                    )}
+                                                </h3>
+                                                <p className={`flex-grow text-sm leading-relaxed ${link.image ? 'text-white/85' : 'text-muted-foreground'}`}>
+                                                    {link.description}
+                                                </p>
                                             </div>
-                                            <h3 className="font-serif text-xl font-bold text-primary mb-2 group-hover:text-accent transition-colors">
-                                                {link.title}
-                                                {link.external && (
-                                                    <ExternalLink
-                                                        size={12}
-                                                        className="inline-block ml-1.5 -mt-0.5 text-muted-foreground group-hover:text-accent"
-                                                    />
-                                                )}
-                                            </h3>
-                                            <p className="text-sm text-muted-foreground leading-relaxed flex-grow">
-                                                {link.description}
-                                            </p>
                                         </>
                                     );
 
@@ -302,15 +436,20 @@ export default function Resources() {
                                         );
                                     }
 
-                                    return (
-                                        <Link key={link.id} href={link.href}>
-                                            <a className={className}>{content}</a>
-                                        </Link>
-                                    );
+                                    if (link.href) {
+                                        return (
+                                            <Link key={link.id} href={link.href}>
+                                                <a className={className}>{content}</a>
+                                            </Link>
+                                        );
+                                    }
+
+                                    return <div key={link.id} className={className}>{content}</div>;
                                 })}
                             </div>
                         </section>
                     ))}
+                    </div>
                 </div>
             </main>
 

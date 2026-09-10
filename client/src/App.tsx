@@ -1,8 +1,9 @@
 // App.tsx
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { useEffect } from "react";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch } from "wouter";
+import { Route, Switch, useLocation } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 
@@ -25,8 +26,15 @@ import KnightsOfColumbus from "./components/KnightsOfColumbus";
 import AltarSociety from "./components/AltarSociety";
 
 import Sacraments from "./pages/Sacraments";
+import Resources from "./pages/Resources";
 
 function Router() {
+  const [location] = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location]);
+
   return (
     <Switch>
       <Route path={"/"} component={Home} />
@@ -47,6 +55,7 @@ function Router() {
       <Route path={"/bulletin/next"} component={NextWeekBulletin} />
 
       <Route path={"/sacraments"} component={Sacraments} />
+      <Route path={"/resources"} component={Resources} />
       
       <Route path={"/events"} component={UpcomingEventsCalendar} />
       <Route path={"/events/:id"} component={EventDetail} />

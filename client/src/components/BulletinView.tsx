@@ -35,6 +35,7 @@ interface BulletinViewProps {
     backLabel?: string;
     showEmptyPdfWarning?: boolean;
     emptyPdfMessage?: string;
+    hideSectionsWithoutPdf?: boolean;
 }
 
 interface ContactInfo {
@@ -59,6 +60,7 @@ export default function BulletinView({
     backLabel = "Back to Current Week's Bulletin",
     showEmptyPdfWarning = false,
     emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.",
+    hideSectionsWithoutPdf = false,
 }: BulletinViewProps) {
     // ✅ Default state is now DESELECT ALL (empty Set).
     //    Clicking a section turns it on, with the same accent-gold color
@@ -81,6 +83,7 @@ export default function BulletinView({
     };
 
     const hasPdf = !!bulletin.pdfUrl;
+    const sectionsLocked = hideSectionsWithoutPdf && !hasPdf;
 
     return (
         <div className="space-y-8">
@@ -128,6 +131,14 @@ export default function BulletinView({
                     </div>
                 )}
 
+                {hideSectionsWithoutPdf && !hasPdf && (
+                    <div className="m-8 rounded-lg border-l-4 border-amber-400 bg-amber-50 p-6">
+                        <p className="flex items-center gap-2 text-sm font-semibold text-amber-800">
+                            <FileText size={16} /> The current bulletin has not been uploaded yet. Section information will appear here when it is available.
+                        </p>
+                    </div>
+                )}
+
                 {/* Section filters */}
                 {bulletin.sections.length > 0 && (
                     <>
@@ -141,7 +152,8 @@ export default function BulletinView({
                                 <div className="flex gap-2">
                                     <button
                                         onClick={selectAllSections}
-                                        className="text-xs font-bold text-accent hover:text-accent/80 uppercase tracking-widest"
+                                        disabled={sectionsLocked}
+                                        className="text-xs font-bold text-accent hover:text-accent/80 uppercase tracking-widest disabled:cursor-not-allowed disabled:opacity-40"
                                     >
                                         Select All
                                     </button>
@@ -162,6 +174,7 @@ export default function BulletinView({
                                         <button
                                             key={section.id}
                                             onClick={() => toggleSection(section.id)}
+                                            disabled={sectionsLocked}
                                             // ✅ Selected state now uses the accent (gold) color
                                             //    that matches the "Select All" link styling.
                                             className={`px-3 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all border-2 ${
@@ -179,7 +192,14 @@ export default function BulletinView({
 
                         {/* Selected sections display */}
                         <div className="p-8 bg-white space-y-6">
-                            {selectedSections.size === 0 ? (
+                            {sectionsLocked ? (
+                                <div className="py-12 text-center text-muted-foreground">
+                                    <FileText className="mx-auto mb-3 size-10 text-primary/15" />
+                                    <p className="text-sm font-bold uppercase tracking-widest">
+                                        Section information will appear when this bulletin is uploaded
+                                    </p>
+                                </div>
+                            ) : selectedSections.size === 0 ? (
                                 <div className="text-center py-12 text-muted-foreground">
                                     <Filter className="size-10 text-primary/15 mx-auto mb-3" />
                                     <p className="text-sm font-bold uppercase tracking-widest">
