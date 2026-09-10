@@ -169,7 +169,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
   const parishLifeLinks = [
     { href: '/sacraments', label: 'Sacraments' },
     { href: '/resources', label: 'Resources' },
-    { href: '/faith-formation', label: 'Faith Formation' },
+    { href: '/faith-formation', label: 'Wednesday Faith Formation' },
     { href: '/get-involved', label: 'Get Involved' },
   ];
 

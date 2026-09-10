@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Link } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { staticEvents } from '@/components/events';
+import { EventCard } from '@/components/event-components';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -96,7 +98,8 @@ const defaultChildData: ChildData = {
 };
 
 export default function FaithFormation() {
-    const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(new Set(['all']));
+    const [, navigate] = useLocation();
+    const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(new Set<GroupFilter>(['all']));
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [formData, setFormData] = useState<FormData>({
@@ -127,7 +130,7 @@ export default function FaithFormation() {
     const toggleGroup = (id: GroupFilter) => {
         const next = new Set(selectedGroups);
         if (id === 'all') {
-            setSelectedGroups(new Set(['all']));
+            setSelectedGroups(new Set<GroupFilter>(['all']));
             return;
         }
         if (next.has('all')) next.delete('all');
@@ -147,6 +150,22 @@ export default function FaithFormation() {
         if (selectedGroups.size === 0) return false;
         return selectedGroups.has(cat.group);
     });
+
+    const upcomingFaithFormationEvents = (() => {
+        const now = new Date();
+
+        return staticEvents
+            .filter((event) => {
+                if (event.date < now) return false;
+                const title = event.title.toLowerCase();
+                return (
+                    title.includes('family formation') ||
+                    title.includes('faith formation') ||
+                    event.linkedOpportunityId === 'wednesday-night-supper'
+                );
+            })
+            .sort((a, b) => a.date.getTime() - b.date.getTime());
+    })();
 
     const tuitionCost = (() => {
         const isMember = formData.isMember === 'Yes';
@@ -243,11 +262,18 @@ export default function FaithFormation() {
                             <BookOpen className="size-4" aria-hidden="true" /> Growing in Faith
                         </p>
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-                            Faith Formation Programs
+                            Wednesday Faith Formation Programs
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                            Nurturing faith at every stage of life. From our littlest nursery babies to lifelong adult learners, discover programs designed to deepen your relationship with Christ and our parish community. All programs meet on Wednesdays 6:15–7:30 PM.
+                            Nurturing faith at every stage of life. From our littlest nursery babies to lifelong adult learners, discover programs designed to deepen your relationship with Christ and our parish community.
                         </p>
+                        <div className="mt-6 max-w-xl rounded-2xl border border-primary/10 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+                            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">Wednesday Evening Schedule</p>
+                            <div className="mt-3 flex flex-wrap gap-6 text-sm font-semibold text-primary">
+                                <span>Meal: 5:30–6:15 PM</span>
+                                <span>Classes: 6:15–7:30 PM</span>
+                            </div>
+                        </div>
                         <div className="flex flex-wrap gap-4 mt-8">
                             <Button
                                 onClick={() => setIsFormOpen(true)}
@@ -256,6 +282,14 @@ export default function FaithFormation() {
                             >
                                 Register Here
                             </Button>
+                            <a
+                                href="https://www.signupgenius.com/"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                            >
+                                Help us serve food!
+                            </a>
                             <a
                                 href="/ChurchMap.pdf"
                                 target="_blank"
@@ -266,13 +300,29 @@ export default function FaithFormation() {
                             </a>
                         </div>
                     </div>
-                    <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">
-                        <p className="font-serif text-2xl italic leading-snug text-primary">
-                            Faith is a journey we walk together, supporting one another in love and truth.
-                        </p>
-                        <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-[#9b762f]">
-                            Our Mission
-                        </p>
+                    <aside className="flex flex-col gap-5 pl-6 md:mb-1">
+                        {upcomingFaithFormationEvents.length > 0 && (
+                            <div className="rounded-3xl border border-primary/10 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
+                                <div className="mb-4 flex items-center justify-between gap-3 border-b border-primary/10 pb-3">
+                                    <div>
+                                        <h2 className="mt-1 font-serif text-2xl font-bold text-primary">
+                                            Upcoming Formation Nights
+                                        </h2>
+                                    </div>
+                                </div>
+
+                                <div className="max-h-[460px] space-y-3 overflow-y-auto pr-1">
+                                    {upcomingFaithFormationEvents.map((event) => (
+                                        <EventCard
+                                            key={event.id}
+                                            event={event}
+                                            highlighted={false}
+                                            navigate={navigate}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
                     </aside>
                 </div>
             </section>
@@ -321,7 +371,7 @@ export default function FaithFormation() {
                     </div>
 
                     {/* Program Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
                         {filtered.map((cat) => (
                             <CategoryCard key={cat.id} category={cat} />
                         ))}
@@ -334,13 +384,14 @@ export default function FaithFormation() {
                             <p className="text-muted-foreground">Select a category above to view our faith formation offerings.</p>
                             <Button
                                 variant="link"
-                                onClick={() => setSelectedGroups(new Set(['all']))}
+                                onClick={() => setSelectedGroups(new Set<GroupFilter>(['all']))}
                                 className="mt-4 text-accent font-bold"
                             >
                                 View All Programs
                             </Button>
                         </div>
                     )}
+
                 </div>
             </main>
 
@@ -587,48 +638,28 @@ function CategoryCard({ category }: { category: FaithCategory }) {
     const extraCatechists = category.catechists.length - 1;
 
     return (
-        <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
-            {/* Top: title, age, description, time, location */}
-            <div className="p-8 pb-4 flex-grow flex flex-col">
-                <Link href={`/faith-formation/${category.id}`} className="block mb-2 group/title">
-                    <h3 className="font-serif text-3xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors">
-                        {category.title}
-                        {category.subtitle && (
-                            <span className="block text-base font-medium text-muted-foreground mt-1 italic">
-                                {category.subtitle}
-                            </span>
-                        )}
-                    </h3>
-                </Link>
+        <Card className="group flex h-full flex-col border-2 border-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl p-6 pb-3">
+            {/* Top: title, age, description, room */}
+            <Link href={`/faith-formation/${category.id}`} className="block mb-2 group/title">
+                <h3 className="font-serif text-2xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors">
+                    {category.title}
+                    {category.subtitle && (
+                        <span className="block text-base font-medium text-muted-foreground mt-1 italic">
+                            {category.subtitle}
+                        </span>
+                    )}
+                </h3>
+            </Link>
 
-                <p className="text-muted-foreground leading-relaxed text-sm mb-6 flex-grow">
-                    {category.shortDescription}
-                </p>
-
-                <div className="space-y-3 pt-4 border-t border-gray-100 mb-4">
-                    <div className="flex items-center gap-3 text-sm">
-                        <div className="size-8 rounded-full bg-primary/5 flex items-center justify-center text-accent shrink-0">
-                            <Calendar size={14} />
-                        </div>
-                        <div>
-                            <p className="text-[9px] font-bold text-primary/40 uppercase tracking-widest">Time</p>
-                            <p className="font-bold text-primary text-sm">{category.meetingTime}</p>
-                        </div>
-                    </div>
-                    <div className="flex items-center gap-3 text-sm">
-                        <div className="size-8 rounded-full bg-primary/5 flex items-center justify-center text-accent shrink-0">
-                            <MapPin size={14} />
-                        </div>
-                        <div>
-                            <p className="text-[9px] font-bold text-primary/40 uppercase tracking-widest">Location</p>
-                            <p className="font-bold text-primary text-sm">{category.location}</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <p className="text-muted-foreground leading-relaxed text-sm mb-3">
+                {category.shortDescription}
+                <span className="mt-2 block text-primary">
+                    <span className="font-bold">Room:</span> ...
+                </span>
+            </p>
 
             {/* Bottom: catechist + CTA */}
-            <div className="p-8 pt-2 bg-gray-50/50 border-t border-gray-100">
+            <div className="mt-auto -mx-6 px-6 py-4 bg-gray-50/50 border-t border-gray-100">
                 {primaryCatechist && (
                     <div className="flex items-center gap-3 mb-4">
                         {/* <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">

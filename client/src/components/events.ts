@@ -69,23 +69,6 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
             events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
         }
 
-        // --- FINITE RECURRING (e.g. School Year Sept-May) ---
-        if (d.getDay() === 3) {
-            const schoolYearStart = new Date(2026, 8, 2);
-            const schoolYearEnd = new Date(2027, 4, 19);
-            const exclusions = ["2026-11-25", "2026-12-23", "2026-12-30", "2027-03-31"];
-            if (d >= schoolYearStart && d <= schoolYearEnd && !exclusions.includes(dateStr)) {
-                events.push({
-                    id: `family-formation-${dateStr}`,
-                    title: "Wednesday Night Family Formation",
-                    date: new Date(year, month, day, 17, 30),
-                    time: "5:30 PM - 7:30 PM",
-                    location: "Parish Hall & Classrooms",
-                    categories: ["parishEvents", "sacramental"],
-                    linkedOpportunityId: "wednesday-night-supper"
-                });
-            }
-        }
     }
     return events;
 }

@@ -464,60 +464,15 @@ export const faithCategories: FaithCategory[] = [
 
     // ====================== ADULT ======================
     {
-        id: 'ocia',
-        title: 'OCIA',
-        subtitle: 'Rite of Christian Initiation for Adults',
-        programName: 'OCIA',
-        ageRange: 'Adults',
-        group: 'adult',
-        shortDescription: 'For adults seeking full initiation into the Catholic Church.',
-        longDescription:
-            'OCIA (Order of Christian Initiation of Adults) is the process by which adults are welcomed into the Catholic Church. It is a journey of faith, study, prayer, and discernment — open to unbaptized adults, baptized Christians from other denominations, and baptized Catholics seeking Confirmation and Eucharist.',
-        meetingTime: 'Mondays 6:15 PM - 7:30 PM',
-        location: 'Parish Hall – OCIA Room',
-        catechists: [
-            { id: 'anthony-flores', name: 'Anthony Flores', role: 'OCIA Coordinator', photo: '/AnthonyFlores.jpg', safeEnvironmentPdf: '/safe-env/anthony-flores.pdf' },
-            { id: 'christine-moore', name: 'Christine Moore', role: 'OCIA Team', photo: '/catechists/christine-moore.jpg', safeEnvironmentPdf: '/safe-env/christine-moore.pdf' },
-            { id: 'don-moore', name: 'Don Moore', role: 'OCIA Team', photo: '/catechists/don-moore.jpg', safeEnvironmentPdf: '/safe-env/don-moore.pdf' },
-            { id: 'chad-carroll', name: 'Chad Carroll', role: 'OCIA Team', photo: '/ChadCarroll.jpg', safeEnvironmentPdf: '/safe-env/chad-carroll.pdf' },
-            { id: 'carol-peters', name: 'Carol Peters', role: 'OCIA Team', photo: '/catechists/carol-peters.jpg', safeEnvironmentPdf: '/safe-env/carol-peters.pdf' },
-            { id: 'tesia-walker', name: 'Tesia Walker', role: 'OCIA Team', photo: '/catechists/tesia-walker.jpg', safeEnvironmentPdf: '/safe-env/tesia-walker.pdf' },
-            { id: 'lexen-smith', name: 'Lexen Smith', role: 'OCIA Team', photo: '/catechists/lexen-smith.jpg', safeEnvironmentPdf: '/safe-env/lexen-smith.pdf' },
-            { id: 'neil-whartman', name: 'Neil Whartman', role: 'OCIA Team', photo: '/NeilWhartman.jpg', safeEnvironmentPdf: '/safe-env/neil-whartman.pdf' },
-            { id: 'kelli-whartman-ocia', name: 'Kelli Whartman', role: 'OCIA Team', photo: '/catechists/kelli-whartman.jpg', safeEnvironmentPdf: '/safe-env/kelli-whartman.pdf' },
-        ],
-        photos: ['/faith-formation/ocia-1.jpg', '/faith-formation/ocia-2.jpg'],
-        resources: [
-            {
-                title: 'OCIA (RCIA) Process',
-                description: 'The official rite and process for initiating adults into the Catholic Church.',
-                publisher: 'United States Conference of Catholic Bishops',
-                link: 'https://www.usccb.org/prayer-and-worship/sacraments/rcia',
-            },
-            {
-                title: 'Catechism of the Catholic Church',
-                description: 'The authoritative source for Catholic teaching, used throughout the OCIA journey.',
-                publisher: 'USCCB',
-                link: 'https://www.usccb.org/sites/default/files/flipbooks/catechism/index.html',
-            },
-            {
-                title: 'Catholic Study Bible',
-                description: 'A study Bible with helpful notes for understanding Scripture in light of Catholic tradition.',
-            },
-        ],
-        aboutText:
-            'OCIA is a journey, not a class. It typically begins each fall with an Inquiry period, moves through Catechumenate and Purification, and culminates at the Easter Vigil when candidates receive the Sacraments of Initiation (Baptism, Confirmation, and Eucharist). Sponsors walk with candidates throughout the process, providing prayer, witness, and fellowship.',
-    },
-    {
         id: 'adult-education',
-        title: 'Adult Education Classes',
+        title: 'Family Formation',
         ageRange: 'Adults',
         group: 'adult',
-        shortDescription: 'Continuing education in faith, scripture, and spiritual growth for adults.',
+        shortDescription: 'Continuing education in faith, scripture, and spiritual growth for adults and families.',
         longDescription:
-            'Our Adult Education program offers a variety of ongoing classes, Bible studies, and formation opportunities for adults who want to deepen their faith and understanding of Catholic teaching.',
+            'Our Family Formation program offers a variety of ongoing classes, Bible studies, and formation opportunities for adults and families who want to deepen their faith and understanding of Catholic teaching.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Adult Ed Room',
+        location: 'Parish Hall – Family Formation Room',
         catechists: [
             { id: 'melanie-karp', name: 'Melanie Karp', role: 'Adult Ed Coordinator', photo: '/MelanieKarp.jpg', safeEnvironmentPdf: '/safe-env/melanie-karp.pdf' },
             { id: 'hugh-brechtel', name: 'Hugh Brechtel', role: 'Adult Ed Catechist', photo: '/catechists/hugh-brechtel.jpg', safeEnvironmentPdf: '/safe-env/hugh-brechtel.pdf' },

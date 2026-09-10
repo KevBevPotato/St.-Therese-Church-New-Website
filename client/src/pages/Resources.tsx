@@ -18,6 +18,22 @@ import {
     Users,
 } from 'lucide-react';
 
+// --- Types ---
+
+interface ImageSettings {
+    scale?: 'scale-100' | 'scale-110' | 'scale-125' | 'scale-150';
+    opacity?: 'opacity-10' | 'opacity-20' | 'opacity-30' | 'opacity-40' | 'opacity-60';
+    blur?: 'backdrop-blur-none' | 'backdrop-blur-sm' | 'backdrop-blur-md' | 'backdrop-blur-lg';
+    position?: 'object-center' | 'object-top' | 'object-bottom' | 'object-left' | 'object-right';
+}
+
+interface LogoSettings {
+    scale?: 'size-8' | 'size-10' | 'size-12' | 'size-14' | 'size-16';
+    rounded?: 'rounded-none' | 'rounded-sm' | 'rounded-md' | 'rounded-lg' | 'rounded-xl' | 'rounded-2xl' | 'rounded-full';
+    border?: 'border-none' | 'border-primary/10' | 'border-white' | 'border-accent';
+    opacity?: 'opacity-50' | 'opacity-80' | 'opacity-100';
+}
+
 interface ResourceLink {
     id: string;
     title: string;
@@ -27,6 +43,8 @@ interface ResourceLink {
     icon: React.ReactNode;
     image: string;
     iconImage?: string;
+    imageSettings?: ImageSettings;
+    logoSettings?: LogoSettings; // New: Custom settings for the top-left logo
 }
 
 interface ResourceCategory {
@@ -35,6 +53,8 @@ interface ResourceCategory {
     description: string;
     links: ResourceLink[];
 }
+
+// --- Data ---
 
 const categories: ResourceCategory[] = [
     {
@@ -124,7 +144,18 @@ const additionalCategories: ResourceCategory[] = [
             { id: 'catechism', title: 'Catechism of the Catholic Church', description: 'The official guide to Catholic teaching and faith.', href: 'https://www.vatican.va/archive/ccc/index.htm', external: true, icon: <BookOpen size={20} />, image: '/resources/ccc.jpg' },
             { id: 'kindle-ebooks', title: 'Kindle Ebooks', description: 'Digital versions of Mass times, Lauds, and Vespers.', external: false, icon: <BookOpen size={20} />, image: '/resources/kindle.jpg' },
             { id: 'formed', title: 'FORMED', description: 'The "Catholic Netflix" for the whole family.', href: 'https://formed.org', external: true, icon: <BookOpen size={20} />, image: '/resources/formed.jpg' },
-            { id: 'hallow', title: 'Hallow', description: 'The #1 Catholic app for meditation and prayer.', href: 'https://hallow.com', external: true, icon: <Heart size={20} />, image: '/resources/Hallow.png', iconImage: '/resources/Hallow.png' },
+            {
+                id: 'hallow',
+                title: 'Hallow',
+                description: 'The #1 Catholic app for meditation and prayer.',
+                href: 'https://hallow.com',
+                external: true,
+                icon: <Heart size={20} />,
+                image: '/resources/Hallow.png',
+                iconImage: '/resources/Hallow.png',
+                imageSettings: { scale: 'scale-125', opacity: 'opacity-60' },
+                logoSettings: { rounded: 'rounded-full', scale: 'size-14' } // Custom: Circle and Larger
+            },
             { id: 'ibreviary', title: 'iBreviary', description: 'Liturgy of the Hours and Mass readings in your pocket.', href: 'https://ibreviary.com', external: true, icon: <BookOpen size={20} />, image: '/resources/ibreviary.webp', iconImage: '/resources/iBreviaryApp.png' },
             { id: 'mybible', title: 'MyBible App', description: 'A powerful Bible tool available in almost any language.', href: 'https://mybible.zone', external: true, icon: <BookOpen size={20} />, image: '/resources/MyBible.png', iconImage: '/resources/MyBible.png' },
             { id: 'shift', title: 'Shift', description: 'Take back your time by removing digital distractions.', href: 'https://shiftyourphone.com', external: true, icon: <Shield size={20} />, image: '/resources/Shift.png', iconImage: '/resources/Shift.png' },
@@ -189,7 +220,7 @@ const additionalCategories: ResourceCategory[] = [
             { id: 'terra-sancta', title: 'Terra Sancta', description: 'Local events and education exploring the Holy Land.', href: 'https://terrasancta.org', external: true, icon: <Church size={20} />, image: '/resources/terra-sancta.jpg' },
             { id: 'diocesan-retreats', title: 'Diocesan Retreats', description: 'Scheduled opportunities to unplug and renew your spirit.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <Heart size={20} />, image: '/resources/retreats.jpg' },
             { id: 'relevant-radio', title: 'Relevant Radio', description: 'Daily inspiration and Catholic content (89.9 / 94.7 FM).', href: 'https://relevantradio.com', external: true, icon: <Phone size={20} />, image: '/resources/relevant-radio.jpg' },
-            { id: 'ewtn', title: 'EWTN', description: 'The global network for Catholic news, Mass, and teaching.', href: 'https://www.ewtn.com', external: true, icon: <Church size={20} />, image: '/resources/ewtn.jpg' },
+            { id: 'ewtn', title: 'EWTN', description: 'The global network for Catholic news, Mass, and teaching.', href: 'https://ewtn.com', external: true, icon: <Church size={20} />, image: '/resources/ewtn.jpg' },
             { id: 'bishops-podcast', title: 'Bishop’s Podcast', description: 'Conversation and formation from the Diocese of Rapid City.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <BookOpen size={20} />, image: '/resources/bishops-podcast.jpg' },
             { id: 'bishops-bookclub', title: 'Bishop’s Bookclub', description: 'Books and conversations for growing in faith.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <BookOpen size={20} />, image: '/resources/bishops-bookclub.jpg' },
             { id: 'bishops-movie-nights', title: 'Bishop’s Movie Nights', description: 'Film and conversation from the Diocese of Rapid City.', href: 'https://www.rapidcitydiocese.org', external: true, icon: <Church size={20} />, image: '/resources/bishops-movies.jpg' },
@@ -211,7 +242,7 @@ export default function Resources() {
             (entries) => {
                 const visibleSections = entries
                     .filter((entry) => entry.isIntersecting)
-                    .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+                    .sort((a, b) => a.boundingClientRect.top - a.boundingClientRect.top);
 
                 if (visibleSections[0]) {
                     setActiveCategory(visibleSections[0].target.id.replace('resource-section-', ''));
@@ -255,7 +286,6 @@ export default function Resources() {
                 </div>
             </section>
 
-
             {/* Resources by Category */}
             <main className="flex-grow bg-secondary/20 py-16 md:py-20">
                 <div className="container mx-auto grid max-w-6xl gap-10 px-4 lg:grid-cols-[220px_minmax(0,1fr)] lg:gap-12">
@@ -295,29 +325,37 @@ export default function Resources() {
                                     {category.links.map((link) => {
                                         const cardClassName = `group relative flex h-full flex-col overflow-hidden rounded-2xl border-2 border-primary/10 bg-white p-6 transition-all hover:-translate-y-0.5 hover:border-primary/30 hover:shadow-lg`;
 
+                                        // --- Dynamic Styles Logic ---
+                                        // Background Image Defaults
+                                        const bgScale = link.imageSettings?.scale ?? 'scale-100';
+                                        const bgOpacity = link.imageSettings?.opacity ?? 'opacity-40';
+                                        const bgBlur = link.imageSettings?.blur ?? 'backdrop-blur-[2px]';
+                                        const bgPosition = link.imageSettings?.position ?? 'object-center';
+
+                                        // Logo Defaults
+                                        const logoScale = link.logoSettings?.scale ?? 'size-12';
+                                        const logoRounded = link.logoSettings?.rounded ?? 'rounded-xl';
+                                        const logoBorder = link.logoSettings?.border ?? 'border-primary/10';
+                                        const logoOpacity = link.logoSettings?.opacity ?? 'opacity-100';
+
                                         const content = (
                                             <>
-                                                {/* Ghost Background Image - Opacity bumped to 40% */}
                                                 <img
                                                     src={link.image}
                                                     alt=""
                                                     aria-hidden="true"
-                                                    className="absolute inset-0 size-full object-cover opacity-40 transition-opacity group-hover:opacity-60"
+                                                    className={`absolute inset-0 size-full object-cover transition-opacity group-hover:opacity-70 ${bgScale} ${bgOpacity} ${bgPosition}`}
                                                 />
-                                                {/* Contrast Layer */}
-                                                <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px]" aria-hidden="true" />
-
+                                                <div className={`absolute inset-0 bg-white/80 ${bgBlur}`} aria-hidden="true" />
                                                 <div className="relative z-10 flex h-full flex-col">
                                                     <div className="flex justify-between items-start">
-                                                        <div className={`mb-4 flex size-12 items-center justify-center rounded-2xl transition-colors ${link.iconImage ? 'bg-transparent' : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'}`}>
+                                                        <div className={`mb-4 flex items-center justify-center transition-colors ${link.iconImage ? 'bg-transparent' : 'bg-primary/10 text-primary group-hover:bg-primary group-hover:text-white'} ${logoScale}`}>
                                                             {link.iconImage ? (
-                                                                <div className="relative size-12">
-                                                                    <img
-                                                                        src={link.iconImage}
-                                                                        alt=""
-                                                                        className="absolute inset-0 size-full rounded-xl object-cover shadow-sm border border-primary/10"
-                                                                    />
-                                                                </div>
+                                                                <img
+                                                                    src={link.iconImage}
+                                                                    alt=""
+                                                                    className={`size-full object-cover shadow-sm border ${logoRounded} ${logoBorder} ${logoOpacity}`}
+                                                                />
                                                             ) : (
                                                                 link.icon
                                                             )}
