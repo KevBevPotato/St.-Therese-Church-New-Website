@@ -255,47 +255,6 @@ export default function Resources() {
                 </div>
             </section>
 
-            {/* Quick Action Bar */}
-            <section className="py-10 bg-primary text-white">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 text-center">
-                        <a
-                            href="https://secure.myvanco.com/L-ZAYT/home"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded-2xl bg-white/10 hover:bg-white/20 transition-colors p-4 group"
-                        >
-                            <img src="/images/resources/icons/donate-app.png" alt="" className="mx-auto mb-2 h-7 w-7 object-contain" />
-                            <p className="font-bold text-sm">Donate</p>
-                            <p className="text-xs text-white/70">Online giving</p>
-                        </a>
-                        <Link
-                            href="/bulletin"
-                            className="rounded-2xl bg-white/10 hover:bg-white/20 transition-colors p-4 group"
-                        >
-                            <img src="/images/resources/icons/bulletin-app.png" alt="" className="mx-auto mb-2 h-7 w-7 object-contain" />
-                            <p className="font-bold text-sm">Bulletin</p>
-                            <p className="text-xs text-white/70">This week</p>
-                        </Link>
-                        <Link
-                            href="/events"
-                            className="rounded-2xl bg-white/10 hover:bg-white/20 transition-colors p-4 group"
-                        >
-                            <img src="/images/resources/icons/calendar-app.png" alt="" className="mx-auto mb-2 h-7 w-7 object-contain" />
-                            <p className="font-bold text-sm">Calendar</p>
-                            <p className="text-xs text-white/70">Upcoming events</p>
-                        </Link>
-                        <a
-                            href="tel:6053421556"
-                            className="rounded-2xl bg-white/10 hover:bg-white/20 transition-colors p-4 group"
-                        >
-                            <img src="/images/resources/icons/call-app.png" alt="" className="mx-auto mb-2 h-7 w-7 object-contain" />
-                            <p className="font-bold text-sm">Call Us</p>
-                            <p className="text-xs text-white/70">(605) 342-1556</p>
-                        </a>
-                    </div>
-                </div>
-            </section>
 
             {/* Resources by Category */}
             <main className="flex-grow bg-secondary/20 py-16 md:py-20">
