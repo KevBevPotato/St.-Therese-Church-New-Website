@@ -291,7 +291,7 @@ export default function FaithFormation() {
                                 Help us serve food!
                             </a>
                             <a
-                                href="/ChurchMap.pdf"
+                                href="/About&Staff/DirectoryBoard_11zon.png"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
@@ -654,7 +654,7 @@ function CategoryCard({ category }: { category: FaithCategory }) {
             <p className="text-muted-foreground leading-relaxed text-sm mb-3">
                 {category.shortDescription}
                 <span className="mt-2 block text-primary">
-                    <span className="font-bold">Room:</span> ...
+                    {category.location?.startsWith('Room') ? category.location : `Room: ${category.location}`}
                 </span>
             </p>
 
@@ -662,20 +662,16 @@ function CategoryCard({ category }: { category: FaithCategory }) {
             <div className="mt-auto -mx-6 px-6 py-4 bg-gray-50/50 border-t border-gray-100">
                 {primaryCatechist && (
                     <div className="flex items-center gap-3 mb-4">
-                        {/* <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">
-                            {primaryCatechist.photo ? (
+                        {(category.id === 'adult-education' || primaryCatechist.name === 'Kevin Baltzer') && primaryCatechist.photo && (
+                            <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">
                                 <img
                                     src={primaryCatechist.photo}
                                     alt={primaryCatechist.name}
                                     className="w-full h-full object-cover"
                                     style={{ objectPosition: primaryCatechist.photoPosition ?? 'center 25%' }}
                                 />
-                            ) : (
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <User size={16} className="text-primary/30" />
-                                </div>
-                            )}
-                        </div> */}
+                            </div>
+                        )}
                         <div className="min-w-0">
                             <p className="text-[9px] font-bold text-primary/40 uppercase tracking-widest">Catechist</p>
                             <p className="text-sm font-bold text-primary truncate">

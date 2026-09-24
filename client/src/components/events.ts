@@ -68,6 +68,18 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         if (d.getDay() === 5) {
             events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
         }
+        if (d.getDay() === 1 && d.getDate() >= 15 && d.getDate() <= 21) {
+            events.push({
+                id: `connect-groups-${dateStr}`,
+                title: 'Connect Groups',
+                date: new Date(year, month, day, 18, 0),
+                time: '6:00 PM - 7:30 PM',
+                location: "Fr. Mark & Todd's Rectory",
+                categories: ['meeting', 'parishEvents'],
+                description: 'A welcoming parish small-group gathering for prayer, fellowship, and faith conversation.',
+                linkedOpportunityId: 'connect-groups',
+            });
+        }
 
     }
     return events;

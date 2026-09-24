@@ -467,6 +467,16 @@ export const oneTimeEvents: CalendarEvent[] = [
         organizationTags: ["altar-society"],
     },
     {
+        id: "altar-society-oct-mtg",
+        title: "Altar Society Meeting",
+        date: new Date("2026-10-04T10:15:00"),
+        time: "10:15 AM",
+        location: "Room 103",
+        categories: ["meeting"],
+        description: "Monthly meeting for the Altar Society.",
+        organizationTags: ["altar-society"],
+    },
+    {
         id: "catholic-daughters-sept",
         title: "Catholic Daughters Meeting",
         date: new Date("2026-09-14T18:00:00"),

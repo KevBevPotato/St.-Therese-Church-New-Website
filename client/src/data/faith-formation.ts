@@ -51,7 +51,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Our nursery provides safe, loving care for infants and toddlers during Wednesday evening Faith Formation classes. Volunteer caregivers engage children with age-appropriate toys, books, and music while modeling Christ\'s love.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Nursery',
+        location: '108',
         catechists: [
             {
                 id: 'anne-pozorski',
@@ -89,7 +89,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Pre-K is where our youngest learners begin to discover God\'s love through play, songs, crafts, and simple Bible stories. The children build friendships and start their journey of faith in a nurturing environment.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Pre-K Room',
+        location: '102',
         catechists: [
             {
                 id: 'kelli-whartman-prek',
@@ -123,7 +123,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Kindergarteners explore the wonders of God\'s creation and learn basic Catholic prayers and traditions. The curriculum emphasizes God\'s love, the beauty of the world He made, and the importance of daily prayer.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Kindergarten Room',
+        location: '104',
         catechists: [
             {
                 id: 'carol-brechtel',
@@ -157,7 +157,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'First graders begin a more structured exploration of the Catholic faith, with a focus on the life of Jesus, the sacraments, and the prayer life of the Church.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – 1st Grade Room',
+        location: '105',
         catechists: [
             {
                 id: 'johanna-auriemma',
@@ -188,7 +188,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'This is a special year of preparation for the Sacraments of First Reconciliation (Confession) and First Holy Communion. Children learn about God\'s mercy, the gift of the Eucharist, and how to receive these sacraments with reverence.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – 2nd Grade Room',
+        location: 'B2',
         catechists: [
             {
                 id: 'sarah-freeland',
@@ -226,7 +226,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Third graders explore the mystery of the Holy Trinity, the Holy Spirit, and the community of the Church. They begin to understand that they belong to something bigger than themselves.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – 3rd Grade Room',
+        location: 'B1',
         catechists: [
             {
                 id: 'sheri-zimmer',
@@ -256,7 +256,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Fourth graders study the Ten Commandments and the Beatitudes, learning how to live a moral life as followers of Christ. They explore the difference between right and wrong through the lens of Catholic teaching.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – 4th Grade Room',
+        location: 'B6',
         catechists: [
             {
                 id: 'charli-stamper',
@@ -286,7 +286,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Fifth graders study the seven sacraments in depth, learning what each one is, why it matters, and how it shapes our relationship with God and the Church.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – 5th Grade Room',
+        location: 'B3',
         catechists: [
             {
                 id: 'kathy-auriemma',
@@ -320,7 +320,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Edge is our middle school ministry program designed to meet the unique needs of 6th graders. It combines fun, engaging activities with solid catechesis to help pre-teens navigate their faith journey during a time of rapid change.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Edge Room',
+        location: 'B4',
         catechists: [
             {
                 id: 'natasha-combs',
@@ -354,7 +354,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Our Confirmation preparation program welcomes students in 7th grade and older who are ready to receive the Sacrament of Confirmation. The program combines catechesis, service, retreat experiences, and reflection on the gifts of the Holy Spirit.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Confirmation Room',
+        location: '103',
         catechists: [
             {
                 id: 'fr-todd-vandermay',
@@ -417,7 +417,7 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Life Teen is our high school ministry program for 9th through 12th graders. It\'s a vibrant community where teens can encounter Christ, build real friendships, and grow in their faith through relevant teaching, small groups, and service.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Life Teen Room',
+        location: 'B5',
         catechists: [
             {
                 id: 'bobby-myers',
@@ -472,15 +472,10 @@ export const faithCategories: FaithCategory[] = [
         longDescription:
             'Our Family Formation program offers a variety of ongoing classes, Bible studies, and formation opportunities for adults and families who want to deepen their faith and understanding of Catholic teaching.',
         meetingTime: MEETING_TIME,
-        location: 'Parish Hall – Family Formation Room',
+        location: 'MN Hall',
         catechists: [
-            { id: 'melanie-karp', name: 'Melanie Karp', role: 'Adult Ed Coordinator', photo: '/MelanieKarp.jpg', safeEnvironmentPdf: '/safe-env/melanie-karp.pdf' },
-            { id: 'hugh-brechtel', name: 'Hugh Brechtel', role: 'Adult Ed Catechist', photo: '/catechists/hugh-brechtel.jpg', safeEnvironmentPdf: '/safe-env/hugh-brechtel.pdf' },
-            { id: 'carol-brechtel-adult', name: 'Carol Brechtel', role: 'Adult Ed Catechist', photo: '/catechists/carol-brechtel.jpg', safeEnvironmentPdf: '/safe-env/carol-brechtel.pdf' },
-            { id: 'chad-carroll-adult', name: 'Chad Carroll', role: 'Adult Ed Catechist', photo: '/ChadCarroll.jpg', safeEnvironmentPdf: '/safe-env/chad-carroll.pdf' },
-            { id: 'bob-case', name: 'Bob Case', role: 'Adult Ed Catechist', photo: '/BobCase.jpg', safeEnvironmentPdf: '/safe-env/bob-case.pdf' },
-            { id: 'kevin-baltzer', name: 'Kevin Baltzer', role: 'Adult Ed Catechist', photo: '/Kevin-Baltzer.jpg', safeEnvironmentPdf: '/safe-env/kevin-baltzer.pdf' },
-            { id: 'fr-mark-mccormick', name: 'Fr. Mark McCormick', role: 'Adult Ed Catechist', photo: '/FrMark.jpg', safeEnvironmentPdf: '/safe-env/fr-mark-mccormick.pdf' },
+            { id: 'kevin-baltzer', name: 'Kevin Baltzer', role: 'Lead Catechist', photo: '/Kevin-Baltzer.jpg', photoPosition: 'center 18%', safeEnvironmentPdf: '/safe-env/kevin-baltzer.pdf' },
+            { id: 'fr-mark-mccormick', name: 'Fr. Mark McCormick', role: 'Secondary Catechist', photo: '/FrMark.jpg', safeEnvironmentPdf: '/safe-env/fr-mark-mccormick.pdf' },
         ],
         photos: ['/faith-formation/adult-ed-1.jpg', '/faith-formation/adult-ed-2.jpg'],
         resources: [

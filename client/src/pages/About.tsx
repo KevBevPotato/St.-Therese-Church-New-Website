@@ -3,7 +3,7 @@ import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
-import { Flower2, Mail, Phone } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 import { staffMembers, staffCategories, StaffMember } from '@/data/staff';
 
 export default function About() {
@@ -30,7 +30,7 @@ export default function About() {
         <div className="container relative grid gap-10 md:grid-cols-[1.18fr_0.82fr] md:items-end mx-auto px-4">
           <div>
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-              <Flower2 className="size-4" aria-hidden="true" /> The people of the Little Flower
+              The people of the Little Flower
             </p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
               The people behind our parish.
@@ -72,7 +72,6 @@ export default function About() {
                         />
                       ) : (
                         <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 text-primary p-6 text-center">
-                          <Flower2 className="size-12 text-primary/10 mb-4" />
                           <p className="font-serif text-lg font-bold">Little Flower Team</p>
                         </div>
                       )}
@@ -102,6 +101,12 @@ export default function About() {
                         {member.phone && (
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Phone className="size-3" /> {member.phone}
+                          </div>
+                        )}
+                        {member.officeRoom && (
+                          <div className="flex items-center gap-2 text-xs text-primary">
+                            <span className="font-bold">Room:</span>
+                            <span>{member.officeRoom}</span>
                           </div>
                         )}
                       </div>

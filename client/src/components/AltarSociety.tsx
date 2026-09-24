@@ -13,7 +13,6 @@ import {
     Calendar,
     Heart,
     Cross,
-    Flower2,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
 // ✅ Fixed: use relative path since events.ts is in the same directory
@@ -135,6 +134,11 @@ export default function AltarSociety() {
                                 <div>
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-1">Meetings</p>
                                     <p className="text-lg font-serif font-bold text-primary">{org.meetingSchedule}</p>
+                                    {org.room && (
+                                        <p className="text-sm text-muted-foreground mt-2">
+                                            Location: <span className="font-semibold text-primary">{org.room}</span>
+                                        </p>
+                                    )}
                                     <p className="text-sm text-muted-foreground mt-1">All women of the parish are welcome.</p>
                                 </div>
                             </div>
@@ -251,7 +255,6 @@ export default function AltarSociety() {
 
                     {org.members.length === 0 ? (
                         <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-primary/15">
-                            <Flower2 className="size-12 text-primary/20 mx-auto mb-4" />
                             <p className="text-muted-foreground font-bold">Member gallery coming soon.</p>
                             <p className="text-sm text-muted-foreground mt-2">Photos will be added as they become available.</p>
                         </div>

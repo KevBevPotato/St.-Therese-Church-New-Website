@@ -16,6 +16,7 @@ import {
     formatBulletinRange,
     formatShortDateRange,
 } from '@/data/bulletins';
+import { getBulletinContentForWeek } from '@/data/bulletinContent';
 
 /**
  * Bulletin Page - Next Week (Preview)
@@ -27,13 +28,16 @@ import {
 
 function buildNextBulletin(): Bulletin {
     const { start, end } = getNextWeekRange();
+    const bulletinContent = getBulletinContentForWeek(start);
+
     return {
         id: `next-${formatBulletinRange(start, end)}`,
         week: formatBulletinRange(start, end),
         startDate: start,
         endDate: end,
         pdfUrl: getPdfUrlForWeek(start),
-        sections: [],
+        sections: bulletinContent.sections,
+        hasContent: bulletinContent.hasContent,
     };
 }
 

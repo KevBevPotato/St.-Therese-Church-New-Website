@@ -3,7 +3,7 @@ import { useParams, Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { getStaffBySlug, staffMembers, staffCategories, StaffMember } from '@/data/staff';
-import { Flower2, Mail, Phone, ArrowLeft } from 'lucide-react';
+import { Mail, Phone, ArrowLeft, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function StaffDetail() {
@@ -18,7 +18,7 @@ export default function StaffDetail() {
         <div className="pt-[var(--header-height)]" />
         <section className="container mx-auto px-4 py-24 text-center">
           <p className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
-            <Flower2 className="size-4" /> Not Found
+            Not Found
           </p>
           <h1 className="font-serif text-4xl font-bold text-primary mb-4 md:text-5xl">
             We couldn't find that person.
@@ -75,7 +75,6 @@ export default function StaffDetail() {
               />
             ) : (
               <div className="flex h-full w-full flex-col items-center justify-center bg-gray-50 text-primary p-6 text-center">
-                <Flower2 className="size-12 text-primary/10 mb-4" />
                 <p className="font-serif text-lg font-bold">Little Flower Team</p>
                 <p className="text-[10px] font-bold uppercase tracking-widest text-primary/40 mt-2">
                   Portrait forthcoming
@@ -87,7 +86,7 @@ export default function StaffDetail() {
           {/* Content */}
           <div>
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-              <Flower2 className="size-4" /> {categoryLabel}
+              {categoryLabel}
             </p>
             <h1 className="mt-4 font-serif text-4xl font-bold leading-[1.05] text-primary md:text-5xl">
               {member.name}
@@ -116,6 +115,12 @@ export default function StaffDetail() {
                 <div className="flex items-center gap-3 text-sm text-foreground">
                   <Phone className="size-4 text-[#9b762f]" />
                   <span>{member.phone}</span>
+                </div>
+              )}
+              {member.officeRoom && (
+                <div className="flex items-center gap-3 text-sm text-foreground">
+                  <MapPin className="size-4 text-[#9b762f]" />
+                  <span><span className="font-bold text-primary">Room:</span> {member.officeRoom}</span>
                 </div>
               )}
             </div>

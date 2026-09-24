@@ -119,7 +119,7 @@ export default function FaithFormationDetail() {
                                     </Button>
                                 </Link>
                                 <a
-                                    href="/ChurchMap.pdf"
+                                    href="/About%26Staff/DirectoryBoard_11zon.png"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-3 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
@@ -167,7 +167,7 @@ export default function FaithFormationDetail() {
                                 <div>
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-1">Location</p>
                                     <p className="text-lg font-serif font-bold text-primary">
-                                        {category.location ?? 'St. Thérèse Parish'}
+                                        {category.location?.startsWith('Room') ? category.location : `Room: ${category.location ?? 'St. Thérèse Parish'}`}
                                     </p>
                                     <p className="text-sm text-muted-foreground mt-1">See classroom map for details.</p>
                                 </div>

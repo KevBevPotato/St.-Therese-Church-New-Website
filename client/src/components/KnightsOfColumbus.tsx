@@ -13,7 +13,6 @@ import {
     Calendar,
     Heart,
     Cross,
-    Flower2,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/events';
@@ -145,6 +144,14 @@ export default function KnightsOfColumbus() {
                                 {org.description}
                             </p>
                         </div>
+
+                        <div className="w-full max-w-[260px] shrink-0">
+                            <img
+                                src="/KnightsofColumbus/Knights%20of%20Columbus%20Flyer%20(1024%20x%201536%20px)_Compressed.png"
+                                alt="Knights of Columbus flyer"
+                                className="w-full rounded-2xl border border-white/20 shadow-xl object-cover"
+                            />
+                        </div>
                     </div>
 
                     {/* ✅ Calendar button at the bottom of the hero */}
@@ -159,7 +166,7 @@ export default function KnightsOfColumbus() {
                 </div>
             </section>
 
-            {/* Stats Bar */}
+            {/* Stats Bar - Temporarily hidden; keep for future updates.
             <section className="bg-primary text-white py-8">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
@@ -172,6 +179,7 @@ export default function KnightsOfColumbus() {
                     </div>
                 </div>
             </section>
+            */}
 
             {/* Meeting Info & CTAs */}
             <section className="py-12 bg-secondary/20 border-b border-primary/10">
@@ -185,6 +193,11 @@ export default function KnightsOfColumbus() {
                                 <div>
                                     <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-1">Meetings</p>
                                     <p className="text-lg font-serif font-bold text-primary">{org.meetingSchedule}</p>
+                                    {org.room && (
+                                        <p className="text-sm text-muted-foreground mt-2">
+                                            Location: <span className="font-semibold text-primary">{org.room}</span>
+                                        </p>
+                                    )}
                                     <p className="text-sm text-muted-foreground mt-1">All Catholic men are welcome to attend.</p>
                                 </div>
                             </div>
@@ -226,7 +239,7 @@ export default function KnightsOfColumbus() {
                 </div>
             </section>
 
-            {/* Officers Section */}
+            {/* Officers Section - Temporarily hidden until positions/photos are ready.
             <section className="py-16 md:py-20 bg-background">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
@@ -285,8 +298,9 @@ export default function KnightsOfColumbus() {
                     </div>
                 </div>
             </section>
+            */}
 
-            {/* Members Gallery */}
+            {/* Members Gallery - Temporarily hidden until member photos are ready.
             <section className="py-16 md:py-20 bg-secondary/20 border-t border-primary/10">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
@@ -303,7 +317,6 @@ export default function KnightsOfColumbus() {
 
                     {org.members.length === 0 ? (
                         <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-primary/15">
-                            <Flower2 className="size-12 text-primary/20 mx-auto mb-4" />
                             <p className="text-muted-foreground font-bold">Member gallery coming soon.</p>
                             <p className="text-sm text-muted-foreground mt-2">Photos will be added as they become available.</p>
                         </div>
@@ -339,6 +352,7 @@ export default function KnightsOfColumbus() {
                     )}
                 </div>
             </section>
+            */}
 
             {/* ✅ Upcoming Events — id="upcoming-events" is the scroll target for the hero button */}
             <section id="upcoming-events" className="py-16 md:py-20 bg-background border-t border-primary/10 scroll-mt-[100px]">

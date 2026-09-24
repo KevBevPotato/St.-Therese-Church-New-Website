@@ -28,6 +28,7 @@ export interface Organization {
     audience: string; // For display: "Men of the Parish" | "Women of the Parish"
     founded: number;
     meetingSchedule: string;
+    room?: string;
     heroImage?: string;
     contactName: string;
     contactPhone: string;
@@ -47,7 +48,8 @@ export const organizations: Organization[] = [
         audienceTag: "Men's",
         audience: 'Catholic Men of the Parish',
         founded: 1900, // Replace with actual founding year of your council
-        meetingSchedule: '1st Thursday of each month',
+        meetingSchedule: '2nd Monday of each month',
+        room: 'BKC',
         contactName: 'Grand Knight',
         contactPhone: '(605) 867-5309',
         stats: [
@@ -116,6 +118,7 @@ export const organizations: Organization[] = [
         audience: 'Catholic Women of the Parish',
         founded: 1950, // Replace with actual founding year
         meetingSchedule: 'Quarterly',
+        room: 'Room 103',
         contactName: 'President',
         contactPhone: '(605) 867-5309',
         stats: [

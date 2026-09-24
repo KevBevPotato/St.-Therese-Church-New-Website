@@ -27,6 +27,8 @@ const searchablePages: SearchResult[] = [
   { title: 'Sacraments', type: 'Page', href: '/sacraments', searchableText: 'sacraments baptism reconciliation marriage communion confirmation' },
   { title: 'Faith Formation', type: 'Page', href: '/faith-formation', searchableText: 'faith formation catechism religious education' },
   { title: 'Get Involved', type: 'Page', href: '/get-involved', searchableText: 'get involved ministries volunteer organizations lector usher altar server music ministry volunteer opportunities' },
+  { title: 'Connect Groups', type: 'Page', href: '/get-involved/connect-groups', searchableText: 'connect groups parish life prayer fellowship scripture discussion small group community' },
+  { title: 'Group Studies', type: 'Page', href: '/get-involved/group-studies', searchableText: 'group studies parish life bible study catholic teaching faith formation seasonal study groups' },
   { title: 'Parish Calendar', type: 'Page', href: '/events', searchableText: 'parish calendar events schedule' },
 ];
 
@@ -107,10 +109,16 @@ const searchableOpportunities: SearchResult[] = [
     searchableText: 'youth ministry mentors faith formation guide high school students small-group leader',
   },
   {
-    title: 'Annual Parish Picnic',
+    title: 'Connect Groups',
     type: 'Get Involved',
-    href: '/get-involved/annual-parish-picnic',
-    searchableText: 'annual parish picnic knights of columbus community event help host largest community event',
+    href: '/get-involved/connect-groups',
+    searchableText: 'connect groups parish life prayer fellowship scripture discussion small group community',
+  },
+  {
+    title: 'Group Studies',
+    type: 'Get Involved',
+    href: '/get-involved/group-studies',
+    searchableText: 'group studies parish life bible study catholic teaching faith formation seasonal study groups',
   },
   {
     title: 'St. Vincent de Paul Food Drive',
@@ -166,11 +174,22 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
     { href: '/bulletin', label: 'Bulletin' },
   ];
 
-  const parishLifeLinks = [
+  const parishLifeLinks: Array<{
+    href: string;
+    label: string;
+    children?: Array<{ href: string; label: string }>;
+  }> = [
     { href: '/sacraments', label: 'Sacraments' },
     { href: '/resources', label: 'Resources' },
     { href: '/faith-formation', label: 'Wednesday Faith Formation' },
-    { href: '/get-involved', label: 'Get Involved' },
+    {
+      href: '/get-involved',
+      label: 'Get Involved',
+      children: [
+        { href: '/get-involved/connect-groups', label: 'Connect Groups' },
+        { href: '/get-involved/group-studies', label: 'Group Studies' },
+      ],
+    },
   ];
 
   const externalLinks = [
@@ -315,16 +334,36 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute left-0 top-full z-[60] w-48 rounded-b-lg border border-border bg-white py-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
-                {parishLifeLinks.map((link) => (
-                  <Link
-                    key={link.href}
-                    href={link.href}
-                    className="block px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+              <div className="absolute left-0 top-full z-[60] w-56 rounded-b-lg border border-border bg-white py-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+                {parishLifeLinks.map((link) => {
+                  const hasChildren = !!link.children?.length;
+
+                  return (
+                    <div key={link.href} className="relative group/submenu">
+                      <Link
+                        href={link.href}
+                        className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary transition-colors"
+                      >
+                        <span>{link.label}</span>
+                        {hasChildren && <ChevronDown size={14} className="rotate-[-90deg]" />}
+                      </Link>
+
+                      {hasChildren && (
+                        <div className="absolute left-full top-0 ml-1 min-w-[180px] rounded-md border border-border bg-white py-2 shadow-lg opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-opacity duration-200">
+                          {link.children.map((child) => (
+                            <Link
+                              key={child.href}
+                              href={child.href}
+                              className="block px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary transition-colors"
+                            >
+                              {child.label}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             )}
           </div>

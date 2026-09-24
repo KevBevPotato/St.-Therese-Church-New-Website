@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import ChurchMap from '@/components/ChurchMap';
 import { Button } from '@/components/ui/button';
-import { Clock, Flower2, Mail, MapPin, Phone } from 'lucide-react';
+import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 
 /**

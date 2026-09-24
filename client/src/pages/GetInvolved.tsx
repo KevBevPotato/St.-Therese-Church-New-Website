@@ -58,7 +58,8 @@ interface Opportunity {
         subtotal: string;
     }>;
     constructionTotal?: string;
-    customPage?: 'supper-week' | 'altar-society' | 'knights-of-columbus';
+    expired?: boolean;
+    customPage?: 'supper-week' | 'altar-society' | 'knights-of-columbus' | 'connect-groups' | 'group-studies';
     orgIcon?: 'shield' | 'flower';
 }
 
@@ -159,6 +160,30 @@ function createInitialOpportunities(): Opportunity[] {
             description: 'Guide high school students in their faith journey as a small-group leader.',
         },
         {
+            id: 'connect-groups',
+            title: 'Connect Groups',
+            categories: ['join'],
+            tags: ['Parish Organizations'],
+            organization: 'Parish Life',
+            date: 'Year-round small groups',
+            contactName: 'Parish Office',
+            contactPhone: '(605) 867-5309',
+            description: 'Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion.',
+            customPage: 'connect-groups',
+        },
+        {
+            id: 'group-studies',
+            title: 'Group Studies',
+            categories: ['join'],
+            tags: ['Parish Organizations'],
+            organization: 'Parish Life',
+            date: 'Seasonal study groups',
+            contactName: 'Parish Office',
+            contactPhone: '(605) 867-5309',
+            description: 'Explore the Bible, Catholic teaching, and spiritual growth with a parish study group.',
+            customPage: 'group-studies',
+        },
+        {
             id: 'annual-parish-picnic',
             title: 'Annual Parish Picnic',
             categories: ['help'],
@@ -168,6 +193,7 @@ function createInitialOpportunities(): Opportunity[] {
             contactName: 'John Doe',
             contactPhone: '(605) 867-5309',
             description: 'Help host our largest community event of the year.',
+            expired: true,
         },
         {
             id: 'st-vincent-de-paul-food-drive',
@@ -252,6 +278,7 @@ export default function GetInvolved() {
     const [opportunities] = useState<Opportunity[]>(createInitialOpportunities);
 
     const filteredOps = opportunities.filter((opportunity) => {
+        if (opportunity.expired) return false;
         const categoryMatch =
             activeCategory === 'all' ||
             (activeCategory !== 'request' && opportunity.categories.includes(activeCategory));

@@ -7,7 +7,6 @@ import {
     ArrowLeft,
     Cross,
     ExternalLink,
-    Flower2,
     Heart,
     Sparkles,
     Users,
@@ -52,7 +51,7 @@ export default function DailyRosary() {
                 <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center max-w-6xl mx-auto">
                     <div>
                         <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-                            <Flower2 className="size-4" /> Sacramental Life
+                            Sacramental Life
                         </p>
                         <h1 className="mt-4 font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
                             The Daily Rosary.

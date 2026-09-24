@@ -5,6 +5,7 @@ export interface StaffMember {
   titles: string[];
   email?: string;
   phone?: string;
+  officeRoom?: string;
   categories: Array<'clergy' | 'staff' | 'catechist' | 'council' | 'music' | 'ministries'>;
   photo?: string;
   photoPosition?: string;
@@ -20,7 +21,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Fr. Mark McCormick',
     titles: ['Pastor'],
     email: 'mark.mccormick@strcstaff.org',
-    phone: '(595) 100 2009',
+    phone: '(595) 100-2009 or Ext. 1011',
+    officeRoom: '106',
     categories: ['clergy'],
     photo: '/FrMark.jpg',
     photoPosition: 'center 24%',
@@ -31,6 +33,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Fr. Todd VanderMay',
     titles: ['Associate Pastor'],
     email: 'todd.vandermay@strcstaff.org',
+    phone: '(595) 100-1743 or Ext. 1017',
+    officeRoom: '107',
     categories: ['clergy'],
     photo: '/FrToddVanderMay.jpg',
     photoPosition: 'center 22%',
@@ -51,6 +55,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Deacon Don Moore',
     titles: ['Deacon'],
     email: 'don.moore@strcstaff.org',
+    phone: '(595) 100-2008 or Ext. 1014',
+    officeRoom: '109',
     categories: ['clergy'],
     photo: '/DcnDon.jpg',
     photoPosition: 'center 25%',
@@ -63,6 +69,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Bobby Myers',
     titles: ['Director of Religious Education'],
     email: 'bobby.myers@strcstaff.org',
+    phone: '(595) 100-2010 or Ext. 1012',
+    officeRoom: '101',
     categories: ['staff'],
     photo: '/BobbyMeyers.jpg',
     photoPosition: 'center 24%',
@@ -73,6 +81,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Connie Heeren',
     titles: ['Staff'],
     email: 'connie.heeren@strcstaff.org',
+    phone: '(595) 100-2006 or Ext. 1010',
+    officeRoom: '110',
     categories: ['staff'],
     photo: '/ConnieHeeran.jpg',
     photoPosition: 'center 21%',
@@ -83,6 +93,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Melanie Karp',
     titles: ['Staff'],
     email: 'melanie.karp@strcstaff.org',
+    phone: '(595) 100-2007 or Ext. 1015',
+    officeRoom: '111',
     categories: ['staff'],
     photo: '/MelanieKarp.jpg',
     photoPosition: 'center 25%',
@@ -132,6 +144,8 @@ export const baseStaffMembers: Array<Omit<StaffMember, 'duties' | 'bio'>> = [
     name: 'Kevin Baltzer',
     titles: ['Director of Evangelization & Adult & Family Formation'],
     email: 'kevin.baltzer@strcstaff.org',
+    phone: '(595) 100-1744 or Ext. 1018',
+    officeRoom: '101',
     categories: ['staff'],
     photo: '/Kevin-Baltzer.jpg',
     photoPosition: 'center 35%',
