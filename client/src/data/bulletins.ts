@@ -47,6 +47,11 @@ export function formatShortDateRange(startDate: Date, endDate: Date): string {
     return `${start}-${end}.${year}`;
 }
 
+export function getMonthKey(date: Date): string {
+    const monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    return `${monthNames[date.getMonth()]} ${date.getFullYear()}`;
+}
+
 export function getPdfUrlForWeek(startDate: Date): string | undefined {
     return bulletinPdfManifest[formatDateKey(startDate)];
 }
@@ -79,4 +84,55 @@ export function getNextWeekRange(): { start: Date; end: Date } {
     const nextStart = new Date(currentStart.getTime() + WEEK_DURATION_MS);
     const nextEnd = new Date(nextStart.getTime() + WEEK_DURATION_MS);
     return { start: nextStart, end: nextEnd };
+}
+
+export function getArchivedBulletins(): Array<{ start: Date; end: Date; pdfUrl?: string }> {
+    const now = new Date();
+    const archiveEntries: Array<{ start: Date; end: Date; pdfUrl?: string }> = [];
+
+    Object.values(bulletinWeekSchedule).forEach((entry) => {
+        if (entry.endDate.getTime() <= now.getTime()) {
+            archiveEntries.push({
+                start: entry.startDate,
+                end: entry.endDate,
+                pdfUrl: getPdfUrlForWeek(entry.startDate),
+            });
+        }
+    });
+
+    Object.entries(bulletinPdfManifest).forEach(([dateKey, pdfUrl]) => {
+        const start = new Date(dateKey + 'T00:00:00');
+        const end = new Date(start.getTime() + WEEK_DURATION_MS);
+        if (end.getTime() <= now.getTime()) {
+            const exists = archiveEntries.some(e => e.start.getTime() === start.getTime());
+            if (!exists) {
+                archiveEntries.push({ start, end, pdfUrl });
+            }
+        }
+    });
+
+    return archiveEntries.sort((a, b) => b.start.getTime() - a.start.getTime());
+}
+
+export function getAllScheduledWeeks(): Array<{ start: Date; end: Date; pdfUrl?: string }> {
+    const entries: Array<{ start: Date; end: Date; pdfUrl?: string }> = [];
+
+    Object.values(bulletinWeekSchedule).forEach((entry) => {
+        entries.push({
+            start: entry.startDate,
+            end: entry.endDate,
+            pdfUrl: getPdfUrlForWeek(entry.startDate),
+        });
+    });
+
+    Object.entries(bulletinPdfManifest).forEach(([dateKey, pdfUrl]) => {
+        const start = new Date(dateKey + 'T00:00:00');
+        const end = new Date(start.getTime() + WEEK_DURATION_MS);
+        const exists = entries.some(e => e.start.getTime() === start.getTime());
+        if (!exists) {
+            entries.push({ start, end, pdfUrl });
+        }
+    });
+
+    return entries.sort((a, b) => b.start.getTime() - a.start.getTime());
 }
