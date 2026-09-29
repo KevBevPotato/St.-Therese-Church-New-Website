@@ -2,7 +2,7 @@
 backend:
   name: git-gateway
   repo: KevBevPotato/St.-Therese-Church-New-Website
-  branch: main
+  branch: Website-View
   auth_type: pkce
   base_url: https://auth.decapbridge.com
   auth_endpoint: /sites/0fa77363-844c-4462-9ed1-015aac8b5428/pkce
