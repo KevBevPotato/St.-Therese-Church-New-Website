@@ -42,7 +42,7 @@ collections:
   - name: "events"
     label: "Calendar Events"
     files: 
-      - file: "client/src/data/events/oneTimeEvents.json"
+      - file: "client/src/components/eventfolders/oneTimeEvents.json"
         label: "One-Time Events"
         name: "one_time"
         fields:
@@ -58,7 +58,7 @@ collections:
               - { label: "Categories", name: "categories", widget: "list", fields: [{ name: "category", label: "Category", widget: "string" }] }
               - { label: "Description", name: "description", widget: "text" }
 
-      - file: "client/src/data/events/irregularEvents.json"
+      - file: "client/src/components/eventfolders/irregularEvents.json"
         label: "Irregular Events"
         name: "irregular"
         fields:
