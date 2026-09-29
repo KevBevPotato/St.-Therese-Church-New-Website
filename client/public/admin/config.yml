@@ -30,3 +30,21 @@ logo_url: https://decapbridge.com/decapcms-with-bridge.svg
 
 # Add site links in Decap CMS (optional)
 site_url: https://stthereserapidcity.org
+
+# --- REQUIRED DECAP CMS SETTINGS ---
+
+# Where uploaded images are saved in your repository
+media_folder: "client/public/uploads"
+public_folder: "/uploads"
+
+# Content Collections (Define what files can be edited in the CMS)
+collections:
+  - name: "pages"
+    label: "Pages"
+    files:
+      - file: "client/src/data/home.json"
+        label: "Home Page"
+        name: "home"
+        fields:
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Body", name: "body", widget: "markdown" }
