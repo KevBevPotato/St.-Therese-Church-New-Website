@@ -5,7 +5,7 @@ import { Card } from '@/components/ui/card';
 import { useLocation, useSearch, Link } from 'wouter';
 
 import { CalendarEvent, EventCategory } from './eventfolders/types';
-import { staticEvents, generateRecurringEventsForMonth, ExtendedTimeFilter, EVENT_COLORS } from './events';
+import { staticEvents, generateRecurringEventsForMonth, ExtendedTimeFilter, EVENT_COLORS } from './eventfolders/events';
 import { EventCategoryPill } from './event-components';
 import { CalendarView } from './CalendarView';
 import { EventsListView } from './EventsListView';

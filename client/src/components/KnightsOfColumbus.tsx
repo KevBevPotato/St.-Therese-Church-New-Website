@@ -15,7 +15,7 @@ import {
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
-import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/events';
+import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 
 const FORM_URLS = {

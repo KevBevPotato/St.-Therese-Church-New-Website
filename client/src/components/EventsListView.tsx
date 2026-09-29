@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { CalendarEvent, EventCategory, EVENT_COLORS, ExtendedTimeFilter } from './events';
+import { CalendarEvent, EventCategory, EVENT_COLORS, ExtendedTimeFilter } from './eventfolders/events';
 import { EventCard } from './event-components';
 import { CalendarDays, Search } from 'lucide-react';
 import { Link } from 'wouter';

@@ -16,7 +16,7 @@ import {
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
 // ✅ Fixed: use relative path since events.ts is in the same directory
-import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './events';
+import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 
 const FORM_URLS = {

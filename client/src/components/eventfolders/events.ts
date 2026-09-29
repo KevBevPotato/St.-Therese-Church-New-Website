@@ -1,6 +1,6 @@
-import { CalendarEvent, EventCategory, TimeFilter } from './eventfolders/types';
-import { oneTimeEvents } from './eventfolders/oneTimeEvents';
-import { irregularEvents } from './eventfolders/irregularEvents';
+import { CalendarEvent, EventCategory, TimeFilter } from './types';
+import { oneTimeEvents } from './oneTimeEvents';
+import { irregularEvents } from './irregularEvents';
 
 export type { CalendarEvent, EventCategory, TimeFilter };
 export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
@@ -25,6 +25,10 @@ export const staticEvents: CalendarEvent[] = [
 export function generateRecurringEventsForMonth(month: number, year: number): CalendarEvent[] {
     const events: CalendarEvent[] = [];
     const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+    // ✅ CHANGE 1: Added the specific start date for Connect Groups
+    // Note: JavaScript months are 0-indexed (January=0, October=9)
+    const connectGroupsStartDate = new Date(2026, 9, 19);
 
     for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(year, month, day);
@@ -68,7 +72,9 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         if (d.getDay() === 5) {
             events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
         }
-        if (d.getDay() === 1 && d.getDate() >= 15 && d.getDate() <= 21) {
+
+        // ✅ CHANGE 2: Added "&& d >= connectGroupsStartDate" to the condition
+        if (d.getDay() === 1 && d.getDate() >= 15 && d.getDate() <= 21 && d >= connectGroupsStartDate) {
             events.push({
                 id: `connect-groups-${dateStr}`,
                 title: 'Connect Groups',

@@ -1,7 +1,7 @@
 // --- File: client/src/components/UpcomingOrgEvents.tsx ---
 import { Link } from 'wouter';
 import { Calendar, ArrowRight, MapPin, Clock } from 'lucide-react';
-import { EVENT_COLORS, type CalendarEvent, type EventCategory } from './events';
+import { EVENT_COLORS, type CalendarEvent, type EventCategory } from './eventfolders/events';
 
 interface UpcomingOrgEventsProps {
     events: CalendarEvent[];

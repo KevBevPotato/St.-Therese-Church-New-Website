@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState, useRef } from 'react';
 import { Link } from 'wouter';
 import { Menu, X, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { staticEvents, generateRecurringEventsForMonth } from './events';
+import { staticEvents, generateRecurringEventsForMonth } from './eventfolders/events';
 import { organizations } from '@/data/organizations';
 import { baseStaffMembers } from '@/data/staff';
 import { faithCategories } from '@/data/faith-formation';

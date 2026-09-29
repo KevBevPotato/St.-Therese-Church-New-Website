@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
-import { staticEvents } from '@/components/events';
+import { staticEvents } from '@/components/eventfolders/events';
 import { EventCard } from '@/components/event-components';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';

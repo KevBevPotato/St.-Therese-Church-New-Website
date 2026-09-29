@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { ChevronLeft, ChevronRight, Filter } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
-import { EventCategory, EVENT_COLORS, CalendarEvent } from './events';
+import { EventCategory, EVENT_COLORS, CalendarEvent } from './eventfolders/events';
 import { CalendarCellEvent } from './event-components';
 
 interface CalendarViewProps {
