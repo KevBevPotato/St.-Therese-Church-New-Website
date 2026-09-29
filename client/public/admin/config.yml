@@ -39,6 +39,41 @@ public_folder: "/uploads"
 
 # Content Collections (Define what files can be edited in the CMS)
 collections:
+  - name: "events"
+    label: "Calendar Events"
+    files: 
+      - file: "client/src/data/events/oneTimeEvents.json"
+        label: "One-Time Events"
+        name: "one_time"
+        fields:
+          - label: "Events List"
+            name: "events"
+            widget: "list"
+            fields:
+              - { label: "Event ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string" }
+              - { label: "Time", name: "time", widget: "string" }
+              - { label: "Location", name: "location", widget: "string" }
+              - { label: "Categories", name: "categories", widget: "list", fields: [{ name: "category", label: "Category", widget: "string" }] }
+              - { label: "Description", name: "description", widget: "text" }
+
+      - file: "client/src/data/events/irregularEvents.json"
+        label: "Irregular Events"
+        name: "irregular"
+        fields:
+          - label: "Events List"
+            name: "events"
+            widget: "list"
+            fields:
+              - { label: "Event ID", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string" }
+              - { label: "Time", name: "time", widget: "string" }
+              - { label: "Location", name: "location", widget: "string" }
+              - { label: "Categories", name: "categories", widget: "list", fields: [{ name: "category", label: "Category", widget: "string" }] }
+              - { label: "Description", name: "description", widget: "text" }
+
   - name: "pages"
     label: "Pages"
     files:
