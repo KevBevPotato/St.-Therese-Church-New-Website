@@ -1,0 +1,13 @@
+{
+  "events": [
+    {
+      "id": "test-event",
+      "title": "Kevin is testing an event",
+      "date": "2026-10-01",
+      "time": "7am",
+      "location": "My office",
+      "categories": [],
+      "description": "Check this out"
+    }
+  ]
+}
