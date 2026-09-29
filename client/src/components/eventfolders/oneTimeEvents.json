@@ -1,4 +1,5 @@
-[
+{
+    "events": [
     {
         "id": "feeding-sd-aug-5",
         "title": "Feeding South Dakota",
@@ -891,3 +892,4 @@
         "description": "Weekly OCIA class for adults seeking initiation."
     }
 ]
+}
