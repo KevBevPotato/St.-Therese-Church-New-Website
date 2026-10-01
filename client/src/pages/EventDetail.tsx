@@ -154,13 +154,13 @@ export default function EventDetail() {
               {event.gallery && event.gallery.length > 0 ? (
                 <EventCarousel gallery={event.gallery} eventTitle={event.title} />
               ) : event.image ? (
-                  <div className="relative w-full overflow-hidden rounded-3xl shadow-xl bg-gray-100">
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-auto max-h-[600px] object-contain mx-auto block"
-                    />
-                  </div>
+                <div className="relative w-full overflow-hidden rounded-3xl shadow-xl">
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-auto max-h-[800px] object-contain mx-auto block"
+                  />
+                </div>
               ) : null}
             </div>
 
@@ -187,15 +187,21 @@ export default function EventDetail() {
                   <h3 className="font-serif text-3xl font-bold text-primary">Event Gallery</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {event.gallery.map((item: any, idx) => (
-                    <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer">
+                  {event.gallery.map((item: any, idx: number) => (
+                    <a
+                      key={idx}
+                      href={item.photo}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="group relative aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer"
+                    >
                       <img src={item.photo} alt={`${event.title} gallery ${idx + 1}`} className="w-full h-full object-cover" />
                       {item.caption && (
                         <div className="absolute inset-0 bg-black/60 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
                           <p className="text-white text-xs italic">{item.caption}</p>
                         </div>
                       )}
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>
