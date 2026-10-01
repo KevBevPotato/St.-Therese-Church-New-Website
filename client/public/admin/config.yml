@@ -114,11 +114,10 @@ collections:
               - { label: "Day of Week (0=Sun, 1=Mon, 2=Tue...)", name: "dayOfWeek", widget: "number", hint: "e.g. 1" }
               - { label: "Start Day of Month", name: "startDayOfMonth", widget: "number", hint: "e.g. 15" }
               - { label: "End Day of Month", name: "endDayOfMonth", widget: "number", hint: "e.g. 21" }
-              - { label: "Start Date (YYYY-MM-DD)", name: "startDate", widget: "string", hint: "Earliest date this rule applies" }
-              - { label: "Description", name: "description", widget: "text" }
-              - { label: "Start Date", name: "startDate", widget: "string", hint: "YYYY-MM-DDT00:00:00" }
-              - { label: "End Date", name: "endDate", widget: "string", hint: "YYYY-MM-DDT00:00:00" }
+              - { label: "Start Date", name: "startDate", widget: "string", hint: "Format: 2026-10-05T00:00:00" }
+              - { label: "End Date", name: "endDate", widget: "string", hint: "Format: 2027-04-05T00:00:00" }
               - { label: "Exclusions (comma separated)", name: "exclusions", widget: "string", hint: "e.g. 2026-11-16, 2026-12-21" }
+              - { label: "Description", name: "description", widget: "text" }
               - label: "Categories"
                 name: "categories"
                 widget: "list"
