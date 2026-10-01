@@ -1083,8 +1083,8 @@
     },
     {
       "id": "kevin",
-      "title": "KEVIN",
-      "date": "2026-11-03T00:00:00",
+      "title": "Kevin is testing some things",
+      "date": "2026-09-31T00:00:00",
       "time": "7am",
       "location": "office",
       "gallery": [
@@ -1102,7 +1102,7 @@
           "category": "meeting"
         }
       ],
-      "description": "check tis out"
+      "description": "check this out. This is a great pivot. If you are primarily using Flyers (Portrait), the design goal changes from \"filling a box\" to \"showcasing a document.\"\n\nTo get the \"1 on mobile, 3 on desktop\" look where they cycle through, we should move away from a \"Single-Image Carousel\" and move toward a \"Scroll-Snap Slider.\" This is a modern web technique that feels like an app: it allows users to swipe through flyers, and it automatically \"snaps\" them into place.\n\nHere is the complete updated code for both files."
     }
   ]
 }
