@@ -78,10 +78,13 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 
             if (
                 d.getDay() === rule.dayOfWeek &&
+                day >= rule.startDayOfMonth && // <--- ADD THIS: Check if day is after the 15th
+                day <= rule.endDayOfMonth &&   // <--- ADD THIS: Check if day is before the 21st
                 d >= ruleStartDate &&
                 d <= ruleEndDate &&
-                !exclusions.includes(dateStr) // <--- THIS checks if the current date is in the exclusion list
+                !exclusions.includes(dateStr)
             ) {
+
                 events.push({
                     id: `${rule.id}-${dateStr}`,
                     title: rule.title,
