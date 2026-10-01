@@ -154,13 +154,13 @@ export default function EventDetail() {
               {event.gallery && event.gallery.length > 0 ? (
                 <EventCarousel gallery={event.gallery} eventTitle={event.title} />
               ) : event.image ? (
-                <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-3xl shadow-xl">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+                  <div className="relative w-full overflow-hidden rounded-3xl shadow-xl bg-gray-100">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-auto max-h-[600px] object-contain mx-auto block"
+                    />
+                  </div>
               ) : null}
             </div>
 
