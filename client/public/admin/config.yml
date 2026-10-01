@@ -50,12 +50,19 @@ collections:
             name: "events"
             widget: "list"
             fields:
-              - { label: "Event ID", name: "id", widget: "string" }
+              - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. feeding-sd-aug-5" }
               - { label: "Title", name: "title", widget: "string" }
-              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string" }
-              - { label: "Time", name: "time", widget: "string" }
+              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", hint: "Format: 2026-10-01" }
+              - { label: "Time", name: "time", widget: "string", hint: "e.g. 8:00 AM - 9:00 AM" }
               - { label: "Location", name: "location", widget: "string" }
-              - { label: "Categories", name: "categories", widget: "list", fields: [{ name: "category", label: "Category", widget: "string" }] }
+              - label: "Category"
+                name: "categories"
+                widget: "list"
+                fields:
+                  - label: "Category"
+                    name: "category"
+                    widget: "select"
+                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
               - { label: "Description", name: "description", widget: "text" }
 
       - file: "client/src/components/eventfolders/irregularEvents.json"
@@ -66,20 +73,17 @@ collections:
             name: "events"
             widget: "list"
             fields:
-              - { label: "Event ID", name: "id", widget: "string" }
+              - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. faith-formation-01" }
               - { label: "Title", name: "title", widget: "string" }
-              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string" }
-              - { label: "Time", name: "time", widget: "string" }
+              - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", hint: "Format: 2026-10-01" }
+              - { label: "Time", name: "time", widget: "string", hint: "e.g. 5:30 PM - 7:30 PM" }
               - { label: "Location", name: "location", widget: "string" }
-              - { label: "Categories", name: "categories", widget: "list", fields: [{ name: "category", label: "Category", widget: "string" }] }
+              - label: "Category"
+                name: "categories"
+                widget: "list"
+                fields:
+                  - label: "Category"
+                    name: "category"
+                    widget: "select"
+                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
               - { label: "Description", name: "description", widget: "text" }
-
-  - name: "pages"
-    label: "Pages"
-    files:
-      - file: "client/src/data/home.json"
-        label: "Home Page"
-        name: "home"
-        fields:
-          - { label: "Title", name: "title", widget: "string" }
-          - { label: "Body", name: "body", widget: "markdown" }
