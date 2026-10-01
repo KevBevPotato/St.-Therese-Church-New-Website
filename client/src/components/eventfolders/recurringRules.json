@@ -1,0 +1,23 @@
+{
+    "rules": [
+        {
+            "id": "connect-groups",
+            "title": "Connect Groups",
+            "time": "6:00 PM - 7:30 PM",
+            "location": "Fr. Mark & Todd's Rectory",
+            "categories": [
+                {
+                    "category": "meeting"
+                },
+                {
+                    "category": "parishEvents"
+                }
+            ],
+            "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation.",
+            "dayOfWeek": 1,
+            "startDayOfMonth": 15,
+            "endDayOfMonth": 21,
+            "startDate": "2026-10-19"
+        }
+    ]
+}

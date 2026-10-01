@@ -1,6 +1,7 @@
 import { CalendarEvent, EventCategory, TimeFilter } from './types';
 import { oneTimeEvents } from './oneTimeEvents';
 import { irregularEvents } from './irregularEvents';
+import recurringData from './recurringRules.json'; // <--- IMPORT NEW RULES
 
 export type { CalendarEvent, EventCategory, TimeFilter };
 export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
@@ -13,28 +14,20 @@ export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; d
     diocesan: { bg: 'bg-blue-50', border: 'border-blue-400', dot: 'bg-blue-500', label: 'Diocesan', labelColor: 'text-blue-700' },
 };
 
-// HUB: Combine all static lists. The sort at the bottom handles the order.
 export const staticEvents: CalendarEvent[] = [
     ...oneTimeEvents,
     ...irregularEvents,
 ];
 
-/**
- * PERPETUAL & FINITE RECURRING LOGIC
- */
 export function generateRecurringEventsForMonth(month: number, year: number): CalendarEvent[] {
     const events: CalendarEvent[] = [];
     const daysInMonth = new Date(year, month + 1, 0).getDate();
-
-    // ✅ CHANGE 1: Added the specific start date for Connect Groups
-    // Note: JavaScript months are 0-indexed (January=0, October=9)
-    const connectGroupsStartDate = new Date(2026, 9, 19);
 
     for (let day = 1; day <= daysInMonth; day++) {
         const d = new Date(year, month, day);
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-        // --- PERPETUAL RECURRING (Forever) ---
+        // --- PERPETUAL RECURRING (Hard-coded for Mass because it never changes) ---
         if (d.getDay() >= 1 && d.getDay() <= 5) {
             events.push({
                 id: `mass-daily-${dateStr}`,
@@ -73,23 +66,28 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
             events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
         }
 
-        // ✅ CHANGE 2: Added "&& d >= connectGroupsStartDate" to the condition
-        if (d.getDay() === 1 && d.getDate() >= 15 && d.getDate() <= 21 && d >= connectGroupsStartDate) {
-            events.push({
-                id: `connect-groups-${dateStr}`,
-                title: 'Connect Groups',
-                date: new Date(year, month, day, 18, 0),
-                time: '6:00 PM - 7:30 PM',
-                location: "Fr. Mark & Todd's Rectory",
-                categories: ['meeting', 'parishEvents'],
-                description: 'A welcoming parish small-group gathering for prayer, fellowship, and faith conversation.',
-                linkedOpportunityId: 'connect-groups',
-            });
-        }
+        // --- CMS-DRIVEN RECURRING RULES ---
+        (recurringData as any).rules.forEach((rule: any) => {
+            const ruleStartDate = new Date(rule.startDate);
 
+            if (d.getDay() === rule.dayOfWeek &&
+                d.getDate() >= rule.startDayOfMonth &&
+                d.getDate() <= rule.endDayOfMonth &&
+                d >= ruleStartDate) {
+
+                events.push({
+                    id: `${rule.id}-${dateStr}`,
+                    title: rule.title,
+                    date: new Date(year, month, day, 18, 0), // You can customize this further if needed
+                    time: rule.time,
+                    location: rule.location,
+                    categories: rule.categories.map((c: any) => c.category || c),
+                    description: rule.description,
+                });
+            }
+        });
     }
     return events;
 }
 
-// final AUTO-SORT for all merged static files
 staticEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
