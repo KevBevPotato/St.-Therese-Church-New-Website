@@ -67,18 +67,25 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         }
 
         // --- CMS-DRIVEN RECURRING RULES ---
+        // Inside generateRecurringEventsForMonth loop:
+
         (recurringData as any).rules.forEach((rule: any) => {
             const ruleStartDate = new Date(rule.startDate);
+            const ruleEndDate = rule.endDate ? new Date(rule.endDate) : new Date(2100, 0, 1); // Default to far future if no end date
 
-            if (d.getDay() === rule.dayOfWeek &&
-                d.getDate() >= rule.startDayOfMonth &&
-                d.getDate() <= rule.endDayOfMonth &&
-                d >= ruleStartDate) {
+            // Convert the comma-separated exclusions string into an array of dates
+            const exclusions = rule.exclusions ? rule.exclusions.split(',').map((d: string) => d.trim()) : [];
 
+            if (
+                d.getDay() === rule.dayOfWeek &&
+                d >= ruleStartDate &&
+                d <= ruleEndDate &&
+                !exclusions.includes(dateStr) // <--- THIS checks if the current date is in the exclusion list
+            ) {
                 events.push({
                     id: `${rule.id}-${dateStr}`,
                     title: rule.title,
-                    date: new Date(year, month, day, 18, 0), // You can customize this further if needed
+                    date: new Date(year, month, day, 18, 0),
                     time: rule.time,
                     location: rule.location,
                     categories: rule.categories.map((c: any) => c.category || c),
@@ -86,6 +93,7 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 });
             }
         });
+
     }
     return events;
 }

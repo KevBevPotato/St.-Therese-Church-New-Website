@@ -17,6 +17,7 @@ export interface CalendarEvent {
     contactPhone?: string;
     signupLink?: string;
     photos?: string[]; // <--- CHANGE THIS from 'images' to 'photos'
+    gallery?: { photo: string; caption?: string }[]; // <--- ADD THIS LINE
     faqItems?: Array<{ question: string; answer: string }>;
     linkedOpportunityId?: string;
     organizationTags?: string[];

@@ -11,6 +11,9 @@ import { Card } from '@/components/ui/card';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+// 1. IMPORT THE CAROUSEL HERE
+import { EventCarousel } from '@/components/EventCarousel';
+
 import { staticEvents, generateRecurringEventsForMonth, EVENT_COLORS } from '@/components/eventfolders/events';
 import { getCustomLandingPage } from '@/data/eventLandingPages';
 
@@ -146,16 +149,20 @@ export default function EventDetail() {
               <h1 className="font-serif text-5xl font-bold text-primary leading-tight">{event.title}</h1>
             </div>
 
-            {/* --- HERO IMAGE SECTION --- */}
-            {event.image && (
-              <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-3xl shadow-xl">
-                <img
-                  src={event.image}
-                  alt={event.title}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            )}
+            {/* --- UPDATED HERO IMAGE / CAROUSEL SECTION --- */}
+            <div className="w-full">
+              {event.gallery && event.gallery.length > 0 ? (
+                <EventCarousel gallery={event.gallery} eventTitle={event.title} />
+              ) : event.image ? (
+                <div className="relative w-full h-64 md:h-96 overflow-hidden rounded-3xl shadow-xl">
+                  <img
+                    src={event.image}
+                    alt={event.title}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+              ) : null}
+            </div>
 
             <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">About this Event</h2>
@@ -172,17 +179,22 @@ export default function EventDetail() {
               )}
             </Card>
 
-            {/* --- PHOTO GALLERY SECTION --- */}
-            {event.photos && event.photos.length > 0 && (
+            {/* --- UPDATED PHOTO GALLERY SECTION --- */}
+            {event.gallery && event.gallery.length > 0 && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
                   <ImageIcon className="text-primary size-5" />
                   <h3 className="font-serif text-3xl font-bold text-primary">Event Gallery</h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {event.photos.map((photo, idx) => (
-                    <div key={idx} className="aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer">
-                      <img src={photo} alt={`${event.title} gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                  {event.gallery.map((item: any, idx) => (
+                    <div key={idx} className="group relative aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer">
+                      <img src={item.photo} alt={`${event.title} gallery ${idx + 1}`} className="w-full h-full object-cover" />
+                      {item.caption && (
+                        <div className="absolute inset-0 bg-black/60 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <p className="text-white text-xs italic">{item.caption}</p>
+                        </div>
+                      )}
                     </div>
                   ))}
                 </div>
