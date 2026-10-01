@@ -28,14 +28,14 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({ gallery, eventTitl
     return (
         <div className="relative w-full max-w-5xl mx-auto overflow-hidden rounded-3xl shadow-xl group bg-black">
             {/* Image Display */}
-            <div className="relative h-64 md:h-96 w-full overflow-hidden">
+            <div className="relative h-64 md:h-96 w-full overflow-hidden flex items-center justify-center bg-gray-200">
                 <img
                     src={gallery[currentIndex].photo}
                     alt={`${eventTitle} - ${gallery[currentIndex].caption || 'Event Image'}`}
-                    className="w-full h-full object-cover transition-all duration-500 ease-in-out"
+                    className="max-w-full max-h-full w-auto h-auto object-contain transition-all duration-500 ease-in-out"
                 />
 
-                {/* Caption Overlay - appears at the bottom of the image */}
+                {/* Caption Overlay */}
                 {gallery[currentIndex].caption && (
                     <div className="absolute bottom-0 left-0 right-0 bg-black/60 text-white p-4 text-sm text-center backdrop-blur-sm transition-opacity duration-300">
                         {gallery[currentIndex].caption}
