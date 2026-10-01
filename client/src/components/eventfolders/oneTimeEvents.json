@@ -890,15 +890,6 @@
         "meeting"
       ],
       "description": "Weekly OCIA class for adults seeking initiation."
-    },
-    {
-      "id": "kevin",
-      "title": "kevin",
-      "date": "2026-10-02",
-      "time": "7am",
-      "location": "kevin",
-      "categories": "meeting",
-      "description": "kevin"
     }
   ]
 }
