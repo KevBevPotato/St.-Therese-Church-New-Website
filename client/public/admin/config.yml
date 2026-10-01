@@ -55,14 +55,7 @@ collections:
               - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", hint: "Format: 2026-10-01" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 8:00 AM - 9:00 AM" }
               - { label: "Location", name: "location", widget: "string" }
-              - label: "Category"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+              - { label: "Categories (comma separated)", name: "categories", widget: "string", hint: "e.g. sacramental, parishEvents" }
               - { label: "Description", name: "description", widget: "text" }
 
       - file: "client/src/components/eventfolders/irregularEvents.json"
@@ -78,12 +71,5 @@ collections:
               - { label: "Date (YYYY-MM-DD)", name: "date", widget: "string", hint: "Format: 2026-10-01" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 5:30 PM - 7:30 PM" }
               - { label: "Location", name: "location", widget: "string" }
-              - label: "Category"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+              - { label: "Categories (comma separated)", name: "categories", widget: "string", hint: "e.g. sacramental, parishEvents" }
               - { label: "Description", name: "description", widget: "text" }
