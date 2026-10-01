@@ -1080,6 +1080,25 @@
         }
       ],
       "description": "Weekly OCIA class for adults seeking initiation."
+    },
+    {
+      "id": "kevin",
+      "title": "KEVIN",
+      "date": "2026-11-03T00:00:00",
+      "time": "7am",
+      "location": "office",
+      "gallery": [
+        {
+          "photo": "/uploads/knights-of-columbus-flyer-1024-x-1536-px-_compressed.png",
+          "caption": "nunya"
+        }
+      ],
+      "categories": [
+        {
+          "category": "meeting"
+        }
+      ],
+      "description": "check tis out"
     }
   ]
 }
