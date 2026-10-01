@@ -1090,11 +1090,19 @@
       "gallery": [
         {
           "photo": "/uploads/knights-of-columbus-flyer-1024-x-1536-px-_compressed.png",
-          "caption": "nunya"
+          "caption": "Knights of Columbus"
         },
         {
           "photo": "/uploads/directoryboard_11zon.png",
           "caption": "directory board"
+        },
+        {
+          "photo": "/uploads/canva_welcome_poster.png",
+          "caption": "Mass Times Flyer"
+        },
+        {
+          "photo": "/uploads/fr.markmary.png",
+          "caption": "FrMark-Mary"
         }
       ],
       "categories": [
