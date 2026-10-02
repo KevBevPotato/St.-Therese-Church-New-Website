@@ -28,23 +28,82 @@
       "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation."
     },
     {
-      "exclusions": [
+      "dayOfWeek": "Monday",
+      "endDate": "2026-10-26",
+      "recurrenceType": "weekly",
+      "time": "6:30pm-7:30pm",
+      "startDate": "2026-10-05",
+      "location": "Rm 103",
+      "title": "OCIA",
+      "id": "ocia-october",
+      "categories": [
         {
-          "date": "2026-12-10"
+          "category": "sacramental"
         }
-      ],
-      "ordinalWeek": "2",
-      "dayOfWeek": "Thursday",
-      "endDate": "2027-04-02",
-      "recurrenceType": "monthly",
-      "time": "7am",
-      "startDate": "2026-10-09",
-      "location": "My Office",
-      "title": "Kevin's 2nd Test Event",
-      "id": "test-2-kevin",
+      ]
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "endDate": "2026-10-27",
+      "recurrenceType": "weekly",
+      "time": "4-6pm",
+      "startDate": "2026-10-06",
+      "location": "Rm 103",
+      "title": "Epic Journey",
+      "id": "epic-journey-october",
       "categories": [
         {
           "category": "parishEvents"
+        }
+      ]
+    },
+    {
+      "dayOfWeek": "Tuesday",
+      "endDate": "2026-10-27",
+      "recurrenceType": "weekly",
+      "time": "6pm",
+      "startDate": "2026-10-06",
+      "location": "North Hall (Basement)",
+      "title": "Pinochle Night",
+      "id": "pinochle-night-october",
+      "categories": [
+        {
+          "category": "parishEvents"
+        }
+      ]
+    },
+    {
+      "ordinalWeek": "2",
+      "dayOfWeek": "Monday",
+      "recurrenceType": "monthly",
+      "time": "7-8pm",
+      "startDate": "2026-10-12",
+      "location": "BKC",
+      "title": "Knights of Columbus Meeting",
+      "id": "knights-meeting",
+      "categories": [
+        {
+          "category": "meeting"
+        }
+      ]
+    },
+    {
+      "exclusions": [
+        {
+          "date": "2026-12-29, 2026-03-30, 2027-06-29"
+        }
+      ],
+      "ordinalWeek": "4",
+      "dayOfWeek": "Tuesday",
+      "recurrenceType": "monthly",
+      "time": "6:30pm",
+      "startDate": "2026-10-27",
+      "location": "Rm 103",
+      "title": "Parish Council Meeting",
+      "id": "parish-council-oct",
+      "categories": [
+        {
+          "category": "meeting"
         }
       ]
     }
