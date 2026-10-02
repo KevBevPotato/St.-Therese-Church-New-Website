@@ -45,7 +45,7 @@ collections:
               - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 8:00 AM - 9:00 AM" }
               - { label: "Location", name: "location", widget: "string", hint: "e.g. Main Sanctuary" }
-              - label: "Event Gallery"
+              - label: "Event Gallery (Optional)"
                 name: "gallery"
                 widget: "list"
                 fields:
@@ -59,13 +59,42 @@ collections:
                     name: "category"
                     widget: "select"
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
-              - { label: "Description", name: "description", widget: "text" }
+              - { label: "Description (Optional)", name: "description", widget: "text" }
+
+      - file: "client/src/components/eventfolders/irregularEvents.json"
+        label: "Irregular Events"
+        name: "irregular"
+        fields:
+          - label: "Events List"
+            name: "events"
+            widget: "list"
+            fields:
+              - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. faith-formation-01" }
+              - { label: "Title", name: "title", widget: "string", hint: "e.g. Faith Formation" }
+              - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
+              - { label: "Time", name: "time", widget: "string", hint: "e.g. 5:30 PM - 7:30 PM" }
+              - { label: "Location", name: "location", widget: "string", hint: "e.g. Community Center" }
+              - label: "Event Gallery (Optional)"
+                name: "gallery"
+                widget: "list"
+                fields:
+                  - { label: "Photo", name: "photo", widget: "image" }
+                  - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
+              - label: "Categories"
+                name: "categories"
+                widget: "list"
+                fields:
+                  - label: "Category"
+                    name: "category"
+                    widget: "select"
+                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+              - { label: "Description (Optional)", name: "description", widget: "text" }
 
   - name: "recurring_rules"
-    label: "Recurring Calendar Events"
+    label: "Recurring Events for St. Therese"
     files:
       - file: "client/src/components/eventfolders/recurringRules.json"
-        label: "Recurring Events for St. Therese"
+        label: "Global Recurring Rules"
         name: "rules_file"
         fields:
           - label: "Rules List"
@@ -76,22 +105,23 @@ collections:
               - { label: "Event Title", name: "title", widget: "string", hint: "e.g. Connect Groups" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 6:00 PM - 7:30 PM" }
               - { label: "Location", name: "location", widget: "string", hint: "e.g. St. Therese Rectory" }
-              - label: "Event Gallery"
+              - label: "Event Gallery (Optional)"
                 name: "gallery"
                 widget: "list"
                 fields:
                   - { label: "Photo", name: "photo", widget: "image" }
                   - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
-              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["daily", "weekly", "monthly"], hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday." }
-              - label: "Day of Week"
-                name: "dayOfWeek"
-                widget: "select"
-                options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-              - { label: "Which Week of Month? (If Monthly)", name: "ordinalWeek", widget: "select", options: ["1", "2", "3", "4", "5"], hint: "Ignore if Daily/Weekly. '3' = 3rd week of month." }
+              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["weekly", "monthly"], hint: "Weekly = every single [Day]. Monthly = only the 1st, 2nd, 3rd etc." }
+              - { label: "Day of Week (0=Sun, 1=Mon, 2=Tue...)", name: "dayOfWeek", widget: "number", hint: "e.g. 1 for Monday" }
+              - { label: "Which Week of Month? (If Monthly)", name: "ordinalWeek", widget: "select", options: ["1", "2", "3", "4", "5"], hint: "Leave blank if Weekly. Select '3' for the 3rd Monday of the month." }
               - { label: "Start Date", name: "startDate", widget: "string", hint: "Format: 2026-10-05" }
               - { label: "End Date (Leave blank for Perpetual)", name: "endDate", widget: "string", hint: "Format: 2027-04-05" }
-              - { label: "Exclusions (comma separated)", name: "exclusions", widget: "string", hint: "e.g. 2026-11-16, 2026-12-21" }
-              - { label: "Description", name: "description", widget: "text" }
+              - label: "Exclusions (Optional)"
+                name: "exclusions"
+                widget: "list"
+                fields:
+                  - { label: "Exclude Date", name: "date", widget: "string", hint: "Format: 2026-11-16" }
+              - { label: "Description (Optional)", name: "description", widget: "text" }
               - label: "Categories"
                 name: "categories"
                 widget: "list"
