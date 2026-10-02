@@ -1,10 +1,15 @@
 {
   "rules": [
     {
+      "exclusions": [
+        {
+          "date": "2026-12-28"
+        }
+      ],
       "ordinalWeek": "3",
-      "dayOfWeek": 1,
+      "dayOfWeek": "Monday",
       "endDayOfMonth": 21,
-      "endDate": "2027-04-05T00:00:00",
+      "endDate": "2027-04-05",
       "recurrenceType": "monthly",
       "time": "6:00 PM - 7:30 PM",
       "startDayOfMonth": 15,
@@ -23,12 +28,17 @@
       "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation."
     },
     {
+      "exclusions": [
+        {
+          "date": "2026-12-25"
+        }
+      ],
       "ordinalWeek": "2",
-      "dayOfWeek": 5,
-      "endDate": "2027-04-02T00:00:00",
+      "dayOfWeek": "Thursday",
+      "endDate": "2027-04-02",
       "recurrenceType": "monthly",
       "time": "7am",
-      "startDate": "2026-10-09T00:00:00",
+      "startDate": "2026-10-09",
       "location": "My Office",
       "title": "Kevin's 2nd Test Event",
       "id": "test-2-kevin",
