@@ -45,13 +45,14 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         new Date(b.startDate + 'T00:00:00').getTime() === start.getTime()
     );
 
-    // Convert the flat CMS object into the array of sections BulletinView expects
+    // ✅ FIX: Look for the key directly on the 'data' object, 
+    // instead of looking inside 'content_sections'
     const sections = CATEGORY_MAP
-        .filter(cat => data?.content_sections?.[cat.key]) // Only include if there is content
+        .filter(cat => data?.[cat.key]) // Changed from data?.content_sections?.[cat.key]
         .map(cat => ({
             id: cat.key,
             label: cat.label,
-            content: data.content_sections[cat.key]
+            content: data[cat.key] // Changed from data.content_sections[cat.key]
         }));
 
     return {
@@ -64,6 +65,7 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         hasContent: sections.length > 0,
     };
 }
+
 
 export default function Bulletin() {
     const currentRange = getCurrentWeekRange();

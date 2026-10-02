@@ -119,21 +119,18 @@ collections:
           - { label: "End Date", name: "endDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
           - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: true }
           
-          # Instead of a list, we create a dedicated field for every category
-          - label: "Bulletin Content"
-            name: "content_sections"
-            widget: "group"
-            fields:
-              - { label: "Mass Times", name: "mass_times", widget: "markdown" }
-              - { label: "Announcements", name: "announcements", widget: "markdown" }
-              - { label: "New Parishioners", name: "new_parishioners", widget: "markdown" }
-              - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown" }
-              - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown" }
-              - { label: "Lectors", name: "lectors", widget: "markdown" }
-              - { label: "Ushers", name: "ushers", widget: "markdown" }
-              - { label: "Altar Servers", name: "altar_servers", widget: "markdown" }
-              - { label: "Contributions", name: "contributions", widget: "markdown" }
-              - { label: "Prayer List", name: "prayer_list", widget: "markdown" }
-              - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown" }
-              - { label: "Needs", name: "needs", widget: "markdown" }
-              - { label: "Sponsors", name: "sponsors", widget: "markdown" }
+          # Just list the categories directly here. 
+          # Decap will show them as individual boxes.
+          - { label: "Mass Times", name: "mass_times", widget: "markdown" }
+          - { label: "Announcements", name: "announcements", widget: "markdown" }
+          - { label: "New Parishioners", name: "new_parishioners", widget: "markdown" }
+          - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown" }
+          - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown" }
+          - { label: "Lectors", name: "lectors", widget: "markdown" }
+          - { label: "Ushers", name: "ushers", widget: "markdown" }
+          - { label: "Altar Servers", name: "altar_servers", widget: "markdown" }
+          - { label: "Contributions", name: "contributions", widget: "markdown" }
+          - { label: "Prayer List", name: "prayer_list", widget: "markdown" }
+          - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown" }
+          - { label: "Needs", name: "needs", widget: "markdown" }
+          - { label: "Sponsors", name: "sponsors", widget: "markdown" }
