@@ -71,29 +71,37 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 
         (recurringData as any).rules.forEach((rule: any) => {
             const ruleStartDate = new Date(rule.startDate);
-            const ruleEndDate = rule.endDate ? new Date(rule.endDate) : new Date(2100, 0, 1); // Default to far future if no end date
-
-            // Convert the comma-separated exclusions string into an array of dates
+            const ruleEndDate = rule.endDate ? new Date(rule.endDate) : new Date(2100, 0, 1);
             const exclusions = rule.exclusions ? rule.exclusions.split(',').map((d: string) => d.trim()) : [];
 
-            if (
-                d.getDay() === rule.dayOfWeek &&
-                day >= rule.startDayOfMonth && // <--- ADD THIS: Check if day is after the 15th
-                day <= rule.endDayOfMonth &&   // <--- ADD THIS: Check if day is before the 21st
-                d >= ruleStartDate &&
-                d <= ruleEndDate &&
-                !exclusions.includes(dateStr)
-            ) {
+            // 1. Basic check: Is it the right day of the week and within the overall date range?
+            if (d.getDay() === rule.dayOfWeek && d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
 
-                events.push({
-                    id: `${rule.id}-${dateStr}`,
-                    title: rule.title,
-                    date: new Date(year, month, day, 18, 0),
-                    time: rule.time,
-                    location: rule.location,
-                    categories: rule.categories.map((c: any) => c.category || c),
-                    description: rule.description,
-                });
+                let shouldShow = false;
+
+                if (rule.recurrenceType === 'monthly') {
+                    // MONTHLY LOGIC: Calculate which "numbered" week this date falls in
+                    // 1st: 1-7, 2nd: 8-14, 3rd: 15-21, 4th: 22-28, 5th: 29-31
+                    const currentOrdinal = Math.ceil(day / 7);
+                    if (currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
+                        shouldShow = true;
+                    }
+                } else {
+                    // WEEKLY LOGIC: It's the right day of the week, so just show it
+                    shouldShow = true;
+                }
+
+                if (shouldShow) {
+                    events.push({
+                        id: `${rule.id}-${dateStr}`,
+                        title: rule.title,
+                        date: new Date(year, month, day, 18, 0),
+                        time: rule.time,
+                        location: rule.location,
+                        categories: rule.categories.map((c: any) => c.category || c),
+                        description: rule.description,
+                    });
+                }
             }
         });
 
