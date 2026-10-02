@@ -1,5 +1,5 @@
 // BulletinView.tsx
-import { ReactNode, useState } from 'react';
+import { useState } from 'react';
 import { Link } from 'wouter';
 import { Card } from '@/components/ui/card';
 import ReactMarkdown from 'react-markdown';
@@ -16,7 +16,7 @@ import {
 export interface BulletinSection {
     id: string;
     label: string;
-    content: ReactNode;
+    content: string; // ✅ Perfect for react-markdown
 }
 
 export interface Bulletin {

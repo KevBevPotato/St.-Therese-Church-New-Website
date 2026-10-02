@@ -17,14 +17,15 @@ import {
     getCurrentWeekRange,
     getPdfUrlForWeek,
     formatBulletinRange,
-    BulletinCMS // Import the interface we created in bulletins.ts
+    BulletinCMS
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
 
-// Cast the JSON data
+// Cast the JSON data to the interface we defined in bulletins.ts
 const bulletinData = bulletinDataRaw as BulletinCMS[];
 
-// ====== Build bulletin for current week ======
+// ====== This is the function you were looking for! ======
+// It takes raw data from the JSON and turns it into a format BulletinView understands
 function buildBulletinForRange(start: Date, end: Date): BulletinType {
     // Find the bulletin in the CMS JSON that matches this start date
     const data = bulletinData.find(b =>
@@ -37,7 +38,11 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         startDate: start,
         endDate: end,
         pdfUrl: data?.pdfUrl || getPdfUrlForWeek(start),
-        sections: data?.sections || [],
+        // We map the CMS sections to add an 'id' so the Filter buttons work
+        sections: data?.sections.map(s => ({
+            ...s,
+            id: s.label.toLowerCase().replace(/\s+/g, '-'),
+        })) || [],
         hasContent: data ? (data.sections.length > 0) : false,
     };
 }
@@ -82,7 +87,7 @@ export default function Bulletin() {
                             </Link>
                         </div>
 
-                        {/* Current week bulletin */}
+                        {/* Current week bulletin - we pass the 'currentBulletin' we built above into the View */}
                         <BulletinView
                             bulletin={currentBulletin}
                             title="This Week's Bulletin"
