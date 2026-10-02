@@ -3,7 +3,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import {
-    Calendar,
     FileText,
     Phone,
     Mail,
@@ -18,21 +17,28 @@ import {
     getCurrentWeekRange,
     getPdfUrlForWeek,
     formatBulletinRange,
+    BulletinCMS // Import the interface we created in bulletins.ts
 } from '@/data/bulletins';
-import { getBulletinContentForWeek } from '@/data/bulletinContent';
+import bulletinDataRaw from '@/data/bulletins_data.json';
+
+// Cast the JSON data
+const bulletinData = bulletinDataRaw as BulletinCMS[];
 
 // ====== Build bulletin for current week ======
 function buildBulletinForRange(start: Date, end: Date): BulletinType {
-    const content = getBulletinContentForWeek(start);
+    // Find the bulletin in the CMS JSON that matches this start date
+    const data = bulletinData.find(b =>
+        new Date(b.startDate + 'T00:00:00').getTime() === start.getTime()
+    );
 
     return {
         id: formatBulletinRange(start, end),
         week: formatBulletinRange(start, end),
         startDate: start,
         endDate: end,
-        pdfUrl: getPdfUrlForWeek(start),
-        sections: content.sections,
-        hasContent: content.hasContent,
+        pdfUrl: data?.pdfUrl || getPdfUrlForWeek(start),
+        sections: data?.sections || [],
+        hasContent: data ? (data.sections.length > 0) : false,
     };
 }
 

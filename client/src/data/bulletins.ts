@@ -1,25 +1,23 @@
-/**
- * Bulletin data manifest.
- */
-export const bulletinPdfManifest: Record<string, string> = {
-    '2026-08-08': '/ParishBulletins/August8.8-15.26.pdf',
-    '2026-08-15': '/ParishBulletins/August15.8-22.26.pdf',
-    '2026-08-22': '/ParishBulletins/August22.8-29.26.pdf',
-    '2026-08-29': '/ParishBulletins/August8.29-September9.5.pdf',
-    '2026-09-05': '/ParishBulletins/September+5+&+6,+2026.pdf',
-    '2026-09-12': '/ParishBulletins/September+12+&+13,+2026.pdf',
-    '2026-09-19': '/ParishBulletins/September+19+&+20,+2026.pdf',
-    '2026-09-26': '/ParishBulletins/September 26 & 27, 2026.pdf',
-};
+import bulletinDataRaw from './bulletins_data.json';
 
-export const bulletinWeekSchedule: Record<string, { startDate: Date; endDate: Date }> = {
-    '2026-08-08': { startDate: new Date(2026, 7, 8), endDate: new Date(2026, 7, 15) },
-    '2026-08-15': { startDate: new Date(2026, 7, 15), endDate: new Date(2026, 7, 22) },
-    '2026-08-22': { startDate: new Date(2026, 7, 22), endDate: new Date(2026, 7, 29) },
-    '2026-09-19': { startDate: new Date(2026, 8, 19), endDate: new Date(2026, 8, 26) },
-    '2026-09-26': { startDate: new Date(2026, 8, 26), endDate: new Date(2026, 9, 3) },
-    '2026-10-03': { startDate: new Date(2026, 9, 3), endDate: new Date(2026, 9, 10) },
-};
+// 1. Define exactly what a Bulletin looks like in the JSON
+export interface BulletinCMS {
+    title: string;
+    startDate: string;
+    endDate: string;
+    pdfUrl: string;
+    sections: {
+        label: string;
+        content: string;
+    }[];
+}
+
+// 2. Tell TypeScript to treat the JSON as an array of BulletinCMS
+const bulletinData = bulletinDataRaw as BulletinCMS[];
+
+function parseCMSDate(dateStr: string): Date {
+    return new Date(`${dateStr}T00:00:00`);
+}
 
 export const WEEK_DURATION_MS = 7 * 24 * 60 * 60 * 1000;
 
@@ -53,7 +51,8 @@ export function getMonthKey(date: Date): string {
 }
 
 export function getPdfUrlForWeek(startDate: Date): string | undefined {
-    return bulletinPdfManifest[formatDateKey(startDate)];
+    const bulletin = bulletinData.find(b => parseCMSDate(b.startDate).getTime() === startDate.getTime());
+    return bulletin?.pdfUrl;
 }
 
 export function getWeekStart(date: Date): Date {
@@ -74,13 +73,17 @@ export function getCurrentWeekRange(): { start: Date; end: Date } {
 
 export function getNextWeekRange(): { start: Date; end: Date } {
     const { start: currentStart } = getCurrentWeekRange();
-    const scheduleKeys = Object.keys(bulletinWeekSchedule).sort();
-    for (const key of scheduleKeys) {
-        const entry = bulletinWeekSchedule[key];
-        if (entry.startDate.getTime() > currentStart.getTime()) {
-            return { start: entry.startDate, end: entry.endDate };
-        }
+    const nextBulletin = bulletinData
+        .filter(b => parseCMSDate(b.startDate).getTime() > currentStart.getTime())
+        .sort((a, b) => parseCMSDate(a.startDate).getTime() - parseCMSDate(b.startDate).getTime())[0];
+
+    if (nextBulletin) {
+        return {
+            start: parseCMSDate(nextBulletin.startDate),
+            end: parseCMSDate(nextBulletin.endDate)
+        };
     }
+
     const nextStart = new Date(currentStart.getTime() + WEEK_DURATION_MS);
     const nextEnd = new Date(nextStart.getTime() + WEEK_DURATION_MS);
     return { start: nextStart, end: nextEnd };
@@ -88,51 +91,22 @@ export function getNextWeekRange(): { start: Date; end: Date } {
 
 export function getArchivedBulletins(): Array<{ start: Date; end: Date; pdfUrl?: string }> {
     const now = new Date();
-    const archiveEntries: Array<{ start: Date; end: Date; pdfUrl?: string }> = [];
-
-    Object.values(bulletinWeekSchedule).forEach((entry) => {
-        if (entry.endDate.getTime() <= now.getTime()) {
-            archiveEntries.push({
-                start: entry.startDate,
-                end: entry.endDate,
-                pdfUrl: getPdfUrlForWeek(entry.startDate),
-            });
-        }
-    });
-
-    Object.entries(bulletinPdfManifest).forEach(([dateKey, pdfUrl]) => {
-        const start = new Date(dateKey + 'T00:00:00');
-        const end = new Date(start.getTime() + WEEK_DURATION_MS);
-        if (end.getTime() <= now.getTime()) {
-            const exists = archiveEntries.some(e => e.start.getTime() === start.getTime());
-            if (!exists) {
-                archiveEntries.push({ start, end, pdfUrl });
-            }
-        }
-    });
-
-    return archiveEntries.sort((a, b) => b.start.getTime() - a.start.getTime());
+    return bulletinData
+        .filter(b => parseCMSDate(b.endDate).getTime() <= now.getTime())
+        .map(b => ({
+            start: parseCMSDate(b.startDate),
+            end: parseCMSDate(b.endDate),
+            pdfUrl: b.pdfUrl,
+        }))
+        .sort((a, b) => b.start.getTime() - a.start.getTime());
 }
 
 export function getAllScheduledWeeks(): Array<{ start: Date; end: Date; pdfUrl?: string }> {
-    const entries: Array<{ start: Date; end: Date; pdfUrl?: string }> = [];
-
-    Object.values(bulletinWeekSchedule).forEach((entry) => {
-        entries.push({
-            start: entry.startDate,
-            end: entry.endDate,
-            pdfUrl: getPdfUrlForWeek(entry.startDate),
-        });
-    });
-
-    Object.entries(bulletinPdfManifest).forEach(([dateKey, pdfUrl]) => {
-        const start = new Date(dateKey + 'T00:00:00');
-        const end = new Date(start.getTime() + WEEK_DURATION_MS);
-        const exists = entries.some(e => e.start.getTime() === start.getTime());
-        if (!exists) {
-            entries.push({ start, end, pdfUrl });
-        }
-    });
-
-    return entries.sort((a, b) => b.start.getTime() - a.start.getTime());
+    return bulletinData
+        .map(b => ({
+            start: parseCMSDate(b.startDate),
+            end: parseCMSDate(b.endDate),
+            pdfUrl: b.pdfUrl,
+        }))
+        .sort((a, b) => b.start.getTime() - a.start.getTime());
 }

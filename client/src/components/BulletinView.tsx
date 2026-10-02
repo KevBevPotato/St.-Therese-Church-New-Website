@@ -2,6 +2,7 @@
 import { ReactNode, useState } from 'react';
 import { Link } from 'wouter';
 import { Card } from '@/components/ui/card';
+import ReactMarkdown from 'react-markdown';
 import {
     Calendar,
     FileText,
@@ -217,11 +218,9 @@ export default function BulletinView({
                                         <div key={section.id} className="pb-6 border-b border-primary/5 last:border-0">
                                             <h4 className="font-bold text-primary mb-4 text-lg">{section.label}</h4>
                                             <div className="text-muted-foreground">
-                                                {typeof section.content === 'string' ? (
-                                                    <p className="text-sm">{section.content}</p>
-                                                ) : (
-                                                    section.content
-                                                )}
+                                                <div className="text-sm prose prose-sm max-w-none">
+                                                    <ReactMarkdown>{section.content}</ReactMarkdown>
+                                                </div>
                                             </div>
                                         </div>
                                     ))

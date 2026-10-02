@@ -107,3 +107,39 @@ collections:
                     name: "category"
                     widget: "select"
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+  - name: "bulletins"
+    label: "Parish Bulletins"
+    files:
+      - file: "client/src/data/bulletins_data.json" # We'll store all bulletins in one JSON array
+        label: "Weekly Bulletins"
+        name: "bulletins"
+        fields:
+          - { label: "Bulletin Title", name: "title", widget: "string", hint: "e.g., Oct 12 - Oct 19, 2024" }
+          - { label: "Start Date (Must be a Saturday)", name: "startDate", widget: "date", required: true }
+          - { label: "End Date (Must be a Saturday)", name: "endDate", widget: "date", required: true }
+          - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: true }
+          - label: "Bulletin Sections"
+            name: "sections"
+            widget: "list"
+            fields:
+              - label: "Section Category"
+                name: "label"
+                widget: "select"
+                options: 
+                  - "Mass Times"
+                  - "Announcements"
+                  - "New Parishioners"
+                  - "Mass Intentions"
+                  - "Daily Scriptures"
+                  - "Lectors"
+                  - "Ushers"
+                  - "Altar Servers"
+                  - "Contributions"
+                  - "Prayer List"
+                  - "A Little Laugh"
+                  - "Needs"
+                  - "Sponsors"
+              - label: "Content"
+                name: "content"
+                widget: "markdown"
+                hint: "Use **Bold** for titles. For Lectors/Ushers, use: **Oct 12/13**: Name | **Oct 19/20**: Name"
