@@ -11,30 +11,62 @@ interface ContactInfo { name: string; title: string; phone: string; email: strin
 
 const defaultContactInfo: ContactInfo = { name: 'Connie Heeren', title: 'Bulletin Coordinator', phone: '(605) 342-1556 Ext. 1', email: 'connie.heeren@strcstaff.org' };
 
-// Separate function to handle the "Financial Ledger" look
+// Helper to convert "$1,234.56" into a number 1234.56
+function parseCurrency(value: string): number {
+    return parseFloat(value.replace(/[$,\s]/g, '')) || 0;
+}
+
 function renderContributionSection(content: string) {
+    const lines = content.split('\n').filter(line => line.trim() !== '');
+
+    // 1. First, scan all lines to find the Total and Needed amounts for comparison
+    let totalAmount = 0;
+    let neededAmount = 0;
+
+    lines.forEach(line => {
+        const cleanLine = line.replace(/^- /, '').trim();
+        if (cleanLine.toLowerCase().includes('total')) {
+            const parts = cleanLine.split(':');
+            if (parts[1]) totalAmount = parseCurrency(parts[1]);
+        } else if (cleanLine.toLowerCase().includes('needed')) {
+            const parts = cleanLine.split(':');
+            if (parts[1]) neededAmount = parseCurrency(parts[1]);
+        }
+    });
+
+    const isOverOrEqual = totalAmount >= neededAmount;
+
+    // 2. Now render the lines using the comparison result
     return (
         <div className="space-y-1 text-sm">
-            {content.split('\n').filter(line => line.trim() !== '').map((line, idx) => {
+            {lines.map((line, idx) => {
                 const cleanLine = line.replace(/^- /, '').trim();
+
+                // TOTAL LINE
                 if (cleanLine.toLowerCase().includes('total')) {
                     const [label, val] = cleanLine.split(':');
                     return (
                         <div key={idx} className="flex justify-between items-center py-2 font-bold text-primary border-t border-primary/20 mt-2">
                             <span>{label?.trim() || 'TOTAL'}</span>
-                            <span className="text-red-600">{val?.trim() || ''}</span>
+                            <span className={isOverOrEqual ? 'text-green-600' : 'text-red-600'}>
+                                {val?.trim() || ''}
+                            </span>
                         </div>
                     );
                 }
+
+                // NEEDED LINE
                 if (cleanLine.toLowerCase().includes('needed')) {
                     const [label, val] = cleanLine.split(':');
                     return (
                         <div key={idx} className="flex justify-between items-center py-2 font-bold text-primary border-t border-primary/20">
-                            <span>{label?.trim() || 'NEEDED'}</span>
-                            <span className="text-green-600">{val?.trim() || ''}</span>
+                            <span>{label?.trim() || 'WEEKLY AMOUNT NEEDED'}</span>
+                            <span>{val?.trim() || ''}</span>
                         </div>
                     );
                 }
+
+                // REGULAR ROWS
                 const parts = cleanLine.split(':');
                 if (parts.length >= 2) {
                     return (
