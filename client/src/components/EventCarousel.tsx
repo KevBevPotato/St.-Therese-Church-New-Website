@@ -12,10 +12,14 @@ interface EventCarouselProps {
 }
 
 export const EventCarousel: React.FC<EventCarouselProps> = ({ gallery, eventTitle }) => {
+    const isLooping = gallery.length > 3;
+
     // 1. Determine how many items are visible based on screen size
     const [visibleItems, setVisibleItems] = useState(3);
 
     useEffect(() => {
+        if (!isLooping) return;
+
         const updateVisibleItems = () => {
             if (window.innerWidth > 1024) setVisibleItems(3);
             else if (window.innerWidth > 768) setVisibleItems(2);
@@ -24,7 +28,7 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({ gallery, eventTitl
         updateVisibleItems();
         window.addEventListener('resize', updateVisibleItems);
         return () => window.removeEventListener('resize', updateVisibleItems);
-    }, []);
+    }, [isLooping]);
 
     // 2. Create the Infinite Loop Gallery: [Clones of End] + [Originals] + [Clones of Start]
     // We take the last 'visibleItems' and put them at the start, and first 'visibleItems' at the end.
@@ -50,6 +54,8 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({ gallery, eventTitl
 
     // 3. The "Teleport" Logic
     useEffect(() => {
+        if (!isLooping) return;
+
         // If we've slid into the clones at the end, teleport back to the start
         if (currentIndex >= gallery.length + visibleItems) {
             const timer = setTimeout(() => {
@@ -67,7 +73,30 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({ gallery, eventTitl
             }, 500);
             return () => clearTimeout(timer);
         }
-    }, [currentIndex, gallery.length, visibleItems]);
+    }, [currentIndex, gallery.length, isLooping, visibleItems]);
+
+    if (!isLooping) {
+        return (
+            <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+                {gallery.map((item, idx) => (
+                    <div key={idx} className="flex flex-col gap-3">
+                        <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl shadow-lg bg-white border border-black/5">
+                            <img
+                                src={item.photo}
+                                alt={`${eventTitle} flyer ${idx + 1}`}
+                                className="w-full h-full object-contain"
+                            />
+                        </div>
+                        {item.caption && (
+                            <p className="text-center text-sm font-medium text-muted-foreground italic">
+                                {item.caption}
+                            </p>
+                        )}
+                    </div>
+                ))}
+            </div>
+        );
+    }
 
     return (
         <div className="relative group w-full overflow-hidden">
