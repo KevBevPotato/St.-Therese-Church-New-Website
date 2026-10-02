@@ -1,4 +1,32 @@
-# ... (keep backend and auth sections the same) ...
+# Use DecapBridge PKCE auth (required)
+backend:
+  name: git-gateway
+  repo: KevBevPotato/St.-Therese-Church-New-Website
+  branch: Website-View
+  auth_type: pkce
+  base_url: https://auth.decapbridge.com
+  auth_endpoint: /sites/0fa77363-844c-4462-9ed1-015aac8b5428/pkce
+  auth_token_endpoint: /sites/0fa77363-844c-4462-9ed1-015aac8b5428/token
+  gateway_url: https://gateway.decapbridge.com
+
+commit_messages:
+  create: Create {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
+  update: Update {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
+  delete: Delete {{collection}} “{{slug}}” - {{author-name}} <{{author-login}}> via DecapBridge
+  uploadMedia: Upload “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
+  deleteMedia: Delete “{{path}}” - {{author-name}} <{{author-login}}> via DecapBridge
+  openAuthoring: Message {{message}} - {{author-name}} <{{author-login}}> via DecapBridge
+
+auth:
+  email_claim: email
+  first_name_claim: first_name
+  last_name_claim: last_name
+  avatar_url_claim: avatar_url
+
+logo_url: https://decapbridge.com/decapcms-with-bridge.svg
+site_url: https://stthereserapidcity.org
+media_folder: "client/public/uploads"
+public_folder: "/uploads"
 
 collections:
   - name: "events"
@@ -83,23 +111,9 @@ collections:
                 fields:
                   - { label: "Photo", name: "photo", widget: "image" }
                   - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
-              
-              # NEW: Recurrence Type
-              - label: "Recurrence Type"
-                name: "recurrenceType"
-                widget: "select"
-                options: ["weekly", "monthly"]
-                hint: "Weekly = every single [Day]. Monthly = only the 1st, 2nd, 3rd etc."
-
+              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["weekly", "monthly"], hint: "Weekly = every single [Day]. Monthly = only the 1st, 2nd, 3rd etc." }
               - { label: "Day of Week (0=Sun, 1=Mon, 2=Tue...)", name: "dayOfWeek", widget: "number", hint: "e.g. 1 for Monday" }
-              
-              # NEW: Ordinal selection for Monthly
-              - label: "Which Week of Month? (If Monthly)"
-                name: "ordinalWeek",
-                widget: "select",
-                options: ["1", "2", "3", "4", "5"],
-                hint: "Leave blank if Weekly. Select '3' for the 3rd Monday of the month."
-
+              - { label: "Which Week of Month? (If Monthly)", name: "ordinalWeek", widget: "select", options: ["1", "2", "3", "4", "5"], hint: "Leave blank if Weekly. Select '3' for the 3rd Monday of the month." }
               - { label: "Start Date", name: "startDate", widget: "string", hint: "Format: 2026-10-05T00:00:00" }
               - { label: "End Date", name: "endDate", widget: "string", hint: "Format: 2027-04-05T00:00:00" }
               - { label: "Exclusions (comma separated)", name: "exclusions", widget: "string", hint: "e.g. 2026-11-16, 2026-12-21" }
