@@ -1080,6 +1080,77 @@
         }
       ],
       "description": "Weekly OCIA class for adults seeking initiation."
+    },
+    {
+      "id": "knights-of-columbus-breakfast",
+      "title": "First KoC Breakfast",
+      "date": "2026-10-11",
+      "time": "8am until no more food!",
+      "location": "Main Hall (Basement)",
+      "categories": [
+        {
+          "category": "parishEvents"
+        }
+      ],
+      "description": "Come join us for a delicious meal!"
+    },
+    {
+      "id": "parish-dinner-oct",
+      "title": "Parish Dinner",
+      "date": "2026-10-17",
+      "time": "5:30pm",
+      "location": "Main Hall (Basement)",
+      "categories": [
+        {
+          "category": "parishEvents"
+        }
+      ]
+    },
+    {
+      "id": "saint-and-souls-party-oct",
+      "title": "Saints & Souls Party (& KoC Burger Burn)",
+      "date": "2026-10-31",
+      "time": "5:30pm",
+      "location": "Main Hall (Basement)",
+      "categories": [
+        {
+          "category": "parishEvents"
+        }
+      ]
+    },
+    {
+      "id": "catholic-daughters-meeting-oct",
+      "title": "Catholic Daughters",
+      "date": "2026-10-12",
+      "time": "6-7pm",
+      "location": "Rm 103",
+      "categories": [
+        {
+          "category": "meeting"
+        }
+      ]
+    },
+    {
+      "id": "youth-rally-oct",
+      "title": "Youth Rally at Terra Sancta",
+      "date": "2026-11-11",
+      "time": "9am-4pm",
+      "location": "Terra Sancta Retreat Center",
+      "categories": [
+        {
+          "category": "parishEvents"
+        },
+        {
+          "category": "diocesan"
+        }
+      ],
+      "description": "Sunday, October 11th, 2026 | Grades 6-12 | 9am – 4pm\nCheck in begins at 8:30am at Holy Cross Chapel at Terra Sancta Retreat Center\n\nCost: $65 includes registration and lunch. Optional traveler’s meal available. \n\nEarly bird discount if registered by Sept. 11.\n\nPlease reach out to Sr. Sara, SCTJM with any questions: skowal@diorc.org\n\nThe registration deadline is October 4!\n\nHosted by the Diocese of Rapid City Office of Youth and Young Adult Ministry.\n\nRegister here at this link: https://rapidcitydiocese.ccbchurch.com/goto/forms/450/responses/new",
+      "gallery": [
+        {
+          "photo": "/uploads/youth-rally-2026-poster-11-x-17-in.jpg",
+          "caption": "Diocese of Rapid City Youth Rally"
+        }
+      ]
     }
   ]
 }
