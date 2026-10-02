@@ -72,7 +72,7 @@ collections:
             name: "rules"
             widget: "list"
             fields:
-              - { label: "Rule ID (no spaces)", name: "id", widget: "string", hint: "e.g. connect-groups" }
+              - { label: "Rule ID (no spaces)", name: "id", widget: "string", hint: "e.g. connect-groups-sep-25-2026" }
               - { label: "Event Title", name: "title", widget: "string", hint: "e.g. Connect Groups" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 6:00 PM - 7:30 PM" }
               - { label: "Location", name: "location", widget: "string", hint: "e.g. St. Therese Rectory" }
