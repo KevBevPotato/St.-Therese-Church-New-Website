@@ -6,10 +6,7 @@ export interface BulletinCMS {
     startDate: string;
     endDate: string;
     pdfUrl: string;
-    sections: {
-        label: string;
-        content: string;
-    }[];
+    [key: string]: any;
 }
 
 // 2. Tell TypeScript to treat the JSON as an array of BulletinCMS
