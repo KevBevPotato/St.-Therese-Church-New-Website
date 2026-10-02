@@ -13,7 +13,22 @@ export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; d
     diocesan: { bg: 'bg-blue-50', border: 'border-blue-400', dot: 'bg-blue-500', label: 'Diocesan', labelColor: 'text-blue-700' },
 };
 
-// HUB: Now only contains oneTimeEvents because irregulars were merged into it
+const DAY_MAP: Record<string, number> = {
+    "Sunday": 0,
+    "Monday": 1,
+    "Tuesday": 2,
+    "Wednesday": 3,
+    "Thursday": 4,
+    "Friday": 5,
+    "Saturday": 6
+};
+
+// Helper function to prevent timezone shift (YYYY-MM-DD -> Local Date)
+const normalizeDate = (dStr: string) => {
+    if (!dStr) return null;
+    return dStr.length === 10 ? new Date(`${dStr}T00:00:00`) : new Date(dStr);
+};
+
 export const staticEvents: CalendarEvent[] = [
     ...oneTimeEvents,
 ];
@@ -67,31 +82,30 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 
         // --- CMS-DRIVEN RECURRING RULES ---
         (recurringData as any).rules.forEach((rule: any) => {
-            const normalizeDate = (dStr: string) => {
-                if (!dStr) return null;
-                return dStr.length === 10 ? new Date(`${dStr}T00:00:00`) : new Date(dStr);
-            };
-
             const ruleStartDate = normalizeDate(rule.startDate) || new Date(0);
             const ruleEndDate = normalizeDate(rule.endDate) || new Date(2100, 0, 1);
             const exclusions = Array.isArray(rule.exclusions)
                 ? rule.exclusions.map((ex: any) => ex.date)
                 : (rule.exclusions ? rule.exclusions.split(',').map((d: string) => d.trim()) : []);
 
-            if (d.getDay() === rule.dayOfWeek && d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
+            const ruleDay = typeof rule.dayOfWeek === 'string'
+                ? DAY_MAP[rule.dayOfWeek]
+                : rule.dayOfWeek;
 
+            if (d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
                 let shouldShow = false;
 
-                if (rule.recurrenceType === 'monthly') {
-                    const currentOrdinal = Math.ceil(day / 7);
-                    if (currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
+                if (rule.recurrenceType === 'daily') {
+                    shouldShow = true;
+                } else if (rule.recurrenceType === 'weekly') {
+                    if (d.getDay() === ruleDay) {
                         shouldShow = true;
                     }
-                } else if (rule.recurrenceType === 'weekly') {
-                    shouldShow = true;
-                } else if (rule.recurrenceType === 'daily') {
-                    // Daily overrides the dayOfWeek check, so we handle it separately
-                    shouldShow = true;
+                } else if (rule.recurrenceType === 'monthly') {
+                    const currentOrdinal = Math.ceil(day / 7);
+                    if (d.getDay() === ruleDay && currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
+                        shouldShow = true;
+                    }
                 }
 
                 if (shouldShow) {
@@ -107,8 +121,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 }
             }
         });
-    }
-    return events;
+    } // <--- FIXED: This closes the for loop
+    return events; // <--- FIXED: Now the function returns the events array
 }
 
 staticEvents.sort((a, b) => a.date.getTime() - b.date.getTime());
