@@ -84,7 +84,7 @@ collections:
                   - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
               
               # UPDATED: Added 'daily' and used select widget for days of the week
-              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["daily", "weekly", "monthly"], hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday." }
+              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["daily", "weekly", "monthly", "last_of_month"], hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday. Last of Month = Last [Day] of the month." }
               - label: "Day of Week"
                 name: "dayOfWeek"
                 widget: "select"

@@ -96,15 +96,26 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 let shouldShow = false;
 
                 if (rule.recurrenceType === 'daily') {
+                    // DAILY: Just show up every day
                     shouldShow = true;
                 } else if (rule.recurrenceType === 'weekly') {
+                    // WEEKLY: Must be the correct day of the week
                     if (d.getDay() === ruleDay) {
                         shouldShow = true;
                     }
                 } else if (rule.recurrenceType === 'monthly') {
+                    // MONTHLY: Must be the correct day of the week AND the correct week of the month
                     const currentOrdinal = Math.ceil(day / 7);
                     if (d.getDay() === ruleDay && currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
                         shouldShow = true;
+                    }
+                } else if (rule.recurrenceType === 'last_of_month') {
+                    // LAST OF MONTH: Must be the correct day of the week AND adding 7 days must be in the next month
+                    if (d.getDay() === ruleDay) {
+                        const nextWeek = new Date(year, month, day + 7);
+                        if (nextWeek.getMonth() !== month) {
+                            shouldShow = true;
+                        }
                     }
                 }
 
