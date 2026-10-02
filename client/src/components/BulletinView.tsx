@@ -86,7 +86,7 @@ export default function BulletinView({
 
     const hasPdf = !!bulletin.pdfUrl;
     const hasContent = bulletin.hasContent ?? true;
-    const sectionsLocked = (hideSectionsWithoutPdf && !hasPdf) || !hasContent;
+    const sectionsLocked = !hasContent; 
 
     return (
         <div className="space-y-8">

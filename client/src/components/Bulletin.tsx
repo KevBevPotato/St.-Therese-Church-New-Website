@@ -45,26 +45,39 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         new Date(b.startDate + 'T00:00:00').getTime() === start.getTime()
     );
 
-    // ✅ FIX: Look for the key directly on the 'data' object, 
-    // instead of looking inside 'content_sections'
     const sections = CATEGORY_MAP
-        .filter(cat => data?.[cat.key]) // Changed from data?.content_sections?.[cat.key]
+        .filter(cat => data?.[cat.key])
         .map(cat => ({
             id: cat.key,
             label: cat.label,
-            content: data[cat.key] // Changed from data.content_sections[cat.key]
+            content: data[cat.key]
         }));
+
+    // If no bulletin exists for the exact current date, 
+    // we can return a "placeholder" so the UI doesn't look broken.
+    if (!data) {
+        return {
+            id: formatBulletinRange(start, end),
+            week: formatBulletinRange(start, end),
+            startDate: start,
+            endDate: end,
+            pdfUrl: undefined,
+            sections: [],
+            hasContent: false,
+        };
+    }
 
     return {
         id: formatBulletinRange(start, end),
         week: formatBulletinRange(start, end),
         startDate: start,
         endDate: end,
-        pdfUrl: data?.pdfUrl || getPdfUrlForWeek(start),
+        pdfUrl: data.pdfUrl || getPdfUrlForWeek(start),
         sections: sections,
         hasContent: sections.length > 0,
     };
 }
+
 
 
 export default function Bulletin() {
