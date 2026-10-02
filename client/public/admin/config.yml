@@ -110,36 +110,30 @@ collections:
   - name: "bulletins"
     label: "Parish Bulletins"
     files:
-      - file: "client/src/data/bulletins_data.json" # We'll store all bulletins in one JSON array
+      - file: "client/src/data/bulletins_data.json"
         label: "Weekly Bulletins"
         name: "bulletins"
         fields:
           - { label: "Bulletin Title", name: "title", widget: "string", hint: "e.g., Oct 12 - Oct 19, 2024" }
-          - { label: "Start Date (Must be a Saturday)", name: "startDate", widget: "date", required: true }
-          - { label: "End Date (Must be a Saturday)", name: "endDate", widget: "date", required: true }
+          - { label: "Start Date", name: "startDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
+          - { label: "End Date", name: "endDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
           - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: true }
-          - label: "Bulletin Sections"
-            name: "sections"
-            widget: "list"
+          
+          # Instead of a list, we create a dedicated field for every category
+          - label: "Bulletin Content"
+            name: "content_sections"
+            widget: "group"
             fields:
-              - label: "Section Category"
-                name: "label"
-                widget: "select"
-                options: 
-                  - "Mass Times"
-                  - "Announcements"
-                  - "New Parishioners"
-                  - "Mass Intentions"
-                  - "Daily Scriptures"
-                  - "Lectors"
-                  - "Ushers"
-                  - "Altar Servers"
-                  - "Contributions"
-                  - "Prayer List"
-                  - "A Little Laugh"
-                  - "Needs"
-                  - "Sponsors"
-              - label: "Content"
-                name: "content"
-                widget: "markdown"
-                hint: "Use **Bold** for titles. For Lectors/Ushers, use: **Oct 12/13**: Name | **Oct 19/20**: Name"
+              - { label: "Mass Times", name: "mass_times", widget: "markdown" }
+              - { label: "Announcements", name: "announcements", widget: "markdown" }
+              - { label: "New Parishioners", name: "new_parishioners", widget: "markdown" }
+              - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown" }
+              - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown" }
+              - { label: "Lectors", name: "lectors", widget: "markdown" }
+              - { label: "Ushers", name: "ushers", widget: "markdown" }
+              - { label: "Altar Servers", name: "altar_servers", widget: "markdown" }
+              - { label: "Contributions", name: "contributions", widget: "markdown" }
+              - { label: "Prayer List", name: "prayer_list", widget: "markdown" }
+              - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown" }
+              - { label: "Needs", name: "needs", widget: "markdown" }
+              - { label: "Sponsors", name: "sponsors", widget: "markdown" }
