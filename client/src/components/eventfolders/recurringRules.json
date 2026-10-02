@@ -20,25 +20,20 @@
       "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation."
     },
     {
-      "exclusions": "2027-01-20",
-      "dayOfWeek": 3,
-      "endDayOfMonth": 21,
-      "endDate": "2027-03-17",
+      "ordinalWeek": "2",
+      "dayOfWeek": 5,
+      "endDate": "2027-04-02T00:00:00",
+      "recurrenceType": "monthly",
       "time": "7am",
-      "startDayOfMonth": 15,
-      "startDate": "2026-10-21T00:00:00",
-      "location": "St Therese Rectory",
-      "title": "kevin testing the website",
-      "id": "test-kevin",
+      "startDate": "2026-10-09T00:00:00",
+      "location": "My Office",
+      "title": "Kevin's 2nd Test Event",
+      "id": "test-2-kevin",
       "categories": [
-        {
-          "category": "vocations"
-        },
         {
           "category": "parishEvents"
         }
-      ],
-      "description": "did this work?"
+      ]
     }
   ]
 }
