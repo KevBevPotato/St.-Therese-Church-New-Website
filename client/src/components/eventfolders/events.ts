@@ -1,6 +1,5 @@
 import { CalendarEvent, EventCategory, TimeFilter } from './types';
 import { oneTimeEvents } from './oneTimeEvents';
-import { irregularEvents } from './irregularEvents';
 import recurringData from './recurringRules.json';
 
 export type { CalendarEvent, EventCategory, TimeFilter };
@@ -14,9 +13,9 @@ export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; d
     diocesan: { bg: 'bg-blue-50', border: 'border-blue-400', dot: 'bg-blue-500', label: 'Diocesan', labelColor: 'text-blue-700' },
 };
 
+// HUB: Now only contains oneTimeEvents because irregulars were merged into it
 export const staticEvents: CalendarEvent[] = [
     ...oneTimeEvents,
-    ...irregularEvents,
 ];
 
 export function generateRecurringEventsForMonth(month: number, year: number): CalendarEvent[] {
@@ -68,35 +67,30 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 
         // --- CMS-DRIVEN RECURRING RULES ---
         (recurringData as any).rules.forEach((rule: any) => {
-            // FIX 1: Handle the date popup format (YYYY-MM-DD) to prevent timezone shift
             const normalizeDate = (dStr: string) => {
                 if (!dStr) return null;
-                // If the date is only 10 chars (YYYY-MM-DD), append T00:00:00 for local time
                 return dStr.length === 10 ? new Date(`${dStr}T00:00:00`) : new Date(dStr);
             };
 
             const ruleStartDate = normalizeDate(rule.startDate) || new Date(0);
             const ruleEndDate = normalizeDate(rule.endDate) || new Date(2100, 0, 1);
-
-            // FIX 2: Handle Exclusions as a list of objects instead of a comma-string
-            // We map the array of objects [{date: '...'}, {date: '...'}] into a simple array of strings
             const exclusions = Array.isArray(rule.exclusions)
                 ? rule.exclusions.map((ex: any) => ex.date)
-                : [];
+                : (rule.exclusions ? rule.exclusions.split(',').map((d: string) => d.trim()) : []);
 
-            // Basic check: Is it the right day of the week and within the date range?
             if (d.getDay() === rule.dayOfWeek && d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
 
                 let shouldShow = false;
 
                 if (rule.recurrenceType === 'monthly') {
-                    // Monthly: Check if it's the 1st, 2nd, 3rd, etc. week
                     const currentOrdinal = Math.ceil(day / 7);
                     if (currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
                         shouldShow = true;
                     }
-                } else {
-                    // Weekly: Just show every time it hits that day of the week
+                } else if (rule.recurrenceType === 'weekly') {
+                    shouldShow = true;
+                } else if (rule.recurrenceType === 'daily') {
+                    // Daily overrides the dayOfWeek check, so we handle it separately
                     shouldShow = true;
                 }
 
