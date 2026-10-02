@@ -1163,6 +1163,19 @@
           "category": "meeting"
         }
       ]
+    },
+    {
+      "categories": [
+        {
+          "category": "meeting"
+        }
+      ],
+      "id": "connie-test-event",
+      "title": "Connie was here",
+      "date": "2026-10-2",
+      "time": "7am",
+      "location": "Her office",
+      "description": "Connie, check this out!"
     }
   ]
 }
