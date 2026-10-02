@@ -1104,7 +1104,8 @@
         {
           "category": "parishEvents"
         }
-      ]
+      ],
+      "description": "All are welcome!"
     },
     {
       "id": "saint-and-souls-party-oct",
@@ -1116,7 +1117,8 @@
         {
           "category": "parishEvents"
         }
-      ]
+      ],
+      "description": "All are welcome!"
     },
     {
       "id": "catholic-daughters-meeting-oct",
@@ -1128,7 +1130,8 @@
         {
           "category": "meeting"
         }
-      ]
+      ],
+      "description": "All Catholic women 18+ are welcome!"
     },
     {
       "id": "youth-rally-oct",
@@ -1162,20 +1165,8 @@
         {
           "category": "meeting"
         }
-      ]
-    },
-    {
-      "categories": [
-        {
-          "category": "meeting"
-        }
       ],
-      "id": "connie-test-event",
-      "title": "Connie was here",
-      "date": "2026-10-2",
-      "time": "7am",
-      "location": "Her office",
-      "description": "Connie, check this out!"
+      "description": " "
     }
   ]
 }
