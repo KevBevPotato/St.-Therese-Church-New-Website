@@ -1,58 +1,52 @@
-[
-    {
-        "title": "August 8 - August 15, 2026",
-        "startDate": "2026-08-08",
-        "endDate": "2026-08-15",
-        "pdfUrl": "/ParishBulletins/August8.8-15.26.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "August 15 - August 22, 2026",
-        "startDate": "2026-08-15",
-        "endDate": "2026-08-22",
-        "pdfUrl": "/ParishBulletins/August8.15-22.26.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "August 22 - August 29, 2026",
-        "startDate": "2026-08-22",
-        "endDate": "2026-08-29",
-        "pdfUrl": "/ParishBulletins/August8.22-29.26.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "August 29 - September 5, 2026",
-        "startDate": "2026-08-29",
-        "endDate": "2026-09-05",
-        "pdfUrl": "/ParishBulletins/August8.29-September9.5.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "September 5 - September 12, 2026",
-        "startDate": "2026-09-05",
-        "endDate": "2026-09-12",
-        "pdfUrl": "/ParishBulletins/September+5+&+6,+2026.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "September 12 - September 19, 2026",
-        "startDate": "2026-09-12",
-        "endDate": "2026-09-19",
-        "pdfUrl": "/ParishBulletins/September+12+&+13,+2026.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "September 19 - September 26, 2026",
-        "startDate": "2026-09-19",
-        "endDate": "2026-09-26",
-        "pdfUrl": "/ParishBulletins/September+19+&+20,+2026.pdf",
-        "content_sections": {}
-    },
-    {
-        "title": "September 26 - October 3, 2026",
-        "startDate": "2026-09-26",
-        "endDate": "2026-10-03",
-        "pdfUrl": "/ParishBulletins/September 26 & 27, 2026.pdf",
-        "content_sections": {}
-    }
-]
+{
+    "bulletins": [
+        {
+            "title": "August 8 - August 15, 2026",
+            "startDate": "2026-08-08",
+            "endDate": "2026-08-15",
+            "pdfUrl": "/ParishBulletins/August8.8-15.26.pdf"
+        },
+        {
+            "title": "August 15 - August 22, 2026",
+            "startDate": "2026-08-15",
+            "endDate": "2026-08-22",
+            "pdfUrl": "/ParishBulletins/August8.15-22.26.pdf"
+        },
+        {
+            "title": "August 22 - August 29, 2026",
+            "startDate": "2026-08-22",
+            "endDate": "2026-08-29",
+            "pdfUrl": "/ParishBulletins/August8.22-29.26.pdf"
+        },
+        {
+            "title": "August 29 - September 5, 2026",
+            "startDate": "2026-08-29",
+            "endDate": "2026-09-05",
+            "pdfUrl": "/ParishBulletins/August8.29-September9.5.pdf"
+        },
+        {
+            "title": "September 5 - September 12, 2026",
+            "startDate": "2026-09-05",
+            "endDate": "2026-09-12",
+            "pdfUrl": "/ParishBulletins/September+5+&+6,+2026.pdf"
+        },
+        {
+            "title": "September 12 - September 19, 2026",
+            "startDate": "2026-09-12",
+            "endDate": "2026-09-19",
+            "pdfUrl": "/ParishBulletins/September+12+&+13,+2026.pdf"
+        },
+        {
+            "title": "September 19 - September 26, 2026",
+            "startDate": "2026-09-19",
+            "endDate": "2026-09-26",
+            "pdfUrl": "/ParishBulletins/September+19+&+20,+2026.pdf"
+        },
+        {
+            "title": "September 26 - October 3, 2026",
+            "startDate": "2026-09-26",
+            "endDate": "2026-10-03",
+            "pdfUrl": "/ParishBulletins/September 26 & 27, 2026.pdf"
+        }
+    ]
+}

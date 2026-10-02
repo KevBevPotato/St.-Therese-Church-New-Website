@@ -21,7 +21,7 @@ import {
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
 
-const bulletinData = bulletinDataRaw as any[];
+const bulletinData = (bulletinDataRaw as { bulletins: any[] }).bulletins;
 
 // This map tells the app how to turn the CMS fields back into the "Pills" in the UI
 const CATEGORY_MAP = [

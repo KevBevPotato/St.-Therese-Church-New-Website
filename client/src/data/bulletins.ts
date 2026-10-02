@@ -10,7 +10,7 @@ export interface BulletinCMS {
 }
 
 // 2. Tell TypeScript to treat the JSON as an array of BulletinCMS
-const bulletinData = bulletinDataRaw as BulletinCMS[];
+const bulletinData = (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins;
 
 function parseCMSDate(dateStr: string): Date {
     return new Date(`${dateStr}T00:00:00`);
