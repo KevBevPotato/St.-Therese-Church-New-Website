@@ -88,22 +88,19 @@
       ]
     },
     {
-      "exclusions": [
-        {
-          "date": "2026-12-29, 2026-03-30, 2027-06-29"
-        }
-      ],
-      "ordinalWeek": "4",
-      "dayOfWeek": "Tuesday",
-      "recurrenceType": "monthly",
-      "time": "6:30pm",
-      "startDate": "2026-10-27",
-      "location": "Rm 103",
+      "id": "parish-council-october",
       "title": "Parish Council Meeting",
-      "id": "parish-council-oct",
+      "time": "6:30-7:30pm",
+      "location": "Rm 103",
+      "recurrenceType": "last_of_month",
+      "dayOfWeek": "Tuesday",
+      "startDate": "2026-10-27",
       "categories": [
         {
           "category": "meeting"
+        },
+        {
+          "category": "parishEvents"
         }
       ]
     }
