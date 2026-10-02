@@ -61,35 +61,6 @@ collections:
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
               - { label: "Description (Optional)", name: "description", widget: "text" }
 
-      - file: "client/src/components/eventfolders/irregularEvents.json"
-        label: "Irregular Events"
-        name: "irregular"
-        fields:
-          - label: "Events List"
-            name: "events"
-            widget: "list"
-            fields:
-              - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. faith-formation-01" }
-              - { label: "Title", name: "title", widget: "string", hint: "e.g. Faith Formation" }
-              - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
-              - { label: "Time", name: "time", widget: "string", hint: "e.g. 5:30 PM - 7:30 PM" }
-              - { label: "Location", name: "location", widget: "string", hint: "e.g. Community Center" }
-              - label: "Event Gallery (Optional)"
-                name: "gallery"
-                widget: "list"
-                fields:
-                  - { label: "Photo", name: "photo", widget: "image" }
-                  - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
-              - label: "Categories"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
-              - { label: "Description (Optional)", name: "description", widget: "text" }
-
   - name: "recurring_rules"
     label: "Recurring Events for St. Therese"
     files:
