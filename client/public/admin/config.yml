@@ -30,7 +30,7 @@ public_folder: "/uploads"
 
 collections:
   - name: "events"
-    label: "Calendar Events"
+    label: "One-Time Calendar Events"
     files:
       - file: "client/src/components/eventfolders/oneTimeEvents.json"
         label: "One-Time Calendar Events"
@@ -65,7 +65,7 @@ collections:
     label: "Recurring Events for St. Therese"
     files:
       - file: "client/src/components/eventfolders/recurringRules.json"
-        label: "Global Recurring Rules"
+        label: "Recurring Events"
         name: "rules_file"
         fields:
           - label: "Rules List"

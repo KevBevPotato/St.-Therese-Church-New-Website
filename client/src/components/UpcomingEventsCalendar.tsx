@@ -94,13 +94,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
 
     const query = eventSearchQuery.trim().toLowerCase();
     if (query) {
-      list = list.filter(event => [
-        event.title,
-        event.location,
-        event.description,
-        event.about,
-        event.categories.join(' '),
-      ].filter(Boolean).join(' ').toLowerCase().includes(query));
+      list = list.filter(event => event.title.toLowerCase().includes(query));
     }
 
     return list;
