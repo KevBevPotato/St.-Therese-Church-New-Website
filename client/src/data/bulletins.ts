@@ -9,7 +9,7 @@ export interface BulletinCMS {
     [key: string]: any;
 }
 
-// 2. Tell TypeScript to treat the JSON as an array of BulletinCMS
+// 2. Tell TypeScript to treat the JSON as an object containing a list of BulletinCMS
 const bulletinData = (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins;
 
 function parseCMSDate(dateStr: string): Date {
@@ -106,4 +106,57 @@ export function getAllScheduledWeeks(): Array<{ start: Date; end: Date; pdfUrl?:
             pdfUrl: b.pdfUrl,
         }))
         .sort((a, b) => b.start.getTime() - a.start.getTime());
+}
+
+// --- CMS to UI Mapper ---
+const CATEGORY_MAP = [
+    { key: 'mass_times', label: 'Mass Times' },
+    { key: 'announcements', label: 'Announcements' },
+    { key: 'new_parishioners', label: 'New Parishioners' },
+    { key: 'mass_intentions', label: 'Mass Intentions' },
+    { key: 'daily_scriptures', label: 'Daily Scriptures' },
+    { key: 'lectors', label: 'Lectors' },
+    { key: 'ushers', label: 'Ushers' },
+    { key: 'altar_servers', label: 'Altar Servers' },
+    { key: 'contributions', label: 'Contributions' },
+    { key: 'prayer_list', label: 'Prayer List' },
+    { key: 'a_little_laugh', label: 'A Little Laugh' },
+    { key: 'needs', label: 'Needs' },
+    { key: 'sponsors', label: 'Sponsors' },
+];
+
+export function buildBulletinForRange(start: Date, end: Date) {
+    const data = bulletinData.find(b =>
+        new Date(b.startDate + 'T00:00:00').getTime() === start.getTime()
+    );
+
+    const sections = CATEGORY_MAP
+        .filter(cat => data?.[cat.key])
+        .map(cat => ({
+            id: cat.key,
+            label: cat.label,
+            content: String(data?.[cat.key] || ""),
+        }));
+
+    if (!data) {
+        return {
+            id: formatBulletinRange(start, end),
+            week: formatBulletinRange(start, end),
+            startDate: start,
+            endDate: end,
+            pdfUrl: undefined,
+            sections: [],
+            hasContent: false,
+        };
+    }
+
+    return {
+        id: formatBulletinRange(start, end),
+        week: formatBulletinRange(start, end),
+        startDate: start,
+        endDate: end,
+        pdfUrl: data.pdfUrl || getPdfUrlForWeek(start),
+        sections: sections,
+        hasContent: sections.length > 0,
+    };
 }

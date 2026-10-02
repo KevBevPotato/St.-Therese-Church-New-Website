@@ -15,30 +15,21 @@ import {
     getPdfUrlForWeek,
     formatBulletinRange,
     formatShortDateRange,
+    buildBulletinForRange,
 } from '@/data/bulletins';
-import { getBulletinContentForWeek } from '@/data/bulletinContent';
 
 /**
  * Bulletin Page - Next Week (Preview)
  *
  * Shows the upcoming bulletin week using the same layout as the current
- * week. If the PDF has not been uploaded yet, displays an "available
- * Saturday morning" banner instead of a "View PDF" button.
+ * week.
  */
 
 function buildNextBulletin(): Bulletin {
     const { start, end } = getNextWeekRange();
-    const bulletinContent = getBulletinContentForWeek(start);
 
-    return {
-        id: `next-${formatBulletinRange(start, end)}`,
-        week: formatBulletinRange(start, end),
-        startDate: start,
-        endDate: end,
-        pdfUrl: getPdfUrlForWeek(start),
-        sections: bulletinContent.sections,
-        hasContent: bulletinContent.hasContent,
-    };
+    // ✅ Use the shared builder from bulletins.ts instead of the deleted bulletinContent file
+    return buildBulletinForRange(start, end);
 }
 
 export default function NextWeekBulletin() {
