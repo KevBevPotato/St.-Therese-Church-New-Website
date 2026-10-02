@@ -21,9 +21,8 @@ import {
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
 
-const bulletinData = (bulletinDataRaw as { bulletins: any[] }).bulletins;
+const bulletinData = (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins;
 
-// This map tells the app how to turn the CMS fields back into the "Pills" in the UI
 const CATEGORY_MAP = [
     { key: 'mass_times', label: 'Mass Times' },
     { key: 'announcements', label: 'Announcements' },
@@ -50,11 +49,10 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         .map(cat => ({
             id: cat.key,
             label: cat.label,
-            content: data[cat.key]
+            // ✅ Added String() and fallback to ensure TypeScript is happy during build
+            content: String(data?.[cat.key] || ""),
         }));
 
-    // If no bulletin exists for the exact current date, 
-    // we can return a "placeholder" so the UI doesn't look broken.
     if (!data) {
         return {
             id: formatBulletinRange(start, end),
@@ -77,8 +75,6 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
         hasContent: sections.length > 0,
     };
 }
-
-
 
 export default function Bulletin() {
     const currentRange = getCurrentWeekRange();
