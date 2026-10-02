@@ -42,7 +42,7 @@ collections:
             fields:
               - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. feeding-sd-aug-5" }
               - { label: "Title", name: "title", widget: "string", hint: "e.g. Feeding SD" }
-              - { label: "Date", name: "date", widget: "date" } # <--- CALENDAR POPUP
+              - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 8:00 AM - 9:00 AM" }
               - { label: "Location", name: "location", widget: "string", hint: "e.g. Main Sanctuary" }
               - label: "Event Gallery"
@@ -71,7 +71,7 @@ collections:
             fields:
               - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. faith-formation-01" }
               - { label: "Title", name: "title", widget: "string", hint: "e.g. Faith Formation" }
-              - { label: "Date", name: "date", widget: "date" } # <--- CALENDAR POPUP
+              - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
               - { label: "Time", name: "time", widget: "string", hint: "e.g. 5:30 PM - 7:30 PM" }
               - { label: "Location", name: "location", widget: "string", hint: "e.g. Community Center" }
               - label: "Event Gallery"
@@ -114,13 +114,13 @@ collections:
               - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["weekly", "monthly"], hint: "Weekly = every single [Day]. Monthly = only the 1st, 2nd, 3rd etc." }
               - { label: "Day of Week (0=Sun, 1=Mon, 2=Tue...)", name: "dayOfWeek", widget: "number", hint: "e.g. 1 for Monday" }
               - { label: "Which Week of Month? (If Monthly)", name: "ordinalWeek", widget: "select", options: ["1", "2", "3", "4", "5"], hint: "Leave blank if Weekly. Select '3' for the 3rd Monday of the month." }
-              - { label: "Start Date", name: "startDate", widget: "date" } # <--- CALENDAR POPUP
-              - { label: "End Date", name: "endDate", widget: "date" } # <--- CALENDAR POPUP
+              - { label: "Start Date", name: "startDate", widget: "string", hint: "Format: 2026-10-05" }
+              - { label: "End Date", name: "endDate", widget: "string", hint: "Format: 2027-04-05" }
               - label: "Exclusions"
                 name: "exclusions"
                 widget: "list"
                 fields:
-                  - { label: "Exclude Date", name: "date", widget: "date" } # <--- CALENDAR POPUP
+                  - { label: "Exclude Date", name: "date", widget: "string", hint: "Format: 2026-11-16" }
               - { label: "Description", name: "description", widget: "text" }
               - label: "Categories"
                 name: "categories"
