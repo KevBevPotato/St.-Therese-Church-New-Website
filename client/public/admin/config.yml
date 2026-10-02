@@ -82,8 +82,6 @@ collections:
                 fields:
                   - { label: "Photo", name: "photo", widget: "image" }
                   - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
-              
-              # UPDATED: Added 'daily' and used select widget for days of the week
               - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["daily", "weekly", "monthly", "last_of_month"], hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday. Last of Month = Last [Day] of the month." }
               - label: "Day of Week"
                 name: "dayOfWeek"
@@ -107,6 +105,7 @@ collections:
                     name: "category"
                     widget: "select"
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+
   - name: "bulletins"
     label: "Parish Bulletins"
     files:
@@ -117,21 +116,21 @@ collections:
           - label: "Bulletins List"
             name: "bulletins"
             widget: "list"
-            fields:
-          - { label: "Bulletin Title", name: "title", widget: "string", required: true, hint: "e.g., Oct 12 - Oct 19, 2024" }
-          - { label: "Start Date", name: "startDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
-          - { label: "End Date", name: "endDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
-          - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: false, hint: "Optional - leave blank if not yet available" }
-          - { label: "Mass Times", name: "mass_times", widget: "markdown", required: false }
-          - { label: "Announcements", name: "announcements", widget: "markdown", required: false }
-          - { label: "New Parishioners", name: "new_parishioners", widget: "markdown", required: false }
-          - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown", required: false }
-          - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown", required: false }
-          - { label: "Lectors", name: "lectors", widget: "markdown", required: false }
-          - { label: "Ushers", name: "ushers", widget: "markdown", required: false }
-          - { label: "Altar Servers", name: "altar_servers", widget: "markdown", required: false }
-          - { label: "Contributions", name: "contributions", widget: "markdown", required: false }
-          - { label: "Prayer List", name: "prayer_list", widget: "markdown", required: false }
-          - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown", required: false }
-          - { label: "Needs", name: "needs", widget: "markdown", required: false }
-          - { label: "Sponsors", name: "sponsors", widget: "markdown", required: false }
+            fields: # <--- THIS WAS THE MISSING LINE
+              - { label: "Bulletin Title", name: "title", widget: "string", required: true, hint: "e.g., Oct 12 - Oct 19, 2024" }
+              - { label: "Start Date", name: "startDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
+              - { label: "End Date", name: "endDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
+              - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: false, hint: "Optional - leave blank if not yet available" }
+              - { label: "Mass Times", name: "mass_times", widget: "markdown", required: false }
+              - { label: "Announcements", name: "announcements", widget: "markdown", required: false }
+              - { label: "New Parishioners", name: "new_parishioners", widget: "markdown", required: false }
+              - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown", required: false }
+              - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown", required: false }
+              - { label: "Lectors", name: "lectors", widget: "markdown", required: false }
+              - { label: "Ushers", name: "ushers", widget: "markdown", required: false }
+              - { label: "Altar Servers", name: "altar_servers", widget: "markdown", required: false }
+              - { label: "Contributions", name: "contributions", widget: "markdown", required: false }
+              - { label: "Prayer List", name: "prayer_list", widget: "markdown", required: false }
+              - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown", required: false }
+              - { label: "Needs", name: "needs", widget: "markdown", required: false }
+              - { label: "Sponsors", name: "sponsors", widget: "markdown", required: false }
