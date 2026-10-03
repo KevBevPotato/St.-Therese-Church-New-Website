@@ -4,7 +4,7 @@ import { Menu, X, ChevronDown, Search } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { staticEvents, generateRecurringEventsForMonth } from './eventfolders/events';
 import { organizations } from '@/data/organizations';
-import { baseStaffMembers } from '@/data/staff';
+import { staffMembers } from '../data/staff';
 import { faithCategories } from '@/data/faith-formation';
 
 interface HeaderProps {
@@ -216,7 +216,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
         href: `/get-involved/${organization.id}`,
         searchableText: `${organization.name} ${organization.tagline} ${organization.description}`,
       })),
-      ...baseStaffMembers.map((member) => ({
+      ...staffMembers.map((member) => ({
         title: member.name,
         type: member.titles[0] || 'Staff',
         href: `/staff/${member.slug}`,
