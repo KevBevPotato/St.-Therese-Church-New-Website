@@ -4,13 +4,17 @@
             "slug": "fr-mark-mccormick",
             "name": "Fr. Mark McCormick",
             "titles": [
-                "Pastor"
+                {
+                    "title": "Pastor"
+                }
             ],
             "email": "mark.mccormick@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1011",
             "officeRoom": "106",
             "categories": [
-                "clergy"
+                {
+                    "category": "clergy"
+                }
             ],
             "photo": "/FrMark.jpg",
             "photoPosition": "center 24%",
@@ -22,13 +26,17 @@
             "slug": "fr-todd-vandermay",
             "name": "Fr. Todd VanderMay",
             "titles": [
-                "Associate Pastor"
+                {
+                    "title": "Associate Pastor"
+                }
             ],
             "email": "todd.vandermay@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1017",
             "officeRoom": "107",
             "categories": [
-                "clergy"
+                {
+                    "category": "clergy"
+                }
             ],
             "photo": "/FrToddVanderMay.jpg",
             "photoPosition": "center 22%",
@@ -40,13 +48,17 @@
             "slug": "dcn-don-moore",
             "name": "Deacon Don Moore",
             "titles": [
-                "Deacon"
+                {
+                    "title": "Deacon"
+                }
             ],
             "email": "don.moore@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1014",
             "officeRoom": "109",
             "categories": [
-                "clergy"
+                {
+                    "category": "clergy"
+                }
             ],
             "photo": "/DcnDon.jpg",
             "photoPosition": "center 25%",
@@ -58,13 +70,17 @@
             "slug": "bobby-myers",
             "name": "Bobby Myers",
             "titles": [
-                "Director of Religious Education"
+                {
+                    "title": "Director of Religious Education"
+                }
             ],
             "email": "bobby.myers@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1012",
             "officeRoom": "101",
             "categories": [
-                "staff"
+                {
+                    "category": "staff"
+                }
             ],
             "photo": "/BobbyMeyers.jpg",
             "photoPosition": "center 24%",
@@ -76,13 +92,17 @@
             "slug": "kevin-baltzer",
             "name": "Kevin Baltzer",
             "titles": [
-                "Director of Evangelization & Adult & Family Formation"
+                {
+                    "title": "Director of Evangelization & Adult & Family Formation"
+                }
             ],
             "email": "kevin.baltzer@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1018",
             "officeRoom": "101",
             "categories": [
-                "staff"
+                {
+                    "category": "staff"
+                }
             ],
             "photo": "/Kevin-Baltzer.jpg",
             "photoPosition": "center 35%",
@@ -94,13 +114,17 @@
             "slug": "connie-heeren",
             "name": "Connie Heeren",
             "titles": [
-                "Staff"
+                {
+                    "title": "Staff"
+                }
             ],
             "email": "connie.heeren@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1010",
             "officeRoom": "110",
             "categories": [
-                "staff"
+                {
+                    "category": "staff"
+                }
             ],
             "photo": "/ConnieHeeran.jpg",
             "photoPosition": "center 21%",
@@ -112,13 +136,17 @@
             "slug": "melanie-karp",
             "name": "Melanie Karp",
             "titles": [
-                "Staff"
+                {
+                    "title": "Staff"
+                }
             ],
             "email": "melanie.karp@strcstaff.org",
             "phone": "(605) 342-1556 Ext. 1015",
             "officeRoom": "111",
             "categories": [
-                "staff"
+                {
+                    "category": "staff"
+                }
             ],
             "photo": "/MelanieKarp.jpg",
             "photoPosition": "center 25%",

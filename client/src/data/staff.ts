@@ -15,14 +15,28 @@ export interface StaffMember {
     bio?: string;
 }
 
-// Force TypeScript to treat the imported JSON as 'any' so we can safely access .staff
 const rawData = (staffDataModule as any).staff || (staffDataModule as any).default?.staff || [];
 
-export const staffMembers = (rawData as any[]).map((member) => ({
-    ...member,
-    duties: member.duties || 'Serving the parish community with care and dedication.',
-    bio: member.bio || 'More information about this ministry role will be shared soon.',
-})) as StaffMember[];
+export const staffMembers = (rawData as any[]).map((member) => {
+    // FLATTENING LOGIC: 
+    // If titles is an array of objects [{title: 'Pastor'}], turn it into ['Pastor']
+    const flattenedTitles = Array.isArray(member.titles)
+        ? member.titles.map((t: any) => typeof t === 'object' ? t.title : t)
+        : [];
+
+    // If categories is an array of objects [{category: 'staff'}], turn it into ['staff']
+    const flattenedCategories = Array.isArray(member.categories)
+        ? member.categories.map((c: any) => typeof c === 'object' ? c.category : c)
+        : [];
+
+    return {
+        ...member,
+        titles: flattenedTitles,
+        categories: flattenedCategories,
+        duties: member.duties || 'Serving the parish community with care and dedication.',
+        bio: member.bio || 'More information about this ministry role will be shared soon.',
+    };
+}) as StaffMember[];
 
 export const staffCategories = [
     { id: 'all', label: 'All Personnel' },
