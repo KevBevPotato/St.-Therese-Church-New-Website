@@ -153,24 +153,6 @@
       ],
       "email": "melanie.karp@strcstaff.org",
       "photoFit": "cover"
-    },
-    {
-      "slug": "katie-gorl",
-      "name": "Katie Baltzer",
-      "titles": [
-        {
-          "title": "Wife & Mother"
-        }
-      ],
-      "categories": [
-        {
-          "category": "music"
-        }
-      ],
-      "photoPosition": "Center 25%",
-      "photo": "/uploads/img_5776.png",
-      "photoFit": "cover",
-      "duties": "Taking care of her stinky husband"
     }
   ]
 }
