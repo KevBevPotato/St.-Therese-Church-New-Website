@@ -161,7 +161,16 @@
         {
           "title": "Wife & Mother"
         }
-      ]
+      ],
+      "categories": [
+        {
+          "category": "music"
+        }
+      ],
+      "photoPosition": "Center 25%",
+      "photo": "/uploads/img_5776.png",
+      "photoFit": "cover",
+      "duties": "Taking care of her stinky husband"
     }
   ]
 }
