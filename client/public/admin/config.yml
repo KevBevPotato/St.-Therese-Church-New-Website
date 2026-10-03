@@ -254,7 +254,7 @@ collections:
     summary: "{{title}} · {{date}}"
     sortable_fields:
       - field: "date"
-        label: "Event date"
+        label: "Event date (oldest/newest)"
         default_sort: "asc"
     fields:
       - {
@@ -375,7 +375,7 @@ collections:
     summary: "{{title}}"
     sortable_fields:
       - field: "schedule.startDate"
-        label: "Schedule start date"
+        label: "Schedule start date (oldest/newest)"
         default_sort: "asc"
     fields:
       - {
