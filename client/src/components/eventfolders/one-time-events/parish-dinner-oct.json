@@ -1,0 +1,13 @@
+{
+  "id": "parish-dinner-oct",
+  "title": "Parish Dinner",
+  "date": "2026-10-17",
+  "time": "5:30pm",
+  "location": "Main Hall (Basement)",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "All are welcome!"
+}

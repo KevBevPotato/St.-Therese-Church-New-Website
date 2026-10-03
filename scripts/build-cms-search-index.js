@@ -40,21 +40,6 @@ const contentSources = [
     label: "About & Staff · About Page Text",
   },
   {
-    file: "client/src/components/eventfolders/oneTimeEvents.json",
-    collection: "events",
-    entry: "one_time",
-    label: "Parish Events · One-Time Events",
-    listKey: "events",
-  },
-  {
-    file: "client/src/components/eventfolders/recurringRules.json",
-    collection: "events",
-    entry: "rules_file",
-    label: "Parish Events · Recurring Events",
-    listKey: "rules",
-    recurring: true,
-  },
-  {
     file: "client/src/data/bulletins_data.json",
     collection: "bulletins",
     entry: "bulletins_file",
@@ -183,9 +168,9 @@ function createDocument(item, fallback, source, extraText = []) {
   const title = displayName(item, fallback);
   return {
     title,
-    section: source.label,
+    section: item.__section || source.label,
     text: [...stringsIn(item), ...extraText].join(" "),
-    route: routeFor(source.collection, source.entry),
+    route: routeFor(source.collection, item.__entry || source.entry),
   };
 }
 
@@ -228,6 +213,41 @@ for (const source of contentSources) {
     fs.readFileSync(path.join(projectRoot, source.file), "utf8")
   );
   documents.push(...collectDocuments(data, source));
+}
+
+const eventCollections = [
+  {
+    directory: "client/src/components/eventfolders/one-time-events",
+    collection: "one_time_events",
+    label: "Parish Events / One-Time Events",
+  },
+  {
+    directory: "client/src/components/eventfolders/recurring-events",
+    collection: "recurring_events",
+    label: "Parish Events / Recurring Events",
+    recurring: true,
+  },
+];
+
+for (const source of eventCollections) {
+  const directory = path.join(projectRoot, source.directory);
+  for (const filename of fs
+    .readdirSync(directory)
+    .filter(name => name.endsWith(".json"))) {
+    const entry = path.basename(filename, ".json");
+    const data = JSON.parse(
+      fs.readFileSync(path.join(directory, filename), "utf8")
+    );
+    const item = {
+      ...data,
+      __entry: entry,
+      __section: `${source.label} / ${data.title || data.id}`,
+    };
+    const extraText = source.recurring ? getRecurringDates(data) : [];
+    documents.push(
+      createDocument(item, data.title || data.id, source, extraText)
+    );
+  }
 }
 
 const organizationDirectory = path.join(

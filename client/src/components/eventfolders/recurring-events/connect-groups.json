@@ -1,0 +1,29 @@
+{
+  "endDayOfMonth": 21,
+  "time": "6:00 PM - 7:30 PM",
+  "startDayOfMonth": 15,
+  "location": "Fr. Mark & Todd's Rectory",
+  "title": "Connect Groups",
+  "id": "connect-groups",
+  "categories": [
+    {
+      "category": "meeting"
+    },
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation.",
+  "schedule": {
+    "recurrenceType": "monthly",
+    "dayOfWeek": "Monday",
+    "ordinalWeek": "3",
+    "startDate": "2026-10-19",
+    "endDate": "2027-04-05",
+    "exclusions": [
+      {
+        "date": "2026-12-28"
+      }
+    ]
+  }
+}

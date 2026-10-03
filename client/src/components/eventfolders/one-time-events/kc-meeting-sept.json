@@ -1,0 +1,16 @@
+{
+  "id": "kc-meeting-sept",
+  "title": "Knights of Columbus Meeting",
+  "date": "2026-09-14",
+  "time": "7:00 PM",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "meeting"
+    }
+  ],
+  "description": "Monthly KC meeting.",
+  "organizationTags": [
+    "knights-of-columbus"
+  ]
+}

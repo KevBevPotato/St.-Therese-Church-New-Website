@@ -1,0 +1,16 @@
+{
+  "id": "kc-supper-sept",
+  "title": "First KC Supper",
+  "date": "2026-09-19",
+  "time": "5:30 PM",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "First KC Supper of the season.",
+  "organizationTags": [
+    "knights-of-columbus"
+  ]
+}

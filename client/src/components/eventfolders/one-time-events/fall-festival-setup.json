@@ -1,0 +1,13 @@
+{
+  "id": "fall-festival-setup",
+  "title": "Fall Festival Set Up",
+  "date": "2026-09-26",
+  "time": "9:00 AM",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Setting up for the Annual Fall Festival."
+}

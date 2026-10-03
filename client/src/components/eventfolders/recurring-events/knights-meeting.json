@@ -1,0 +1,19 @@
+{
+  "time": "7-8pm",
+  "location": "BKC",
+  "title": "Knights of Columbus Meeting",
+  "id": "knights-meeting",
+  "categories": [
+    {
+      "category": "meeting"
+    }
+  ],
+  "schedule": {
+    "recurrenceType": "monthly",
+    "dayOfWeek": "Monday",
+    "ordinalWeek": "2",
+    "startDate": "2026-10-12",
+    "endDate": "",
+    "exclusions": []
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "id": "welcome-reception",
+  "title": "Welcome Reception: Fr. Mark & Fr. Todd",
+  "date": "2026-08-16",
+  "time": "11:30 AM",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Reception provided by the Knights of Columbus. Please bring a side dish or dessert to share!",
+  "organizationTags": [
+    "knights-of-columbus"
+  ]
+}

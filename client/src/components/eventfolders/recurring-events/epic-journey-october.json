@@ -1,0 +1,18 @@
+{
+  "time": "4-6pm",
+  "location": "Rm 103",
+  "title": "Epic Journey",
+  "id": "epic-journey-october",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "schedule": {
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Tuesday",
+    "startDate": "2026-10-06",
+    "endDate": "2026-10-27",
+    "exclusions": []
+  }
+}

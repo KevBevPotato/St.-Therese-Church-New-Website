@@ -156,7 +156,12 @@ collections:
           - { label: "Introduction", name: "description", widget: "text" }
           - { label: "Office Hours", name: "officeHours", widget: "string" }
           - { label: "Phone Display", name: "phone", widget: "string" }
-          - { label: "Phone Link Number", name: "phoneLink", widget: "string", hint: "Digits and optional leading +, e.g. +16053421556." }
+          - {
+              label: "Phone Link Number",
+              name: "phoneLink",
+              widget: "string",
+              hint: "Digits and optional leading +, e.g. +16053421556.",
+            }
           - { label: "Email", name: "email", widget: "string" }
           - { label: "Address", name: "address", widget: "string" }
   - name: "staff"
@@ -235,195 +240,188 @@ collections:
           - { label: "Headline", name: "title", widget: "string" }
           - { label: "Description", name: "description", widget: "text" }
           - { label: "Quote", name: "quote", widget: "text" }
-          - { label: "Quote Attribution", name: "quoteAttribution", widget: "string" }
-  - name: "events"
-    label: "Parish Events"
-    files:
-      - file: "client/src/components/eventfolders/oneTimeEvents.json"
-        label: "One-Time Events"
-        name: "one_time"
+          - {
+              label: "Quote Attribution",
+              name: "quoteAttribution",
+              widget: "string",
+            }
+  - name: "one_time_events"
+    label: "Parish Events · One-Time Events"
+    folder: "client/src/components/eventfolders/one-time-events"
+    create: true
+    extension: "json"
+    format: "json"
+    summary: "{{title}} · {{date}}"
+    fields:
+      - {
+          label: "Event ID (no spaces)",
+          name: "id",
+          widget: "string",
+          hint: "Keep this unique and stable; it is used in the event URL.",
+        }
+      - { label: "Title", name: "title", widget: "string" }
+      - {
+          label: "Date",
+          name: "date",
+          widget: "date",
+          format: "YYYY-MM-DD",
+          date_format: "YYYY-MM-DD",
+          picker_utc: false,
+        }
+      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - label: "Categories"
+        name: "categories"
+        widget: "list"
         fields:
-          - label: "Events List"
-            name: "events"
-            widget: "list"
-            fields:
-              - {
-                  label: "Event ID (no spaces)",
-                  name: "id",
-                  widget: "string",
-                  hint: "e.g. feeding-sd-aug-5",
-                }
-              - {
-                  label: "Title",
-                  name: "title",
-                  widget: "string",
-                  hint: "e.g. Feeding SD",
-                }
-              - {
-                  label: "Date",
-                  name: "date",
-                  widget: "date",
-                  format: "YYYY-MM-DD",
-                  date_format: "YYYY-MM-DD",
-                  picker_utc: false,
-                }
-              - {
-                  label: "Time",
-                  name: "time",
-                  widget: "string",
-                  hint: "e.g. 8:00 AM - 9:00 AM",
-                }
-              - {
-                  label: "Location",
-                  name: "location",
-                  widget: "string",
-                  hint: "e.g. Main Sanctuary",
-                }
-              - label: "Event Gallery (Optional)"
-                name: "gallery"
-                widget: "list"
-                fields:
-                  - { label: "Photo", name: "photo", widget: "image" }
-                  - {
-                      label: "Caption",
-                      name: "caption",
-                      widget: "string",
-                      hint: "Optional description of the photo",
-                    }
-              - label: "Categories"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options:
-                      [
-                        "sacramental",
-                        "parishEvents",
-                        "meeting",
-                        "vocations",
-                        "diocesan",
-                      ]
-              - label: "Organization Calendars (Optional)"
-                name: "organizationTags"
-                widget: "list"
-                field:
-                  label: "Organization"
-                  name: "organization"
-                  widget: "select"
-                  options:
-                    - {
-                        label: "Knights of Columbus",
-                        value: "knights-of-columbus",
-                      }
-                    - { label: "Altar Society", value: "altar-society" }
-                    - {
-                        label: "Catholic Daughters",
-                        value: "catholic-daughters",
-                      }
-                    - {
-                        label: "St. Vincent de Paul",
-                        value: "st-vincent-de-paul",
-                      }
-                    - { label: "Faith Formation", value: "faith-formation" }
-              - {
-                  label: "Description (Optional)",
-                  name: "description",
-                  widget: "text",
-                }
+          - label: "Category"
+            name: "category"
+            widget: "select"
+            options:
+              [
+                "sacramental",
+                "parishEvents",
+                "meeting",
+                "vocations",
+                "diocesan",
+              ]
+      - label: "Organization Calendars (Optional)"
+        name: "organizationTags"
+        widget: "list"
+        field:
+          label: "Organization"
+          name: "organization"
+          widget: "select"
+          options:
+            - { label: "Knights of Columbus", value: "knights-of-columbus" }
+            - { label: "Altar Society", value: "altar-society" }
+            - { label: "Catholic Daughters", value: "catholic-daughters" }
+            - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+            - { label: "Faith Formation", value: "faith-formation" }
+      - {
+          label: "Description",
+          name: "description",
+          widget: "text",
+          required: false,
+        }
+      - {
+          label: "About this event",
+          name: "about",
+          widget: "text",
+          required: false,
+        }
+      - { label: "Hero Image", name: "image", widget: "image", required: false }
+      - {
+          label: "Sign-up URL",
+          name: "signupLink",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Person",
+          name: "contactPerson",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Email",
+          name: "contactEmail",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Phone",
+          name: "contactPhone",
+          widget: "string",
+          required: false,
+        }
+      - label: "Event Gallery (Optional)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Photo", name: "photo", widget: "image" }
+          - {
+              label: "Caption",
+              name: "caption",
+              widget: "string",
+              required: false,
+            }
+      - label: "Frequently Asked Questions (Optional)"
+        name: "faqItems"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Question", name: "question", widget: "string" }
+          - { label: "Answer", name: "answer", widget: "text" }
 
-      - file: "client/src/components/eventfolders/recurringRules.json"
-        label: "Recurring Events"
-        name: "rules_file"
+  - name: "recurring_events"
+    label: "Parish Events · Recurring Events"
+    folder: "client/src/components/eventfolders/recurring-events"
+    create: true
+    extension: "json"
+    format: "json"
+    summary: "{{title}}"
+    fields:
+      - {
+          label: "Rule ID (no spaces)",
+          name: "id",
+          widget: "string",
+          hint: "Keep this unique and stable; it is used to create event URLs.",
+        }
+      - { label: "Event Title", name: "title", widget: "string" }
+      - { label: "Time", name: "time", widget: "string" }
+      - { label: "Location", name: "location", widget: "string" }
+      - label: "Schedule and Occurrences"
+        name: "schedule"
+        widget: "recurrence-schedule"
+        hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it."
+      - {
+          label: "Description",
+          name: "description",
+          widget: "text",
+          required: false,
+        }
+      - label: "Categories"
+        name: "categories"
+        widget: "list"
         fields:
-          - label: "Rules List"
-            name: "rules"
-            widget: "list"
-            fields:
-              - {
-                  label: "Rule ID (no spaces)",
-                  name: "id",
-                  widget: "string",
-                  hint: "e.g. connect-groups-sep-25-2026",
-                }
-              - {
-                  label: "Event Title",
-                  name: "title",
-                  widget: "string",
-                  hint: "e.g. Connect Groups",
-                }
-              - {
-                  label: "Time",
-                  name: "time",
-                  widget: "string",
-                  hint: "e.g. 6:00 PM - 7:30 PM",
-                }
-              - {
-                  label: "Location",
-                  name: "location",
-                  widget: "string",
-                  hint: "e.g. St. Therese Rectory",
-                }
-              - label: "Event Gallery (Optional)"
-                name: "gallery"
-                widget: "list"
-                fields:
-                  - { label: "Photo", name: "photo", widget: "image" }
-                  - {
-                      label: "Caption",
-                      name: "caption",
-                      widget: "string",
-                      hint: "Optional description of the photo",
-                    }
-              - {
-                  label: "Schedule and Occurrences",
-                  name: "schedule",
-                  widget: "recurrence-schedule",
-                  hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it.",
-                }
-              - {
-                  label: "Description (Optional)",
-                  name: "description",
-                  widget: "text",
-                }
-              - label: "Categories"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options:
-                      [
-                        "sacramental",
-                        "parishEvents",
-                        "meeting",
-                        "vocations",
-                        "diocesan",
-                      ]
-              - label: "Organization Calendars (Optional)"
-                name: "organizationTags"
-                widget: "list"
-                field:
-                  label: "Organization"
-                  name: "organization"
-                  widget: "select"
-                  options:
-                    - {
-                        label: "Knights of Columbus",
-                        value: "knights-of-columbus",
-                      }
-                    - { label: "Altar Society", value: "altar-society" }
-                    - {
-                        label: "Catholic Daughters",
-                        value: "catholic-daughters",
-                      }
-                    - {
-                        label: "St. Vincent de Paul",
-                        value: "st-vincent-de-paul",
-                      }
-                    - { label: "Faith Formation", value: "faith-formation" }
+          - label: "Category"
+            name: "category"
+            widget: "select"
+            options:
+              [
+                "sacramental",
+                "parishEvents",
+                "meeting",
+                "vocations",
+                "diocesan",
+              ]
+      - label: "Organization Calendars (Optional)"
+        name: "organizationTags"
+        widget: "list"
+        field:
+          label: "Organization"
+          name: "organization"
+          widget: "select"
+          options:
+            - { label: "Knights of Columbus", value: "knights-of-columbus" }
+            - { label: "Altar Society", value: "altar-society" }
+            - { label: "Catholic Daughters", value: "catholic-daughters" }
+            - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+            - { label: "Faith Formation", value: "faith-formation" }
+      - label: "Event Gallery (Optional)"
+        name: "gallery"
+        widget: "list"
+        required: false
+        fields:
+          - { label: "Photo", name: "photo", widget: "image" }
+          - {
+              label: "Caption",
+              name: "caption",
+              widget: "string",
+              required: false,
+            }
 
   - name: "bulletins"
     label: "Parish Bulletins"
@@ -1212,15 +1210,40 @@ collections:
           options: ["Men's", "Women's"],
           required: false,
         }
-      - { label: "Audience", name: "audience", widget: "string", required: false }
+      - {
+          label: "Audience",
+          name: "audience",
+          widget: "string",
+          required: false,
+        }
       - { label: "Founded", name: "founded", widget: "number", required: false }
-      - { label: "Meeting Schedule", name: "meetingSchedule", widget: "string", required: false }
+      - {
+          label: "Meeting Schedule",
+          name: "meetingSchedule",
+          widget: "string",
+          required: false,
+        }
       - { label: "Room", name: "room", widget: "string", required: false }
-      - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+      - {
+          label: "Hero Image",
+          name: "heroImage",
+          widget: "image",
+          required: false,
+        }
       - { label: "Contact Name", name: "contactName", widget: "string" }
       - { label: "Contact Phone", name: "contactPhone", widget: "string" }
-      - { label: "Contact Email", name: "contactEmail", widget: "string", required: false }
-      - { label: "Organization Join / Signup URL", name: "joinUrl", widget: "string", required: false }
+      - {
+          label: "Contact Email",
+          name: "contactEmail",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Organization Join / Signup URL",
+          name: "joinUrl",
+          widget: "string",
+          required: false,
+        }
       - label: "Statistics"
         name: "stats"
         widget: "list"
@@ -1238,7 +1261,12 @@ collections:
           - { label: "Name", name: "name", widget: "string" }
           - { label: "Title", name: "title", widget: "string" }
           - { label: "Photo", name: "photo", widget: "image", required: false }
-          - { label: "Photo Position", name: "photoPosition", widget: "string", required: false }
+          - {
+              label: "Photo Position",
+              name: "photoPosition",
+              widget: "string",
+              required: false,
+            }
           - { label: "Email", name: "email", widget: "string", required: false }
           - { label: "Phone", name: "phone", widget: "string", required: false }
           - { label: "Bio", name: "bio", widget: "text", required: false }
@@ -1251,6 +1279,21 @@ collections:
           - { label: "ID", name: "id", widget: "string" }
           - { label: "Name", name: "name", widget: "string" }
           - { label: "Photo", name: "photo", widget: "image", required: false }
-          - { label: "Photo Position", name: "photoPosition", widget: "string", required: false }
-          - { label: "Years as Member", name: "yearsAsMember", widget: "number", required: false }
-          - { label: "Hide from Members Gallery", name: "isHidden", widget: "boolean", default: false }
+          - {
+              label: "Photo Position",
+              name: "photoPosition",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Years as Member",
+              name: "yearsAsMember",
+              widget: "number",
+              required: false,
+            }
+          - {
+              label: "Hide from Members Gallery",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+            }

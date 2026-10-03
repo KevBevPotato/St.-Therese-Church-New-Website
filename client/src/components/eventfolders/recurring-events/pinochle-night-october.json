@@ -1,0 +1,18 @@
+{
+  "time": "6pm",
+  "location": "North Hall (Basement)",
+  "title": "Pinochle Night",
+  "id": "pinochle-night-october",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "schedule": {
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Tuesday",
+    "startDate": "2026-10-06",
+    "endDate": "2026-10-27",
+    "exclusions": []
+  }
+}

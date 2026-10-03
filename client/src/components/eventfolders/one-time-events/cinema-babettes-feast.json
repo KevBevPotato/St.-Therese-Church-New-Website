@@ -1,0 +1,16 @@
+{
+  "id": "cinema-babettes-feast",
+  "title": "Cinema with the Shepherd: Babette's Feast",
+  "date": "2026-12-01",
+  "time": "6:30 PM",
+  "location": "St. Joseph Hall, Cathedral",
+  "categories": [
+    {
+      "category": "parishEvents"
+    },
+    {
+      "category": "diocesan"
+    }
+  ],
+  "description": "Bishop Bullock's film festival featuring 'Babette's Feast' (1987)."
+}

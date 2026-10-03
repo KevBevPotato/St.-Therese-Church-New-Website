@@ -1,0 +1,13 @@
+{
+  "id": "annual-fall-festival",
+  "title": "Annual Fall Festival",
+  "date": "2026-09-27",
+  "time": "10:30 AM - 1:30 PM",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Roast Beef Dinner, large salad bar, and dessert bar. Everyone is welcome!"
+}

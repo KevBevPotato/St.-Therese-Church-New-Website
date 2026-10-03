@@ -1,0 +1,13 @@
+{
+  "id": "parish-council",
+  "title": "Parish Council Meeting",
+  "date": "2026-08-25",
+  "time": "6:30 PM",
+  "location": "Parish Office",
+  "categories": [
+    {
+      "category": "meeting"
+    }
+  ],
+  "description": "Monthly meeting of the Parish Council."
+}

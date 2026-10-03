@@ -1,0 +1,16 @@
+{
+  "id": "rhubarb-sale",
+  "title": "Everything Rhubarb Sale",
+  "date": "2026-08-16",
+  "time": "After Morning Masses",
+  "location": "Parish Hall",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Hosted by the Catholic Daughters.",
+  "organizationTags": [
+    "catholic-daughters"
+  ]
+}

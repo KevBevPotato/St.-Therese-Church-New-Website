@@ -1,0 +1,13 @@
+{
+  "id": "fall-festival-deadline",
+  "title": "Fall Festival Deadline",
+  "date": "2026-09-25",
+  "time": "3:00 PM",
+  "location": "Parish Office",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Deadline for advanced tickets and silent auction baskets."
+}

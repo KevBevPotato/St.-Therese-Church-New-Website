@@ -10,11 +10,11 @@
     bottom: "20px",
     zIndex: "10000",
     border: "0",
-    borderRadius: "999px",
-    padding: "12px 18px",
-    background: "#17324f",
+    borderRadius: "12px",
+    padding: "13px 19px",
+    background: "linear-gradient(135deg, #17324f, #315879)",
     color: "#fff",
-    boxShadow: "0 4px 18px #0003",
+    boxShadow: "0 8px 26px #102a4540",
     font: "600 14px system-ui, sans-serif",
     cursor: "pointer",
   });
@@ -30,21 +30,23 @@
     display: "none",
     alignItems: "flex-start",
     justifyContent: "center",
-    padding: "8vh 16px 16px",
-    background: "#0f172acc",
+    padding: "7vh 16px 16px",
+    background: "#102a45b8",
+    backdropFilter: "blur(5px)",
     boxSizing: "border-box",
     font: "14px system-ui, sans-serif",
   });
 
   const panel = document.createElement("section");
   Object.assign(panel.style, {
-    width: "min(720px, 100%)",
-    maxHeight: "84vh",
+    width: "min(760px, 100%)",
+    maxHeight: "86vh",
     display: "flex",
     flexDirection: "column",
     overflow: "hidden",
-    borderRadius: "12px",
-    background: "#fff",
+    border: "1px solid #dbe3ec",
+    borderRadius: "16px",
+    background: "#f8fafc",
     color: "#172033",
     boxShadow: "0 20px 60px #0005",
   });
@@ -54,7 +56,8 @@
     display: "flex",
     alignItems: "center",
     gap: "12px",
-    padding: "18px 20px",
+    padding: "19px 21px",
+    background: "#fff",
     borderBottom: "1px solid #e2e8f0",
   });
 
@@ -69,6 +72,9 @@
     outline: "0",
     font: "16px system-ui, sans-serif",
   });
+  input.setAttribute("autocapitalize", "off");
+  input.setAttribute("autocomplete", "off");
+  input.setAttribute("spellcheck", "false");
 
   const close = document.createElement("button");
   close.type = "button";
@@ -86,8 +92,9 @@
   status.setAttribute("aria-live", "polite");
   Object.assign(status.style, {
     margin: "0",
-    padding: "12px 20px",
-    color: "#64748b",
+    padding: "13px 20px 8px",
+    color: "#53657a",
+    fontWeight: "600",
   });
 
   const results = document.createElement("div");
@@ -179,26 +186,43 @@
       link.setAttribute("role", "option");
       Object.assign(link.style, {
         display: "block",
-        padding: "12px",
-        marginTop: "8px",
-        border: "1px solid #e2e8f0",
-        borderRadius: "8px",
+        padding: "14px 15px",
+        marginTop: "9px",
+        border: "1px solid #dbe3ec",
+        borderRadius: "10px",
+        background: "#fff",
         color: "inherit",
         textDecoration: "none",
       });
       const title = document.createElement("strong");
       title.textContent = resultDocument.title;
+      Object.assign(title.style, { color: "#17324f", fontSize: "15px" });
       const section = document.createElement("span");
-      section.textContent = ` · ${resultDocument.section}`;
-      section.style.color = "#64748b";
+      section.textContent = resultDocument.section;
+      Object.assign(section.style, {
+        display: "block",
+        marginTop: "5px",
+        color: "#8b6728",
+        fontSize: "12px",
+        fontWeight: "700",
+      });
       const snippet = document.createElement("p");
       snippet.textContent = snippetFor(resultDocument, query);
       Object.assign(snippet.style, {
         margin: "6px 0 0",
-        color: "#475569",
+        color: "#53657a",
         lineHeight: "1.4",
       });
-      link.append(title, section, snippet);
+      const action = document.createElement("span");
+      action.textContent = "Open this item →";
+      Object.assign(action.style, {
+        display: "inline-block",
+        marginTop: "9px",
+        color: "#17324f",
+        fontSize: "12px",
+        fontWeight: "800",
+      });
+      link.append(title, section, snippet, action);
       link.addEventListener("click", event => {
         event.preventDefault();
         closeDialog();

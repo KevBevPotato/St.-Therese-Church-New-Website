@@ -1,0 +1,16 @@
+{
+  "id": "cinema-bicycle-thieves",
+  "title": "Cinema with the Shepherd: Bicycle Thieves",
+  "date": "2026-09-01",
+  "time": "6:30 PM",
+  "location": "St. Joseph Hall, Cathedral",
+  "categories": [
+    {
+      "category": "parishEvents"
+    },
+    {
+      "category": "diocesan"
+    }
+  ],
+  "description": "Bishop Bullock's film festival featuring 'Bicycle Thieves' (1948)."
+}

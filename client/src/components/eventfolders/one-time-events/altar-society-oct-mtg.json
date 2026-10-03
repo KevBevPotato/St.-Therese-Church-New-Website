@@ -1,0 +1,16 @@
+{
+  "id": "altar-society-oct-mtg",
+  "title": "Altar Society Meeting",
+  "date": "2026-10-04",
+  "time": "10:15 AM",
+  "location": "Room 103",
+  "categories": [
+    {
+      "category": "meeting"
+    }
+  ],
+  "description": "Monthly meeting for the Altar Society.",
+  "organizationTags": [
+    "altar-society"
+  ]
+}

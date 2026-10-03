@@ -1,0 +1,13 @@
+{
+  "id": "knights-of-columbus-breakfast",
+  "title": "First KoC Breakfast",
+  "date": "2026-10-11",
+  "time": "8am until no more food!",
+  "location": "Main Hall (Basement)",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Come join us for a delicious meal!"
+}

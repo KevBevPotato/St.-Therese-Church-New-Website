@@ -1,0 +1,13 @@
+{
+  "id": "blood-drive-sept",
+  "title": "Blood Drive",
+  "date": "2026-09-24",
+  "time": "2:30 PM - 6:00 PM",
+  "location": "Parking Lot",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Vitalant Bus will be in the parking lot for donations."
+}

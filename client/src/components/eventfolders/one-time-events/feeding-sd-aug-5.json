@@ -1,0 +1,17 @@
+{
+  "time": "8:00 AM - 9:30 AM",
+  "about": "Feeding South Dakota is a mobile food distribution program serving the community.",
+  "date": "2026-08-05",
+  "signupLink": "https://example.com/signup",
+  "contactPerson": "John Smith",
+  "location": "AMC Theater Parking Lot - 230 Knollwood Dr. Rapid City, SD",
+  "title": "Feeding South Dakota",
+  "id": "feeding-sd-aug-5",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "contactEmail": "john@example.com",
+  "description": "Mobile food distribution."
+}

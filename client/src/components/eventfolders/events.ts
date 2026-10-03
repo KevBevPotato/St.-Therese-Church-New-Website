@@ -1,6 +1,12 @@
 import { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter } from './types';
 import { oneTimeEvents } from './oneTimeEvents';
-import recurringData from './recurringRules.json';
+
+const recurringRules = Object.values(
+    import.meta.glob<Record<string, any>>('./recurring-events/*.json', {
+        eager: true,
+        import: 'default',
+    })
+);
 
 export type { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter };
 export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
@@ -81,7 +87,7 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         }
 
         // --- CMS-DRIVEN RECURRING RULES ---
-        (recurringData as any).rules.forEach((rule: any) => {
+        recurringRules.forEach((rule: any) => {
             const schedule = rule.schedule ?? rule;
             const ruleStartDate = normalizeDate(schedule.startDate) || new Date(0);
             const ruleEndDate = normalizeDate(schedule.endDate) || new Date(2100, 0, 1);

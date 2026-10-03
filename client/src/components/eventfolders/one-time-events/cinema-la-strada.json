@@ -1,0 +1,35 @@
+{
+  "photos": [
+    "/images/events/la-strada-1.jpg",
+    "/images/events/la-strada-2.jpg",
+    "/images/events/la-strada-3.jpg",
+    "/images/events/la-strada-4.jpg"
+  ],
+  "faqItems": [
+    {
+      "question": "What time should I arrive?",
+      "answer": "Please arrive 15 minutes early."
+    },
+    {
+      "question": "Is there a cost?",
+      "answer": "Admission is free."
+    }
+  ],
+  "time": "6:30 PM",
+  "about": "Join us for a special film screening and discussion with Bishop Bullock.",
+  "date": "2026-08-06",
+  "contactPerson": "Bishop Bullock",
+  "location": "St. Joseph Hall, Cathedral",
+  "title": "Cinema with the Shepherd: La Strada",
+  "id": "cinema-la-strada",
+  "image": "/images/events/la-strada-hero.jpg",
+  "categories": [
+    {
+      "category": "parishEvents"
+    },
+    {
+      "category": "diocesan"
+    }
+  ],
+  "description": "Bishop Bullock's film festival featuring 'La Strada' (1954)."
+}

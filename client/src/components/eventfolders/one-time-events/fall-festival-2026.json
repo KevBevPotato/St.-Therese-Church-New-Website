@@ -1,0 +1,36 @@
+{
+  "photos": [
+    "/images/events/la-strada-1.jpg",
+    "/images/events/la-strada-2.jpg",
+    "/images/events/la-strada-3.jpg",
+    "/images/events/la-strada-4.jpg"
+  ],
+  "faqItems": [
+    {
+      "question": "Is lunch provided?",
+      "answer": "Yes, a light lunch will be served."
+    },
+    {
+      "question": "Can I bring a spouse?",
+      "answer": "Absolutely! Spouses are welcome."
+    }
+  ],
+  "time": "10:15 AM",
+  "contactPhone": "(605) 123-4567",
+  "date": "2026-09-27",
+  "contactPerson": "Melanie Karp",
+  "location": "Parish Hall",
+  "title": "Fall Festival Planning",
+  "id": "fall-festival-2026",
+  "image": "/images/events/la-strada-hero.jpg",
+  "categories": [
+    {
+      "category": "parishEvents"
+    },
+    {
+      "category": "meeting"
+    }
+  ],
+  "contactEmail": "melanie@strcstaff.org",
+  "description": "Everyone is welcome to help plan our annual festival."
+}

@@ -1,0 +1,16 @@
+{
+  "id": "cinema-wizard-oz",
+  "title": "Cinema with the Shepherd: The Wizard of Oz",
+  "date": "2026-11-03",
+  "time": "6:30 PM",
+  "location": "St. Joseph Hall, Cathedral",
+  "categories": [
+    {
+      "category": "parishEvents"
+    },
+    {
+      "category": "diocesan"
+    }
+  ],
+  "description": "Bishop Bullock's film festival featuring 'The Wizard of Oz' (1939)."
+}
