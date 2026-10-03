@@ -1,0 +1,480 @@
+import { createSign } from "node:crypto";
+
+type JsonObject = Record<string, unknown>;
+type HeaderMap = Record<string, string | string[] | undefined>;
+
+interface ApiRequest {
+  method?: string;
+  headers: HeaderMap;
+  body?: unknown;
+}
+
+interface ApiResponse {
+  status(code: number): ApiResponse;
+  setHeader(name: string, value: string): void;
+  json(value: JsonObject): void;
+}
+
+const MAX_BODY_BYTES = 20_000;
+const MAX_FIELD_LENGTH = 2_000;
+const RATE_LIMIT_PER_MINUTE = 6;
+const RATE_LIMIT_WINDOW_SECONDS = 60;
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ENGAGEMENT_TABS: Record<string, string> = {
+  pledge: "Pledges",
+  signup: "Signups",
+  suggestion: "Suggestions",
+  referral: "Referrals",
+};
+const ALLOWED_ENGAGEMENT_IDS = new Set([
+  "pledge-nursery",
+  "pledge-supper-week",
+  "signup-lector",
+  "signup-usher",
+  "signup-music",
+  "signup-supper",
+  "signup-youth-mentor",
+  "signup-nursery-help",
+  "suggestion",
+  "referral",
+]);
+const ALLOWED_FIELDS = new Set([
+  "form_type",
+  "from_name",
+  "from_email",
+  "from_phone",
+  "project_id",
+  "project_title",
+  "item_id",
+  "item_label",
+  "quantity",
+  "pledge_amount",
+  "memo_template",
+  "note",
+  "engagement_type",
+  "engagement_id",
+  "context_project_id",
+  "context_project_title",
+  "sunday_mass",
+  "preferred_mass",
+  "interest",
+  "experience",
+  "preferred_date",
+  "role_interest",
+  "role",
+  "roles",
+  "availability",
+  "context_opportunity",
+  "suggestion",
+  "their_name",
+  "their_phone",
+  "your_name",
+  "your_phone",
+  "opportunity",
+  "full_name",
+  "email",
+  "phone",
+  "notes",
+  "signup_mode",
+  "week_id",
+  "week_date",
+  "availability_type",
+  "week_ids",
+  "preferred_roles",
+  "website",
+]);
+
+function respond(
+  response: ApiResponse,
+  status: number,
+  body: JsonObject
+): void {
+  response.status(status).json(body);
+}
+
+function getString(body: JsonObject, key: string): string {
+  const value = body[key];
+  if (typeof value === "string") return value.trim();
+  if (typeof value === "number" && Number.isFinite(value)) return String(value);
+  return "";
+}
+
+function requestHost(headers: HeaderMap): string {
+  const host = headers.host;
+  return (Array.isArray(host) ? host[0] : host || "").toLowerCase();
+}
+
+function hasSameOrigin(request: ApiRequest): boolean {
+  const origin = request.headers.origin;
+  if (typeof origin !== "string") return false;
+
+  try {
+    return new URL(origin).host.toLowerCase() === requestHost(request.headers);
+  } catch {
+    return false;
+  }
+}
+
+function validateBody(bodyValue: unknown): {
+  body?: JsonObject;
+  tab?: string;
+  error?: string;
+} {
+  if (!bodyValue || typeof bodyValue !== "object" || Array.isArray(bodyValue)) {
+    return { error: "A JSON object is required." };
+  }
+
+  const body = bodyValue as JsonObject;
+  if (Buffer.byteLength(JSON.stringify(body), "utf8") > MAX_BODY_BYTES) {
+    return { error: "The submission is too large." };
+  }
+
+  for (const [key, value] of Object.entries(body)) {
+    if (!ALLOWED_FIELDS.has(key))
+      return { error: "The submission has an unsupported field." };
+    if (key === "quantity" || key === "pledge_amount") continue;
+    if (typeof value !== "string" || value.length > MAX_FIELD_LENGTH) {
+      return { error: "A submission field is invalid or too long." };
+    }
+  }
+
+  if (getString(body, "website"))
+    return { error: "The submission could not be accepted." };
+
+  const formType = getString(body, "form_type");
+  let tab: string;
+  let required: string[];
+
+  switch (formType) {
+    case "pledge":
+      tab = "Pledges";
+      required = ["from_name", "from_email", "project_id", "item_id"];
+      break;
+    case "engagement": {
+      const engagementType = getString(body, "engagement_type");
+      const engagementId = getString(body, "engagement_id");
+      if (
+        !ENGAGEMENT_TABS[engagementType] ||
+        !ALLOWED_ENGAGEMENT_IDS.has(engagementId)
+      ) {
+        return { error: "The requested form is invalid." };
+      }
+      tab = ENGAGEMENT_TABS[engagementType];
+      required =
+        engagementType === "pledge"
+          ? ["from_name", "from_email", "item_id"]
+          : engagementType === "referral"
+            ? ["their_name", "their_phone"]
+            : engagementType === "suggestion"
+              ? ["from_email", "suggestion"]
+              : ["from_name", "from_email"];
+      break;
+    }
+    case "supper-volunteer":
+      tab = "WednesdaySupperVolunteers";
+      required = ["full_name", "email", "signup_mode"];
+      if (!["specific", "willing"].includes(getString(body, "signup_mode"))) {
+        return { error: "The signup mode is invalid." };
+      }
+      break;
+    case "lector":
+      tab = "Lector Signups";
+      required = ["from_name", "from_email", "sunday_mass"];
+      break;
+    default:
+      return { error: "The requested form is invalid." };
+  }
+
+  if (required.some(key => !getString(body, key))) {
+    return { error: "Please complete all required fields." };
+  }
+
+  const email = getString(body, "from_email") || getString(body, "email");
+  if (email && !EMAIL_PATTERN.test(email)) {
+    return { error: "Please enter a valid email address." };
+  }
+
+  if (
+    formType === "pledge" ||
+    getString(body, "engagement_type") === "pledge"
+  ) {
+    const quantity = Number(body.quantity);
+    const amount = Number(body.pledge_amount);
+    if (
+      !Number.isInteger(quantity) ||
+      quantity < 1 ||
+      quantity > 100 ||
+      !Number.isFinite(amount) ||
+      amount <= 0 ||
+      amount > 1_000_000
+    ) {
+      return { error: "The pledge amount or quantity is invalid." };
+    }
+  }
+
+  return { body, tab };
+}
+
+function base64Url(value: string | Buffer): string {
+  return Buffer.from(value).toString("base64url");
+}
+
+async function getGoogleAccessToken(
+  serviceAccountEmail: string,
+  privateKey: string
+): Promise<string> {
+  const issuedAt = Math.floor(Date.now() / 1000);
+  const header = base64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
+  const claim = base64Url(
+    JSON.stringify({
+      iss: serviceAccountEmail,
+      scope: "https://www.googleapis.com/auth/spreadsheets",
+      aud: "https://oauth2.googleapis.com/token",
+      iat: issuedAt,
+      exp: issuedAt + 3600,
+    })
+  );
+  const unsignedToken = `${header}.${claim}`;
+  const signer = createSign("RSA-SHA256");
+  signer.update(unsignedToken);
+  signer.end();
+  const assertion = `${unsignedToken}.${signer.sign(privateKey, "base64url")}`;
+  const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+    method: "POST",
+    headers: { "Content-Type": "application/x-www-form-urlencoded" },
+    body: new URLSearchParams({
+      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+      assertion,
+    }),
+  });
+
+  if (!tokenResponse.ok) throw new Error("Google authorization failed.");
+  const tokenBody: unknown = await tokenResponse.json();
+  if (
+    !tokenBody ||
+    typeof tokenBody !== "object" ||
+    !("access_token" in tokenBody) ||
+    typeof tokenBody.access_token !== "string"
+  ) {
+    throw new Error("Google authorization returned an invalid response.");
+  }
+  return tokenBody.access_token;
+}
+
+function normalizeHeader(value: string): string {
+  return value
+    .trim()
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "_")
+    .replace(/^_|_$/g, "");
+}
+
+function valueForHeader(header: string, body: JsonObject): string | number {
+  const normalizedHeader = normalizeHeader(header);
+  const aliases: Record<string, string> = {
+    name: "from_name",
+    full_name: "from_name",
+    email: "from_email",
+    phone: "from_phone",
+    timestamp: "submitted_at",
+    date_submitted: "submitted_at",
+    submission_date: "submitted_at",
+    form: "form_type",
+  };
+  const key = aliases[normalizedHeader] || normalizedHeader;
+  const value = body[normalizedHeader] ?? body[key];
+  return typeof value === "string" || typeof value === "number" ? value : "";
+}
+
+async function enforceRateLimit(request: ApiRequest): Promise<boolean> {
+  const redisUrl = process.env.UPSTASH_REDIS_REST_URL?.replace(/\/+$/, "");
+  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
+  const rawIp =
+    request.headers["x-real-ip"] || request.headers["x-forwarded-for"];
+  const ip = Array.isArray(rawIp) ? rawIp[0] : rawIp?.split(",")[0]?.trim();
+  if (!redisUrl || !redisToken || !ip) {
+    throw new Error("Form rate limiting is not configured.");
+  }
+
+  const key = `public-form:${ip}`;
+  const script =
+    "local count = redis.call('INCR', KEYS[1]); if count == 1 or redis.call('TTL', KEYS[1]) < 0 then redis.call('EXPIRE', KEYS[1], ARGV[1]); end; return count";
+  const response = await fetch(redisUrl, {
+    method: "POST",
+    headers: {
+      Authorization: `Bearer ${redisToken}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(["EVAL", script, "1", key, RATE_LIMIT_WINDOW_SECONDS]),
+  });
+  if (!response.ok) throw new Error("Form rate limiting is unavailable.");
+  const result: unknown = await response.json();
+  if (
+    !result ||
+    typeof result !== "object" ||
+    !("result" in result) ||
+    typeof result.result !== "number"
+  ) {
+    throw new Error("Form rate limiting returned an invalid response.");
+  }
+  return result.result <= RATE_LIMIT_PER_MINUTE;
+}
+
+async function appendToSheet(
+  spreadsheetId: string,
+  accessToken: string,
+  tab: string,
+  body: JsonObject
+): Promise<void> {
+  const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values`;
+  const headerRange = encodeURIComponent(`'${tab.replace(/'/g, "''")}'!1:1`);
+  const headerResponse = await fetch(`${baseUrl}/${headerRange}`, {
+    headers: { Authorization: `Bearer ${accessToken}` },
+  });
+  if (!headerResponse.ok)
+    throw new Error("Could not read the destination sheet headers.");
+
+  const headerData: unknown = await headerResponse.json();
+  const headers =
+    headerData &&
+    typeof headerData === "object" &&
+    "values" in headerData &&
+    Array.isArray(headerData.values) &&
+    Array.isArray(headerData.values[0])
+      ? headerData.values[0].filter(
+          (value): value is string => typeof value === "string"
+        )
+      : [];
+  if (headers.length === 0)
+    throw new Error("The destination sheet has no header row.");
+
+  const normalizedHeaders = new Set(headers.map(normalizeHeader));
+  const hasSubmissionColumn = [
+    "from_name",
+    "full_name",
+    "name",
+    "from_email",
+    "email",
+    "suggestion",
+    "their_name",
+  ].some(header => normalizedHeaders.has(header));
+  if (!hasSubmissionColumn)
+    throw new Error("The destination sheet headers are not configured.");
+
+  const submission = { ...body, submitted_at: new Date().toISOString() };
+  const headerKeys = new Set(
+    headers.map(header => {
+      const normalized = normalizeHeader(header);
+      const aliases: Record<string, string> = {
+        name: "from_name",
+        full_name: "from_name",
+        email: "from_email",
+        phone: "from_phone",
+        timestamp: "submitted_at",
+        date_submitted: "submitted_at",
+        submission_date: "submitted_at",
+        form: "form_type",
+      };
+      return aliases[normalized] || normalized;
+    })
+  );
+  const missingColumn = Object.entries(submission).some(
+    ([key, value]) =>
+      key !== "form_type" &&
+      key !== "website" &&
+      value !== "" &&
+      value !== undefined &&
+      !headerKeys.has(key) &&
+      !headers.some(header => normalizeHeader(header) === key)
+  );
+  if (missingColumn)
+    throw new Error(
+      "The destination sheet is missing one or more submission columns."
+    );
+
+  const row = headers.map(header => valueForHeader(header, submission));
+  const appendRange = encodeURIComponent(`'${tab.replace(/'/g, "''")}'!A:ZZ`);
+  const appendResponse = await fetch(
+    `${baseUrl}/${appendRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ values: [row] }),
+    }
+  );
+  if (!appendResponse.ok) throw new Error("Could not append the submission.");
+}
+
+export default async function handler(
+  request: ApiRequest,
+  response: ApiResponse
+): Promise<void> {
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("X-Content-Type-Options", "nosniff");
+  response.setHeader("Vary", "Origin");
+
+  if (request.method !== "POST") {
+    response.setHeader("Allow", "POST");
+    respond(response, 405, { error: "Method not allowed." });
+    return;
+  }
+  if (!hasSameOrigin(request)) {
+    respond(response, 403, { error: "Request origin is not allowed." });
+    return;
+  }
+
+  const validation = validateBody(request.body);
+  if (validation.error || !validation.body || !validation.tab) {
+    respond(response, 400, {
+      error: validation.error || "Invalid submission.",
+    });
+    return;
+  }
+
+  try {
+    if (!(await enforceRateLimit(request))) {
+      respond(response, 429, {
+        error: "Too many submissions. Please wait and try again.",
+      });
+      return;
+    }
+  } catch {
+    console.error("Form rate limiting is not configured or available.");
+    respond(response, 503, {
+      error: "Form submissions are temporarily unavailable.",
+    });
+    return;
+  }
+
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(
+    /\\n/g,
+    "\n"
+  );
+  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
+  if (!email || !privateKey || !spreadsheetId) {
+    respond(response, 503, {
+      error: "Form submissions are temporarily unavailable.",
+    });
+    return;
+  }
+
+  try {
+    const accessToken = await getGoogleAccessToken(email, privateKey);
+    await appendToSheet(
+      spreadsheetId,
+      accessToken,
+      validation.tab,
+      validation.body
+    );
+    respond(response, 200, { success: true });
+  } catch (error) {
+    console.error("Form submission failed.");
+    respond(response, 502, {
+      error: "The submission could not be saved. Please try again later.",
+    });
+  }
+}

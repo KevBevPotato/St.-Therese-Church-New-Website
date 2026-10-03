@@ -1,6 +1,14 @@
 import { useState, type FormEvent } from 'react';
-import { X, Loader2, CheckCircle2, Phone, Mail, User as UserIcon, BookOpen } from 'lucide-react';
-import { SHEETS_CONFIG } from '@/config/sheets';
+import {
+    X,
+    Loader2,
+    CheckCircle2,
+    Phone,
+    Mail,
+    User as UserIcon,
+    BookOpen,
+} from 'lucide-react';
+import { submitForm } from '@/lib/submit-form';
 
 interface LectorSignupModalProps {
     isOpen: boolean;
@@ -19,7 +27,10 @@ const MASS_TIMES = [
     { value: 'Varies', label: 'Varies / Different Each Week' },
 ];
 
-export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModalProps) {
+export default function LectorSignupModal({
+    isOpen,
+    onClose,
+}: LectorSignupModalProps) {
     const [status, setStatus] = useState<SubmitStatus>('idle');
     const [errorMessage, setErrorMessage] = useState('');
     const [name, setName] = useState('');
@@ -43,32 +54,28 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const website = new FormData(e.currentTarget).get('website');
         setStatus('sending');
         setErrorMessage('');
 
         try {
             const payload = {
-                api_key: SHEETS_CONFIG.apiKey,
-                sheet_tab: 'Lector Signups',
-                submitted_at: new Date().toISOString(),
+                website: typeof website === 'string' ? website : '',
                 from_name: name,
                 from_email: email,
                 from_phone: phone,
                 sunday_mass: sundayMass,
             };
 
-            await fetch(SHEETS_CONFIG.webAppUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload),
-            });
+            await submitForm('lector', payload);
 
             setStatus('success');
         } catch (err: any) {
             console.error('Lector signup POST error:', err);
             setStatus('error');
-            setErrorMessage('There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.');
+            setErrorMessage(
+                'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
+            );
         }
     };
 
@@ -79,8 +86,12 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>
-                        <h3 className="font-serif text-2xl font-bold">Lector Sign-up</h3>
-                        <p className="text-xs text-white/70 uppercase tracking-widest mt-1">Liturgy Ministry</p>
+                        <h3 className="font-serif text-2xl font-bold">
+                            Lector Sign-up
+                        </h3>
+                        <p className="text-xs text-white/70 uppercase tracking-widest mt-1">
+                            Liturgy Ministry
+                        </p>
                     </div>
                     <button
                         onClick={handleClose}
@@ -95,15 +106,23 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                 {status === 'success' ? (
                     <div className="p-10 text-center space-y-5">
                         <div className="mx-auto w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
-                            <CheckCircle2 size={48} className="text-green-600" />
+                            <CheckCircle2
+                                size={48}
+                                className="text-green-600"
+                            />
                         </div>
                         <div>
-                            <h4 className="font-serif text-2xl font-bold text-primary mb-3">Thank You!</h4>
+                            <h4 className="font-serif text-2xl font-bold text-primary mb-3">
+                                Thank You!
+                            </h4>
                             <p className="text-muted-foreground leading-relaxed max-w-md mx-auto">
-                                Your sign-up has been recorded. The liturgy coordinator will reach out within a week to schedule training and your first reading.
+                                Your sign-up has been recorded. The liturgy
+                                coordinator will reach out within a week to
+                                schedule training and your first reading.
                             </p>
                             <p className="text-xs text-muted-foreground mt-4">
-                                A copy of your submission has been emailed to the parish office.
+                                A copy of your submission has been emailed to
+                                the parish office.
                             </p>
                         </div>
                         <div className="pt-4">
@@ -121,10 +140,21 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                         className="p-8 space-y-5 max-h-[70vh] overflow-y-auto custom-scrollbar"
                         onSubmit={handleSubmit}
                     >
+                        <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            className="absolute -left-[9999px]"
+                        />
                         <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4 text-sm text-primary leading-relaxed">
-                            <span className="font-bold">About Lector Ministry:</span> Lectors
-                            proclaim the Scriptures and lead the Prayers of the Faithful during
-                            Mass. Training and ongoing scheduling support are provided for all new lectors.
+                            <span className="font-bold">
+                                About Lector Ministry:
+                            </span>{' '}
+                            Lectors proclaim the Scriptures and lead the Prayers
+                            of the Faithful during Mass. Training and ongoing
+                            scheduling support are provided for all new lectors.
                         </div>
 
                         <div className="space-y-2">
@@ -132,12 +162,15 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                                 Full Name *
                             </label>
                             <div className="relative">
-                                <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <UserIcon
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="text"
                                     required
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={e => setName(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="Your Full Name"
                                 />
@@ -149,12 +182,15 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                                 Email Address *
                             </label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <Mail
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="email"
                                     required
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={e => setEmail(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="you@example.com"
                                 />
@@ -166,11 +202,14 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                                 Phone Number (optional)
                             </label>
                             <div className="relative">
-                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <Phone
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="tel"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={e => setPhone(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="(605) 000-0000"
                                 />
@@ -184,18 +223,19 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                             <select
                                 required
                                 value={sundayMass}
-                                onChange={(e) => setSundayMass(e.target.value)}
+                                onChange={e => setSundayMass(e.target.value)}
                                 className={inputClassName}
                             >
                                 <option value="">Select a Mass time...</option>
-                                {MASS_TIMES.map((mass) => (
+                                {MASS_TIMES.map(mass => (
                                     <option key={mass.value} value={mass.value}>
                                         {mass.label}
                                     </option>
                                 ))}
                             </select>
                             <p className="text-[10px] text-muted-foreground">
-                                We typically schedule lectors at the Mass they attend most often.
+                                We typically schedule lectors at the Mass they
+                                attend most often.
                             </p>
                         </div>
 
@@ -212,7 +252,11 @@ export default function LectorSignupModal({ isOpen, onClose }: LectorSignupModal
                         >
                             {status === 'sending' ? (
                                 <>
-                                    <Loader2 size={16} className="animate-spin" /> Submitting...
+                                    <Loader2
+                                        size={16}
+                                        className="animate-spin"
+                                    />{' '}
+                                    Submitting...
                                 </>
                             ) : (
                                 <>

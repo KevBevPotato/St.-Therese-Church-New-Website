@@ -9,13 +9,6 @@ export default function ChurchMap() {
   const address = "532 Adams St, Rapid City, SD 57701";
   const encodedAddress = encodeURIComponent(address);
   
-  // Google Maps Embed URL
-  const mapUrl = `https://www.google.com/maps/embed/v1/place?key=REPLACE_WITH_YOUR_API_KEY&q=${encodedAddress}`;
-  
-  /* 
-     NOTE: For a completely "No-Key" version, we use the standard search embed.
-     This is the most reliable way to ensure a map shows up immediately.
-  */
   const noKeyMapUrl = `https://maps.google.com/maps?q=${encodedAddress}&t=&z=15&ie=UTF8&iwloc=&output=embed`;
 
   return (

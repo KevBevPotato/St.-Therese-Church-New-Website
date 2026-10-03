@@ -6,11 +6,18 @@ node_modules/
 dist/
 dist-ssr/
 build/
+.vercel/
 
 # Environment variables (NEVER commit these)
 .env
 .env.local
 .env.*.local
+
+# Private keys and service-account credentials (NEVER commit these)
+*.pem
+*.key
+service-account*.json
+credentials*.json
 
 # Logs
 *.log

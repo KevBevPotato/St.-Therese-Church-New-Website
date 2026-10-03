@@ -1,7 +1,19 @@
 // --- File: client/src/components/SupperVolunteerModal.tsx ---
 import { useState, useEffect, useMemo, type FormEvent } from 'react';
-import { X, Loader2, CheckCircle2, Phone, Mail, User as UserIcon, Calendar, Users, HandHeart, Check, XIcon } from 'lucide-react';
-import { SHEETS_CONFIG } from '@/config/sheets';
+import {
+    X,
+    Loader2,
+    CheckCircle2,
+    Phone,
+    Mail,
+    User as UserIcon,
+    Calendar,
+    Users,
+    HandHeart,
+    Check,
+    XIcon,
+} from 'lucide-react';
+import { submitForm } from '@/lib/submit-form';
 
 interface VolunteerRole {
     name: string;
@@ -21,8 +33,8 @@ interface WednesdayWeek {
 interface SupperVolunteerModalProps {
     isOpen: boolean;
     onClose: () => void;
-    week: WednesdayWeek | null;          // When provided, modal opens in "Sign Up" mode for that week
-    allWeeks?: WednesdayWeek[];           // Needed for "I'm Willing to Help" mode
+    week: WednesdayWeek | null; // When provided, modal opens in "Sign Up" mode for that week
+    allWeeks?: WednesdayWeek[]; // Needed for "I'm Willing to Help" mode
 }
 
 type SubmitStatus = 'idle' | 'sending' | 'success' | 'error';
@@ -61,9 +73,12 @@ export default function SupperVolunteerModal({
     const [selectedRole, setSelectedRole] = useState('');
 
     // "Willing" mode fields
-    const [availabilityType, setAvailabilityType] = useState<AvailabilityType>('available');
+    const [availabilityType, setAvailabilityType] =
+        useState<AvailabilityType>('available');
     const [selectedWeeks, setSelectedWeeks] = useState<Set<string>>(new Set());
-    const [preferredRoles, setPreferredRoles] = useState<Set<string>>(new Set());
+    const [preferredRoles, setPreferredRoles] = useState<Set<string>>(
+        new Set()
+    );
 
     // Reset form when modal opens/closes or target week changes
     useEffect(() => {
@@ -84,14 +99,13 @@ export default function SupperVolunteerModal({
 
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        const website = new FormData(e.currentTarget).get('website');
         setStatus('sending');
         setErrorMessage('');
 
         try {
             const basePayload: Record<string, any> = {
-                api_key: SHEETS_CONFIG.apiKey,
-                sheet_tab: 'WednesdaySupperVolunteers',
-                submitted_at: new Date().toISOString(),
+                website: typeof website === 'string' ? website : '',
                 full_name: name,
                 email: email,
                 phone: phone,
@@ -113,21 +127,19 @@ export default function SupperVolunteerModal({
                 basePayload.role = '';
                 basePayload.availability_type = availabilityType;
                 basePayload.week_ids = Array.from(selectedWeeks).join(', ');
-                basePayload.preferred_roles = Array.from(preferredRoles).join(', ');
+                basePayload.preferred_roles =
+                    Array.from(preferredRoles).join(', ');
             }
 
-            await fetch(SHEETS_CONFIG.webAppUrl, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(basePayload),
-            });
+            await submitForm('supper-volunteer', basePayload);
 
             setStatus('success');
         } catch (err: any) {
             console.error('Supper volunteer POST error:', err);
             setStatus('error');
-            setErrorMessage('There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.');
+            setErrorMessage(
+                'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
+            );
         }
     };
 
@@ -148,10 +160,17 @@ export default function SupperVolunteerModal({
     // Group weeks by month for the "willing" mode
     const monthGroups = useMemo(() => {
         if (mode !== 'willing' || allWeeks.length === 0) return [];
-        const groups: Record<string, { label: string; weeks: WednesdayWeek[] }> = {};
+        const groups: Record<
+            string,
+            { label: string; weeks: WednesdayWeek[] }
+        > = {};
         allWeeks.forEach(w => {
-            const monthName = w.date.toLocaleString('default', { month: 'long', year: 'numeric' });
-            if (!groups[monthName]) groups[monthName] = { label: monthName, weeks: [] };
+            const monthName = w.date.toLocaleString('default', {
+                month: 'long',
+                year: 'numeric',
+            });
+            if (!groups[monthName])
+                groups[monthName] = { label: monthName, weeks: [] };
             groups[monthName].weeks.push(w);
         });
         return Object.values(groups);
@@ -165,11 +184,15 @@ export default function SupperVolunteerModal({
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>
                         <h3 className="font-serif text-2xl font-bold">
-                            {mode === 'specific' ? 'Sign Up to Volunteer' : "I'm Willing to Help"}
+                            {mode === 'specific'
+                                ? 'Sign Up to Volunteer'
+                                : "I'm Willing to Help"}
                         </h3>
                         <p className="text-xs text-white/70 uppercase tracking-widest mt-1 flex items-center gap-1.5">
                             <Calendar size={12} />
-                            {mode === 'specific' && week ? week.dateLabel : 'Wednesday Night Supper'}
+                            {mode === 'specific' && week
+                                ? week.dateLabel
+                                : 'Wednesday Night Supper'}
                         </p>
                     </div>
                     <button
@@ -185,17 +208,30 @@ export default function SupperVolunteerModal({
                 {status === 'success' ? (
                     <div className="p-10 text-center space-y-5">
                         <div className="mx-auto w-20 h-20 rounded-full bg-green-100 flex items-center justify-center">
-                            <CheckCircle2 size={48} className="text-green-600" />
+                            <CheckCircle2
+                                size={48}
+                                className="text-green-600"
+                            />
                         </div>
                         <div>
-                            <h4 className="font-serif text-2xl font-bold text-primary mb-3">Thank You!</h4>
+                            <h4 className="font-serif text-2xl font-bold text-primary mb-3">
+                                Thank You!
+                            </h4>
                             {mode === 'specific' && week ? (
                                 <p className="text-muted-foreground leading-relaxed max-w-md mx-auto">
-                                    Your sign-up for <strong>{week.dateLabel}</strong> as a <strong>{selectedRole}</strong> has been recorded. The Wednesday Supper coordinator will reach out within a week to confirm details.
+                                    Your sign-up for{' '}
+                                    <strong>{week.dateLabel}</strong> as a{' '}
+                                    <strong>{selectedRole}</strong> has been
+                                    recorded. The Wednesday Supper coordinator
+                                    will reach out within a week to confirm
+                                    details.
                                 </p>
                             ) : (
                                 <p className="text-muted-foreground leading-relaxed max-w-md mx-auto">
-                                    Your availability has been recorded. We'll reach out when we need help on the weeks you marked as available. Thank you for your willingness to serve!
+                                    Your availability has been recorded. We'll
+                                    reach out when we need help on the weeks you
+                                    marked as available. Thank you for your
+                                    willingness to serve!
                                 </p>
                             )}
                         </div>
@@ -214,6 +250,14 @@ export default function SupperVolunteerModal({
                         className="p-8 space-y-5 max-h-[70vh] overflow-y-auto custom-scrollbar"
                         onSubmit={handleSubmit}
                     >
+                        <input
+                            type="text"
+                            name="website"
+                            tabIndex={-1}
+                            autoComplete="off"
+                            aria-hidden="true"
+                            className="absolute -left-[9999px]"
+                        />
                         {/* Mode toggle (only show if both modes are available) */}
                         {week && allWeeks.length > 0 && (
                             <div className="rounded-2xl border border-primary/15 bg-primary/5 p-1.5 flex gap-1.5">
@@ -226,7 +270,8 @@ export default function SupperVolunteerModal({
                                             : 'text-primary/70 hover:bg-white/60'
                                     }`}
                                 >
-                                    <Calendar size={14} /> Sign Up for {week.dateLabel}
+                                    <Calendar size={14} /> Sign Up for{' '}
+                                    {week.dateLabel}
                                 </button>
                                 <button
                                     type="button"
@@ -245,25 +290,40 @@ export default function SupperVolunteerModal({
                         <div className="rounded-2xl border border-accent/20 bg-accent/5 p-4 text-sm text-primary leading-relaxed">
                             {mode === 'specific' ? (
                                 <>
-                                    <span className="font-bold">Sign up for {week?.dateLabel}:</span> Choose a role and we'll confirm your spot within a week.
+                                    <span className="font-bold">
+                                        Sign up for {week?.dateLabel}:
+                                    </span>{' '}
+                                    Choose a role and we'll confirm your spot
+                                    within a week.
                                 </>
                             ) : (
                                 <>
-                                    <span className="font-bold">Tell us your general availability:</span> Pick either the weeks you're available OR the weeks you're NOT available — whichever is easier. We'll reach out when we need help.
+                                    <span className="font-bold">
+                                        Tell us your general availability:
+                                    </span>{' '}
+                                    Pick either the weeks you're available OR
+                                    the weeks you're NOT available — whichever
+                                    is easier. We'll reach out when we need
+                                    help.
                                 </>
                             )}
                         </div>
 
                         {/* Contact fields (shared) */}
                         <div className="space-y-2">
-                            <label className="text-[11px] font-bold text-primary block">Full Name *</label>
+                            <label className="text-[11px] font-bold text-primary block">
+                                Full Name *
+                            </label>
                             <div className="relative">
-                                <UserIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <UserIcon
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="text"
                                     required
                                     value={name}
-                                    onChange={(e) => setName(e.target.value)}
+                                    onChange={e => setName(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="Your Full Name"
                                 />
@@ -271,14 +331,19 @@ export default function SupperVolunteerModal({
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[11px] font-bold text-primary block">Email Address *</label>
+                            <label className="text-[11px] font-bold text-primary block">
+                                Email Address *
+                            </label>
                             <div className="relative">
-                                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <Mail
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="email"
                                     required
                                     value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
+                                    onChange={e => setEmail(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="you@example.com"
                                 />
@@ -286,13 +351,18 @@ export default function SupperVolunteerModal({
                         </div>
 
                         <div className="space-y-2">
-                            <label className="text-[11px] font-bold text-primary block">Phone Number (optional)</label>
+                            <label className="text-[11px] font-bold text-primary block">
+                                Phone Number (optional)
+                            </label>
                             <div className="relative">
-                                <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40" size={16} />
+                                <Phone
+                                    className="absolute left-3 top-1/2 -translate-y-1/2 text-primary/40"
+                                    size={16}
+                                />
                                 <input
                                     type="tel"
                                     value={phone}
-                                    onChange={(e) => setPhone(e.target.value)}
+                                    onChange={e => setPhone(e.target.value)}
                                     className={`${inputClassName} pl-10`}
                                     placeholder="(605) 000-0000"
                                 />
@@ -307,8 +377,15 @@ export default function SupperVolunteerModal({
                                 </label>
                                 <div className="space-y-2">
                                     {ROLE_OPTIONS.map(roleName => {
-                                        const role = week.roles.find(r => r.name === roleName);
-                                        const remaining = role ? Math.max(role.needed - role.filled, 0) : 0;
+                                        const role = week.roles.find(
+                                            r => r.name === roleName
+                                        );
+                                        const remaining = role
+                                            ? Math.max(
+                                                  role.needed - role.filled,
+                                                  0
+                                              )
+                                            : 0;
                                         const isFull = remaining === 0;
                                         return (
                                             <label
@@ -317,27 +394,45 @@ export default function SupperVolunteerModal({
                                                     selectedRole === roleName
                                                         ? 'border-primary bg-primary/5'
                                                         : isFull
-                                                            ? 'border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed'
-                                                            : 'border-gray-100 hover:border-primary/30'
+                                                          ? 'border-gray-100 bg-gray-50 opacity-60 cursor-not-allowed'
+                                                          : 'border-gray-100 hover:border-primary/30'
                                                 }`}
                                             >
                                                 <input
                                                     type="radio"
                                                     name="role"
                                                     value={roleName}
-                                                    checked={selectedRole === roleName}
-                                                    onChange={(e) => setSelectedRole(e.target.value)}
+                                                    checked={
+                                                        selectedRole ===
+                                                        roleName
+                                                    }
+                                                    onChange={e =>
+                                                        setSelectedRole(
+                                                            e.target.value
+                                                        )
+                                                    }
                                                     disabled={isFull}
                                                     className="accent-primary"
                                                 />
                                                 <div className="flex-1 flex items-center gap-2">
-                                                    <Users size={14} className="text-primary/60" />
-                                                    <span className="text-sm font-bold text-primary">{roleName}</span>
+                                                    <Users
+                                                        size={14}
+                                                        className="text-primary/60"
+                                                    />
+                                                    <span className="text-sm font-bold text-primary">
+                                                        {roleName}
+                                                    </span>
                                                 </div>
-                                                <span className={`text-[10px] font-bold uppercase tracking-widest ${
-                                                    isFull ? 'text-green-600' : 'text-rose-600'
-                                                }`}>
-                                                    {isFull ? 'Full' : `${remaining} open`}
+                                                <span
+                                                    className={`text-[10px] font-bold uppercase tracking-widest ${
+                                                        isFull
+                                                            ? 'text-green-600'
+                                                            : 'text-rose-600'
+                                                    }`}
+                                                >
+                                                    {isFull
+                                                        ? 'Full'
+                                                        : `${remaining} open`}
                                                 </span>
                                             </label>
                                         );
@@ -352,13 +447,16 @@ export default function SupperVolunteerModal({
                                 {/* Availability type toggle */}
                                 <div className="space-y-3">
                                     <label className="text-[11px] font-bold text-primary block">
-                                        How would you like to indicate your availability? *
+                                        How would you like to indicate your
+                                        availability? *
                                     </label>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                setAvailabilityType('available');
+                                                setAvailabilityType(
+                                                    'available'
+                                                );
                                                 setSelectedWeeks(new Set());
                                             }}
                                             className={`p-4 rounded-2xl border-2 text-left transition-all ${
@@ -368,40 +466,61 @@ export default function SupperVolunteerModal({
                                             }`}
                                         >
                                             <div className="flex items-center gap-2 mb-2">
-                                                <div className={`size-8 rounded-full flex items-center justify-center ${
-                                                    availabilityType === 'available' ? 'bg-primary text-white' : 'bg-primary/10 text-primary'
-                                                }`}>
+                                                <div
+                                                    className={`size-8 rounded-full flex items-center justify-center ${
+                                                        availabilityType ===
+                                                        'available'
+                                                            ? 'bg-primary text-white'
+                                                            : 'bg-primary/10 text-primary'
+                                                    }`}
+                                                >
                                                     <Check size={16} />
                                                 </div>
-                                                <span className="text-sm font-bold text-primary">Weeks I'm Available</span>
+                                                <span className="text-sm font-bold text-primary">
+                                                    Weeks I'm Available
+                                                </span>
                                             </div>
                                             <p className="text-xs text-muted-foreground leading-relaxed">
-                                                Select the specific Wednesdays you can help. Pick as many or as few as you like.
+                                                Select the specific Wednesdays
+                                                you can help. Pick as many or as
+                                                few as you like.
                                             </p>
                                         </button>
 
                                         <button
                                             type="button"
                                             onClick={() => {
-                                                setAvailabilityType('unavailable');
+                                                setAvailabilityType(
+                                                    'unavailable'
+                                                );
                                                 setSelectedWeeks(new Set());
                                             }}
                                             className={`p-4 rounded-2xl border-2 text-left transition-all ${
-                                                availabilityType === 'unavailable'
+                                                availabilityType ===
+                                                'unavailable'
                                                     ? 'border-primary bg-primary/5 shadow-md'
                                                     : 'border-gray-100 hover:border-primary/30'
                                             }`}
                                         >
                                             <div className="flex items-center gap-2 mb-2">
-                                                <div className={`size-8 rounded-full flex items-center justify-center ${
-                                                    availabilityType === 'unavailable' ? 'bg-primary text-white' : 'bg-primary/10 text-primary'
-                                                }`}>
+                                                <div
+                                                    className={`size-8 rounded-full flex items-center justify-center ${
+                                                        availabilityType ===
+                                                        'unavailable'
+                                                            ? 'bg-primary text-white'
+                                                            : 'bg-primary/10 text-primary'
+                                                    }`}
+                                                >
                                                     <XIcon size={16} />
                                                 </div>
-                                                <span className="text-sm font-bold text-primary">Weeks I'm NOT Available</span>
+                                                <span className="text-sm font-bold text-primary">
+                                                    Weeks I'm NOT Available
+                                                </span>
                                             </div>
                                             <p className="text-xs text-muted-foreground leading-relaxed">
-                                                Easier if you only know a few conflicts. We'll know you can help any other week.
+                                                Easier if you only know a few
+                                                conflicts. We'll know you can
+                                                help any other week.
                                             </p>
                                         </button>
                                     </div>
@@ -411,20 +530,33 @@ export default function SupperVolunteerModal({
                                 <div className="space-y-3">
                                     <div className="flex items-center justify-between">
                                         <label className="text-[11px] font-bold text-primary block">
-                                            Select weeks ({selectedWeeks.size} chosen)
+                                            Select weeks ({selectedWeeks.size}{' '}
+                                            chosen)
                                         </label>
                                         <div className="flex gap-2">
                                             <button
                                                 type="button"
-                                                onClick={() => setSelectedWeeks(new Set(allWeeks.map(w => w.id)))}
+                                                onClick={() =>
+                                                    setSelectedWeeks(
+                                                        new Set(
+                                                            allWeeks.map(
+                                                                w => w.id
+                                                            )
+                                                        )
+                                                    )
+                                                }
                                                 className="text-[10px] font-bold text-accent hover:text-accent/80 uppercase tracking-widest"
                                             >
                                                 Select All
                                             </button>
-                                            <span className="text-primary/20">|</span>
+                                            <span className="text-primary/20">
+                                                |
+                                            </span>
                                             <button
                                                 type="button"
-                                                onClick={() => setSelectedWeeks(new Set())}
+                                                onClick={() =>
+                                                    setSelectedWeeks(new Set())
+                                                }
                                                 className="text-[10px] font-bold text-primary/60 hover:text-primary uppercase tracking-widest"
                                             >
                                                 Clear
@@ -440,26 +572,46 @@ export default function SupperVolunteerModal({
                                                 </p>
                                                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                                                     {group.weeks.map(w => {
-                                                        const isSelected = selectedWeeks.has(w.id);
+                                                        const isSelected =
+                                                            selectedWeeks.has(
+                                                                w.id
+                                                            );
                                                         return (
                                                             <button
                                                                 key={w.id}
                                                                 type="button"
-                                                                onClick={() => toggleWeek(w.id)}
+                                                                onClick={() =>
+                                                                    toggleWeek(
+                                                                        w.id
+                                                                    )
+                                                                }
                                                                 className={`p-3 rounded-xl border-2 text-center transition-all ${
                                                                     isSelected
                                                                         ? 'border-primary bg-primary text-white shadow-md'
                                                                         : 'border-gray-100 hover:border-primary/30 bg-white'
                                                                 }`}
                                                             >
-                                                                <p className={`text-[9px] font-bold uppercase tracking-widest ${
-                                                                    isSelected ? 'text-white/70' : 'text-primary/60'
-                                                                }`}>
-                                                                    {w.date.toLocaleString('default', { month: 'short' })}
+                                                                <p
+                                                                    className={`text-[9px] font-bold uppercase tracking-widest ${
+                                                                        isSelected
+                                                                            ? 'text-white/70'
+                                                                            : 'text-primary/60'
+                                                                    }`}
+                                                                >
+                                                                    {w.date.toLocaleString(
+                                                                        'default',
+                                                                        {
+                                                                            month: 'short',
+                                                                        }
+                                                                    )}
                                                                 </p>
-                                                                <p className={`text-lg font-serif font-bold leading-none mt-1 ${
-                                                                    isSelected ? 'text-white' : 'text-primary'
-                                                                }`}>
+                                                                <p
+                                                                    className={`text-lg font-serif font-bold leading-none mt-1 ${
+                                                                        isSelected
+                                                                            ? 'text-white'
+                                                                            : 'text-primary'
+                                                                    }`}
+                                                                >
                                                                     {w.date.getDate()}
                                                                 </p>
                                                             </button>
@@ -474,16 +626,20 @@ export default function SupperVolunteerModal({
                                 {/* Preferred roles (optional) */}
                                 <div className="space-y-2">
                                     <label className="text-[11px] font-bold text-primary block">
-                                        Preferred roles (optional, select any that apply)
+                                        Preferred roles (optional, select any
+                                        that apply)
                                     </label>
                                     <div className="flex flex-wrap gap-2">
                                         {ROLE_OPTIONS.map(roleName => {
-                                            const isSelected = preferredRoles.has(roleName);
+                                            const isSelected =
+                                                preferredRoles.has(roleName);
                                             return (
                                                 <button
                                                     key={roleName}
                                                     type="button"
-                                                    onClick={() => toggleRole(roleName)}
+                                                    onClick={() =>
+                                                        toggleRole(roleName)
+                                                    }
                                                     className={`px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest transition-all border-2 ${
                                                         isSelected
                                                             ? 'bg-accent border-accent text-white shadow-md'
@@ -505,7 +661,7 @@ export default function SupperVolunteerModal({
                             </label>
                             <textarea
                                 value={notes}
-                                onChange={(e) => setNotes(e.target.value)}
+                                onChange={e => setNotes(e.target.value)}
                                 className={`${inputClassName} h-auto resize-none`}
                                 placeholder="Any dietary restrictions, scheduling notes, or questions..."
                                 rows={3}
@@ -529,7 +685,11 @@ export default function SupperVolunteerModal({
                         >
                             {status === 'sending' ? (
                                 <>
-                                    <Loader2 size={16} className="animate-spin" /> Submitting...
+                                    <Loader2
+                                        size={16}
+                                        className="animate-spin"
+                                    />{' '}
+                                    Submitting...
                                 </>
                             ) : mode === 'specific' ? (
                                 <>
@@ -537,7 +697,8 @@ export default function SupperVolunteerModal({
                                 </>
                             ) : (
                                 <>
-                                    <HandHeart size={16} /> Submit My Availability
+                                    <HandHeart size={16} /> Submit My
+                                    Availability
                                 </>
                             )}
                         </button>
