@@ -4,6 +4,7 @@ import Footer from '../components/Footer';
 import { Card } from '../components/ui/card';
 import { Mail, Phone } from 'lucide-react';
 import { staffMembers, StaffMember } from '../data/staff';
+import aboutPageData from '../data/about_page_data.json';
 
 export default function About() {
   // ✅ WHITELIST REMOVED: We now use the full list from staff_data.json
@@ -20,21 +21,21 @@ export default function About() {
         <div className="container relative grid gap-10 md:grid-cols-[1.18fr_0.82fr] md:items-end mx-auto px-4">
           <div>
             <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-              The people of the Little Flower
+              {aboutPageData.eyebrow}
             </p>
             <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-              The people behind our parish.
+              {aboutPageData.title}
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-              Meet the clergy and staff who accompany our parish family in prayer and service.
+              {aboutPageData.description}
             </p>
           </div>
           <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">
             <p className="font-serif text-2xl italic leading-snug text-primary">
-              Faithfulness is often lived in small acts of love, offered quietly and together.
+              {aboutPageData.quote}
             </p>
             <p className="mt-3 text-xs font-bold uppercase tracking-[0.18em] text-[#9b762f]">
-              Our Little Way of Service
+              {aboutPageData.quoteAttribution}
             </p>
           </aside>
         </div>

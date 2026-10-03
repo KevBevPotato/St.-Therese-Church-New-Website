@@ -17,6 +17,7 @@ import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved_data.json';
 import { staticEvents, generateRecurringEventsForMonth, type EventOrganizationTag } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
+import { getOrganizationById } from '@/data/organizations';
 
 interface OpportunityDetailData {
     id: string;
@@ -45,6 +46,8 @@ export default function OpportunityDetail() {
     const id = params?.id;
     const opportunities = getInvolvedData.opportunities as OpportunityDetailData[];
     const opportunity = opportunities.find((item) => item.id === id);
+    const organizationId = id === 'st-vincent-de-paul-food-drive' ? 'st-vincent-de-paul' : id;
+    const cmsOrganization = organizationId ? getOrganizationById(organizationId) : undefined;
 
     if (!match) return null;
     if (!opportunity) {
@@ -64,14 +67,14 @@ export default function OpportunityDetail() {
     }
 
     const details = {
-        title: opportunity.landingPageTitle ?? opportunity.title,
-        organization: opportunity.organization ?? 'St. Thérèse Parish',
+        title: cmsOrganization?.name ?? opportunity.landingPageTitle ?? opportunity.title,
+        organization: cmsOrganization?.name ?? opportunity.organization ?? 'St. Thérèse Parish',
         contact: {
-            name: opportunity.contactName,
-            phone: opportunity.contactPhone,
+            name: cmsOrganization?.contactName ?? opportunity.contactName,
+            phone: cmsOrganization?.contactPhone ?? opportunity.contactPhone,
             email: opportunity.contactEmail ?? getInvolvedData.settings.contactEmail,
         },
-        description: opportunity.landingPageDescription ?? opportunity.description,
+        description: cmsOrganization?.description ?? opportunity.landingPageDescription ?? opportunity.description,
         faqs: opportunity.faqs ?? [],
         requirements: opportunity.requirements ?? [],
         images: opportunity.images ?? [],

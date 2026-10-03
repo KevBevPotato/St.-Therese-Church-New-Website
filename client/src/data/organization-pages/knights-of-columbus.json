@@ -1,0 +1,88 @@
+{
+  "id": "knights-of-columbus",
+  "name": "Knights of Columbus",
+  "tagline": "Charity, Unity, Fraternity, and Patriotism",
+  "description": "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship. All Catholic men 18 and older are invited to join.",
+  "audienceTag": "Men's",
+  "audience": "Catholic Men of the Parish",
+  "founded": 1900,
+  "meetingSchedule": "2nd Monday of each month",
+  "room": "BKC",
+  "contactName": "Grand Knight",
+  "contactPhone": "(605) 867-5309",
+  "stats": [
+    {
+      "label": "Active Members",
+      "value": "60+"
+    },
+    {
+      "label": "Years at Saint Thérèse",
+      "value": "50+"
+    },
+    {
+      "label": "Charity Funds Raised",
+      "value": "$15K+"
+    }
+  ],
+  "officers": [
+    {
+      "id": "gk",
+      "name": "[Grand Knight Name]",
+      "title": "Grand Knight",
+      "email": "gk@kofc-sttherese.org"
+    },
+    {
+      "id": "dgk",
+      "name": "[Deputy Grand Knight Name]",
+      "title": "Deputy Grand Knight"
+    },
+    {
+      "id": "chancellor",
+      "name": "[Chancellor Name]",
+      "title": "Chancellor"
+    },
+    {
+      "id": "recorder",
+      "name": "[Recorder Name]",
+      "title": "Recorder"
+    },
+    {
+      "id": "treasurer",
+      "name": "[Treasurer Name]",
+      "title": "Treasurer"
+    },
+    {
+      "id": "warden",
+      "name": "[Warden Name]",
+      "title": "Warden"
+    },
+    {
+      "id": "advocate",
+      "name": "[Advocate Name]",
+      "title": "Advocate"
+    },
+    {
+      "id": "chaplain",
+      "name": "[Chaplain Name]",
+      "title": "Chaplain"
+    }
+  ],
+  "members": [
+    {
+      "id": "m1",
+      "name": "Member Name 1",
+      "isHidden": true
+    },
+    {
+      "id": "m2",
+      "name": "Member Name 2",
+      "isHidden": true
+    },
+    {
+      "id": "m3",
+      "name": "Member Name 3",
+      "isHidden": true
+    }
+  ],
+  "joinUrl": "https://www.kofc.org/get-involved/join-kofc/"
+}

@@ -52,7 +52,7 @@ function getKoCRelevantEvents(): CalendarEvent[] {
 export default function KnightsOfColumbus() {
     const org = getOrganizationById('knights-of-columbus');
     const upcomingEvents = getKoCRelevantEvents();
-    const visibleMembers = org?.members.filter((member) => !member.isHidden) ?? [];
+    const visibleMembers = org?.members?.filter((member) => !member.isHidden) ?? [];
 
     if (!org) {
         return (
@@ -170,7 +170,7 @@ export default function KnightsOfColumbus() {
             <section className="bg-primary text-white py-8">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                        {org.stats.map((stat, idx) => (
+                        {(org.stats ?? []).map((stat, idx) => (
                             <div key={idx}>
                                 <p className="text-4xl font-serif font-bold text-accent">{stat.value}</p>
                                 <p className="text-xs uppercase tracking-widest text-white/60 mt-1">{stat.label}</p>
@@ -262,7 +262,7 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                        {org.officers.map(officer => (
+                        {(org.officers ?? []).map(officer => (
                             <Card
                                 key={officer.id}
                                 className="group overflow-hidden border-2 border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"

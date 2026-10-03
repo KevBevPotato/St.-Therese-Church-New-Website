@@ -29,11 +29,218 @@ media_folder: "client/public/uploads"
 public_folder: "/uploads"
 
 collections:
+  - name: "homepage"
+    label: "Home Page"
+    files:
+      - file: "client/src/data/hero_data.json"
+        label: "Hero Video & Text Options"
+        name: "hero_video"
+        fields:
+          - {
+              label: "Hero Video File or URL",
+              name: "videoUrl",
+              widget: "file",
+              required: false,
+              hint: "Upload an MP4 or choose an existing video. Leave blank to show the poster image only.",
+            }
+          - {
+              label: "Fallback Poster Image",
+              name: "poster",
+              widget: "image",
+              required: false,
+            }
+          - {
+              label: "Media Fit",
+              name: "mediaFit",
+              widget: "select",
+              options:
+                [
+                  {
+                    label: "Cover — fills the hero; edges may be cropped",
+                    value: "cover",
+                  },
+                  {
+                    label: "Contain — shows the whole image; may leave empty space",
+                    value: "contain",
+                  },
+                ],
+              default: "cover",
+              hint: "Controls how the video or poster fits inside the hero area.",
+            }
+          - {
+              label: "Media Position",
+              name: "mediaPosition",
+              widget: "select",
+              options: ["center", "top", "bottom", "left", "right"],
+              default: "center",
+              hint: "Choose which part stays visible when Media Fit is set to Cover.",
+            }
+          - {
+              label: "Background Color",
+              name: "backgroundColor",
+              widget: "color",
+              default: "#102a45",
+              hint: "Shown behind the media, especially when it is set to Contain.",
+            }
+          - {
+              label: "Overlay Color",
+              name: "overlayColor",
+              widget: "color",
+              default: "#102a45",
+              hint: "Tint placed over the media to keep the text readable.",
+            }
+          - {
+              label: "Overlay Strength",
+              name: "overlayStrength",
+              widget: "number",
+              value_type: "float",
+              min: 0,
+              max: 1,
+              step: 0.05,
+              default: 0.9,
+              hint: "0 is transparent; 1 is strongest. Increase it if the text is hard to read.",
+            }
+          - {
+              label: "Text Color",
+              name: "textColor",
+              widget: "color",
+              default: "#ffffff",
+            }
+          - {
+              label: "Accent Color",
+              name: "accentColor",
+              widget: "color",
+              default: "#f1d99d",
+            }
+          - {
+              label: "Accent Border Color",
+              name: "accentBorderColor",
+              widget: "color",
+              default: "#d4b36a",
+            }
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Headline", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - {
+              label: "Primary Button Label",
+              name: "primaryButtonLabel",
+              widget: "string",
+            }
+          - {
+              label: "Primary Button URL",
+              name: "primaryButtonUrl",
+              widget: "string",
+            }
+          - {
+              label: "Secondary Button Label",
+              name: "secondaryButtonLabel",
+              widget: "string",
+            }
+          - {
+              label: "Secondary Button URL",
+              name: "secondaryButtonUrl",
+              widget: "string",
+            }
+          - { label: "Quote", name: "quote", widget: "string" }
+          - {
+              label: "Quote Attribution",
+              name: "quoteAttribution",
+              widget: "string",
+            }
+      - file: "client/src/data/home_contact_data.json"
+        label: "Contact Info"
+        name: "home_contact"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Headline", name: "title", widget: "string" }
+          - { label: "Introduction", name: "description", widget: "text" }
+          - { label: "Office Hours", name: "officeHours", widget: "string" }
+          - { label: "Phone Display", name: "phone", widget: "string" }
+          - { label: "Phone Link Number", name: "phoneLink", widget: "string", hint: "Digits and optional leading +, e.g. +16053421556." }
+          - { label: "Email", name: "email", widget: "string" }
+          - { label: "Address", name: "address", widget: "string" }
+  - name: "staff"
+    label: "About & Staff"
+    files:
+      - file: "client/src/data/staff_data.json"
+        label: "Staff Directory"
+        name: "staff_file"
+        fields:
+          - label: "Staff Members"
+            name: "staff"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - {
+                  label: "Full Name",
+                  name: "name",
+                  widget: "string",
+                  required: true,
+                } # MOVED TO TOP
+              - {
+                  label: "Hide from Directory",
+                  name: "isHidden",
+                  widget: "boolean",
+                  defaultValue: false,
+                }
+              - {
+                  label: "Slug (no spaces, e.g. kevin-baltzer)",
+                  name: "slug",
+                  widget: "string",
+                  required: true,
+                }
+              - label: "Titles"
+                name: "titles"
+                widget: "list"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Phone", name: "phone", widget: "string" }
+              - { label: "Office Room", name: "officeRoom", widget: "string" }
+              - label: "Categories"
+                name: "categories"
+                widget: "list"
+                fields:
+                  - label: "Category"
+                    name: "category"
+                    widget: "select"
+                    options:
+                      [
+                        "clergy",
+                        "staff",
+                        "catechist",
+                        "council",
+                        "music",
+                        "ministries",
+                      ]
+              - { label: "Photo", name: "photo", widget: "image" }
+              - {
+                  label: "Photo Position (e.g. center 25%)",
+                  name: "photoPosition",
+                  widget: "string",
+                }
+              - {
+                  label: "Photo Fit",
+                  name: "photoFit",
+                  widget: "select",
+                  options: ["cover", "contain"],
+                }
+              - { label: "Duties", name: "duties", widget: "text" }
+              - { label: "Bio", name: "bio", widget: "text" }
+      - file: "client/src/data/about_page_data.json"
+        label: "About Page Text"
+        name: "about_page_text"
+        fields:
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Headline", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - { label: "Quote", name: "quote", widget: "text" }
+          - { label: "Quote Attribution", name: "quoteAttribution", widget: "string" }
   - name: "events"
-    label: "One-Time Calendar Events"
+    label: "Parish Events"
     files:
       - file: "client/src/components/eventfolders/oneTimeEvents.json"
-        label: "One-Time Calendar Events"
+        label: "One-Time Events"
         name: "one_time"
         fields:
           - label: "Events List"
@@ -124,9 +331,6 @@ collections:
                   widget: "text",
                 }
 
-  - name: "recurring_rules"
-    label: "Recurring Events for St. Therese"
-    files:
       - file: "client/src/components/eventfolders/recurringRules.json"
         label: "Recurring Events"
         name: "rules_file"
@@ -380,192 +584,6 @@ collections:
                   widget: "markdown",
                   required: false,
                 }
-  - name: "staff"
-    label: "Staff Directory"
-    files:
-      - file: "client/src/data/staff_data.json"
-        label: "Staff List"
-        name: "staff_file"
-        fields:
-          - label: "Staff Members"
-            name: "staff"
-            widget: "list"
-            summary: "{{fields.name}}"
-            fields:
-              - {
-                  label: "Full Name",
-                  name: "name",
-                  widget: "string",
-                  required: true,
-                } # MOVED TO TOP
-              - {
-                  label: "Hide from Directory",
-                  name: "isHidden",
-                  widget: "boolean",
-                  defaultValue: false,
-                }
-              - {
-                  label: "Slug (no spaces, e.g. kevin-baltzer)",
-                  name: "slug",
-                  widget: "string",
-                  required: true,
-                }
-              - label: "Titles"
-                name: "titles"
-                widget: "list"
-                fields:
-                  - { label: "Title", name: "title", widget: "string" }
-              - { label: "Email", name: "email", widget: "string" }
-              - { label: "Phone", name: "phone", widget: "string" }
-              - { label: "Office Room", name: "officeRoom", widget: "string" }
-              - label: "Categories"
-                name: "categories"
-                widget: "list"
-                fields:
-                  - label: "Category"
-                    name: "category"
-                    widget: "select"
-                    options:
-                      [
-                        "clergy",
-                        "staff",
-                        "catechist",
-                        "council",
-                        "music",
-                        "ministries",
-                      ]
-              - { label: "Photo", name: "photo", widget: "image" }
-              - {
-                  label: "Photo Position (e.g. center 25%)",
-                  name: "photoPosition",
-                  widget: "string",
-                }
-              - {
-                  label: "Photo Fit",
-                  name: "photoFit",
-                  widget: "select",
-                  options: ["cover", "contain"],
-                }
-              - { label: "Duties", name: "duties", widget: "text" }
-              - { label: "Bio", name: "bio", widget: "text" }
-  - name: "homepage"
-    label: "Home Page"
-    files:
-      - file: "client/src/data/hero_data.json"
-        label: "Hero Video"
-        name: "hero_video"
-        fields:
-          - {
-              label: "Hero Video File or URL",
-              name: "videoUrl",
-              widget: "file",
-              required: false,
-              hint: "Upload an MP4 or choose an existing video. Leave blank to show the poster image only.",
-            }
-          - {
-              label: "Fallback Poster Image",
-              name: "poster",
-              widget: "image",
-              required: false,
-            }
-          - {
-              label: "Media Fit",
-              name: "mediaFit",
-              widget: "select",
-              options:
-                [
-                  {
-                    label: "Cover — fills the hero; edges may be cropped",
-                    value: "cover",
-                  },
-                  {
-                    label: "Contain — shows the whole image; may leave empty space",
-                    value: "contain",
-                  },
-                ],
-              default: "cover",
-              hint: "Controls how the video or poster fits inside the hero area.",
-            }
-          - {
-              label: "Media Position",
-              name: "mediaPosition",
-              widget: "select",
-              options: ["center", "top", "bottom", "left", "right"],
-              default: "center",
-              hint: "Choose which part stays visible when Media Fit is set to Cover.",
-            }
-          - {
-              label: "Background Color",
-              name: "backgroundColor",
-              widget: "color",
-              default: "#102a45",
-              hint: "Shown behind the media, especially when it is set to Contain.",
-            }
-          - {
-              label: "Overlay Color",
-              name: "overlayColor",
-              widget: "color",
-              default: "#102a45",
-              hint: "Tint placed over the media to keep the text readable.",
-            }
-          - {
-              label: "Overlay Strength",
-              name: "overlayStrength",
-              widget: "number",
-              value_type: "float",
-              min: 0,
-              max: 1,
-              step: 0.05,
-              default: 0.9,
-              hint: "0 is transparent; 1 is strongest. Increase it if the text is hard to read.",
-            }
-          - {
-              label: "Text Color",
-              name: "textColor",
-              widget: "color",
-              default: "#ffffff",
-            }
-          - {
-              label: "Accent Color",
-              name: "accentColor",
-              widget: "color",
-              default: "#f1d99d",
-            }
-          - {
-              label: "Accent Border Color",
-              name: "accentBorderColor",
-              widget: "color",
-              default: "#d4b36a",
-            }
-          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
-          - { label: "Headline", name: "title", widget: "string" }
-          - { label: "Description", name: "description", widget: "text" }
-          - {
-              label: "Primary Button Label",
-              name: "primaryButtonLabel",
-              widget: "string",
-            }
-          - {
-              label: "Primary Button URL",
-              name: "primaryButtonUrl",
-              widget: "string",
-            }
-          - {
-              label: "Secondary Button Label",
-              name: "secondaryButtonLabel",
-              widget: "string",
-            }
-          - {
-              label: "Secondary Button URL",
-              name: "secondaryButtonUrl",
-              widget: "string",
-            }
-          - { label: "Quote", name: "quote", widget: "string" }
-          - {
-              label: "Quote Attribution",
-              name: "quoteAttribution",
-              widget: "string",
-            }
   - name: "resources"
     label: "Resource Page"
     files:
@@ -1219,135 +1237,62 @@ collections:
                       - { label: "Cost", name: "cost", widget: "string" }
   - name: "organizations"
     label: "Organization Landing Pages"
-    files:
-      - file: "client/src/data/organizations_data.json"
-        label: "Organizations"
-        name: "organizations_file"
+    folder: "client/src/data/organization-pages"
+    create: false
+    summary: "{{name}}"
+    extension: "json"
+    format: "json"
+    fields:
+      - { label: "ID (do not change)", name: "id", widget: "string" }
+      - { label: "Name", name: "name", widget: "string" }
+      - { label: "Tagline", name: "tagline", widget: "string", required: false }
+      - { label: "Description", name: "description", widget: "text" }
+      - {
+          label: "Audience Tag",
+          name: "audienceTag",
+          widget: "select",
+          options: ["Men's", "Women's"],
+          required: false,
+        }
+      - { label: "Audience", name: "audience", widget: "string", required: false }
+      - { label: "Founded", name: "founded", widget: "number", required: false }
+      - { label: "Meeting Schedule", name: "meetingSchedule", widget: "string", required: false }
+      - { label: "Room", name: "room", widget: "string", required: false }
+      - { label: "Hero Image", name: "heroImage", widget: "image", required: false }
+      - { label: "Contact Name", name: "contactName", widget: "string" }
+      - { label: "Contact Phone", name: "contactPhone", widget: "string" }
+      - { label: "Contact Email", name: "contactEmail", widget: "string", required: false }
+      - { label: "Organization Join / Signup URL", name: "joinUrl", widget: "string", required: false }
+      - label: "Statistics"
+        name: "stats"
+        widget: "list"
+        required: false
         fields:
-          - label: "Organizations (drag to reorder)"
-            name: "organizations"
-            widget: "list"
-            summary: "{{fields.name}}"
-            fields:
-              - { label: "ID (do not change)", name: "id", widget: "string" }
-              - { label: "Name", name: "name", widget: "string" }
-              - { label: "Tagline", name: "tagline", widget: "string" }
-              - { label: "Description", name: "description", widget: "text" }
-              - {
-                  label: "Audience Tag",
-                  name: "audienceTag",
-                  widget: "select",
-                  options: ["Men's", "Women's"],
-                }
-              - { label: "Audience", name: "audience", widget: "string" }
-              - { label: "Founded", name: "founded", widget: "number" }
-              - {
-                  label: "Meeting Schedule",
-                  name: "meetingSchedule",
-                  widget: "string",
-                }
-              - {
-                  label: "Room",
-                  name: "room",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Hero Image",
-                  name: "heroImage",
-                  widget: "image",
-                  required: false,
-                }
-              - { label: "Contact Name", name: "contactName", widget: "string" }
-              - {
-                  label: "Contact Phone",
-                  name: "contactPhone",
-                  widget: "string",
-                }
-              - {
-                  label: "Contact Email",
-                  name: "contactEmail",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Organization Join / Signup URL",
-                  name: "joinUrl",
-                  widget: "string",
-                  required: false,
-                }
-              - label: "Statistics"
-                name: "stats"
-                widget: "list"
-                fields:
-                  - { label: "Label", name: "label", widget: "string" }
-                  - { label: "Value", name: "value", widget: "string" }
-              - label: "Officers"
-                name: "officers"
-                widget: "list"
-                summary: "{{fields.name}}"
-                fields:
-                  - { label: "ID", name: "id", widget: "string" }
-                  - { label: "Name", name: "name", widget: "string" }
-                  - { label: "Title", name: "title", widget: "string" }
-                  - {
-                      label: "Photo",
-                      name: "photo",
-                      widget: "image",
-                      required: false,
-                    }
-                  - {
-                      label: "Photo Position",
-                      name: "photoPosition",
-                      widget: "string",
-                      required: false,
-                    }
-                  - {
-                      label: "Email",
-                      name: "email",
-                      widget: "string",
-                      required: false,
-                    }
-                  - {
-                      label: "Phone",
-                      name: "phone",
-                      widget: "string",
-                      required: false,
-                    }
-                  - {
-                      label: "Bio",
-                      name: "bio",
-                      widget: "text",
-                      required: false,
-                    }
-              - label: "Members"
-                name: "members"
-                widget: "list"
-                summary: "{{fields.name}}"
-                fields:
-                  - { label: "ID", name: "id", widget: "string" }
-                  - { label: "Name", name: "name", widget: "string" }
-                  - {
-                      label: "Photo",
-                      name: "photo",
-                      widget: "image",
-                      required: false,
-                    }
-                  - {
-                      label: "Photo Position",
-                      name: "photoPosition",
-                      widget: "string",
-                      required: false,
-                    }
-                  - {
-                      label: "Years as Member",
-                      name: "yearsAsMember",
-                      widget: "number",
-                      required: false,
-                    }
-                  - {
-                      label: "Hide from Members Gallery",
-                      name: "isHidden",
-                      widget: "boolean",
-                      default: false,
-                    }
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "Value", name: "value", widget: "string" }
+      - label: "Officers"
+        name: "officers"
+        widget: "list"
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Title", name: "title", widget: "string" }
+          - { label: "Photo", name: "photo", widget: "image", required: false }
+          - { label: "Photo Position", name: "photoPosition", widget: "string", required: false }
+          - { label: "Email", name: "email", widget: "string", required: false }
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Bio", name: "bio", widget: "text", required: false }
+      - label: "Members"
+        name: "members"
+        widget: "list"
+        required: false
+        summary: "{{fields.name}}"
+        fields:
+          - { label: "ID", name: "id", widget: "string" }
+          - { label: "Name", name: "name", widget: "string" }
+          - { label: "Photo", name: "photo", widget: "image", required: false }
+          - { label: "Photo Position", name: "photoPosition", widget: "string", required: false }
+          - { label: "Years as Member", name: "yearsAsMember", widget: "number", required: false }
+          - { label: "Hide from Members Gallery", name: "isHidden", widget: "boolean", default: false }

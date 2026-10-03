@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 import heroData from "@/data/hero_data.json";
+import homeContactData from "@/data/home_contact_data.json";
 
 function getMediaFit(value: string): "cover" | "contain" {
   return value === "contain" ? "contain" : "cover";
@@ -184,15 +185,13 @@ export default function Home() {
           <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-14">
             <div>
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#9b762f]">
-                Visit Saint Thérèse
+                {homeContactData.eyebrow}
               </p>
               <h2 className="mt-3 font-serif text-4xl font-bold text-primary md:text-5xl">
-                Come pray with us.
+                {homeContactData.title}
               </h2>
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-                Whether you are joining us for Mass, stopping by the parish
-                office, or visiting for the first time, we look forward to
-                welcoming you.
+                {homeContactData.description}
               </p>
 
               <div className="mt-8 space-y-3">
@@ -206,7 +205,7 @@ export default function Home() {
                       Office Hours
                     </p>
                     <p className="mt-1 font-medium text-foreground">
-                      Monday–Friday · 8 AM–12 PM & 1–3 PM
+                      {homeContactData.officeHours}
                     </p>
                   </div>
                 </div>
@@ -220,10 +219,10 @@ export default function Home() {
                       Phone
                     </p>
                     <a
-                      href="tel:+16053421556"
+                      href={`tel:${homeContactData.phoneLink}`}
                       className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75"
                     >
-                      (605) 342-1556
+                      {homeContactData.phone}
                     </a>
                   </div>
                 </div>
@@ -237,10 +236,10 @@ export default function Home() {
                       Email
                     </p>
                     <a
-                      href="mailto:connie.heeren@strcstaff.org"
+                      href={`mailto:${homeContactData.email}`}
                       className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75"
                     >
-                      connie.heeren@strcstaff.org
+                      {homeContactData.email}
                     </a>
                   </div>
                 </div>
@@ -254,7 +253,7 @@ export default function Home() {
                       Address
                     </p>
                     <p className="mt-1 font-semibold text-primary">
-                      532 Adams St · Rapid City, SD 57701
+                      {homeContactData.address}
                     </p>
                   </div>
                 </div>

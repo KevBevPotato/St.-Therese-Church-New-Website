@@ -113,7 +113,7 @@ export default function AltarSociety() {
             <section className="bg-primary text-white py-8">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-                        {org.stats.map((stat, idx) => (
+                        {(org.stats ?? []).map((stat, idx) => (
                             <div key={idx}>
                                 <p className="text-4xl font-serif font-bold text-accent">{stat.value}</p>
                                 <p className="text-xs uppercase tracking-widest text-white/60 mt-1">{stat.label}</p>
@@ -200,7 +200,7 @@ export default function AltarSociety() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
-                        {org.officers.map(officer => (
+                        {(org.officers ?? []).map(officer => (
                             <Card
                                 key={officer.id}
                                 className="group overflow-hidden border-2 border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"
@@ -259,14 +259,14 @@ export default function AltarSociety() {
                         </p>
                     </div>
 
-                    {org.members.length === 0 ? (
+                    {(org.members ?? []).length === 0 ? (
                         <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-primary/15">
                             <p className="text-muted-foreground font-bold">Member gallery coming soon.</p>
                             <p className="text-sm text-muted-foreground mt-2">Photos will be added as they become available.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {org.members.map(member => (
+                            {(org.members ?? []).map(member => (
                                 <div key={member.id} className="group">
                                     <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-primary/5 mb-3 flex items-center justify-center shadow-sm border border-primary/10 group-hover:shadow-md transition-all">
                                         {member.photo ? (

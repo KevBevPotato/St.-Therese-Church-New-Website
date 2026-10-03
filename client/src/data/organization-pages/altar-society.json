@@ -1,0 +1,59 @@
+{
+  "id": "altar-society",
+  "name": "Altar Society",
+  "tagline": "Serving the Altar, Serving the Parish",
+  "description": "The Altar Society is a long-standing tradition at Saint Thérèse, where the women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. It is a beautiful way to serve the Lord through care of His house.",
+  "audienceTag": "Women's",
+  "audience": "Catholic Women of the Parish",
+  "founded": 1950,
+  "meetingSchedule": "Quarterly",
+  "room": "Room 103",
+  "contactName": "President",
+  "contactPhone": "(605) 867-5309",
+  "stats": [
+    {
+      "label": "Active Members",
+      "value": "40+"
+    },
+    {
+      "label": "Years at Saint Thérèse",
+      "value": "70+"
+    },
+    {
+      "label": "Altars Cared For",
+      "value": "2"
+    }
+  ],
+  "officers": [
+    {
+      "id": "president",
+      "name": "[President Name]",
+      "title": "President"
+    },
+    {
+      "id": "vp",
+      "name": "[Vice President Name]",
+      "title": "Vice President"
+    },
+    {
+      "id": "secretary",
+      "name": "[Secretary Name]",
+      "title": "Secretary"
+    },
+    {
+      "id": "treasurer",
+      "name": "[Treasurer Name]",
+      "title": "Treasurer"
+    }
+  ],
+  "members": [
+    {
+      "id": "m1",
+      "name": "Member Name 1"
+    },
+    {
+      "id": "m2",
+      "name": "Member Name 2"
+    }
+  ]
+}
