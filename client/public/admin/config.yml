@@ -40,17 +40,47 @@ collections:
             name: "events"
             widget: "list"
             fields:
-              - { label: "Event ID (no spaces)", name: "id", widget: "string", hint: "e.g. feeding-sd-aug-5" }
-              - { label: "Title", name: "title", widget: "string", hint: "e.g. Feeding SD" }
-              - { label: "Date", name: "date", widget: "string", hint: "Format: 2026-11-03" }
-              - { label: "Time", name: "time", widget: "string", hint: "e.g. 8:00 AM - 9:00 AM" }
-              - { label: "Location", name: "location", widget: "string", hint: "e.g. Main Sanctuary" }
+              - {
+                  label: "Event ID (no spaces)",
+                  name: "id",
+                  widget: "string",
+                  hint: "e.g. feeding-sd-aug-5",
+                }
+              - {
+                  label: "Title",
+                  name: "title",
+                  widget: "string",
+                  hint: "e.g. Feeding SD",
+                }
+              - {
+                  label: "Date",
+                  name: "date",
+                  widget: "string",
+                  hint: "Format: 2026-11-03",
+                }
+              - {
+                  label: "Time",
+                  name: "time",
+                  widget: "string",
+                  hint: "e.g. 8:00 AM - 9:00 AM",
+                }
+              - {
+                  label: "Location",
+                  name: "location",
+                  widget: "string",
+                  hint: "e.g. Main Sanctuary",
+                }
               - label: "Event Gallery (Optional)"
                 name: "gallery"
                 widget: "list"
                 fields:
                   - { label: "Photo", name: "photo", widget: "image" }
-                  - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
+                  - {
+                      label: "Caption",
+                      name: "caption",
+                      widget: "string",
+                      hint: "Optional description of the photo",
+                    }
               - label: "Categories"
                 name: "categories"
                 widget: "list"
@@ -58,7 +88,14 @@ collections:
                   - label: "Category"
                     name: "category"
                     widget: "select"
-                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+                    options:
+                      [
+                        "sacramental",
+                        "parishEvents",
+                        "meeting",
+                        "vocations",
+                        "diocesan",
+                      ]
               - label: "Organization Calendars (Optional)"
                 name: "organizationTags"
                 widget: "list"
@@ -67,12 +104,25 @@ collections:
                   name: "organization"
                   widget: "select"
                   options:
-                    - { label: "Knights of Columbus", value: "knights-of-columbus" }
+                    - {
+                        label: "Knights of Columbus",
+                        value: "knights-of-columbus",
+                      }
                     - { label: "Altar Society", value: "altar-society" }
-                    - { label: "Catholic Daughters", value: "catholic-daughters" }
-                    - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+                    - {
+                        label: "Catholic Daughters",
+                        value: "catholic-daughters",
+                      }
+                    - {
+                        label: "St. Vincent de Paul",
+                        value: "st-vincent-de-paul",
+                      }
                     - { label: "Faith Formation", value: "faith-formation" }
-              - { label: "Description (Optional)", name: "description", widget: "text" }
+              - {
+                  label: "Description (Optional)",
+                  name: "description",
+                  widget: "text",
+                }
 
   - name: "recurring_rules"
     label: "Recurring Events for St. Therese"
@@ -85,31 +135,96 @@ collections:
             name: "rules"
             widget: "list"
             fields:
-              - { label: "Rule ID (no spaces)", name: "id", widget: "string", hint: "e.g. connect-groups-sep-25-2026" }
-              - { label: "Event Title", name: "title", widget: "string", hint: "e.g. Connect Groups" }
-              - { label: "Time", name: "time", widget: "string", hint: "e.g. 6:00 PM - 7:30 PM" }
-              - { label: "Location", name: "location", widget: "string", hint: "e.g. St. Therese Rectory" }
+              - {
+                  label: "Rule ID (no spaces)",
+                  name: "id",
+                  widget: "string",
+                  hint: "e.g. connect-groups-sep-25-2026",
+                }
+              - {
+                  label: "Event Title",
+                  name: "title",
+                  widget: "string",
+                  hint: "e.g. Connect Groups",
+                }
+              - {
+                  label: "Time",
+                  name: "time",
+                  widget: "string",
+                  hint: "e.g. 6:00 PM - 7:30 PM",
+                }
+              - {
+                  label: "Location",
+                  name: "location",
+                  widget: "string",
+                  hint: "e.g. St. Therese Rectory",
+                }
               - label: "Event Gallery (Optional)"
                 name: "gallery"
                 widget: "list"
                 fields:
                   - { label: "Photo", name: "photo", widget: "image" }
-                  - { label: "Caption", name: "caption", widget: "string", hint: "Optional description of the photo" }
-              - { label: "Recurrence Type", name: "recurrenceType", widget: "select", options: ["daily", "weekly", "monthly", "last_of_month"], hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday. Last of Month = Last [Day] of the month." }
+                  - {
+                      label: "Caption",
+                      name: "caption",
+                      widget: "string",
+                      hint: "Optional description of the photo",
+                    }
+              - {
+                  label: "Recurrence Type",
+                  name: "recurrenceType",
+                  widget: "select",
+                  options: ["daily", "weekly", "monthly", "last_of_month"],
+                  hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday. Last of Month = Last [Day] of the month.",
+                }
               - label: "Day of Week"
                 name: "dayOfWeek"
                 widget: "select"
-                options: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+                options:
+                  [
+                    "Sunday",
+                    "Monday",
+                    "Tuesday",
+                    "Wednesday",
+                    "Thursday",
+                    "Friday",
+                    "Saturday",
+                  ]
                 hint: "Ignore if Daily."
-              - { label: "Which Week of Month? (If Monthly)", name: "ordinalWeek", widget: "select", options: ["1", "2", "3", "4", "5"], hint: "Ignore if Daily/Weekly. '3' = 3rd week of month." }
-              - { label: "Start Date", name: "startDate", widget: "string", hint: "Format: 2026-10-05" }
-              - { label: "End Date (Leave blank for Perpetual)", name: "endDate", widget: "string", hint: "Format: 2027-04-05" }
+              - {
+                  label: "Which Week of Month? (If Monthly)",
+                  name: "ordinalWeek",
+                  widget: "select",
+                  options: ["1", "2", "3", "4", "5"],
+                  hint: "Ignore if Daily/Weekly. '3' = 3rd week of month.",
+                }
+              - {
+                  label: "Start Date",
+                  name: "startDate",
+                  widget: "string",
+                  hint: "Format: 2026-10-05",
+                }
+              - {
+                  label: "End Date (Leave blank for Perpetual)",
+                  name: "endDate",
+                  widget: "string",
+                  hint: "Format: 2027-04-05",
+                }
               - label: "Exclusions (Optional)"
                 name: "exclusions"
                 widget: "list"
                 fields:
-                  - { label: "Exclude Date", name: "date", widget: "string", hint: "Format: 2026-11-16" }
-              - { label: "Description (Optional)", name: "description", widget: "text" }
+                  - {
+                      label: "Exclude Date",
+                      name: "date",
+                      widget: "string",
+                      hint: "Format: 2026-11-16",
+                    }
+              - {
+                  label: "Description (Optional)",
+                  name: "description",
+                  widget: "text",
+                }
               - label: "Categories"
                 name: "categories"
                 widget: "list"
@@ -117,7 +232,14 @@ collections:
                   - label: "Category"
                     name: "category"
                     widget: "select"
-                    options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+                    options:
+                      [
+                        "sacramental",
+                        "parishEvents",
+                        "meeting",
+                        "vocations",
+                        "diocesan",
+                      ]
               - label: "Organization Calendars (Optional)"
                 name: "organizationTags"
                 widget: "list"
@@ -126,10 +248,19 @@ collections:
                   name: "organization"
                   widget: "select"
                   options:
-                    - { label: "Knights of Columbus", value: "knights-of-columbus" }
+                    - {
+                        label: "Knights of Columbus",
+                        value: "knights-of-columbus",
+                      }
                     - { label: "Altar Society", value: "altar-society" }
-                    - { label: "Catholic Daughters", value: "catholic-daughters" }
-                    - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+                    - {
+                        label: "Catholic Daughters",
+                        value: "catholic-daughters",
+                      }
+                    - {
+                        label: "St. Vincent de Paul",
+                        value: "st-vincent-de-paul",
+                      }
                     - { label: "Faith Formation", value: "faith-formation" }
 
   - name: "bulletins"
@@ -143,23 +274,112 @@ collections:
             name: "bulletins"
             widget: "list"
             fields: # <--- THIS WAS THE MISSING LINE
-              - { label: "Bulletin Title", name: "title", widget: "string", required: true, hint: "e.g., Oct 12 - Oct 19, 2024" }
-              - { label: "Start Date", name: "startDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
-              - { label: "End Date", name: "endDate", widget: "string", required: true, hint: "Format: YYYY-MM-DD (Must be a Saturday)" }
-              - { label: "PDF Upload", name: "pdfUrl", widget: "file", required: false, hint: "Optional - leave blank if not yet available" }
-              - { label: "Mass Times", name: "mass_times", widget: "markdown", required: false }
-              - { label: "Announcements", name: "announcements", widget: "markdown", required: false }
-              - { label: "New Parishioners", name: "new_parishioners", widget: "markdown", required: false }
-              - { label: "Mass Intentions", name: "mass_intentions", widget: "markdown", required: false }
-              - { label: "Daily Scriptures", name: "daily_scriptures", widget: "markdown", required: false }
-              - { label: "Lectors", name: "lectors", widget: "markdown", required: false }
-              - { label: "Ushers", name: "ushers", widget: "markdown", required: false }
-              - { label: "Altar Servers", name: "altar_servers", widget: "markdown", required: false }
-              - { label: "Contributions", name: "contributions", widget: "markdown", required: false }
-              - { label: "Prayer List", name: "prayer_list", widget: "markdown", required: false }
-              - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown", required: false }
-              - { label: "Needs", name: "needs", widget: "markdown", required: false }
-              - { label: "Sponsors", name: "sponsors", widget: "markdown", required: false }
+              - {
+                  label: "Bulletin Title",
+                  name: "title",
+                  widget: "string",
+                  required: true,
+                  hint: "e.g., Oct 12 - Oct 19, 2024",
+                }
+              - {
+                  label: "Start Date",
+                  name: "startDate",
+                  widget: "string",
+                  required: true,
+                  hint: "Format: YYYY-MM-DD (Must be a Saturday)",
+                }
+              - {
+                  label: "End Date",
+                  name: "endDate",
+                  widget: "string",
+                  required: true,
+                  hint: "Format: YYYY-MM-DD (Must be a Saturday)",
+                }
+              - {
+                  label: "PDF Upload",
+                  name: "pdfUrl",
+                  widget: "file",
+                  required: false,
+                  hint: "Optional - leave blank if not yet available",
+                }
+              - {
+                  label: "Mass Times",
+                  name: "mass_times",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Announcements",
+                  name: "announcements",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "New Parishioners",
+                  name: "new_parishioners",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Mass Intentions",
+                  name: "mass_intentions",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Daily Scriptures",
+                  name: "daily_scriptures",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Lectors",
+                  name: "lectors",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Ushers",
+                  name: "ushers",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Altar Servers",
+                  name: "altar_servers",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Contributions",
+                  name: "contributions",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Prayer List",
+                  name: "prayer_list",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "A Little Laugh",
+                  name: "a_little_laugh",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Needs",
+                  name: "needs",
+                  widget: "markdown",
+                  required: false,
+                }
+              - {
+                  label: "Sponsors",
+                  name: "sponsors",
+                  widget: "markdown",
+                  required: false,
+                }
   - name: "staff"
     label: "Staff Directory"
     files:
@@ -172,9 +392,24 @@ collections:
             widget: "list"
             summary: "{{fields.name}}"
             fields:
-              - { label: "Full Name", name: "name", widget: "string", required: true } # MOVED TO TOP
-              - { label: "Hide from Directory", name: "isHidden", widget: "boolean", defaultValue: false }
-              - { label: "Slug (no spaces, e.g. kevin-baltzer)", name: "slug", widget: "string", required: true }
+              - {
+                  label: "Full Name",
+                  name: "name",
+                  widget: "string",
+                  required: true,
+                } # MOVED TO TOP
+              - {
+                  label: "Hide from Directory",
+                  name: "isHidden",
+                  widget: "boolean",
+                  defaultValue: false,
+                }
+              - {
+                  label: "Slug (no spaces, e.g. kevin-baltzer)",
+                  name: "slug",
+                  widget: "string",
+                  required: true,
+                }
               - label: "Titles"
                 name: "titles"
                 widget: "list"
@@ -190,10 +425,27 @@ collections:
                   - label: "Category"
                     name: "category"
                     widget: "select"
-                    options: ["clergy", "staff", "catechist", "council", "music", "ministries"]
+                    options:
+                      [
+                        "clergy",
+                        "staff",
+                        "catechist",
+                        "council",
+                        "music",
+                        "ministries",
+                      ]
               - { label: "Photo", name: "photo", widget: "image" }
-              - { label: "Photo Position (e.g. center 25%)", name: "photoPosition", widget: "string" }
-              - { label: "Photo Fit", name: "photoFit", widget: "select", options: ["cover", "contain"] }
+              - {
+                  label: "Photo Position (e.g. center 25%)",
+                  name: "photoPosition",
+                  widget: "string",
+                }
+              - {
+                  label: "Photo Fit",
+                  name: "photoFit",
+                  widget: "select",
+                  options: ["cover", "contain"],
+                }
               - { label: "Duties", name: "duties", widget: "text" }
               - { label: "Bio", name: "bio", widget: "text" }
   - name: "homepage"
@@ -215,6 +467,104 @@ collections:
               name: "poster",
               widget: "image",
               required: false,
+            }
+          - {
+              label: "Media Fit",
+              name: "mediaFit",
+              widget: "select",
+              options:
+                [
+                  {
+                    label: "Cover — fills the hero; edges may be cropped",
+                    value: "cover",
+                  },
+                  {
+                    label: "Contain — shows the whole image; may leave empty space",
+                    value: "contain",
+                  },
+                ],
+              default: "cover",
+              hint: "Controls how the video or poster fits inside the hero area.",
+            }
+          - {
+              label: "Media Position",
+              name: "mediaPosition",
+              widget: "select",
+              options: ["center", "top", "bottom", "left", "right"],
+              default: "center",
+              hint: "Choose which part stays visible when Media Fit is set to Cover.",
+            }
+          - {
+              label: "Background Color",
+              name: "backgroundColor",
+              widget: "color",
+              default: "#102a45",
+              hint: "Shown behind the media, especially when it is set to Contain.",
+            }
+          - {
+              label: "Overlay Color",
+              name: "overlayColor",
+              widget: "color",
+              default: "#102a45",
+              hint: "Tint placed over the media to keep the text readable.",
+            }
+          - {
+              label: "Overlay Strength",
+              name: "overlayStrength",
+              widget: "number",
+              value_type: "float",
+              min: 0,
+              max: 1,
+              step: 0.05,
+              default: 0.9,
+              hint: "0 is transparent; 1 is strongest. Increase it if the text is hard to read.",
+            }
+          - {
+              label: "Text Color",
+              name: "textColor",
+              widget: "color",
+              default: "#ffffff",
+            }
+          - {
+              label: "Accent Color",
+              name: "accentColor",
+              widget: "color",
+              default: "#f1d99d",
+            }
+          - {
+              label: "Accent Border Color",
+              name: "accentBorderColor",
+              widget: "color",
+              default: "#d4b36a",
+            }
+          - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+          - { label: "Headline", name: "title", widget: "string" }
+          - { label: "Description", name: "description", widget: "text" }
+          - {
+              label: "Primary Button Label",
+              name: "primaryButtonLabel",
+              widget: "string",
+            }
+          - {
+              label: "Primary Button URL",
+              name: "primaryButtonUrl",
+              widget: "string",
+            }
+          - {
+              label: "Secondary Button Label",
+              name: "secondaryButtonLabel",
+              widget: "string",
+            }
+          - {
+              label: "Secondary Button URL",
+              name: "secondaryButtonUrl",
+              widget: "string",
+            }
+          - { label: "Quote", name: "quote", widget: "string" }
+          - {
+              label: "Quote Attribution",
+              name: "quoteAttribution",
+              widget: "string",
             }
   - name: "resources"
     label: "Resource Page"

@@ -1,4 +1,21 @@
 {
   "videoUrl": "/StThereseHeroMovie.mp4",
-  "poster": "/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png"
+  "poster": "/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png",
+  "mediaFit": "cover",
+  "mediaPosition": "center",
+  "backgroundColor": "#102a45",
+  "overlayColor": "#102a45",
+  "overlayStrength": 0.9,
+  "textColor": "#ffffff",
+  "accentColor": "#f1d99d",
+  "accentBorderColor": "#d4b36a",
+  "eyebrow": "Saint Thérèse · The Little Flower",
+  "title": "A parish family formed by prayer and little ways of love.",
+  "description": "Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.",
+  "primaryButtonLabel": "Become a Member",
+  "primaryButtonUrl": "/OldSTCCWebsite/MemberRegistration.pdf",
+  "secondaryButtonLabel": "Meet Our Parish Team",
+  "secondaryButtonUrl": "/about",
+  "quote": "\"My vocation, at last I have found it; my vocation is love.\"",
+  "quoteAttribution": "Saint Thérèse of Lisieux"
 }

@@ -1,12 +1,23 @@
 // Home.tsx
-import { Link } from 'wouter';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import ChurchMap from '@/components/ChurchMap';
-import { Button } from '@/components/ui/button';
-import { Clock, Mail, MapPin, Phone } from 'lucide-react';
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import ChurchMap from "@/components/ChurchMap";
+import { Button } from "@/components/ui/button";
+import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
-import heroData from '@/data/hero_data.json';
+import heroData from "@/data/hero_data.json";
+
+function getMediaFit(value: string): "cover" | "contain" {
+  return value === "contain" ? "contain" : "cover";
+}
+
+function colorWithOpacity(color: string, opacity: number): string {
+  const match = /^#([\da-f]{2})([\da-f]{2})([\da-f]{2})$/i.exec(color);
+  if (!match) return `rgba(16, 42, 69, ${opacity})`;
+
+  const [, red, green, blue] = match;
+  return `rgba(${parseInt(red, 16)}, ${parseInt(green, 16)}, ${parseInt(blue, 16)}, ${opacity})`;
+}
 
 /**
  * Home Page
@@ -17,14 +28,20 @@ import heroData from '@/data/hero_data.json';
  */
 
 export default function Home() {
-  
+  const mediaFit = getMediaFit(heroData.mediaFit);
+  const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
+  const overlayStyle = {
+    background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <Header showMassTimes />
 
       {/* Hero Section */}
       <section
-        className="relative w-full overflow-hidden pt-[var(--header-height)] text-white"
+        className="relative w-full overflow-hidden pt-[var(--header-height)]"
+        style={{ color: heroData.textColor }}
       >
         {/* 
             CONTAINER CHANGE: 
@@ -32,8 +49,10 @@ export default function Home() {
             2. Added 'min-h-[600px]' (or whatever minimum height you like).
             3. This container now grows automatically if the text wraps!
         */}
-        <div className="relative w-full bg-[#102a45] min-h-[600px] flex items-center py-20">
-
+        <div
+          className="relative flex min-h-[600px] w-full items-center py-20"
+          style={{ backgroundColor: heroData.backgroundColor }}
+        >
           {/* Video background - Now purely a background layer */}
           <div className="absolute inset-0 z-0">
             {heroData.videoUrl ? (
@@ -43,7 +62,11 @@ export default function Home() {
                 muted
                 playsInline
                 poster={heroData.poster}
-                className="absolute inset-0 h-full w-full object-cover"
+                className="absolute inset-0 h-full w-full"
+                style={{
+                  objectFit: mediaFit,
+                  objectPosition: heroData.mediaPosition,
+                }}
               >
                 <source src={heroData.videoUrl} type="video/mp4" />
               </video>
@@ -51,78 +74,100 @@ export default function Home() {
               <img
                 src={heroData.poster}
                 alt="Saint Thérèse Church"
-                className="h-full w-full object-cover"
+                className="h-full w-full"
+                style={{
+                  objectFit: mediaFit,
+                  objectPosition: heroData.mediaPosition,
+                }}
               />
             )}
 
-            <div className="absolute inset-0 bg-gradient-to-r from-[#102a45]/92 via-[#102a45]/58 to-[#102a45]/10" />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#102a45]/65 via-transparent to-[#102a45]/20" />
+            <div className="absolute inset-0" style={overlayStyle} />
           </div>
 
           {/* Hero Content - Now 'relative' so it pushes the height of the parent */}
           <div className="container relative z-10 px-6 mx-auto">
             <div className="max-w-3xl py-12 pr-10">
-
-              <div className="border-l-2 border-[#d4b36a] pl-4 md:pl-6 lg:pl-9">
-
-                <p className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em] text-[#f1d99d]">
-                  Saint Thérèse · The Little Flower
+              <div
+                className="border-l-2 pl-4 md:pl-6 lg:pl-9"
+                style={{ borderColor: heroData.accentBorderColor }}
+              >
+                <p
+                  className="flex items-center gap-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.22em]"
+                  style={{ color: heroData.accentColor }}
+                >
+                  {heroData.eyebrow}
                 </p>
 
                 <h1
-                  className="mt-6 sm:mt-8 lg:mt-10 font-serif font-bold leading-tight text-white"
-                  style={{ fontSize: 'clamp(1.75rem, 4.5vw, 5.4rem)' }}
+                  className="mt-6 sm:mt-8 lg:mt-10 font-serif font-bold leading-tight"
+                  style={{ fontSize: "clamp(1.75rem, 4.5vw, 5.4rem)" }}
                 >
-                  A parish family formed by prayer and little ways of love.
+                  {heroData.title}
                 </h1>
 
                 <p
-                  className="mt-6 sm:mt-8 lg:mt-10 max-w-2xl leading-relaxed text-white/86"
-                  style={{ fontSize: 'clamp(0.95rem, 1.8vw, 1.25rem)' }}
+                  className="mt-6 sm:mt-8 lg:mt-10 max-w-2xl leading-relaxed"
+                  style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.25rem)" }}
                 >
-                  Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.
+                  {heroData.description}
                 </p>
 
                 <div className="mt-8 sm:mt-10 lg:mt-12 flex flex-col gap-3 sm:flex-row">
                   <a
-                    href="/OldSTCCWebsite/MemberRegistration.pdf"
+                    href={heroData.primaryButtonUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex"
-                    aria-label="Become a Member — PDF opens in new tab"
+                    aria-label={`${heroData.primaryButtonLabel} — opens in new tab`}
                   >
                     <Button
                       size="lg"
-                      className="w-full bg-white text-primary shadow-lg hover:bg-[#f4ead5] sm:w-auto"
-                      style={{ fontSize: 'clamp(0.75rem, 1.2vw, 1rem)' }}
+                      className="w-full shadow-lg sm:w-auto"
+                      style={{
+                        backgroundColor: heroData.textColor,
+                        color: heroData.backgroundColor,
+                        fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
+                      }}
                     >
-                      Become a Member
+                      {heroData.primaryButtonLabel}
                     </Button>
                   </a>
-                  <Link href="/about" className="inline-flex">
+                  <a href={heroData.secondaryButtonUrl} className="inline-flex">
                     <Button
                       size="lg"
                       variant="outline"
-                      className="w-full border-white/65 bg-[#102a45]/15 text-white backdrop-blur-sm hover:bg-white/12 sm:w-auto"
-                      style={{ fontSize: 'clamp(0.75rem, 1.2vw, 1rem)' }}
+                      className="w-full backdrop-blur-sm sm:w-auto"
+                      style={{
+                        borderColor: colorWithOpacity(heroData.textColor, 0.65),
+                        backgroundColor: colorWithOpacity(
+                          heroData.backgroundColor,
+                          0.15
+                        ),
+                        color: heroData.textColor,
+                        fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
+                      }}
                     >
-                      Meet Our Parish Team
+                      {heroData.secondaryButtonLabel}
                     </Button>
-                  </Link>
+                  </a>
                 </div>
 
                 <div className="mt-12 sm:mt-16 lg:mt-20 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
                   <p
-                    className="font-serif italic leading-snug text-white/95"
-                    style={{ fontSize: 'clamp(1rem, 2vw, 1.5rem)' }}
+                    className="font-serif italic leading-snug"
+                    style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}
                   >
-                    "My vocation, at last I have found it; my vocation is love."
+                    {heroData.quote}
                   </p>
                   <p
-                    className="mt-2 font-bold uppercase tracking-[0.18em] text-[#f1d99d]"
-                    style={{ fontSize: 'clamp(0.65rem, 1vw, 0.75rem)' }}
+                    className="mt-2 font-bold uppercase tracking-[0.18em]"
+                    style={{
+                      fontSize: "clamp(0.65rem, 1vw, 0.75rem)",
+                      color: heroData.accentColor,
+                    }}
                   >
-                    Saint Thérèse of Lisieux
+                    {heroData.quoteAttribution}
                   </p>
                 </div>
               </div>
@@ -138,39 +183,79 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="grid gap-10 lg:grid-cols-[0.78fr_1.22fr] lg:items-center lg:gap-14">
             <div>
-              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#9b762f]">Visit Saint Thérèse</p>
-              <h2 className="mt-3 font-serif text-4xl font-bold text-primary md:text-5xl">Come pray with us.</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.2em] text-[#9b762f]">
+                Visit Saint Thérèse
+              </p>
+              <h2 className="mt-3 font-serif text-4xl font-bold text-primary md:text-5xl">
+                Come pray with us.
+              </h2>
               <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
-                Whether you are joining us for Mass, stopping by the parish office, or visiting for the first time, we look forward to welcoming you.
+                Whether you are joining us for Mass, stopping by the parish
+                office, or visiting for the first time, we look forward to
+                welcoming you.
               </p>
 
               <div className="mt-8 space-y-3">
                 <div className="flex gap-3 border-b border-primary/10 pb-4">
-                  <Clock className="mt-0.5 size-5 shrink-0 text-[#9b762f]" aria-hidden="true" />
+                  <Clock
+                    className="mt-0.5 size-5 shrink-0 text-[#9b762f]"
+                    aria-hidden="true"
+                  />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Office Hours</p>
-                    <p className="mt-1 font-medium text-foreground">Monday–Friday · 8 AM–12 PM & 1–3 PM</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      Office Hours
+                    </p>
+                    <p className="mt-1 font-medium text-foreground">
+                      Monday–Friday · 8 AM–12 PM & 1–3 PM
+                    </p>
                   </div>
                 </div>
                 <div className="flex gap-3 border-b border-primary/10 py-4">
-                  <Phone className="mt-0.5 size-5 shrink-0 text-[#9b762f]" aria-hidden="true" />
+                  <Phone
+                    className="mt-0.5 size-5 shrink-0 text-[#9b762f]"
+                    aria-hidden="true"
+                  />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Phone</p>
-                    <a href="tel:+16053421556" className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75">(605) 342-1556</a>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      Phone
+                    </p>
+                    <a
+                      href="tel:+16053421556"
+                      className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75"
+                    >
+                      (605) 342-1556
+                    </a>
                   </div>
                 </div>
                 <div className="flex gap-3 border-b border-primary/10 py-4">
-                  <Mail className="mt-0.5 size-5 shrink-0 text-[#9b762f]" aria-hidden="true" />
+                  <Mail
+                    className="mt-0.5 size-5 shrink-0 text-[#9b762f]"
+                    aria-hidden="true"
+                  />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Email</p>
-                    <a href="mailto:connie.heeren@strcstaff.org" className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75">connie.heeren@strcstaff.org</a>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      Email
+                    </p>
+                    <a
+                      href="mailto:connie.heeren@strcstaff.org"
+                      className="mt-1 block font-semibold text-primary transition-colors hover:text-primary/75"
+                    >
+                      connie.heeren@strcstaff.org
+                    </a>
                   </div>
                 </div>
                 <div className="flex gap-3 pt-4">
-                  <MapPin className="mt-0.5 size-5 shrink-0 text-[#9b762f]" aria-hidden="true" />
+                  <MapPin
+                    className="mt-0.5 size-5 shrink-0 text-[#9b762f]"
+                    aria-hidden="true"
+                  />
                   <div>
-                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">Address</p>
-                    <p className="mt-1 font-semibold text-primary">532 Adams St · Rapid City, SD 57701</p>
+                    <p className="text-xs font-bold uppercase tracking-[0.14em] text-muted-foreground">
+                      Address
+                    </p>
+                    <p className="mt-1 font-semibold text-primary">
+                      532 Adams St · Rapid City, SD 57701
+                    </p>
                   </div>
                 </div>
               </div>
