@@ -252,6 +252,10 @@ collections:
     extension: "json"
     format: "json"
     summary: "{{title}} · {{date}}"
+    sortable_fields:
+      - field: "date"
+        label: "Event date"
+        default_sort: "asc"
     fields:
       - {
           label: "Event ID (no spaces)",
@@ -369,6 +373,10 @@ collections:
     extension: "json"
     format: "json"
     summary: "{{title}}"
+    sortable_fields:
+      - field: "schedule.startDate"
+        label: "Schedule start date"
+        default_sort: "asc"
     fields:
       - {
           label: "Rule ID (no spaces)",
