@@ -448,13 +448,13 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
             <div className="min-w-0 py-2 sm:py-3 sm:pr-6">
               <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">Sunday Mass</p>
               <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">
-                9:00 AM · 5:30 PM <span className="hidden text-[10px] font-sans font-medium opacity-80 sm:inline sm:ml-2">| Confession starts 8 AM, 4:30 PM</span>
+                9:00 AM · 5:30 PM <span className="hidden text-[10px] font-sans font-medium opacity-80 lg:inline lg:ml-2">| Confession starts 8 AM, 4:30 PM</span>
               </p>
             </div>
             <div className="min-w-0 py-2 sm:px-6 sm:py-3">
               <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">Saturday Vigil</p>
               <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">
-                4:30 PM <span className="hidden text-[10px] font-sans font-medium opacity-80 sm:inline sm:ml-2">| Confession starts 3 PM</span>
+                4:30 PM <span className="hidden text-[10px] font-sans font-medium opacity-80 lg:inline lg:ml-2">| Confession starts 3 PM</span>
               </p>
             </div>
             <div className="min-w-0 py-2 sm:pl-6 sm:py-3">
