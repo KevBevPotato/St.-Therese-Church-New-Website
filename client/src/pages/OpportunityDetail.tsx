@@ -5,6 +5,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
     ArrowLeft,
+    Calendar,
     Phone,
     Mail,
     CheckCircle2,
@@ -14,6 +15,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved_data.json';
+import { staticEvents, generateRecurringEventsForMonth, type EventOrganizationTag } from '@/components/eventfolders/events';
+import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
 
 interface OpportunityDetailData {
     id: string;
@@ -74,6 +77,30 @@ export default function OpportunityDetail() {
         images: opportunity.images ?? [],
         signUpLinks: opportunity.signUpLinks ?? [],
     };
+    const calendarTagByOpportunityId: Record<string, EventOrganizationTag> = {
+        'catholic-daughters': 'catholic-daughters',
+        'st-vincent-de-paul-food-drive': 'st-vincent-de-paul',
+    };
+    const organizationTag = calendarTagByOpportunityId[id ?? ''];
+    const now = new Date();
+    const calendarCutoff = new Date();
+    calendarCutoff.setDate(calendarCutoff.getDate() + 90);
+    const calendarEvents = organizationTag
+        ? [
+            ...staticEvents,
+            ...[0, 1, 2].flatMap((monthOffset) => {
+                const date = new Date(now.getFullYear(), now.getMonth() + monthOffset, 1);
+                return generateRecurringEventsForMonth(date.getMonth(), date.getFullYear());
+            }),
+        ]
+            .filter((event) =>
+                event.organizationTags?.includes(organizationTag) &&
+                event.date >= now &&
+                event.date <= calendarCutoff
+            )
+            .sort((a, b) => a.date.getTime() - b.date.getTime())
+            .slice(0, 6)
+        : [];
 
 
     return (
@@ -188,6 +215,21 @@ export default function OpportunityDetail() {
                         </Card>
                     </div>
                 </div>
+
+                {organizationTag && (
+                    <section className="mt-16 border-t border-primary/10 pt-16">
+                        <div className="mb-10 text-center">
+                            <p className="mb-3 flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
+                                <Calendar size={14} /> On the Calendar
+                            </p>
+                            <h2 className="mb-4 font-serif text-4xl font-bold text-primary">Upcoming Events</h2>
+                        </div>
+                        <UpcomingOrgEvents
+                            events={calendarEvents}
+                            orgName={details.organization}
+                        />
+                    </section>
+                )}
             </main>
 
             <Footer />

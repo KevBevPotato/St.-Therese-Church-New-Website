@@ -19,6 +19,7 @@ export interface Member {
     photo?: string;
     photoPosition?: string;
     yearsAsMember?: number;
+    isHidden?: boolean;
 }
 
 export interface Organization {

@@ -72,15 +72,18 @@
       "members": [
         {
           "id": "m1",
-          "name": "Member Name 1"
+          "name": "Member Name 1",
+          "isHidden": true
         },
         {
           "id": "m2",
-          "name": "Member Name 2"
+          "name": "Member Name 2",
+          "isHidden": true
         },
         {
           "id": "m3",
-          "name": "Member Name 3"
+          "name": "Member Name 3",
+          "isHidden": true
         }
       ],
       "joinUrl": "https://www.kofc.org/get-involved/join-kofc/"

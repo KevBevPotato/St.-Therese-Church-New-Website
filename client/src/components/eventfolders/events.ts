@@ -1,8 +1,8 @@
-import { CalendarEvent, EventCategory, TimeFilter } from './types';
+import { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter } from './types';
 import { oneTimeEvents } from './oneTimeEvents';
 import recurringData from './recurringRules.json';
 
-export type { CalendarEvent, EventCategory, TimeFilter };
+export type { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter };
 export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
 
 export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; dot: string; label: string; labelColor: string }> = {
@@ -127,6 +127,7 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                         time: rule.time,
                         location: rule.location,
                         categories: rule.categories.map((c: any) => c.category || c),
+                        organizationTags: rule.organizationTags ?? [],
                         description: rule.description,
                     });
                 }

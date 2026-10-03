@@ -166,6 +166,7 @@ export default function FaithFormation() {
                 return (
                     title.includes('family formation') ||
                     title.includes('faith formation') ||
+                    event.organizationTags?.includes('faith-formation') ||
                     event.linkedOpportunityId === 'wednesday-night-supper' ||
                     event.id.includes('connect-groups') // Ensures Connect Groups show up here
                 );

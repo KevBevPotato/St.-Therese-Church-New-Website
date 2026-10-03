@@ -52,6 +52,7 @@ function getKoCRelevantEvents(): CalendarEvent[] {
 export default function KnightsOfColumbus() {
     const org = getOrganizationById('knights-of-columbus');
     const upcomingEvents = getKoCRelevantEvents();
+    const visibleMembers = org?.members.filter((member) => !member.isHidden) ?? [];
 
     if (!org) {
         return (
@@ -306,7 +307,6 @@ export default function KnightsOfColumbus() {
             </section>
             */}
 
-            {/* Members Gallery - Temporarily hidden until member photos are ready.
             <section className="py-16 md:py-20 bg-secondary/20 border-t border-primary/10">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
@@ -321,14 +321,14 @@ export default function KnightsOfColumbus() {
                         </p>
                     </div>
 
-                    {org.members.length === 0 ? (
+                    {visibleMembers.length === 0 ? (
                         <div className="text-center py-16 bg-white rounded-2xl border-2 border-dashed border-primary/15">
                             <p className="text-muted-foreground font-bold">Member gallery coming soon.</p>
                             <p className="text-sm text-muted-foreground mt-2">Photos will be added as they become available.</p>
                         </div>
                     ) : (
                         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                            {org.members.map(member => (
+                            {visibleMembers.map(member => (
                                 <div key={member.id} className="group">
                                     <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-primary/5 mb-3 flex items-center justify-center shadow-sm border border-primary/10 group-hover:shadow-md transition-all">
                                         {member.photo ? (
@@ -358,7 +358,6 @@ export default function KnightsOfColumbus() {
                     )}
                 </div>
             </section>
-            */}
 
             {/* ✅ Upcoming Events — id="upcoming-events" is the scroll target for the hero button */}
             <section id="upcoming-events" className="py-16 md:py-20 bg-background border-t border-primary/10 scroll-mt-[100px]">

@@ -59,6 +59,19 @@ collections:
                     name: "category"
                     widget: "select"
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+              - label: "Organization Calendars (Optional)"
+                name: "organizationTags"
+                widget: "list"
+                field:
+                  label: "Organization"
+                  name: "organization"
+                  widget: "select"
+                  options:
+                    - { label: "Knights of Columbus", value: "knights-of-columbus" }
+                    - { label: "Altar Society", value: "altar-society" }
+                    - { label: "Catholic Daughters", value: "catholic-daughters" }
+                    - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+                    - { label: "Faith Formation", value: "faith-formation" }
               - { label: "Description (Optional)", name: "description", widget: "text" }
 
   - name: "recurring_rules"
@@ -105,6 +118,19 @@ collections:
                     name: "category"
                     widget: "select"
                     options: ["sacramental", "parishEvents", "meeting", "vocations", "diocesan"]
+              - label: "Organization Calendars (Optional)"
+                name: "organizationTags"
+                widget: "list"
+                field:
+                  label: "Organization"
+                  name: "organization"
+                  widget: "select"
+                  options:
+                    - { label: "Knights of Columbus", value: "knights-of-columbus" }
+                    - { label: "Altar Society", value: "altar-society" }
+                    - { label: "Catholic Daughters", value: "catholic-daughters" }
+                    - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+                    - { label: "Faith Formation", value: "faith-formation" }
 
   - name: "bulletins"
     label: "Parish Bulletins"
@@ -968,4 +994,10 @@ collections:
                       name: "yearsAsMember",
                       widget: "number",
                       required: false,
+                    }
+                  - {
+                      label: "Hide from Members Gallery",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
                     }

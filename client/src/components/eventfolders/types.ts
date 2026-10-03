@@ -1,5 +1,11 @@
 // src/data/events/types.ts
 export type EventCategory = 'sacramental' | 'parishEvents' | 'meeting' | 'vocations' | 'diocesan'; // Removed 'special' and 'carloAcutis'
+export type EventOrganizationTag =
+    | 'knights-of-columbus'
+    | 'altar-society'
+    | 'catholic-daughters'
+    | 'st-vincent-de-paul'
+    | 'faith-formation';
 export type TimeFilter = 'all' | 'thisMonth' | 'nextMonth' | 'twoPlus';
 
 export interface CalendarEvent {
@@ -20,7 +26,7 @@ export interface CalendarEvent {
     gallery?: { photo: string; caption?: string }[]; // <--- ADD THIS LINE
     faqItems?: Array<{ question: string; answer: string }>;
     linkedOpportunityId?: string;
-    organizationTags?: string[];
+    organizationTags?: EventOrganizationTag[];
 }
 export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; dot: string; label: string; labelColor: string }> = {
     sacramental: { bg: 'bg-amber-50', border: 'border-amber-400', dot: 'bg-amber-500', label: 'Sacramental Life', labelColor: 'text-amber-700' },
