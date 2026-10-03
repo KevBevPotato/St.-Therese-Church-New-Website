@@ -1,18 +1,15 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { staticEvents } from '@/components/eventfolders/events';
-import { EventCard } from '@/components/event-components';
-import { Card } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { staticEvents, generateRecurringEventsForMonth } from '../components/eventfolders/events';
+import { EventCard } from '../components/event-components';
+import { Card } from '../components/ui/card';
+import { Button } from '../components/ui/button';
 import {
-    Calendar,
     BookOpen,
     X,
     FileText,
-    MapPin,
-    User,
     Heart,
     ArrowRight,
 } from 'lucide-react';
@@ -20,16 +17,10 @@ import {
     faithCategories,
     type FaithCategory,
     type FaithGroup,
-} from '@/data/faith-formation';
+} from '../data/faith-formation';
 
 /**
  * Faith Formation Landing Page
- *
- * Each program card links to its own landing page at /faith-formation/:categoryId.
- * Landing pages display the catechists (with circular photos + Safe Environment PDF
- * links), a photo carousel, an about section, and resources.
- *
- * All programs meet on Wednesdays 6:15 PM - 7:30 PM.
  */
 
 type FormSacraments = {
@@ -151,17 +142,31 @@ export default function FaithFormation() {
         return selectedGroups.has(cat.group);
     });
 
+    // UPDATED LOGIC: Now includes recurring events from Decap CMS
     const upcomingFaithFormationEvents = (() => {
         const now = new Date();
+        const currentMonth = now.getMonth();
+        const currentYear = now.getFullYear();
 
-        return staticEvents
+        // 1. Get one-time events
+        const statics = staticEvents;
+
+        // 2. Generate recurring events for this month and next month
+        const recurringThisMonth = generateRecurringEventsForMonth(currentMonth, currentYear);
+        const recurringNextMonth = generateRecurringEventsForMonth(currentMonth + 1, currentYear);
+
+        // Combine all
+        const allEvents = [...statics, ...recurringThisMonth, ...recurringNextMonth];
+
+        return allEvents
             .filter((event) => {
                 if (event.date < now) return false;
                 const title = event.title.toLowerCase();
                 return (
                     title.includes('family formation') ||
                     title.includes('faith formation') ||
-                    event.linkedOpportunityId === 'wednesday-night-supper'
+                    event.linkedOpportunityId === 'wednesday-night-supper' ||
+                    event.id.includes('connect-groups') // Ensures Connect Groups show up here
                 );
             })
             .sort((a, b) => a.date.getTime() - b.date.getTime());
@@ -253,7 +258,6 @@ export default function FaithFormation() {
             <Header />
             <div className="pt-[69px]" />
 
-            {/* Hero */}
             <section className="relative overflow-hidden border-b border-primary/10 bg-[#fbfaf6] py-16 md:py-20">
                 <div className="absolute -right-20 -top-24 size-80 rounded-full bg-[#b8954f]/10 blur-3xl" aria-hidden="true" />
                 <div className="container relative grid gap-10 md:grid-cols-[1.18fr_0.82fr] md:items-end mx-auto px-4">
@@ -310,7 +314,6 @@ export default function FaithFormation() {
                                         </h2>
                                     </div>
                                 </div>
-
                                 <div className="max-h-[460px] space-y-3 overflow-y-auto pr-1">
                                     {upcomingFaithFormationEvents.map((event) => (
                                         <EventCard
@@ -329,12 +332,10 @@ export default function FaithFormation() {
 
             <main className="flex-grow py-12">
                 <div className="container mx-auto px-4">
-                    {/* Filter Section */}
                     <div className="mb-12">
                         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
                             <h2 className="font-serif text-3xl font-bold text-primary">Explore Our Programs</h2>
                         </div>
-
                         <div className="flex flex-wrap gap-3 justify-center md:justify-start">
                             <button
                                 onClick={() => toggleGroup('all')}
@@ -359,8 +360,6 @@ export default function FaithFormation() {
                                         {g.label}
                                     </button>
                                 ))}
-
-                            {/* 👇 ADD YOUR BUTTON HERE */}
                             <button
                                 onClick={deselectAll}
                                 className="text-xs font-bold text-primary/40 hover:text-accent uppercase tracking-widest transition-colors"
@@ -370,7 +369,6 @@ export default function FaithFormation() {
                         </div>
                     </div>
 
-                    {/* Program Cards */}
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
                         {filtered.map((cat) => (
                             <CategoryCard key={cat.id} category={cat} />
@@ -391,11 +389,9 @@ export default function FaithFormation() {
                             </Button>
                         </div>
                     )}
-
                 </div>
             </main>
 
-            {/* Registration Modal */}
             {isFormOpen && (
                 <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
@@ -442,7 +438,6 @@ export default function FaithFormation() {
                                         ))}
                                     </select>
                                 </div>
-
                                 <div className="space-y-2">
                                     <label className="text-xs font-bold text-primary uppercase tracking-widest">
                                         Are you a member at St. Thérèse?
@@ -623,15 +618,10 @@ export default function FaithFormation() {
                     </div>
                 </div>
             )}
-
             <Footer />
         </div>
     );
 }
-
-/* ============================================================ */
-/*                   Program Card Component                     */
-/* ============================================================ */
 
 function CategoryCard({ category }: { category: FaithCategory }) {
     const primaryCatechist = category.catechists[0];
@@ -639,7 +629,6 @@ function CategoryCard({ category }: { category: FaithCategory }) {
 
     return (
         <Card className="group flex h-full flex-col border-2 border-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl p-6 pb-3">
-            {/* Top: title, age, description, room */}
             <Link href={`/faith-formation/${category.id}`} className="block mb-2 group/title">
                 <h3 className="font-serif text-2xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors">
                     {category.title}
@@ -650,15 +639,12 @@ function CategoryCard({ category }: { category: FaithCategory }) {
                     )}
                 </h3>
             </Link>
-
             <p className="text-muted-foreground leading-relaxed text-sm mb-3">
                 {category.shortDescription}
                 <span className="mt-2 block text-primary">
                     {category.location?.startsWith('Room') ? category.location : `Room: ${category.location}`}
                 </span>
             </p>
-
-            {/* Bottom: catechist + CTA */}
             <div className="mt-auto -mx-6 px-6 py-4 bg-gray-50/50 border-t border-gray-100">
                 {primaryCatechist && (
                     <div className="flex items-center gap-3 mb-4">
@@ -683,7 +669,6 @@ function CategoryCard({ category }: { category: FaithCategory }) {
                         </div>
                     </div>
                 )}
-
                 <Link href={`/faith-formation/${category.id}`}>
                     <a className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white py-3 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all group/btn">
                         Learn More
