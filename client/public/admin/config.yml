@@ -134,3 +134,37 @@ collections:
               - { label: "A Little Laugh", name: "a_little_laugh", widget: "markdown", required: false }
               - { label: "Needs", name: "needs", widget: "markdown", required: false }
               - { label: "Sponsors", name: "sponsors", widget: "markdown", required: false }
+  - name: "staff"
+    label: "Staff Directory"
+    files:
+      - file: "client/src/data/staff_data.json"
+        label: "Staff List"
+        name: "staff_file"
+        fields:
+          - label: "Staff Members"
+            name: "staff"
+            widget: "list"
+            fields:
+              - { label: "Slug (no spaces, e.g. kevin-baltzer)", name: "slug", widget: "string", required: true }
+              - { label: "Full Name", name: "name", widget: "string", required: true }
+              - label: "Titles"
+                name: "titles"
+                widget: "list"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+              - { label: "Email", name: "email", widget: "string" }
+              - { label: "Phone", name: "phone", widget: "string" }
+              - { label: "Office Room", name: "officeRoom", widget: "string" }
+              - label: "Categories"
+                name: "categories"
+                widget: "list"
+                fields:
+                  - label: "Category"
+                    name: "category"
+                    widget: "select"
+                    options: ["clergy", "staff", "catechist", "council", "music", "ministries"]
+              - { label: "Photo", name: "photo", widget: "image" }
+              - { label: "Photo Position (e.g. center 25%)", name: "photoPosition", widget: "string" }
+              - { label: "Photo Fit", name: "photoFit", widget: "select", options: ["cover", "contain"] }
+              - { label: "Duties", name: "duties", widget: "text" }
+              - { label: "Bio", name: "bio", widget: "text" }

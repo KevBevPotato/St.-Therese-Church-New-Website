@@ -4,7 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { Mail, Phone } from 'lucide-react';
-import { staffMembers, staffCategories, StaffMember } from '@/data/staff';
+import { staffMembers, staffCategories, StaffMember } from '../data/staff';
 
 export default function About() {
   // ✅ Keep your whitelist for now
