@@ -1,4 +1,4 @@
-import staffData from './staff_data.json';
+import * as staffDataModule from './staff_data.json';
 
 export interface StaffMember {
     slug: string;
@@ -15,9 +15,10 @@ export interface StaffMember {
     bio?: string;
 }
 
-// We use 'as any' then 'as StaffMember[]' to force TypeScript to accept the JSON strings
-// as the specific categories required by the interface.
-export const staffMembers = (staffData as any[]).map((member) => ({
+// Force TypeScript to treat the imported JSON as 'any' so we can safely access .staff
+const rawData = (staffDataModule as any).staff || (staffDataModule as any).default?.staff || [];
+
+export const staffMembers = (rawData as any[]).map((member) => ({
     ...member,
     duties: member.duties || 'Serving the parish community with care and dedication.',
     bio: member.bio || 'More information about this ministry role will be shared soon.',

@@ -350,7 +350,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
 
                       {hasChildren && (
                         <div className="absolute left-full top-0 ml-1 min-w-[180px] rounded-md border border-border bg-white py-2 shadow-lg opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-opacity duration-200">
-                          {link.children.map((child) => (
+                          {link.children?.map((child) => (
                             <Link
                               key={child.href}
                               href={child.href}
