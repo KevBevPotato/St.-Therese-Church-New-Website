@@ -8,7 +8,7 @@ import { staffMembers, StaffMember } from '../data/staff';
 export default function About() {
   // ✅ WHITELIST REMOVED: We now use the full list from staff_data.json
   // This means anyone you add in the CMS will automatically appear here.
-  const filteredStaff = staffMembers;
+  const filteredStaff = staffMembers.filter(member => !member.isHidden);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
