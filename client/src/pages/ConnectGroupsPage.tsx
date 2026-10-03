@@ -4,8 +4,20 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, BookOpen, Heart, Users, Sparkles } from 'lucide-react';
 import { Link } from 'wouter';
+import getInvolvedData from '@/data/get-involved_data.json';
 
 export default function ConnectGroupsPage() {
+  const configuredPages = getInvolvedData.opportunities as Array<{
+    id: string;
+    landingPageTitle?: string;
+    landingPageDescription?: string;
+    contactEmail?: string;
+    signUpLinks?: Array<{ label: string; url: string }>;
+  }>;
+  const page = configuredPages.find((item) => item.id === 'connect-groups');
+  const title = page?.landingPageTitle ?? 'Connect Groups';
+  const contactEmail = page?.contactEmail ?? getInvolvedData.settings.contactEmail;
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
       <Header />
@@ -22,12 +34,11 @@ export default function ConnectGroupsPage() {
           <div className="space-y-8">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3">Parish Life</p>
-              <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary leading-tight">Connect Groups</h1>
+              <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary leading-tight">{title}</h1>
             </div>
 
             <p className="text-lg leading-relaxed text-muted-foreground">
-              Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation.
-              They help us grow in friendship, support one another, and bring the Gospel into everyday life.
+              {page?.landingPageDescription ?? 'Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.'}
             </p>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -61,12 +72,19 @@ export default function ConnectGroupsPage() {
               <li>• Catholics who want to grow in discipleship and community</li>
             </ul>
             <div className="mt-8">
-              <a href="mailto:office@sttherese.org?subject=Connect%20Groups%20Interest" className="block">
+              <a href={`mailto:${contactEmail}?subject=Connect%20Groups%20Interest`} className="block">
                 <Button className="w-full bg-primary hover:bg-primary/90 py-6 uppercase tracking-widest font-bold">
                   Get Connected
                 </Button>
               </a>
             </div>
+            {page?.signUpLinks?.map((link) => (
+              <a key={`${link.label}-${link.url}`} href={link.url} target="_blank" rel="noopener noreferrer" className="mt-3 block">
+                <Button variant="outline" className="w-full uppercase tracking-widest font-bold">
+                  {link.label}
+                </Button>
+              </a>
+            ))}
           </Card>
         </div>
 

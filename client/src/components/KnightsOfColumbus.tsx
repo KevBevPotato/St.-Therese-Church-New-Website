@@ -15,14 +15,13 @@ import {
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
+import getInvolvedData from '@/data/get-involved_data.json';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 
 const FORM_URLS = {
-    referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
+    referral: getInvolvedData.settings.referralUrl,
 };
-
-const KOC_SIGNUP_URL = 'https://www.kofc.org/get-involved/join-kofc/';
 
 /**
  * Pulls only events tagged with the 'knights-of-columbus' invisible org tag
@@ -214,22 +213,29 @@ export default function KnightsOfColumbus() {
                                     <a href={`tel:${org.contactPhone.replace(/\D/g, '')}`} className="text-sm text-accent hover:underline inline-flex items-center gap-1 mt-1">
                                         <Phone size={12} /> {org.contactPhone}
                                     </a>
+                                    {org.contactEmail && (
+                                        <a href={`mailto:${org.contactEmail}`} className="text-sm text-accent hover:underline inline-flex items-center gap-1 mt-1">
+                                            <Mail size={12} /> {org.contactEmail}
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </Card>
                     </div>
 
                     <div className="flex flex-wrap gap-4 mt-8 justify-center">
-                        <a
-                            href={KOC_SIGNUP_URL}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg rounded-md transition-colors"
-                        >
-                            <Users size={16} /> Join the Knights
-                        </a>
+                        {org.joinUrl && (
+                            <a
+                                href={org.joinUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg rounded-md transition-colors"
+                            >
+                                <Users size={16} /> Join the Knights
+                            </a>
+                        )}
                         <Button
-                            onClick={() => window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
+                            onClick={() => FORM_URLS.referral && window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >

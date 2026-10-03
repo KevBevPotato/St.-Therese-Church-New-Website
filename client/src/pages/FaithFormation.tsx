@@ -15,6 +15,7 @@ import {
 } from 'lucide-react';
 import {
     faithCategories,
+    faithFormationSettings,
     type FaithCategory,
     type FaithGroup,
 } from '../data/faith-formation';
@@ -266,16 +267,16 @@ export default function FaithFormation() {
                             <BookOpen className="size-4" aria-hidden="true" /> Growing in Faith
                         </p>
                         <h1 className="mt-4 max-w-3xl font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-                            Wednesday Faith Formation Programs
+                            {faithFormationSettings.pageTitle}
                         </h1>
                         <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted-foreground">
-                            Nurturing faith at every stage of life. From our littlest nursery babies to lifelong adult learners, discover programs designed to deepen your relationship with Christ and our parish community.
+                            {faithFormationSettings.introduction}
                         </p>
                         <div className="mt-6 max-w-xl rounded-2xl border border-primary/10 bg-white/80 p-4 shadow-sm backdrop-blur-sm">
                             <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">Wednesday Evening Schedule</p>
                             <div className="mt-3 flex flex-wrap gap-6 text-sm font-semibold text-primary">
-                                <span>Meal: 5:30–6:15 PM</span>
-                                <span>Classes: 6:15–7:30 PM</span>
+                                <span>Meal: {faithFormationSettings.mealTime}</span>
+                                <span>Classes: {faithFormationSettings.classTime}</span>
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-4 mt-8">
@@ -286,22 +287,26 @@ export default function FaithFormation() {
                             >
                                 Register Here
                             </Button>
-                            <a
-                                href="https://www.signupgenius.com/"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
-                            >
-                                Help us serve food!
-                            </a>
-                            <a
-                                href="/About&Staff/DirectoryBoard_11zon.png"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
-                            >
-                                <FileText size={18} /> View Classroom Locations
-                            </a>
+                            {faithFormationSettings.signupUrl && (
+                                <a
+                                    href={faithFormationSettings.signupUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                                >
+                                    {faithFormationSettings.signupLabel}
+                                </a>
+                            )}
+                            {faithFormationSettings.classroomMapUrl && (
+                                <a
+                                    href={faithFormationSettings.classroomMapUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                                >
+                                    <FileText size={18} /> {faithFormationSettings.classroomMapLabel}
+                                </a>
+                            )}
                         </div>
                     </div>
                     <aside className="flex flex-col gap-5 pl-6 md:mb-1">
@@ -418,7 +423,7 @@ export default function FaithFormation() {
                                     <Heart size={18} className="text-accent" /> Registration Information
                                 </h4>
                                 <p className="text-sm text-muted-foreground leading-relaxed">
-                                    Please fill out the form below to register your children for our Faith Formation programs. All programs meet on Wednesdays from 6:15 PM to 7:30 PM.
+                                    Please fill out the form below to register your children for our Faith Formation programs. {faithFormationSettings.classNote}
                                 </p>
                             </div>
 

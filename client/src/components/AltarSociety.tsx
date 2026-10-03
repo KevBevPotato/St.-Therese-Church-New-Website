@@ -15,13 +15,14 @@ import {
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
+import getInvolvedData from '@/data/get-involved_data.json';
 // ✅ Fixed: use relative path since events.ts is in the same directory
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 
 const FORM_URLS = {
-    signUpToHelp: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UQkFRRTFRUDIzWkcwT0JOODc2MzdaNlVERy4u',
-    referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
+    signUpToHelp: getInvolvedData.settings.signUpToHelpUrl,
+    referral: getInvolvedData.settings.referralUrl,
 };
 
 function getAltarSocietyEvents(): CalendarEvent[] {
@@ -155,6 +156,11 @@ export default function AltarSociety() {
                                     <a href={`tel:${org.contactPhone.replace(/\D/g, '')}`} className="text-sm text-accent hover:underline inline-flex items-center gap-1 mt-1">
                                         <Phone size={12} /> {org.contactPhone}
                                     </a>
+                                    {org.contactEmail && (
+                                        <a href={`mailto:${org.contactEmail}`} className="text-sm text-accent hover:underline inline-flex items-center gap-1 mt-1">
+                                            <Mail size={12} /> {org.contactEmail}
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </Card>
@@ -162,13 +168,13 @@ export default function AltarSociety() {
 
                     <div className="flex flex-wrap gap-4 mt-8 justify-center">
                         <Button
-                            onClick={() => window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer')}
+                            onClick={() => FORM_URLS.signUpToHelp && window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer')}
                             className="bg-primary hover:bg-primary/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
                         >
                             <Users size={16} className="mr-2" /> Become a Member
                         </Button>
                         <Button
-                            onClick={() => window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
+                            onClick={() => FORM_URLS.referral && window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >

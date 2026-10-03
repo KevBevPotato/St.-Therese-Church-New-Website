@@ -5,8 +5,6 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
     ArrowLeft,
-    Calendar,
-    Building2,
     Phone,
     Mail,
     CheckCircle2,
@@ -15,6 +13,23 @@ import {
     Heart
 } from 'lucide-react';
 import { Link } from 'wouter';
+import getInvolvedData from '@/data/get-involved_data.json';
+
+interface OpportunityDetailData {
+    id: string;
+    title: string;
+    organization?: string;
+    landingPageTitle?: string;
+    contactName: string;
+    contactPhone: string;
+    contactEmail?: string;
+    description: string;
+    landingPageDescription?: string;
+    faqs?: Array<{ question: string; answer: string }>;
+    requirements?: string[];
+    images?: string[];
+    signUpLinks?: Array<{ label: string; url: string }>;
+}
 
 /**
  * Opportunity Detail Page
@@ -24,54 +39,42 @@ import { Link } from 'wouter';
 export default function OpportunityDetail() {
     const [match, params] = useRoute('/get-involved/:id');
 
-    // In a real application, you would fetch data from a database or a shared constant file.
-    // For this prototype, we map the ID to the correct content.
     const id = params?.id;
-
-    // Mock data mapping
-    const getDetailData = (id: string | undefined) => {
-        switch (id) {
-            case '2':
-                return {
-                    title: "Youth Ministry Mentors",
-                    organization: "Faith Formation",
-                    contact: { name: "Jane Doe", phone: "(605) 867-5309", email: "office@sttherese.org" },
-                    description: "Our Youth Ministry is more than just a class; it's a community where high schoolers can encounter Christ. Mentors provide a consistent, loving presence that helps teens navigate their faith in the modern world.",
-                    faqs: [
-                        { q: "What is the time commitment?", a: "Mentors meet every Wednesday evening from 6:30 PM to 8:30 PM during the school year." },
-                        { q: "Do I need special training?", a: "Yes, all volunteers must complete Safe Environment Training (Safe Haven). We provide the resources for this." }
-                    ],
-                    requirements: ["Active member of the parish", "Vibrant personal prayer life", "Safe Environment Training completion"]
-                };
-            case '1':
-                return {
-                    title: "Sanctuary Renovation",
-                    organization: "Parish Council",
-                    contact: { name: "John Doe", phone: "(605) 867-5309", email: "office@sttherese.org" },
-                    description: "Help us preserve the beauty of our sacred space. This project involves restoring liturgical elements and upgrading sanctuary technology.",
-                    faqs: [
-                        { q: "How can I contribute?", a: "You can sponsor specific items or make a general donation to the renovation fund." },
-                        { q: "When will the project be finished?", a: "We aim to complete the primary restorations by Easter 2027." }
-                    ],
-                    requirements: ["A heart for liturgical beauty", "Financial support or specialized craft skills"]
-                };
-            default:
-                return {
-                    title: "Parish Opportunity",
-                    organization: "St. Thérèse Parish",
-                    contact: { name: "Parish Office", phone: "(605) 348-6808", email: "office@sttherese.org" },
-                    description: "Join this vital parish mission to serve our community and grow in faith together.",
-                    faqs: [
-                        { q: "How do I get started?", a: "Fill out the interest form on the Get Involved page or contact the coordinator listed here." }
-                    ],
-                    requirements: ["Active parishioner", "Willingness to serve"]
-                };
-        }
-    };
-
-    const details = getDetailData(id);
+    const opportunities = getInvolvedData.opportunities as OpportunityDetailData[];
+    const opportunity = opportunities.find((item) => item.id === id);
 
     if (!match) return null;
+    if (!opportunity) {
+        return (
+            <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
+                <Header />
+                <div className="pt-[var(--header-height)]" />
+                <main className="container mx-auto flex-grow px-4 py-16 text-center">
+                    <h1 className="font-serif text-4xl font-bold text-primary">Opportunity Not Found</h1>
+                    <Link href="/get-involved">
+                        <Button className="mt-6">Back to Opportunities</Button>
+                    </Link>
+                </main>
+                <Footer />
+            </div>
+        );
+    }
+
+    const details = {
+        title: opportunity.landingPageTitle ?? opportunity.title,
+        organization: opportunity.organization ?? 'St. Thérèse Parish',
+        contact: {
+            name: opportunity.contactName,
+            phone: opportunity.contactPhone,
+            email: opportunity.contactEmail ?? getInvolvedData.settings.contactEmail,
+        },
+        description: opportunity.landingPageDescription ?? opportunity.description,
+        faqs: opportunity.faqs ?? [],
+        requirements: opportunity.requirements ?? [],
+        images: opportunity.images ?? [],
+        signUpLinks: opportunity.signUpLinks ?? [],
+    };
+
 
     return (
         <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -101,30 +104,30 @@ export default function OpportunityDetail() {
                             </p>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div className="aspect-video bg-gray-200 rounded-3xl overflow-hidden relative group">
-                                <img src="https://images.unsplash.com/photo-1511632765486-a01980e01a18?auto=format&fit=crop&q=80&w=800" alt="Parish Life" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-primary/20" />
+                        {details.images.length > 0 && (
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {details.images.map((image, index) => (
+                                    <div key={`${image}-${index}`} className="aspect-video bg-gray-200 rounded-3xl overflow-hidden relative group">
+                                        <img src={image} alt={`${details.title} ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                                        <div className="absolute inset-0 bg-primary/10" />
+                                    </div>
+                                ))}
                             </div>
-                            <div className="aspect-video bg-gray-200 rounded-3xl overflow-hidden relative group">
-                                <img src="https://images.unsplash.com/photo-1529070538774-1843cb3265df?auto=format&fit=crop&q=80&w=800" alt="Fellowship" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                <div className="absolute inset-0 bg-primary/20" />
-                            </div>
-                        </div>
+                        )}
 
-                        <div className="space-y-8 pt-8">
+                        {details.faqs.length > 0 && <div className="space-y-8 pt-8">
                             <h2 className="font-serif text-3xl font-bold text-primary flex items-center gap-3">
                                 <HelpCircle className="text-accent" /> Frequently Asked Questions
                             </h2>
                             <div className="space-y-6">
                                 {details.faqs.map((faq, i) => (
                                     <div key={i} className="bg-white p-8 rounded-3xl border border-primary/5 shadow-sm">
-                                        <h4 className="font-bold text-primary mb-3">{faq.q}</h4>
-                                        <p className="text-muted-foreground leading-relaxed">{faq.a}</p>
+                                        <h4 className="font-bold text-primary mb-3">{faq.question}</h4>
+                                        <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
                                     </div>
                                 ))}
                             </div>
-                        </div>
+                        </div>}
                     </div>
 
                     <div className="space-y-8">
@@ -143,6 +146,17 @@ export default function OpportunityDetail() {
                                     Fill Interest Form
                                 </Button>
                             </Link>
+                            {details.signUpLinks.map((link) => (
+                                <a
+                                    key={`${link.label}-${link.url}`}
+                                    href={link.url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="block rounded-full border border-primary/20 bg-white px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:border-accent hover:text-accent"
+                                >
+                                    {link.label}
+                                </a>
+                            ))}
                         </Card>
 
                         <Card className="p-8 border-none shadow-lg bg-primary text-white rounded-[2rem] relative overflow-hidden">
@@ -164,9 +178,11 @@ export default function OpportunityDetail() {
                                     <a href={`tel:${details.contact.phone.replace(/\D/g, '')}`} className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
                                         <Phone size={16} /> {details.contact.phone}
                                     </a>
-                                    <a href={`mailto:${details.contact.email}`} className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
-                                        <Mail size={16} /> {details.contact.email}
-                                    </a>
+                                    {details.contact.email && (
+                                        <a href={`mailto:${details.contact.email}`} className="flex items-center gap-3 text-sm hover:text-accent transition-colors">
+                                            <Mail size={16} /> {details.contact.email}
+                                        </a>
+                                    )}
                                 </div>
                             </div>
                         </Card>

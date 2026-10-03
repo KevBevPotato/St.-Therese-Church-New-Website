@@ -6,6 +6,7 @@ import ChurchMap from '@/components/ChurchMap';
 import { Button } from '@/components/ui/button';
 import { Clock, Mail, MapPin, Phone } from 'lucide-react';
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
+import heroData from '@/data/hero_data.json';
 
 /**
  * Home Page
@@ -35,20 +36,24 @@ export default function Home() {
 
           {/* Video background - Now purely a background layer */}
           <div className="absolute inset-0 z-0">
-            <video
-              autoPlay
-              loop
-              muted
-              playsInline
-              className="absolute inset-0 h-full w-full object-cover"
-            >
-              <source src="/StThereseHeroMovie.mp4" type="video/mp4" />
+            {heroData.videoUrl ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={heroData.poster}
+                className="absolute inset-0 h-full w-full object-cover"
+              >
+                <source src={heroData.videoUrl} type="video/mp4" />
+              </video>
+            ) : (
               <img
-                src="/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png"
+                src={heroData.poster}
                 alt="Saint Thérèse Church"
                 className="h-full w-full object-cover"
               />
-            </video>
+            )}
 
             <div className="absolute inset-0 bg-gradient-to-r from-[#102a45]/92 via-[#102a45]/58 to-[#102a45]/10" />
             <div className="absolute inset-0 bg-gradient-to-t from-[#102a45]/65 via-transparent to-[#102a45]/20" />

@@ -170,3 +170,802 @@ collections:
               - { label: "Photo Fit", name: "photoFit", widget: "select", options: ["cover", "contain"] }
               - { label: "Duties", name: "duties", widget: "text" }
               - { label: "Bio", name: "bio", widget: "text" }
+  - name: "homepage"
+    label: "Home Page"
+    files:
+      - file: "client/src/data/hero_data.json"
+        label: "Hero Video"
+        name: "hero_video"
+        fields:
+          - {
+              label: "Hero Video File or URL",
+              name: "videoUrl",
+              widget: "file",
+              required: false,
+              hint: "Upload an MP4 or choose an existing video. Leave blank to show the poster image only.",
+            }
+          - {
+              label: "Fallback Poster Image",
+              name: "poster",
+              widget: "image",
+              required: false,
+            }
+  - name: "resources"
+    label: "Resource Page"
+    files:
+      - file: "client/src/data/resources_data.json"
+        label: "Resource Categories and Cards"
+        name: "resources_file"
+        fields:
+          - label: "Page Settings"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Eyebrow", name: "eyebrow", widget: "string" }
+              - { label: "Page Title", name: "title", widget: "string" }
+              - { label: "Introduction", name: "introduction", widget: "text" }
+              - { label: "Quote", name: "quote", widget: "text" }
+              - {
+                  label: "Quote Attribution",
+                  name: "quoteAttribution",
+                  widget: "string",
+                }
+          - label: "Resource Categories (drag to reorder)"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - {
+                  label: "Category ID (URL-safe)",
+                  name: "id",
+                  widget: "string",
+                  hint: "Keep existing IDs unchanged so category anchors remain stable.",
+                }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - label: "Resource Cards (drag to reorder)"
+                name: "links"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - {
+                      label: "Card ID (URL-safe)",
+                      name: "id",
+                      widget: "string",
+                    }
+                  - { label: "Title", name: "title", widget: "string" }
+                  - {
+                      label: "Description",
+                      name: "description",
+                      widget: "text",
+                    }
+                  - {
+                      label: "Link URL (internal path or external URL)",
+                      name: "href",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "External Link",
+                      name: "external",
+                      widget: "boolean",
+                      default: false,
+                    }
+                  - {
+                      label: "Card Background Image (optional)",
+                      name: "image",
+                      widget: "image",
+                      required: false,
+                    }
+                  - {
+                      label: "App Logo Image (optional)",
+                      name: "iconImage",
+                      widget: "image",
+                      required: false,
+                    }
+                  - {
+                      label: "Fallback Icon",
+                      name: "icon",
+                      widget: "select",
+                      options:
+                        [
+                          "BookOpen",
+                          "Calendar",
+                          "Church",
+                          "FileText",
+                          "GraduationCap",
+                          "Heart",
+                          "HelpCircle",
+                          "Phone",
+                          "Shield",
+                          "Users",
+                        ],
+                      default: "BookOpen",
+                    }
+                  - label: "Background Image Appearance"
+                    name: "imageSettings"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - {
+                          label: "Image Size",
+                          name: "scale",
+                          widget: "select",
+                          options:
+                            [
+                              "scale-100",
+                              "scale-110",
+                              "scale-125",
+                              "scale-150",
+                            ],
+                          default: "scale-100",
+                        }
+                      - {
+                          label: "Image Transparency",
+                          name: "opacity",
+                          widget: "select",
+                          options:
+                            [
+                              "opacity-10",
+                              "opacity-20",
+                              "opacity-30",
+                              "opacity-40",
+                              "opacity-60",
+                            ],
+                          default: "opacity-40",
+                        }
+                      - {
+                          label: "Image Position",
+                          name: "position",
+                          widget: "select",
+                          options:
+                            [
+                              "object-center",
+                              "object-top",
+                              "object-bottom",
+                              "object-left",
+                              "object-right",
+                            ],
+                          default: "object-center",
+                        }
+                      - {
+                          label: "Background Blur",
+                          name: "blur",
+                          widget: "select",
+                          options:
+                            [
+                              "backdrop-blur-none",
+                              "backdrop-blur-[2px]",
+                              "backdrop-blur-sm",
+                              "backdrop-blur-md",
+                              "backdrop-blur-lg",
+                            ],
+                          default: "backdrop-blur-[2px]",
+                        }
+                  - label: "Logo Appearance"
+                    name: "logoSettings"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - {
+                          label: "Logo Size",
+                          name: "scale",
+                          widget: "select",
+                          options:
+                            [
+                              "size-8",
+                              "size-10",
+                              "size-12",
+                              "size-14",
+                              "size-16",
+                            ],
+                          default: "size-12",
+                        }
+                      - {
+                          label: "Logo Shape",
+                          name: "rounded",
+                          widget: "select",
+                          options:
+                            [
+                              "rounded-none",
+                              "rounded-sm",
+                              "rounded-md",
+                              "rounded-lg",
+                              "rounded-xl",
+                              "rounded-2xl",
+                              "rounded-full",
+                            ],
+                          default: "rounded-xl",
+                        }
+                      - {
+                          label: "Logo Border",
+                          name: "border",
+                          widget: "select",
+                          options:
+                            [
+                              "border-none",
+                              "border-primary/10",
+                              "border-white",
+                              "border-accent",
+                            ],
+                          default: "border-primary/10",
+                        }
+                      - {
+                          label: "Logo Opacity",
+                          name: "opacity",
+                          widget: "select",
+                          options: ["opacity-50", "opacity-80", "opacity-100"],
+                          default: "opacity-100",
+                        }
+  - name: "faith_formation"
+    label: "Faith Formation"
+    files:
+      - file: "client/src/data/faith-formation.json"
+        label: "Wednesday Faith Formation Programs"
+        name: "faith_formation_file"
+        fields:
+          - label: "Page and Wednesday Schedule"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Page Title", name: "pageTitle", widget: "string" }
+              - { label: "Introduction", name: "introduction", widget: "text" }
+              - { label: "Meal Time", name: "mealTime", widget: "string" }
+              - { label: "Class Time", name: "classTime", widget: "string" }
+              - { label: "Schedule Note", name: "classNote", widget: "string" }
+              - {
+                  label: "Food Signup URL",
+                  name: "signupUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Food Signup Button",
+                  name: "signupLabel",
+                  widget: "string",
+                }
+              - {
+                  label: "Classroom Map URL",
+                  name: "classroomMapUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Classroom Map Button",
+                  name: "classroomMapLabel",
+                  widget: "string",
+                }
+              - {
+                  label: "Classroom Map Note",
+                  name: "classroomNote",
+                  widget: "string",
+                }
+              - {
+                  label: "Contact Phone",
+                  name: "contactPhone",
+                  widget: "string",
+                }
+          - label: "Programs (drag to reorder)"
+            name: "categories"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - { label: "Program ID (URL-safe)", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - {
+                  label: "Subtitle",
+                  name: "subtitle",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Program Name",
+                  name: "programName",
+                  widget: "string",
+                  required: false,
+                }
+              - { label: "Age Range", name: "ageRange", widget: "string" }
+              - {
+                  label: "Group",
+                  name: "group",
+                  widget: "select",
+                  options:
+                    ["elementary", "middle-school", "high-school", "adult"],
+                }
+              - {
+                  label: "Short Description",
+                  name: "shortDescription",
+                  widget: "text",
+                }
+              - {
+                  label: "Long Description",
+                  name: "longDescription",
+                  widget: "text",
+                }
+              - { label: "Meeting Time", name: "meetingTime", widget: "string" }
+              - {
+                  label: "Classroom / Room",
+                  name: "location",
+                  widget: "string",
+                }
+              - {
+                  label: "About This Program",
+                  name: "aboutText",
+                  widget: "text",
+                }
+              - label: "Catechists"
+                name: "catechists"
+                widget: "list"
+                summary: "{{fields.name}}"
+                fields:
+                  - {
+                      label: "ID",
+                      name: "id",
+                      widget: "string",
+                      required: false,
+                    }
+                  - { label: "Name", name: "name", widget: "string" }
+                  - {
+                      label: "Role",
+                      name: "role",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Photo",
+                      name: "photo",
+                      widget: "image",
+                      required: false,
+                    }
+                  - {
+                      label: "Photo Position",
+                      name: "photoPosition",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Email",
+                      name: "email",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Phone",
+                      name: "phone",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Safe Environment PDF",
+                      name: "safeEnvironmentPdf",
+                      widget: "file",
+                      required: false,
+                    }
+                  - {
+                      label: "Bio",
+                      name: "bio",
+                      widget: "text",
+                      required: false,
+                    }
+              - label: "Program Photos"
+                name: "photos"
+                widget: "list"
+                field: { label: "Photo", name: "photo", widget: "image" }
+              - label: "Resources"
+                name: "resources"
+                widget: "list"
+                summary: "{{fields.title}}"
+                fields:
+                  - { label: "Title", name: "title", widget: "string" }
+                  - {
+                      label: "Description",
+                      name: "description",
+                      widget: "text",
+                    }
+                  - {
+                      label: "Publisher",
+                      name: "publisher",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Link",
+                      name: "link",
+                      widget: "string",
+                      required: false,
+                    }
+  - name: "get_involved"
+    label: "Get Involved"
+    files:
+      - file: "client/src/data/get-involved_data.json"
+        label: "Opportunities and Signup Links"
+        name: "get_involved_file"
+        fields:
+          - label: "Page Settings and Forms"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Page Title", name: "pageTitle", widget: "string" }
+              - { label: "Introduction", name: "introduction", widget: "text" }
+              - {
+                  label: "Serve Filter Heading",
+                  name: "serveHeading",
+                  widget: "string",
+                }
+              - {
+                  label: "Interest Filter Heading",
+                  name: "interestHeading",
+                  widget: "string",
+                }
+              - { label: "Contact Name", name: "contactName", widget: "string" }
+              - {
+                  label: "Contact Phone",
+                  name: "contactPhone",
+                  widget: "string",
+                }
+              - {
+                  label: "Contact Email",
+                  name: "contactEmail",
+                  widget: "string",
+                }
+              - {
+                  label: "Contribute Form URL",
+                  name: "contributeNurseryUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Volunteer Form URL",
+                  name: "signUpToHelpUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Suggestion Form URL",
+                  name: "suggestionUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Referral Form URL",
+                  name: "referralUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Wednesday Supper Signup URL",
+                  name: "supperWeekVolunteerUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - label: "Serve Categories"
+                name: "categories"
+                widget: "list"
+                summary: "{{fields.label}}"
+                fields:
+                  - {
+                      label: "ID",
+                      name: "id",
+                      widget: "select",
+                      options: ["all", "sponsor", "help", "join", "request"],
+                    }
+                  - { label: "Label", name: "label", widget: "string" }
+              - label: "Interest Tags"
+                name: "tags"
+                widget: "list"
+                field:
+                  {
+                    label: "Tag",
+                    name: "tag",
+                    widget: "select",
+                    options:
+                      [
+                        "Liturgy",
+                        "Diocesan",
+                        "Parish Events",
+                        "Parish Organizations",
+                      ],
+                  }
+          - label: "Opportunities (drag to reorder)"
+            name: "opportunities"
+            widget: "list"
+            summary: "{{fields.title}}"
+            fields:
+              - {
+                  label: "ID / URL Slug (do not change after publishing)",
+                  name: "id",
+                  widget: "string",
+                }
+              - { label: "Title", name: "title", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - {
+                  label: "Categories",
+                  name: "categories",
+                  widget: "list",
+                  field:
+                    {
+                      label: "Category",
+                      name: "category",
+                      widget: "select",
+                      options: ["sponsor", "help", "join"],
+                    },
+                }
+              - {
+                  label: "Interest Tags",
+                  name: "tags",
+                  widget: "list",
+                  field:
+                    {
+                      label: "Tag",
+                      name: "tag",
+                      widget: "select",
+                      options:
+                        [
+                          "Liturgy",
+                          "Diocesan",
+                          "Parish Events",
+                          "Parish Organizations",
+                        ],
+                    },
+                }
+              - {
+                  label: "Organization",
+                  name: "organization",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Date / Schedule",
+                  name: "date",
+                  widget: "string",
+                  required: false,
+                }
+              - { label: "Contact Name", name: "contactName", widget: "string" }
+              - {
+                  label: "Contact Phone",
+                  name: "contactPhone",
+                  widget: "string",
+                }
+              - {
+                  label: "Contact Email",
+                  name: "contactEmail",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Landing Page Title",
+                  name: "landingPageTitle",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Hide / Expired",
+                  name: "expired",
+                  widget: "boolean",
+                  default: false,
+                }
+              - {
+                  label: "Special Landing Page",
+                  name: "customPage",
+                  widget: "select",
+                  required: false,
+                  options:
+                    [
+                      "",
+                      "supper-week",
+                      "altar-society",
+                      "knights-of-columbus",
+                      "connect-groups",
+                      "group-studies",
+                    ],
+                }
+              - {
+                  label: "Special Organization Icon",
+                  name: "orgIcon",
+                  widget: "select",
+                  required: false,
+                  options: ["shield", "flower"],
+                }
+              - {
+                  label: "Landing Page Description",
+                  name: "landingPageDescription",
+                  widget: "text",
+                  required: false,
+                }
+              - {
+                  label: "Requirements",
+                  name: "requirements",
+                  widget: "list",
+                  required: false,
+                  field:
+                    {
+                      label: "Requirement",
+                      name: "requirement",
+                      widget: "string",
+                    },
+                }
+              - label: "Landing Page FAQs"
+                name: "faqs"
+                widget: "list"
+                required: false
+                summary: "{{fields.question}}"
+                fields:
+                  - { label: "Question", name: "question", widget: "string" }
+                  - { label: "Answer", name: "answer", widget: "text" }
+              - label: "Landing Page Photos"
+                name: "images"
+                widget: "list"
+                required: false
+                field: { label: "Photo", name: "photo", widget: "image" }
+              - label: "Sign-up / Event Links"
+                name: "signUpLinks"
+                widget: "list"
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "Button Label", name: "label", widget: "string" }
+                  - {
+                      label: "URL (Microsoft Forms, SignUpGenius, potluck page, etc.)",
+                      name: "url",
+                      widget: "string",
+                    }
+              - {
+                  label: "Fundraising Goal",
+                  name: "goalAmount",
+                  widget: "number",
+                  required: false,
+                }
+              - {
+                  label: "Current Amount",
+                  name: "currentAmount",
+                  widget: "number",
+                  required: false,
+                }
+              - {
+                  label: "Construction Total",
+                  name: "constructionTotal",
+                  widget: "string",
+                  required: false,
+                }
+              - label: "Construction Items"
+                name: "constructionItems"
+                widget: "list"
+                required: false
+                summary: "{{fields.category}}"
+                fields:
+                  - { label: "Category", name: "category", widget: "string" }
+                  - { label: "Subtotal", name: "subtotal", widget: "string" }
+                  - label: "Items"
+                    name: "items"
+                    widget: "list"
+                    fields:
+                      - { label: "Name", name: "name", widget: "string" }
+                      - { label: "Cost", name: "cost", widget: "string" }
+  - name: "organizations"
+    label: "Organization Landing Pages"
+    files:
+      - file: "client/src/data/organizations_data.json"
+        label: "Organizations"
+        name: "organizations_file"
+        fields:
+          - label: "Organizations (drag to reorder)"
+            name: "organizations"
+            widget: "list"
+            summary: "{{fields.name}}"
+            fields:
+              - { label: "ID (do not change)", name: "id", widget: "string" }
+              - { label: "Name", name: "name", widget: "string" }
+              - { label: "Tagline", name: "tagline", widget: "string" }
+              - { label: "Description", name: "description", widget: "text" }
+              - {
+                  label: "Audience Tag",
+                  name: "audienceTag",
+                  widget: "select",
+                  options: ["Men's", "Women's"],
+                }
+              - { label: "Audience", name: "audience", widget: "string" }
+              - { label: "Founded", name: "founded", widget: "number" }
+              - {
+                  label: "Meeting Schedule",
+                  name: "meetingSchedule",
+                  widget: "string",
+                }
+              - {
+                  label: "Room",
+                  name: "room",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Hero Image",
+                  name: "heroImage",
+                  widget: "image",
+                  required: false,
+                }
+              - { label: "Contact Name", name: "contactName", widget: "string" }
+              - {
+                  label: "Contact Phone",
+                  name: "contactPhone",
+                  widget: "string",
+                }
+              - {
+                  label: "Contact Email",
+                  name: "contactEmail",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Organization Join / Signup URL",
+                  name: "joinUrl",
+                  widget: "string",
+                  required: false,
+                }
+              - label: "Statistics"
+                name: "stats"
+                widget: "list"
+                fields:
+                  - { label: "Label", name: "label", widget: "string" }
+                  - { label: "Value", name: "value", widget: "string" }
+              - label: "Officers"
+                name: "officers"
+                widget: "list"
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string" }
+                  - { label: "Name", name: "name", widget: "string" }
+                  - { label: "Title", name: "title", widget: "string" }
+                  - {
+                      label: "Photo",
+                      name: "photo",
+                      widget: "image",
+                      required: false,
+                    }
+                  - {
+                      label: "Photo Position",
+                      name: "photoPosition",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Email",
+                      name: "email",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Phone",
+                      name: "phone",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Bio",
+                      name: "bio",
+                      widget: "text",
+                      required: false,
+                    }
+              - label: "Members"
+                name: "members"
+                widget: "list"
+                summary: "{{fields.name}}"
+                fields:
+                  - { label: "ID", name: "id", widget: "string" }
+                  - { label: "Name", name: "name", widget: "string" }
+                  - {
+                      label: "Photo",
+                      name: "photo",
+                      widget: "image",
+                      required: false,
+                    }
+                  - {
+                      label: "Photo Position",
+                      name: "photoPosition",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Years as Member",
+                      name: "yearsAsMember",
+                      widget: "number",
+                      required: false,
+                    }

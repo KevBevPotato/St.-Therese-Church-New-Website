@@ -21,6 +21,7 @@ import {
 } from 'lucide-react';
 import {
     faithCategories,
+    faithFormationSettings,
     type FaithCategory,
 } from '@/data/faith-formation';
 
@@ -118,14 +119,16 @@ export default function FaithFormationDetail() {
                                         Register Your Child
                                     </Button>
                                 </Link>
-                                <a
-                                    href="/About%26Staff/DirectoryBoard_11zon.png"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-3 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
-                                >
-                                    <FileText size={18} /> View Classroom Locations
-                                </a>
+                                {faithFormationSettings.classroomMapUrl && (
+                                    <a
+                                        href={faithFormationSettings.classroomMapUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-3 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
+                                    >
+                                        <FileText size={18} /> {faithFormationSettings.classroomMapLabel}
+                                    </a>
+                                )}
                             </div>
                         </div>
                         <aside className="border-l-2 border-[#b8954f] pl-6 md:mb-1">
@@ -154,7 +157,7 @@ export default function FaithFormationDetail() {
                                     <p className="text-lg font-serif font-bold text-primary">
                                         {category.meetingTime ?? 'Wednesdays 6:15 PM – 7:30 PM'}
                                     </p>
-                                    <p className="text-sm text-muted-foreground mt-1">All programs meet on Wednesdays.</p>
+                                    <p className="text-sm text-muted-foreground mt-1">{faithFormationSettings.classNote}</p>
                                 </div>
                             </div>
                         </Card>
@@ -169,7 +172,7 @@ export default function FaithFormationDetail() {
                                     <p className="text-lg font-serif font-bold text-primary">
                                         {category.location?.startsWith('Room') ? category.location : `Room: ${category.location ?? 'St. Thérèse Parish'}`}
                                     </p>
-                                    <p className="text-sm text-muted-foreground mt-1">See classroom map for details.</p>
+                                    <p className="text-sm text-muted-foreground mt-1">{faithFormationSettings.classroomNote}</p>
                                 </div>
                             </div>
                         </Card>
@@ -191,7 +194,7 @@ export default function FaithFormationDetail() {
 
                     <Card className="p-10 border-none shadow-xl bg-white rounded-3xl">
                         <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">
-                            {(category as any).about ?? category.shortDescription ?? 'No additional information available for this program yet.'}
+                            {category.aboutText || category.longDescription || category.shortDescription}
                         </p>
 
                         {(category as any).details && Array.isArray((category as any).details) && (
@@ -338,10 +341,10 @@ export default function FaithFormationDetail() {
                             </Button>
                         </Link>
                         <a
-                            href="tel:6053421556"
+                            href={`tel:${faithFormationSettings.contactPhone.replace(/\D/g, '')}`}
                             className="inline-flex items-center gap-2 bg-white border-2 border-primary/20 text-primary hover:bg-primary/5 px-8 py-3 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
                         >
-                            <Phone size={16} /> Call the Parish Office
+                            <Phone size={16} /> {faithFormationSettings.contactPhone}
                         </a>
                     </div>
                 </div>

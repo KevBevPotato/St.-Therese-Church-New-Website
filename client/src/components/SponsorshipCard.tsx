@@ -27,6 +27,7 @@ interface SponsorshipCardProps {
     onSignUpToHelp: () => void;
     onRefer: () => void;
     onSuggestion: () => void;
+    signUpLinks?: Array<{ label: string; url: string }>;
 }
 
 export default function SponsorshipCard({
@@ -35,6 +36,7 @@ export default function SponsorshipCard({
     onSignUpToHelp,
     onRefer,
     onSuggestion,
+    signUpLinks,
 }: SponsorshipCardProps) {
     const [isExpanded, setIsExpanded] = useState(false);
 
@@ -293,6 +295,21 @@ export default function SponsorshipCard({
                         <UserPlus size={12} /> Refer
                     </Button>
                 </div>
+                {signUpLinks && signUpLinks.length > 0 && (
+                    <div className="space-y-2">
+                        {signUpLinks.map((link) => (
+                            <a
+                                key={`${link.label}-${link.url}`}
+                                href={link.url}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="block rounded-full border border-primary/20 bg-white px-4 py-2 text-center text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:border-accent hover:text-accent"
+                            >
+                                {link.label}
+                            </a>
+                        ))}
+                    </div>
+                )}
             </div>
         </Card>
     );

@@ -17,12 +17,13 @@ import {
     Heart,
 } from 'lucide-react';
 import { Link } from 'wouter';
+import getInvolvedData from '@/data/get-involved_data.json';
 
 const FORM_URLS = {
-    contribute: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMU5XQlRRNEE4TVFXOFdQM0JBODFXWUhURy4u',
-    signUpToHelp: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UQkFRRTFRUDIzWkcwT0JOODc2MzdaNlVERy4u',
-    suggestion: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMjBVRk5PNFk0S0lQS041NjdCNVo2QlkxNS4u',
-    referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
+    contribute: getInvolvedData.settings.contributeNurseryUrl,
+    signUpToHelp: getInvolvedData.settings.signUpToHelpUrl,
+    suggestion: getInvolvedData.settings.suggestionUrl,
+    referral: getInvolvedData.settings.referralUrl,
 };
 
 type RoleName = 'Grocery Pick-up' | 'Food Prep' | 'Food Server' | 'Clean-up Crew';
@@ -290,6 +291,14 @@ const monthGroups: MonthGroup[] = (() => {
 })();
 
 export default function WednesdaySupper() {
+    const configuredOpportunities = getInvolvedData.opportunities as Array<{
+        id: string;
+        landingPageTitle?: string;
+        landingPageDescription?: string;
+        contactName: string;
+        contactPhone: string;
+    }>;
+    const supperPage = configuredOpportunities.find((item) => item.id === 'supper-week');
     const [expandedMonth, setExpandedMonth] = useState<string>('September-2026');
     const [expandedWeek, setExpandedWeek] = useState<string | null>(null);
 
@@ -305,7 +314,7 @@ export default function WednesdaySupper() {
     );
 
     const openForm = (url: string) => {
-        window.open(url, '_blank', 'noopener,noreferrer');
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -326,10 +335,10 @@ export default function WednesdaySupper() {
                             Parish Hospitality
                         </p>
                         <h1 className="font-serif text-5xl md:text-6xl font-bold text-primary mb-6 leading-tight">
-                            Wednesday Night Supper
+                            {supperPage?.landingPageTitle ?? 'Wednesday Night Supper'}
                         </h1>
                         <p className="text-lg text-muted-foreground leading-relaxed">
-                            Every Wednesday during the school year, our parish family gathers for supper from 5:30-6:00 PM before Faith Formation classes. Sponsor a week for $200, or sign up to help with grocery pick-up, food prep, serving, or cleanup.
+                            {supperPage?.landingPageDescription ?? 'Every Wednesday during the school year, our parish family gathers for supper from 5:30-6:00 PM before Faith Formation classes. Sponsor a week for $200, or sign up to help with grocery pick-up, food prep, serving, or cleanup.'}
                         </p>
                     </div>
                 </div>
@@ -539,9 +548,9 @@ export default function WednesdaySupper() {
                     {/* Contact */}
                     <div className="mt-16 text-center bg-white p-8 rounded-2xl border border-primary/10">
                         <p className="text-xs uppercase tracking-widest text-muted-foreground font-bold mb-2">Questions?</p>
-                        <p className="text-lg font-bold text-primary mb-1">Parish Office</p>
-                        <a href="tel:6058675309" className="inline-flex items-center gap-2 text-accent hover:underline">
-                            <Phone size={14} /> (605) 867-5309
+                        <p className="text-lg font-bold text-primary mb-1">{supperPage?.contactName ?? getInvolvedData.settings.contactName}</p>
+                        <a href={`tel:${(supperPage?.contactPhone ?? getInvolvedData.settings.contactPhone).replace(/\D/g, '')}`} className="inline-flex items-center gap-2 text-accent hover:underline">
+                            <Phone size={14} /> {supperPage?.contactPhone ?? getInvolvedData.settings.contactPhone}
                         </a>
                     </div>
                 </div>

@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import SponsorshipCard from '@/components/SponsorshipCard';
-import { organizations } from '@/data/organizations';
+import getInvolvedData from '@/data/get-involved_data.json';
 
 type Category = 'all' | 'sponsor' | 'help' | 'join' | 'request';
 type Tag =
@@ -49,6 +49,12 @@ interface Opportunity {
     date?: string;
     contactName: string;
     contactPhone: string;
+    contactEmail?: string;
+    signUpLinks?: Array<{ label: string; url: string }>;
+    landingPageDescription?: string;
+    faqs?: Array<{ question: string; answer: string }>;
+    requirements?: string[];
+    images?: string[];
     goalAmount?: number;
     currentAmount?: number;
     roles?: Role[];
@@ -65,218 +71,42 @@ interface Opportunity {
 
 type ViewMode = 'cards' | 'list';
 
-function createInitialOpportunities(): Opportunity[] {
-    return [
-        {
-            id: 'nursery',
-            title: 'Nursery',
-            categories: ['sponsor', 'help', 'join'],
-            tags: ['Liturgy', 'Parish Events'],
-            organization: 'Parish Council',
-            date: 'Ongoing Project',
-            contactName: 'Kelly Whartman',
-            contactPhone: '(605) 867-5309',
-            description:
-                'We are looking to update the old side chapel into a nursery while retaining a space for mothers during Mass. Donations and volunteers are welcome.',
-            goalAmount: 2500,
-            currentAmount: 1200,
-            constructionItems: [
-                { category: '2x4 Lumber & Construction Screws', items: [{ name: '2x4 Lumber & Construction Screws', cost: '$79.30' }], subtotal: '$79.30' },
-                { category: 'Sheetrock & Drywall Screws', items: [{ name: 'Sheetrock & Drywall Screws', cost: '$131.50' }], subtotal: '$131.50' },
-                { category: 'Mudding, Tape & Sanding Supplies', items: [{ name: 'Mudding, Tape & Sanding Supplies', cost: '$31.50' }], subtotal: '$31.50' },
-            ],
-            constructionTotal: '~$242.30',
-        },
-        {
-            id: 'lector',
-            title: 'Lector Sign-up',
-            categories: ['help'],
-            tags: ['Liturgy'],
-            organization: 'Liturgy Ministry',
-            date: 'Ongoing Ministry',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description:
-                'Proclaim the Scriptures and lead the Prayers of the Faithful during Mass. Training and scheduling support are provided for new lectors.',
-        },
-        {
-            id: 'usher',
-            title: 'Usher Sign-up',
-            categories: ['help'],
-            tags: ['Liturgy'],
-            organization: 'Liturgy Ministry',
-            date: 'Ongoing Ministry',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description:
-                'Ushers welcome parishioners, help people find seats in the pews—especially when the church is full—and assist with passing the offertory basket during Mass.',
-        },
-        {
-            id: 'altar-server',
-            title: 'Altar Server Sign-up',
-            categories: ['help'],
-            tags: ['Liturgy'],
-            organization: 'Liturgy Ministry',
-            date: 'Ongoing Ministry',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description:
-                'Serve at the altar during Mass. Altar servers assist the priest with liturgical functions such as carrying the Book of the Gospels, presenting the chalice, and other sacred items. Training is provided for all new servers, and adults and children (typically 4th grade and up) are both welcome.',
-        },
-        {
-            id: 'music',
-            title: 'Music Ministry Sign-up',
-            categories: ['help'],
-            tags: ['Liturgy'],
-            organization: 'Liturgy & Music Ministry',
-            date: 'Ongoing Ministry',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description:
-                'Help lead the parish in sung prayer. We welcome people interested in joining the choir, serving as an instrumentalist, or becoming a cantor.',
-        },
-        {
-            id: 'supper-week',
-            title: 'Wednesday Night Supper',
-            categories: ['sponsor', 'help'],
-            tags: ['Parish Events'],
-            organization: 'Parish Hospitality',
-            date: 'Sept. 2, 2026 – May 19, 2027',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description:
-                'Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year.',
-            customPage: 'supper-week',
-        },
-        {
-            id: 'youth-ministry-mentors',
-            title: 'Youth Ministry Mentors',
-            categories: ['help'],
-            tags: ['Parish Organizations'],
-            organization: 'Faith Formation',
-            date: 'Starts Sept. 2026',
-            contactName: 'Jane Doe',
-            contactPhone: '(605) 867-5309',
-            description: 'Guide high school students in their faith journey as a small-group leader.',
-        },
-        {
-            id: 'connect-groups',
-            title: 'Connect Groups',
-            categories: ['join'],
-            tags: ['Parish Organizations'],
-            organization: 'Parish Life',
-            date: 'Year-round small groups',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description: 'Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion.',
-            customPage: 'connect-groups',
-        },
-        {
-            id: 'group-studies',
-            title: 'Group Studies',
-            categories: ['join'],
-            tags: ['Parish Organizations'],
-            organization: 'Parish Life',
-            date: 'Seasonal study groups',
-            contactName: 'Parish Office',
-            contactPhone: '(605) 867-5309',
-            description: 'Explore the Bible, Catholic teaching, and spiritual growth with a parish study group.',
-            customPage: 'group-studies',
-        },
-        {
-            id: 'annual-parish-picnic',
-            title: 'Annual Parish Picnic',
-            categories: ['help'],
-            tags: ['Parish Events'],
-            organization: 'Knights of Columbus',
-            date: 'August 23, 2026',
-            contactName: 'John Doe',
-            contactPhone: '(605) 867-5309',
-            description: 'Help host our largest community event of the year.',
-            expired: true,
-        },
-        {
-            id: 'st-vincent-de-paul-food-drive',
-            title: 'St. Vincent de Paul Food Drive',
-            categories: ['join'],
-            tags: ['Parish Organizations'],
-            organization: 'St. Vincent de Paul',
-            date: 'Every 1st Sunday',
-            contactName: 'Jane Doe',
-            contactPhone: '(605) 867-5309',
-            description: 'Help sort and distribute food donations to local families in need.',
-        },
-        {
-            id: 'altar-society',
-            title: 'Altar Society',
-            categories: ['join'],
-            tags: ['Parish Organizations'],
-            organization: 'Altar Society',
-            date: 'Quarterly',
-            contactName: 'President',
-            contactPhone: '(605) 867-5309',
-            description:
-                'The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.',
-            customPage: 'altar-society',
-            orgIcon: 'flower',
-        },
-        {
-            id: 'knights-of-columbus',
-            title: 'Knights of Columbus',
-            categories: ['join'],
-            tags: ['Parish Organizations', 'Diocesan'],
-            organization: 'Knights of Columbus',
-            date: '1st Thursday of each month',
-            contactName: 'Grand Knight',
-            contactPhone: '(605) 867-5309',
-            description:
-                "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
-            customPage: 'knights-of-columbus',
-            orgIcon: 'shield',
-        },
-        {
-            id: 'catholic-daughters',
-            title: 'Catholic Daughters of the Americas',
-            categories: ['join'],
-            tags: ['Diocesan'],
-            organization: 'Catholic Daughters',
-            date: 'Monthly – 2nd Tuesday',
-            contactName: 'Jane Doe',
-            contactPhone: '(605) 867-5309',
-            description: 'Join us for prayer, fellowship, and planning charitable works.',
-        },
-    ];
-}
-
-const categories: { id: Category; label: string }[] = [
-    { id: 'all', label: 'All Ways' },
-    { id: 'sponsor', label: 'Sponsor' },
-    { id: 'help', label: 'Help' },
-    { id: 'join', label: 'Join' },
-    { id: 'request', label: 'Request' },
-];
-
-const tags: Tag[] = [
-    'Liturgy',
-    'Parish Events',
-    'Parish Organizations',
-    'Diocesan',
-];
-
+const settings = getInvolvedData.settings;
+const categories = settings.categories as { id: Category; label: string }[];
+const tags = settings.tags as Tag[];
+const opportunities = getInvolvedData.opportunities as Opportunity[];
 const FORM_URLS = {
-    contributeNursery: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMU5XQlRRNEE4TVFXOFdQM0JBODFXWUhURy4u',
-    signUpToHelp: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UQkFRRTFRUDIzWkcwT0JOODc2MzdaNlVERy4u',
-    suggestion: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UMjBVRk5PNFk0S0lQS041NjdCNVo2QlkxNS4u',
-    referral: 'https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=4_1Q5hq9wkK9ouKfeVo9ueKRp4Y-VxtLvUss1gz4yg5UNFFTRkFRVkNXWU1VMkc4S1JXVU0yUFFRQy4u',
-    supperWeekVolunteer: 'https://www.signupgenius.com/go/10C084BADA72BA5F4C61-65142421-wednesday#/',
+    contributeNursery: settings.contributeNurseryUrl,
+    signUpToHelp: settings.signUpToHelpUrl,
+    suggestion: settings.suggestionUrl,
+    referral: settings.referralUrl,
+    supperWeekVolunteer: settings.supperWeekVolunteerUrl,
 };
+
+function SignUpLinks({ links }: { links?: Opportunity['signUpLinks'] }) {
+    if (!links?.length) return null;
+
+    return (
+        <div className="space-y-2">
+            {links.map((link) => (
+                <a
+                    key={`${link.label}-${link.url}`}
+                    href={link.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block rounded-full border border-primary/20 bg-white px-4 py-2 text-center text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:border-accent hover:text-accent"
+                >
+                    {link.label}
+                </a>
+            ))}
+        </div>
+    );
+}
 
 export default function GetInvolved() {
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [activeInterest, setActiveInterest] = useState<Tag | 'all'>('all');
     const [viewMode, setViewMode] = useState<ViewMode>('cards');
-    const [opportunities] = useState<Opportunity[]>(createInitialOpportunities);
-
     const filteredOps = opportunities.filter((opportunity) => {
         if (opportunity.expired) return false;
         const categoryMatch =
@@ -288,25 +118,25 @@ export default function GetInvolved() {
     });
 
     const handleContribute = (opportunityId: string) => {
-        if (opportunityId === 'nursery') {
+        if (opportunityId === 'nursery' && FORM_URLS.contributeNursery) {
             window.open(FORM_URLS.contributeNursery, '_blank', 'noopener,noreferrer');
         }
     };
 
     const handleSignUpToHelp = () => {
-        window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer');
+        if (FORM_URLS.signUpToHelp) window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer');
     };
 
-    const handleSupperWeekSignup = () => {
-        window.open(FORM_URLS.supperWeekVolunteer, '_blank', 'noopener,noreferrer');
+    const handleSupperWeekSignup = (url = FORM_URLS.supperWeekVolunteer) => {
+        if (url) window.open(url, '_blank', 'noopener,noreferrer');
     };
 
     const handleSuggestion = () => {
-        window.open(FORM_URLS.suggestion, '_blank', 'noopener,noreferrer');
+        if (FORM_URLS.suggestion) window.open(FORM_URLS.suggestion, '_blank', 'noopener,noreferrer');
     };
 
     const handleRefer = () => {
-        window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer');
+        if (FORM_URLS.referral) window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer');
     };
 
     return (
@@ -331,10 +161,10 @@ export default function GetInvolved() {
                 <div className="container mx-auto px-4 relative z-10">
                     <div className="max-w-3xl">
                         <h1 className="font-serif text-5xl md:text-7xl font-bold text-primary mb-6 drop-shadow-sm">
-                            Get <span className="text-accent italic">Involved.</span>
+                            {settings.pageTitle}
                         </h1>
                         <p className="text-xl text-muted-foreground leading-relaxed max-w-2xl font-medium">
-                            Find your place in our parish family. Filter by how you want to serve or the areas that interest you most.
+                            {settings.introduction}
                         </p>
                     </div>
                 </div>
@@ -345,7 +175,7 @@ export default function GetInvolved() {
                     {/* TIER 1: How You'll Serve */}
                     <div className="mb-10">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
-                            How Would You Like to Serve
+                            {settings.serveHeading}
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-4">
                             {categories.map((category) => (
@@ -367,7 +197,7 @@ export default function GetInvolved() {
                     {/* TIER 2: By Interest */}
                     <div className="mb-8">
                         <p className="text-center text-[10px] font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-4">
-                            By Interest
+                            {settings.interestHeading}
                         </p>
                         <div className="flex flex-wrap items-center justify-center gap-4">
                             <button
@@ -431,7 +261,7 @@ export default function GetInvolved() {
                                         <SupperWeekCard
                                             key={opportunity.id}
                                             op={opportunity}
-                                            onSupperWeekSignup={handleSupperWeekSignup}
+                                            onSupperWeekSignup={() => handleSupperWeekSignup(opportunity.signUpLinks?.[0]?.url)}
                                             onSuggestion={handleSuggestion}
                                             onRefer={handleRefer}
                                         />
@@ -468,6 +298,7 @@ export default function GetInvolved() {
                                             onSignUpToHelp={handleSignUpToHelp}
                                             onRefer={handleRefer}
                                             onSuggestion={handleSuggestion}
+                                            signUpLinks={opportunity.signUpLinks}
                                         />
                                     );
                                 }
@@ -648,6 +479,7 @@ function OpportunityCard({
                         <UserPlus size={12} /> Refer
                     </Button>
                 </div>
+                <SignUpLinks links={op.signUpLinks} />
             </div>
         </Card>
     );
@@ -724,7 +556,7 @@ function SupperWeekCard({
                     onClick={onSupperWeekSignup}
                     className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold uppercase tracking-[0.1em] text-[9px] py-4 border-2 border-blue-600 shadow-md hover:shadow-lg transition-all"
                 >
-                    Sign Up to Volunteer
+                    {op.signUpLinks?.[0]?.label ?? 'Sign Up to Volunteer'}
                 </Button>
                 <div className="grid grid-cols-2 gap-2">
                     <Button
@@ -742,6 +574,7 @@ function SupperWeekCard({
                         <UserPlus size={12} /> Refer
                     </Button>
                 </div>
+                <SignUpLinks links={op.signUpLinks?.slice(1)} />
             </div>
         </Card>
     );
@@ -761,7 +594,7 @@ function OrgCard({
         'altar-society': FORM_URLS.signUpToHelp,
     };
 
-    const signupUrl = EXTERNAL_SIGNUP_URLS[op.id] || FORM_URLS.signUpToHelp;
+    const signupUrl = op.signUpLinks?.[0]?.url || EXTERNAL_SIGNUP_URLS[op.id] || FORM_URLS.signUpToHelp;
 
     return (
         <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/20 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
@@ -820,7 +653,7 @@ function OrgCard({
                     className="w-full bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-6 shadow-lg shadow-accent/20"
                 >
                     {op.orgIcon === 'shield' ? <Shield size={14} className="mr-2" /> : <Flower size={14} className="mr-2" />}
-                    Join / Sign Up
+                    {op.signUpLinks?.[0]?.label ?? 'Join / Sign Up'}
                 </Button>
                 <div className="grid grid-cols-2 gap-2">
                     <Button
@@ -838,6 +671,7 @@ function OrgCard({
                         <UserPlus size={12} /> Refer
                     </Button>
                 </div>
+                <SignUpLinks links={op.signUpLinks?.slice(1)} />
             </div>
         </Card>
     );
