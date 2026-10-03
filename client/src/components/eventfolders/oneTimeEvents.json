@@ -1167,6 +1167,20 @@
         }
       ],
       "description": " "
+    },
+    {
+      "id": "katie-is-beautiful",
+      "title": "Katie is awesome",
+      "date": "2026-10-03",
+      "time": "All Day!",
+      "location": "St. Therese the Little Flower",
+      "gallery": [],
+      "categories": [
+        {
+          "category": "meeting"
+        }
+      ],
+      "description": "My wife is amazing\n\nShe takes care of Lucy so well\n\nI love her so much"
     }
   ]
 }
