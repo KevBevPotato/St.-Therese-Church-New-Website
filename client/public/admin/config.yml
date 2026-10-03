@@ -145,6 +145,7 @@ collections:
             name: "staff"
             widget: "list"
             fields:
+              - { label: "Hide from Directory", name: "isHidden", widget: "boolean", defaultValue: false }
               - { label: "Slug (no spaces, e.g. kevin-baltzer)", name: "slug", widget: "string", required: true }
               - { label: "Full Name", name: "name", widget: "string", required: true }
               - label: "Titles"

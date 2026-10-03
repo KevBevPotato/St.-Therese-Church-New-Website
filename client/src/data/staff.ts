@@ -13,6 +13,7 @@ export interface StaffMember {
     photoFit?: 'cover' | 'contain';
     duties?: string;
     bio?: string;
+    isHidden?: boolean; 
 }
 
 const rawData = (staffDataModule as any).staff || (staffDataModule as any).default?.staff || [];
