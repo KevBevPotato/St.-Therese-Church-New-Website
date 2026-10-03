@@ -347,6 +347,13 @@ collections:
               widget: "string",
               required: false,
             }
+          - {
+              label: "Link URL (optional)",
+              name: "linkUrl",
+              widget: "string",
+              required: false,
+              hint: "Use a site path such as /about or a full https:// URL. Leave blank to open the photo.",
+            }
       - label: "Frequently Asked Questions (Optional)"
         name: "faqItems"
         widget: "list"
@@ -422,6 +429,13 @@ collections:
               widget: "string",
               required: false,
             }
+          - {
+              label: "Link URL (optional)",
+              name: "linkUrl",
+              widget: "string",
+              required: false,
+              hint: "Use a site path such as /about or a full https:// URL. Leave blank to open the photo.",
+            }
 
   - name: "bulletins"
     label: "Parish Bulletins"
@@ -444,16 +458,22 @@ collections:
               - {
                   label: "Start Date",
                   name: "startDate",
-                  widget: "string",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  picker_utc: false,
                   required: true,
-                  hint: "Format: YYYY-MM-DD (Must be a Saturday)",
+                  hint: "Choose the Saturday that begins this bulletin week.",
                 }
               - {
                   label: "End Date",
                   name: "endDate",
-                  widget: "string",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  picker_utc: false,
                   required: true,
-                  hint: "Format: YYYY-MM-DD (Must be a Saturday)",
+                  hint: "Choose the Saturday that ends this bulletin week.",
                 }
               - {
                   label: "PDF Upload",
@@ -1067,8 +1087,9 @@ collections:
               - {
                   label: "Date / Schedule",
                   name: "date",
-                  widget: "string",
+                  widget: "date-or-schedule",
                   required: false,
+                  hint: "Type a recurring schedule such as “Every 1st Sunday,” or pick a specific date with the calendar.",
                 }
               - { label: "Contact Name", name: "contactName", widget: "string" }
               - {

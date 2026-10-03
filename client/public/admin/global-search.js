@@ -1,24 +1,4 @@
 (function () {
-  const button = document.createElement("button");
-  button.type = "button";
-  button.textContent = "Search CMS";
-  button.setAttribute("aria-haspopup", "dialog");
-  button.setAttribute("aria-label", "Search all CMS content");
-  Object.assign(button.style, {
-    position: "fixed",
-    right: "20px",
-    bottom: "20px",
-    zIndex: "10000",
-    border: "0",
-    borderRadius: "12px",
-    padding: "13px 19px",
-    background: "linear-gradient(135deg, #17324f, #315879)",
-    color: "#fff",
-    boxShadow: "0 8px 26px #102a4540",
-    font: "600 14px system-ui, sans-serif",
-    cursor: "pointer",
-  });
-
   const overlay = document.createElement("div");
   overlay.setAttribute("role", "dialog");
   overlay.setAttribute("aria-modal", "true");
@@ -104,7 +84,59 @@
   header.append(input, close);
   panel.append(header, status, results);
   overlay.append(panel);
-  document.body.append(button, overlay);
+  document.body.append(overlay);
+
+  let collectionSearchInput;
+  function replaceCollectionSearch() {
+    if (collectionSearchInput?.isConnected) return;
+    const candidate = [...document.querySelectorAll("input")]
+      .filter(input => !overlay.contains(input))
+      .find(input =>
+        /search/i.test(
+          `${input.placeholder || ""} ${input.getAttribute("aria-label") || ""}`
+        )
+      );
+
+    if (!candidate) return;
+    collectionSearchInput = candidate;
+    candidate.type = "text";
+    candidate.readOnly = true;
+    candidate.value = "";
+    candidate.placeholder = "Search CMS";
+    candidate.setAttribute("aria-label", "Search all CMS content");
+    candidate.setAttribute("title", "Search all CMS content (Ctrl+K / ⌘K)");
+    Object.assign(candidate.style, {
+      cursor: "pointer",
+      backgroundColor: "#fff",
+      borderColor: "#cbd5e1",
+      color: "#17324f",
+      fontWeight: "600",
+    });
+    candidate.addEventListener(
+      "click",
+      event => {
+        event.preventDefault();
+        event.stopPropagation();
+        openDialog();
+      },
+      true
+    );
+    candidate.addEventListener(
+      "keydown",
+      event => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          event.stopPropagation();
+          openDialog();
+        }
+      },
+      true
+    );
+  }
+
+  const searchObserver = new MutationObserver(replaceCollectionSearch);
+  searchObserver.observe(document.body, { childList: true, subtree: true });
+  replaceCollectionSearch();
 
   let documentsPromise;
   function loadDocuments() {
@@ -247,10 +279,9 @@
 
   function closeDialog() {
     overlay.style.display = "none";
-    button.focus();
+    collectionSearchInput?.focus();
   }
 
-  button.addEventListener("click", openDialog);
   close.addEventListener("click", closeDialog);
   input.addEventListener("input", () => {
     loadDocuments()
