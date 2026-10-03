@@ -82,34 +82,35 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
 
         // --- CMS-DRIVEN RECURRING RULES ---
         (recurringData as any).rules.forEach((rule: any) => {
-            const ruleStartDate = normalizeDate(rule.startDate) || new Date(0);
-            const ruleEndDate = normalizeDate(rule.endDate) || new Date(2100, 0, 1);
-            const exclusions = Array.isArray(rule.exclusions)
-                ? rule.exclusions.map((ex: any) => ex.date)
-                : (rule.exclusions ? rule.exclusions.split(',').map((d: string) => d.trim()) : []);
+            const schedule = rule.schedule ?? rule;
+            const ruleStartDate = normalizeDate(schedule.startDate) || new Date(0);
+            const ruleEndDate = normalizeDate(schedule.endDate) || new Date(2100, 0, 1);
+            const exclusions = Array.isArray(schedule.exclusions)
+                ? schedule.exclusions.map((ex: any) => typeof ex === 'string' ? ex : ex.date)
+                : (schedule.exclusions ? schedule.exclusions.split(',').map((d: string) => d.trim()) : []);
 
-            const ruleDay = typeof rule.dayOfWeek === 'string'
-                ? DAY_MAP[rule.dayOfWeek]
-                : rule.dayOfWeek;
+            const ruleDay = typeof schedule.dayOfWeek === 'string'
+                ? DAY_MAP[schedule.dayOfWeek]
+                : schedule.dayOfWeek;
 
             if (d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
                 let shouldShow = false;
 
-                if (rule.recurrenceType === 'daily') {
+                if (schedule.recurrenceType === 'daily') {
                     // DAILY: Just show up every day
                     shouldShow = true;
-                } else if (rule.recurrenceType === 'weekly') {
+                } else if (schedule.recurrenceType === 'weekly') {
                     // WEEKLY: Must be the correct day of the week
                     if (d.getDay() === ruleDay) {
                         shouldShow = true;
                     }
-                } else if (rule.recurrenceType === 'monthly') {
+                } else if (schedule.recurrenceType === 'monthly') {
                     // MONTHLY: Must be the correct day of the week AND the correct week of the month
                     const currentOrdinal = Math.ceil(day / 7);
-                    if (d.getDay() === ruleDay && currentOrdinal === parseInt(rule.ordinalWeek || "0")) {
+                    if (d.getDay() === ruleDay && currentOrdinal === parseInt(schedule.ordinalWeek || "0")) {
                         shouldShow = true;
                     }
-                } else if (rule.recurrenceType === 'last_of_month') {
+                } else if (schedule.recurrenceType === 'last_of_month') {
                     // LAST OF MONTH: Must be the correct day of the week AND adding 7 days must be in the next month
                     if (d.getDay() === ruleDay) {
                         const nextWeek = new Date(year, month, day + 7);

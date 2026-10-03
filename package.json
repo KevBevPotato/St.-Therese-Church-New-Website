@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "vite --host --port 3000",
-    "build": "vite build",
+    "build": "vite build && node scripts/build-cms-search-index.js",
     "check": "tsc --noEmit",
     "format": "prettier --write ."
   },

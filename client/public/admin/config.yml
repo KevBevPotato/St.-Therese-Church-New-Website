@@ -262,8 +262,10 @@ collections:
               - {
                   label: "Date",
                   name: "date",
-                  widget: "string",
-                  hint: "Format: 2026-11-03",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  picker_utc: false,
                 }
               - {
                   label: "Time",
@@ -375,55 +377,11 @@ collections:
                       hint: "Optional description of the photo",
                     }
               - {
-                  label: "Recurrence Type",
-                  name: "recurrenceType",
-                  widget: "select",
-                  options: ["daily", "weekly", "monthly", "last_of_month"],
-                  hint: "Daily = every day. Weekly = same day each week. Monthly = e.g. 3rd Monday. Last of Month = Last [Day] of the month.",
+                  label: "Schedule and Occurrences",
+                  name: "schedule",
+                  widget: "recurrence-schedule",
+                  hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it.",
                 }
-              - label: "Day of Week"
-                name: "dayOfWeek"
-                widget: "select"
-                options:
-                  [
-                    "Sunday",
-                    "Monday",
-                    "Tuesday",
-                    "Wednesday",
-                    "Thursday",
-                    "Friday",
-                    "Saturday",
-                  ]
-                hint: "Ignore if Daily."
-              - {
-                  label: "Which Week of Month? (If Monthly)",
-                  name: "ordinalWeek",
-                  widget: "select",
-                  options: ["1", "2", "3", "4", "5"],
-                  hint: "Ignore if Daily/Weekly. '3' = 3rd week of month.",
-                }
-              - {
-                  label: "Start Date",
-                  name: "startDate",
-                  widget: "string",
-                  hint: "Format: 2026-10-05",
-                }
-              - {
-                  label: "End Date (Leave blank for Perpetual)",
-                  name: "endDate",
-                  widget: "string",
-                  hint: "Format: 2027-04-05",
-                }
-              - label: "Exclusions (Optional)"
-                name: "exclusions"
-                widget: "list"
-                fields:
-                  - {
-                      label: "Exclude Date",
-                      name: "date",
-                      widget: "string",
-                      hint: "Format: 2026-11-16",
-                    }
               - {
                   label: "Description (Optional)",
                   name: "description",

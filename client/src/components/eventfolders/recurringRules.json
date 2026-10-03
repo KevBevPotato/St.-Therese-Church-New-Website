@@ -1,19 +1,9 @@
 {
   "rules": [
     {
-      "exclusions": [
-        {
-          "date": "2026-12-28"
-        }
-      ],
-      "ordinalWeek": "3",
-      "dayOfWeek": "Monday",
       "endDayOfMonth": 21,
-      "endDate": "2027-04-05",
-      "recurrenceType": "monthly",
       "time": "6:00 PM - 7:30 PM",
       "startDayOfMonth": 15,
-      "startDate": "2026-10-19",
       "location": "Fr. Mark & Todd's Rectory",
       "title": "Connect Groups",
       "id": "connect-groups",
@@ -25,14 +15,22 @@
           "category": "parishEvents"
         }
       ],
-      "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation."
+      "description": "A welcoming parish small-group gathering for prayer, fellowship, and faith conversation.",
+      "schedule": {
+        "recurrenceType": "monthly",
+        "dayOfWeek": "Monday",
+        "ordinalWeek": "3",
+        "startDate": "2026-10-19",
+        "endDate": "2027-04-05",
+        "exclusions": [
+          {
+            "date": "2026-12-28"
+          }
+        ]
+      }
     },
     {
-      "dayOfWeek": "Monday",
-      "endDate": "2026-10-26",
-      "recurrenceType": "weekly",
       "time": "6:30pm-7:30pm",
-      "startDate": "2026-10-05",
       "location": "Rm 103",
       "title": "OCIA",
       "id": "ocia-october",
@@ -40,14 +38,17 @@
         {
           "category": "sacramental"
         }
-      ]
+      ],
+      "schedule": {
+        "recurrenceType": "weekly",
+        "dayOfWeek": "Monday",
+        "startDate": "2026-10-05",
+        "endDate": "2026-10-26",
+        "exclusions": []
+      }
     },
     {
-      "dayOfWeek": "Tuesday",
-      "endDate": "2026-10-27",
-      "recurrenceType": "weekly",
       "time": "4-6pm",
-      "startDate": "2026-10-06",
       "location": "Rm 103",
       "title": "Epic Journey",
       "id": "epic-journey-october",
@@ -55,14 +56,17 @@
         {
           "category": "parishEvents"
         }
-      ]
+      ],
+      "schedule": {
+        "recurrenceType": "weekly",
+        "dayOfWeek": "Tuesday",
+        "startDate": "2026-10-06",
+        "endDate": "2026-10-27",
+        "exclusions": []
+      }
     },
     {
-      "dayOfWeek": "Tuesday",
-      "endDate": "2026-10-27",
-      "recurrenceType": "weekly",
       "time": "6pm",
-      "startDate": "2026-10-06",
       "location": "North Hall (Basement)",
       "title": "Pinochle Night",
       "id": "pinochle-night-october",
@@ -70,14 +74,17 @@
         {
           "category": "parishEvents"
         }
-      ]
+      ],
+      "schedule": {
+        "recurrenceType": "weekly",
+        "dayOfWeek": "Tuesday",
+        "startDate": "2026-10-06",
+        "endDate": "2026-10-27",
+        "exclusions": []
+      }
     },
     {
-      "ordinalWeek": "2",
-      "dayOfWeek": "Monday",
-      "recurrenceType": "monthly",
       "time": "7-8pm",
-      "startDate": "2026-10-12",
       "location": "BKC",
       "title": "Knights of Columbus Meeting",
       "id": "knights-meeting",
@@ -85,16 +92,21 @@
         {
           "category": "meeting"
         }
-      ]
+      ],
+      "schedule": {
+        "recurrenceType": "monthly",
+        "dayOfWeek": "Monday",
+        "ordinalWeek": "2",
+        "startDate": "2026-10-12",
+        "endDate": "",
+        "exclusions": []
+      }
     },
     {
       "id": "parish-council-october",
       "title": "Parish Council Meeting",
       "time": "6:30-7:30pm",
       "location": "Rm 103",
-      "recurrenceType": "last_of_month",
-      "dayOfWeek": "Tuesday",
-      "startDate": "2026-10-27",
       "categories": [
         {
           "category": "meeting"
@@ -102,7 +114,14 @@
         {
           "category": "parishEvents"
         }
-      ]
+      ],
+      "schedule": {
+        "recurrenceType": "last_of_month",
+        "dayOfWeek": "Tuesday",
+        "startDate": "2026-10-27",
+        "endDate": "",
+        "exclusions": []
+      }
     }
   ]
 }
