@@ -1,158 +1,167 @@
 {
-    "staff": [
+  "staff": [
+    {
+      "bio": "Fr. Mark was born in Rapid City, SD, and grew up in the Black Hills. He attended St. Martin's College in Lacey, WA, and graduated with a degree in Philosophy. He then attended Mount Angel Seminary in St. Benedict, OR, where he earned a Master of Divinity degree. Fr. Mark was ordained to the priesthood on May 30, 1999, and has served in various parishes throughout the Diocese of Rapid City.",
+      "name": "Fr. Mark McCormick",
+      "slug": "fr-mark-mccormick",
+      "phone": "(605) 342-1556 Ext. 1011",
+      "photo": "/FrMark.jpg",
+      "duties": "Fr. Mark is serving as Head Pastor of St. Thérèse the Little Flower & the St. Carlo Acutis Catholic Student Center, serving alongside Fr. Todd VanderMay.",
+      "officeRoom": "106",
+      "titles": [
         {
-            "slug": "fr-mark-mccormick",
-            "name": "Fr. Mark McCormick",
-            "titles": [
-                {
-                    "title": "Pastor"
-                }
-            ],
-            "email": "mark.mccormick@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1011",
-            "officeRoom": "106",
-            "categories": [
-                {
-                    "category": "clergy"
-                }
-            ],
-            "photo": "/FrMark.jpg",
-            "photoPosition": "center 24%",
-            "photoFit": "cover",
-            "duties": "Fr. Mark is serving as Head Pastor of St. Thérèse the Little Flower & the St. Carlo Acutis Catholic Student Center, serving alongside Fr. Todd VanderMay.",
-            "bio": "Fr. Mark was born in Rapid City, SD, and grew up in the Black Hills. He attended St. Martin's College in Lacey, WA, and graduated with a degree in Philosophy. He then attended Mount Angel Seminary in St. Benedict, OR, where he earned a Master of Divinity degree. Fr. Mark was ordained to the priesthood on May 30, 1999, and has served in various parishes throughout the Diocese of Rapid City."
-        },
-        {
-            "slug": "fr-todd-vandermay",
-            "name": "Fr. Todd VanderMay",
-            "titles": [
-                {
-                    "title": "Associate Pastor"
-                }
-            ],
-            "email": "todd.vandermay@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1017",
-            "officeRoom": "107",
-            "categories": [
-                {
-                    "category": "clergy"
-                }
-            ],
-            "photo": "/FrToddVanderMay.jpg",
-            "photoPosition": "center 22%",
-            "photoFit": "cover",
-            "duties": "Serving the parish community with care and dedication.",
-            "bio": "More information about this ministry role will be shared soon."
-        },
-        {
-            "slug": "dcn-don-moore",
-            "name": "Deacon Don Moore",
-            "titles": [
-                {
-                    "title": "Deacon"
-                }
-            ],
-            "email": "don.moore@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1014",
-            "officeRoom": "109",
-            "categories": [
-                {
-                    "category": "clergy"
-                }
-            ],
-            "photo": "/DcnDon.jpg",
-            "photoPosition": "center 25%",
-            "photoFit": "cover",
-            "duties": "Serving the parish community with care and dedication.",
-            "bio": "More information about this ministry role will be shared soon."
-        },
-        {
-            "slug": "bobby-myers",
-            "name": "Bobby Myers",
-            "titles": [
-                {
-                    "title": "Director of Religious Education"
-                }
-            ],
-            "email": "bobby.myers@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1012",
-            "officeRoom": "101",
-            "categories": [
-                {
-                    "category": "staff"
-                }
-            ],
-            "photo": "/BobbyMeyers.jpg",
-            "photoPosition": "center 24%",
-            "photoFit": "cover",
-            "duties": "Serving the parish community with care and dedication.",
-            "bio": "More information about this ministry role will be shared soon."
-        },
-        {
-            "slug": "kevin-baltzer",
-            "name": "Kevin Baltzer",
-            "titles": [
-                {
-                    "title": "Director of Evangelization & Adult & Family Formation"
-                }
-            ],
-            "email": "kevin.baltzer@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1018",
-            "officeRoom": "101",
-            "categories": [
-                {
-                    "category": "staff"
-                }
-            ],
-            "photo": "/Kevin-Baltzer.jpg",
-            "photoPosition": "center 35%",
-            "photoFit": "cover",
-            "duties": "I'm in charge of Adult & Family Ministry, which is being taught on Wednesdays — see the \"Faith Formation\" tab for more information.\nI'm also the staff designated IT guy who built this new website and will keep it running and updated!",
-            "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation, \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia."
-        },
-        {
-            "slug": "connie-heeren",
-            "name": "Connie Heeren",
-            "titles": [
-                {
-                    "title": "Staff"
-                }
-            ],
-            "email": "connie.heeren@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1010",
-            "officeRoom": "110",
-            "categories": [
-                {
-                    "category": "staff"
-                }
-            ],
-            "photo": "/ConnieHeeran.jpg",
-            "photoPosition": "center 21%",
-            "photoFit": "cover",
-            "duties": "Serving the parish community with care and dedication.",
-            "bio": "More information about this ministry role will be shared soon."
-        },
-        {
-            "slug": "melanie-karp",
-            "name": "Melanie Karp",
-            "titles": [
-                {
-                    "title": "Staff"
-                }
-            ],
-            "email": "melanie.karp@strcstaff.org",
-            "phone": "(605) 342-1556 Ext. 1015",
-            "officeRoom": "111",
-            "categories": [
-                {
-                    "category": "staff"
-                }
-            ],
-            "photo": "/MelanieKarp.jpg",
-            "photoPosition": "center 25%",
-            "photoFit": "cover",
-            "duties": "Serving the parish community with care and dedication.",
-            "bio": "More information about this ministry role will be shared soon."
+          "title": "Pastor"
         }
-    ]
+      ],
+      "photoPosition": "center 24%",
+      "categories": [
+        {
+          "category": "clergy"
+        }
+      ],
+      "email": "mark.mccormick@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "More information about this ministry role will be shared soon.",
+      "name": "Fr. Todd VanderMay",
+      "slug": "fr-todd-vandermay",
+      "phone": "(605) 342-1556 Ext. 1017",
+      "photo": "/FrToddVanderMay.jpg",
+      "duties": "Serving the parish community with care and dedication.",
+      "officeRoom": "107",
+      "titles": [
+        {
+          "title": "Associate Pastor"
+        }
+      ],
+      "photoPosition": "center 22%",
+      "categories": [
+        {
+          "category": "clergy"
+        }
+      ],
+      "email": "todd.vandermay@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "More information about this ministry role will be shared soon.",
+      "name": "Deacon Don Moore",
+      "slug": "dcn-don-moore",
+      "phone": "(605) 342-1556 Ext. 1014",
+      "photo": "/DcnDon.jpg",
+      "duties": "Serving the parish community with care and dedication.",
+      "officeRoom": "109",
+      "titles": [
+        {
+          "title": "Deacon"
+        }
+      ],
+      "photoPosition": "center 25%",
+      "categories": [
+        {
+          "category": "clergy"
+        }
+      ],
+      "email": "don.moore@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "More information about this ministry role will be shared soon.",
+      "name": "Bobby Myers",
+      "slug": "bobby-myers",
+      "phone": "(605) 342-1556 Ext. 1012",
+      "photo": "/BobbyMeyers.jpg",
+      "duties": "Serving the parish community with care and dedication.",
+      "officeRoom": "101",
+      "titles": [
+        {
+          "title": "Director of Religious Education"
+        }
+      ],
+      "photoPosition": "center 24%",
+      "categories": [
+        {
+          "category": "staff"
+        }
+      ],
+      "email": "bobby.myers@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation, \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia.",
+      "name": "Kevin Baltzer",
+      "slug": "kevin-baltzer",
+      "phone": "(605) 342-1556 Ext. 1018",
+      "photo": "/Kevin-Baltzer.jpg",
+      "duties": "I'm in charge of Adult & Family Ministry, which is being taught on Wednesdays — see the \"Faith Formation\" tab for more information.\nI'm also the staff designated IT guy who built this new website and will keep it running and updated!",
+      "officeRoom": "101",
+      "titles": [
+        {
+          "title": "Director of Evangelization & Adult & Family Formation"
+        }
+      ],
+      "photoPosition": "center 35%",
+      "categories": [
+        {
+          "category": "staff"
+        }
+      ],
+      "email": "kevin.baltzer@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "More information about this ministry role will be shared soon.",
+      "name": "Connie Heeren",
+      "slug": "connie-heeren",
+      "phone": "(605) 342-1556 Ext. 1010",
+      "photo": "/ConnieHeeran.jpg",
+      "duties": "Serving the parish community with care and dedication.",
+      "officeRoom": "110",
+      "titles": [
+        {
+          "title": "Staff"
+        }
+      ],
+      "photoPosition": "center 21%",
+      "categories": [
+        {
+          "category": "staff"
+        }
+      ],
+      "email": "connie.heeren@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "bio": "More information about this ministry role will be shared soon.",
+      "name": "Melanie Karp",
+      "slug": "melanie-karp",
+      "phone": "(605) 342-1556 Ext. 1015",
+      "photo": "/MelanieKarp.jpg",
+      "duties": "Serving the parish community with care and dedication.",
+      "officeRoom": "111",
+      "titles": [
+        {
+          "title": "Staff"
+        }
+      ],
+      "photoPosition": "center 25%",
+      "categories": [
+        {
+          "category": "staff"
+        }
+      ],
+      "email": "melanie.karp@strcstaff.org",
+      "photoFit": "cover"
+    },
+    {
+      "slug": "katie-gorl",
+      "name": "Katie Baltzer",
+      "titles": [
+        {
+          "title": "Wife & Mother"
+        }
+      ]
+    }
+  ]
 }
