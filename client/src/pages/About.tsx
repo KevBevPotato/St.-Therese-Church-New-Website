@@ -1,24 +1,14 @@
-// About.tsx
 import { Link } from 'wouter';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { Card } from '@/components/ui/card';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import { Card } from '../components/ui/card';
 import { Mail, Phone } from 'lucide-react';
-import { staffMembers, staffCategories, StaffMember } from '../data/staff';
+import { staffMembers, StaffMember } from '../data/staff';
 
 export default function About() {
-  // ✅ Keep your whitelist for now
-  const visibleStaffSlugs = new Set([
-    'fr-mark-mccormick',
-    'fr-todd-vandermay',
-    'dcn-don-moore',
-    'bobby-myers',
-    'connie-heeren',
-    'melanie-karp',
-    'kevin-baltzer',
-  ]);
-
-  const filteredStaff = staffMembers.filter((m) => visibleStaffSlugs.has(m.slug));
+  // ✅ WHITELIST REMOVED: We now use the full list from staff_data.json
+  // This means anyone you add in the CMS will automatically appear here.
+  const filteredStaff = staffMembers;
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -59,7 +49,6 @@ export default function About() {
                   key={idx}
                   className="group overflow-hidden rounded-none border border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"
                 >
-                  {/* ✅ FIXED: Added the Link wrapper to unlock the landing page */}
                   <Link href={`/staff/${member.slug}`} className="block">
                     <div className="relative aspect-[2/3] w-full overflow-hidden bg-primary/5 flex items-center justify-center">
                       {member.photo ? (
@@ -80,7 +69,7 @@ export default function About() {
                     <div className="p-2 sm:p-5">
                       <h3 className="break-words text-sm font-serif font-bold text-primary mb-1 sm:text-lg">{member.name}</h3>
                       <div className="mb-2 space-y-1 sm:mb-4">
-                        {member.titles.map((title, titleIdx) => (
+                        {member.titles.map((title: string, titleIdx: number) => (
                           <p key={titleIdx} className="break-words text-[8px] font-bold text-accent uppercase tracking-wide sm:text-xs">
                             {title}
                           </p>
@@ -97,7 +86,6 @@ export default function About() {
                             <Mail className="size-3" /> {member.email}
                           </a>
                         )}
-                        {/* ✅ Phone number check */}
                         {member.phone && (
                           <div className="flex items-center gap-2 text-xs text-muted-foreground">
                             <Phone className="size-3" /> {member.phone}
