@@ -125,11 +125,7 @@ collections:
               label: "Primary Button Label",
               name: "primaryButtonLabel",
               widget: "string",
-            }
-          - {
-              label: "Primary Button URL",
-              name: "primaryButtonUrl",
-              widget: "string",
+              hint: "This button opens the parish membership registration form.",
             }
           - {
               label: "Secondary Button Label",

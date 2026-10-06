@@ -1,7 +1,9 @@
 // Home.tsx
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChurchMap from "@/components/ChurchMap";
+import MembershipRegistrationModal from "@/components/MembershipRegistrationModal";
 import { Button } from "@/components/ui/button";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "wouter";
@@ -31,6 +33,7 @@ function colorWithOpacity(color: string, opacity: number): string {
  */
 
 export default function Home() {
+  const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
   const mediaFit = getMediaFit(heroData.mediaFit);
   const featuredAnnouncement = getActiveAnnouncements()[0];
   const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
@@ -145,25 +148,20 @@ export default function Home() {
                 </p>
 
                 <div className="mt-8 sm:mt-10 lg:mt-12 flex flex-col gap-3 sm:flex-row">
-                  <a
-                    href={heroData.primaryButtonUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex"
-                    aria-label={`${heroData.primaryButtonLabel} — opens in new tab`}
+                  <Button
+                    type="button"
+                    onClick={() => setIsMembershipModalOpen(true)}
+                    aria-haspopup="dialog"
+                    size="lg"
+                    className="w-full shadow-lg sm:w-auto"
+                    style={{
+                      backgroundColor: heroData.textColor,
+                      color: heroData.backgroundColor,
+                      fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
+                    }}
                   >
-                    <Button
-                      size="lg"
-                      className="w-full shadow-lg sm:w-auto"
-                      style={{
-                        backgroundColor: heroData.textColor,
-                        color: heroData.backgroundColor,
-                        fontSize: "clamp(0.75rem, 1.2vw, 1rem)",
-                      }}
-                    >
-                      {heroData.primaryButtonLabel}
-                    </Button>
-                  </a>
+                    {heroData.primaryButtonLabel}
+                  </Button>
                   <a href={heroData.secondaryButtonUrl} className="inline-flex">
                     <Button
                       size="lg"
@@ -293,7 +291,10 @@ export default function Home() {
           </div>
         </div>
       </section>
-
+      <MembershipRegistrationModal
+        isOpen={isMembershipModalOpen}
+        onClose={() => setIsMembershipModalOpen(false)}
+      />
       <Footer />
     </div>
   );

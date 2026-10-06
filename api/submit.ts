@@ -83,6 +83,63 @@ const ALLOWED_FIELDS = new Set([
   "preferred_roles",
   "website",
 ]);
+const MEMBERSHIP_FIELDS = new Set([
+  "family_name",
+  "first_name",
+  "spouse_name",
+  "title",
+  "street_address",
+  "city",
+  "zip_code",
+  "phone_unlisted",
+  "date_registered",
+  "changing_membership_from",
+  "marital_status",
+  "email",
+  "church_attendance",
+  "mass_usually_attend",
+  "financial_support",
+  "tithe_envelopes",
+  "child_count",
+]);
+const PERSON_FIELDS = [
+  "first_name",
+  "preferred_name",
+  "last_name",
+  "maiden_name",
+  "religion",
+  "employment",
+  "work_phone",
+  "gender",
+  "date_of_birth",
+  "baptism",
+  "baptism_year",
+  "communion",
+  "communion_year",
+  "confirmation",
+  "confirmation_year",
+];
+const ADULT_ONLY_FIELDS = [
+  "marriage_date",
+  "annulment_status",
+  "second_marriage_status",
+];
+for (const member of ["head", "spouse"]) {
+  for (const field of [...PERSON_FIELDS, ...ADULT_ONLY_FIELDS]) {
+    MEMBERSHIP_FIELDS.add(`${member}_${field}`);
+  }
+}
+
+function isMembershipField(key: string): boolean {
+  if (MEMBERSHIP_FIELDS.has(key)) return true;
+  const match = /^child_(\d{1,2})_(.+)$/.exec(key);
+  return (
+    !!match &&
+    Number(match[1]) >= 1 &&
+    Number(match[1]) <= 12 &&
+    PERSON_FIELDS.includes(match[2])
+  );
+}
 
 function respond(
   response: ApiResponse,
@@ -125,12 +182,16 @@ function validateBody(bodyValue: unknown): {
   }
 
   const body = bodyValue as JsonObject;
+  const formType = getString(body, "form_type");
   if (Buffer.byteLength(JSON.stringify(body), "utf8") > MAX_BODY_BYTES) {
     return { error: "The submission is too large." };
   }
 
   for (const [key, value] of Object.entries(body)) {
-    if (!ALLOWED_FIELDS.has(key))
+    if (
+      !ALLOWED_FIELDS.has(key) &&
+      !(formType === "membership" && isMembershipField(key))
+    )
       return { error: "The submission has an unsupported field." };
     if (key === "quantity" || key === "pledge_amount") continue;
     if (typeof value !== "string" || value.length > MAX_FIELD_LENGTH) {
@@ -141,11 +202,50 @@ function validateBody(bodyValue: unknown): {
   if (getString(body, "website"))
     return { error: "The submission could not be accepted." };
 
-  const formType = getString(body, "form_type");
   let tab: string;
   let required: string[];
 
   switch (formType) {
+    case "membership": {
+      tab = "Membership Registration";
+      required = [
+        "family_name",
+        "first_name",
+        "street_address",
+        "city",
+        "zip_code",
+        "email",
+        "child_count",
+      ];
+      const childCount = Number(getString(body, "child_count"));
+      if (
+        !Number.isInteger(childCount) ||
+        childCount < 0 ||
+        childCount > 12
+      ) {
+        return { error: "The number of children must be between 0 and 12." };
+      }
+      for (let child = 1; child <= childCount; child++) {
+        required.push(`child_${child}_first_name`, `child_${child}_last_name`);
+      }
+      if (
+        getString(body, "title") &&
+        !["Mr./Mrs.", "Mr.", "Mrs.", "Ms.", "Miss", "Dr./Mrs."].includes(
+          getString(body, "title")
+        )
+      ) {
+        return { error: "The selected title is invalid." };
+      }
+      if (
+        getString(body, "marital_status") &&
+        !["M", "C", "I", "N", "X", "O", "S", "D", "W"].includes(
+          getString(body, "marital_status")
+        )
+      ) {
+        return { error: "The selected marital status is invalid." };
+      }
+      break;
+    }
     case "pledge":
       tab = "Pledges";
       required = ["from_name", "from_email", "project_id", "item_id"];
@@ -355,6 +455,7 @@ async function appendToSheet(
     "name",
     "from_email",
     "email",
+    "family_name",
     "suggestion",
     "their_name",
   ].some(header => normalizedHeaders.has(header));
