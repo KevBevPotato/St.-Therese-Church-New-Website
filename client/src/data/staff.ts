@@ -11,6 +11,7 @@ export interface StaffMember {
     photo?: string;
     photoPosition?: string;
     photoFit?: 'cover' | 'contain';
+    photoAspect?: string;
     duties?: string;
     bio?: string;
     isHidden?: boolean; 

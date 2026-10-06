@@ -1,0 +1,13 @@
+{
+  "settings": {
+    "title": "Parish Announcements",
+    "description": "Important updates and timely information for our parish community.",
+    "cardColumns": 3,
+    "cardImageAspect": "16/9",
+    "heroLinkPosition": "top-right",
+    "heroLinkBackgroundColor": "#102a45",
+    "heroLinkTextColor": "#ffffff",
+    "heroLinkOpacity": 0.78
+  },
+  "announcements": []
+}

@@ -66,6 +66,7 @@
     return window.createClass({
       render() {
         const data = plainData(this.props.entry);
+        const getAsset = this.props.getAsset;
         return h(
           "main",
           {
@@ -80,7 +81,7 @@
               font: "14px/1.55 system-ui, sans-serif",
             },
           },
-          renderContent(data)
+          renderContent(data, getAsset)
         );
       },
     });
@@ -124,7 +125,7 @@
 
   window.CMS.registerPreviewTemplate(
     "staff_file",
-    Preview(data =>
+    Preview((data, getAsset) =>
       h(
         "div",
         {
@@ -134,12 +135,58 @@
             gap: 14,
           },
         },
-        ...(data.staff || []).map(member =>
-          card(
-            member.name || "Staff member",
+        ...(data.staff || []).map(member => {
+          const photoUrl = member.photo
+            ? getAsset(member.photo).toString()
+            : "";
+          return h(
+            "article",
+            {
+              style: {
+                minWidth: 0,
+                overflow: "hidden",
+                border: "1px solid #dbe3ec",
+                background: "#fff",
+                boxShadow: "0 3px 12px #12243a0a",
+              },
+            },
             h(
               "div",
-              null,
+              {
+                style: {
+                  aspectRatio: (member.photoAspect || "2/3").replace("/", " / "),
+                  overflow: "hidden",
+                  background: "#f1f5f9",
+                },
+              },
+              photoUrl &&
+                h("img", {
+                  src: photoUrl,
+                  alt: "",
+                  style: {
+                    display: "block",
+                    width: "100%",
+                    height: "100%",
+                    objectFit: member.photoFit === "cover" ? "cover" : "contain",
+                    objectPosition: member.photoPosition || "center 25%",
+                  },
+                })
+            ),
+            h(
+              "div",
+              { style: { padding: 14 } },
+              h(
+                "h3",
+                {
+                  style: {
+                    margin: "0 0 8px",
+                    color: "#17324f",
+                    font: "bold 19px Georgia, serif",
+                    overflowWrap: "anywhere",
+                  },
+                },
+                member.name || "Staff member"
+              ),
               h(
                 "p",
                 { style: { color: "#8b6728", fontWeight: 700 } },
@@ -155,8 +202,8 @@
                 member.isHidden ? "Hidden from directory" : "Shown in directory"
               )
             )
-          )
-        )
+          );
+        })
       )
     )
   );
@@ -292,7 +339,7 @@
 
   window.CMS.registerPreviewTemplate(
     "faith_formation_file",
-    Preview(data =>
+    Preview((data, getAsset) =>
       h(
         "div",
         { style: { display: "grid", gap: 14 } },
@@ -338,12 +385,226 @@
                     .filter(Boolean)
                     .join(", ") || "None listed"
                 }`
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    display: "flex",
+                    flexWrap: "wrap",
+                    gap: 8,
+                    marginTop: 12,
+                  },
+                },
+                ...(category.catechists || [])
+                  .filter(catechist => catechist.photo)
+                  .slice(0, 4)
+                  .map(catechist =>
+                    h("img", {
+                      src: getAsset(catechist.photo).toString(),
+                      alt: `${catechist.name || "Catechist"} crop preview`,
+                      title: `${catechist.name || "Catechist"} portrait crop`,
+                      style: {
+                        width: 64,
+                        height: 64,
+                        borderRadius: "50%",
+                        objectFit: "cover",
+                        objectPosition: catechist.photoPosition || "center 25%",
+                      },
+                    })
+                  )
+              ),
+              h(
+                "div",
+                {
+                  style: {
+                    display: "grid",
+                    gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+                    gap: 8,
+                    marginTop: 12,
+                  },
+                },
+                ...(category.photos || [])
+                  .slice(0, 4)
+                  .map((photo, index) =>
+                    h(
+                      "div",
+                      {
+                        style: {
+                          aspectRatio: "16 / 9",
+                          overflow: "hidden",
+                          background: "#f1f5f9",
+                        },
+                      },
+                      h("img", {
+                        src: getAsset(photo).toString(),
+                        alt: `Program image ${index + 1} crop preview`,
+                        style: {
+                          display: "block",
+                          width: "100%",
+                          height: "100%",
+                          objectFit: "cover",
+                          objectPosition:
+                            data.settings?.programPhotoPosition || "center",
+                        },
+                      })
+                    )
+                  )
               )
             )
           )
         )
       )
     )
+  );
+
+  window.CMS.registerPreviewTemplate(
+    "announcements_file",
+    Preview((data, getAsset) => {
+      const settings = data.settings || {};
+      const opacity = Math.max(
+        0,
+        Math.min(1, Number(settings.heroLinkOpacity ?? 0.78))
+      );
+      const badgePosition = settings.heroLinkPosition || "top-right";
+      const positionStyles = {
+        "top-right": { top: 12, right: 12 },
+        "top-left": { top: 12, left: 12 },
+        "bottom-right": { bottom: 12, right: 12 },
+        "bottom-left": { bottom: 12, left: 12 },
+      };
+      const aspectRatio = (settings.cardImageAspect || "16/9").replace(
+        "/",
+        " / "
+      );
+      const announcements = data.announcements || [];
+
+      return h(
+        "div",
+        { style: { display: "grid", gap: 16 } },
+        card(
+          settings.title || "Parish Announcements",
+          h(
+            "div",
+            null,
+            h("p", null, asText(settings.description)),
+            h(
+              "div",
+              {
+                style: {
+                  position: "relative",
+                  minHeight: 180,
+                  padding: 16,
+                  overflow: "hidden",
+                  borderRadius: 10,
+                  background:
+                    "linear-gradient(120deg, #17324f, #6b7b8d)",
+                },
+              },
+              h(
+                "span",
+                {
+                  style: {
+                    position: "absolute",
+                    ...positionStyles[badgePosition],
+                    maxWidth: "80%",
+                    padding: "8px 12px",
+                    borderRadius: 24,
+                    background: previewColorWithOpacity(
+                      settings.heroLinkBackgroundColor || "#102a45",
+                      opacity
+                    ),
+                    color: settings.heroLinkTextColor || "#ffffff",
+                    font: "bold 12px Arial, sans-serif",
+                  },
+                },
+                "Parish announcement · Latest active notice"
+              ),
+              h(
+                "p",
+                {
+                  style: {
+                    position: "absolute",
+                    left: 16,
+                    bottom: 10,
+                    color: "#fff",
+                    font: "bold 16px Georgia, serif",
+                  },
+                },
+                "Home hero announcement link placement preview"
+              )
+            )
+          )
+        ),
+        h(
+          "div",
+          {
+            style: {
+              display: "grid",
+              gridTemplateColumns: `repeat(${settings.cardColumns === 2 ? 2 : 3}, minmax(0, 1fr))`,
+              gap: 14,
+            },
+          },
+          ...announcements.map(announcement =>
+            h(
+              "article",
+              {
+                style: {
+                  minWidth: 0,
+                  overflow: "hidden",
+                  border: "1px solid #dbe3ec",
+                  borderRadius: 10,
+                  background: "#fff",
+                },
+              },
+              h(
+                "div",
+                {
+                  style: {
+                    aspectRatio,
+                    overflow: "hidden",
+                    background: "#f1f5f9",
+                  },
+                },
+                announcement.image &&
+                  h("img", {
+                    src: getAsset(announcement.image).toString(),
+                    alt: announcement.imageAlt || "",
+                    style: {
+                      display: "block",
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "cover",
+                      objectPosition: announcement.imagePosition || "center",
+                    },
+                  })
+              ),
+              h(
+                "div",
+                { style: { padding: 14 } },
+                h(
+                  "h3",
+                  {
+                    style: {
+                      margin: "0 0 8px",
+                      color: "#17324f",
+                      font: "bold 18px Georgia, serif",
+                    },
+                  },
+                  announcement.title || "Announcement title"
+                ),
+                h("p", null, asText(announcement.description, 140)),
+                h(
+                  "p",
+                  { style: { color: "#64748b", fontSize: 12 } },
+                  `${announcement.launchDate || "Launch date"} – ${announcement.expirationDate || "Expiration date"}`
+                )
+              )
+            )
+          )
+        )
+      );
+    })
   );
 
   window.CMS.registerPreviewTemplate(

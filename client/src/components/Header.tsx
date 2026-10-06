@@ -21,6 +21,7 @@ interface SearchResult {
 const searchablePages: SearchResult[] = [
   { title: 'Home', type: 'Page', href: '/', searchableText: 'home saint therese church' },
   { title: 'About & Staff', type: 'Page', href: '/about', searchableText: 'about staff parish team' },
+  { title: 'Announcements', type: 'Page', href: '/announcements', searchableText: 'announcements alerts weather elevator parish updates' },
   { title: 'Bulletin', type: 'Page', href: '/bulletin', searchableText: 'bulletin weekly parish news' },
   { title: 'Previous Bulletins', type: 'Page', href: '/bulletin/previous', searchableText: 'previous bulletins archive' },
   { title: 'Next Week Bulletin', type: 'Page', href: '/bulletin/next', searchableText: 'next week bulletin' },
@@ -179,6 +180,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
     label: string;
     children?: Array<{ href: string; label: string }>;
   }> = [
+    { href: '/announcements', label: 'Announcements' },
     { href: '/sacraments', label: 'Sacraments' },
     { href: '/resources', label: 'Resources' },
     { href: '/faith-formation', label: 'Wednesday Faith Formation' },
@@ -342,14 +344,14 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
                     <div key={link.href} className="relative group/submenu">
                       <Link
                         href={link.href}
-                        className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary transition-colors"
+                        className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary group-hover/submenu:bg-secondary group-hover/submenu:text-primary group-focus-within/submenu:bg-secondary group-focus-within/submenu:text-primary transition-colors"
                       >
                         <span>{link.label}</span>
                         {hasChildren && <ChevronDown size={14} className="rotate-[-90deg]" />}
                       </Link>
 
                       {hasChildren && (
-                        <div className="absolute left-full top-0 ml-1 min-w-[180px] rounded-md border border-border bg-white py-2 shadow-lg opacity-0 pointer-events-none group-hover/submenu:opacity-100 group-hover/submenu:pointer-events-auto transition-opacity duration-200">
+                        <div className="invisible absolute left-full top-0 min-w-[180px] rounded-r-md border border-l-0 border-border bg-white py-2 opacity-0 shadow-lg transition-opacity duration-200 group-hover/submenu:visible group-hover/submenu:opacity-100 group-focus-within/submenu:visible group-focus-within/submenu:opacity-100">
                           {link.children?.map((child) => (
                             <Link
                               key={child.href}
@@ -482,28 +484,48 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
               </div>
               {searchResultsList}
             </div>
-            {[...primaryLinks, ...parishLifeLinks, ...externalLinks].map((link) => (
-              link.href.startsWith('http') ? (
-                <a
-                  key={link.href}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2 block"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </a>
-              ) : (
+            {primaryLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="block py-2 font-medium text-foreground transition-colors hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </Link>
+            ))}
+            {parishLifeLinks.map((link) => (
+              <div key={link.href} className="flex flex-col">
                 <Link
-                  key={link.href}
                   href={link.href}
-                  className="text-foreground hover:text-primary transition-colors font-medium py-2 block"
+                  className="block py-2 font-medium text-foreground transition-colors hover:text-primary"
                   onClick={() => setIsMenuOpen(false)}
                 >
                   {link.label}
                 </Link>
-              )
+                {link.children?.map((child) => (
+                  <Link
+                    key={child.href}
+                    href={child.href}
+                    className="ml-4 block border-l-2 border-primary/15 py-2 pl-4 font-medium text-muted-foreground transition-colors hover:text-primary"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {child.label}
+                  </Link>
+                ))}
+              </div>
+            ))}
+            {externalLinks.map((link) => (
+              <a
+                key={link.href}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block py-2 font-medium text-foreground transition-colors hover:text-primary"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.label}
+              </a>
             ))}
 
             <div className="flex items-center justify-between pt-2 border-t border-border">

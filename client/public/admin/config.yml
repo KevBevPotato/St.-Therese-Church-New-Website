@@ -164,6 +164,120 @@ collections:
             }
           - { label: "Email", name: "email", widget: "string" }
           - { label: "Address", name: "address", widget: "string" }
+      - file: "client/src/data/announcements_data.json"
+        label: "Parish Announcements"
+        name: "announcements_file"
+        fields:
+          - label: "Page and Hero Link Settings"
+            name: "settings"
+            widget: "object"
+            fields:
+              - { label: "Page Title", name: "title", widget: "string" }
+              - { label: "Introduction", name: "description", widget: "text" }
+              - {
+                  label: "Announcement Card Columns",
+                  name: "cardColumns",
+                  widget: "number",
+                  value_type: "int",
+                  min: 2,
+                  max: 3,
+                  step: 1,
+                  default: 3,
+                  hint: "Choose the maximum number of cards per row on larger screens.",
+                }
+              - {
+                  label: "Card Image Aspect Ratio",
+                  name: "cardImageAspect",
+                  widget: "select",
+                  options: ["16/9", "4/3", "1/1"],
+                  default: "16/9",
+                }
+              - {
+                  label: "Home Hero Link Position",
+                  name: "heroLinkPosition",
+                  widget: "select",
+                  options:
+                    [
+                      { label: "Top right", value: "top-right" },
+                      { label: "Top left", value: "top-left" },
+                      { label: "Bottom right", value: "bottom-right" },
+                      { label: "Bottom left", value: "bottom-left" },
+                    ],
+                  default: "top-right",
+                }
+              - {
+                  label: "Hero Link Background Color",
+                  name: "heroLinkBackgroundColor",
+                  widget: "color",
+                  default: "#102a45",
+                }
+              - {
+                  label: "Hero Link Text Color",
+                  name: "heroLinkTextColor",
+                  widget: "color",
+                  default: "#ffffff",
+                }
+              - {
+                  label: "Hero Link Opacity",
+                  name: "heroLinkOpacity",
+                  widget: "number",
+                  value_type: "float",
+                  min: 0.1,
+                  max: 1,
+                  step: 0.05,
+                  default: 0.78,
+                }
+          - label: "Announcements (drag to reorder)"
+            name: "announcements"
+            widget: "list"
+            summary: "{{fields.title}} · {{fields.launchDate}}"
+            fields:
+              - { label: "ID (unique, URL-safe)", name: "id", widget: "string" }
+              - { label: "Title", name: "title", widget: "string" }
+              - {
+                  label: "Category (optional)",
+                  name: "category",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Announcement",
+                  name: "description",
+                  widget: "text",
+                }
+              - {
+                  label: "Launch Date",
+                  name: "launchDate",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  picker_utc: false,
+                  required: true,
+                }
+              - {
+                  label: "Expiration Date",
+                  name: "expirationDate",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  picker_utc: false,
+                  required: true,
+                  hint: "The announcement remains visible through this date.",
+                }
+              - { label: "Related Image", name: "image", widget: "image" }
+              - {
+                  label: "Image Description (alt text)",
+                  name: "imageAlt",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Image Position",
+                  name: "imagePosition",
+                  widget: "string",
+                  default: "center",
+                  hint: "Adjusts the crop in the image preview and announcement card, e.g. center 35%.",
+                }
   - name: "staff"
     label: "About & Staff"
     files:
@@ -229,6 +343,14 @@ collections:
                   name: "photoFit",
                   widget: "select",
                   options: ["cover", "contain"],
+                }
+              - {
+                  label: "Directory Card Photo Aspect Ratio",
+                  name: "photoAspect",
+                  widget: "select",
+                  options: ["2/3", "3/4", "1/1"],
+                  default: "2/3",
+                  hint: "Controls the portrait image area on the About & Staff directory cards.",
                 }
               - { label: "Duties", name: "duties", widget: "text" }
               - { label: "Bio", name: "bio", widget: "text" }
@@ -822,6 +944,13 @@ collections:
                   label: "Contact Phone",
                   name: "contactPhone",
                   widget: "string",
+                }
+              - {
+                  label: "Program Photo Crop Position",
+                  name: "programPhotoPosition",
+                  widget: "string",
+                  default: "center",
+                  hint: "Controls the crop of the 16:9 program photo carousel images. Preview these under Programs.",
                 }
           - label: "Programs (drag to reorder)"
             name: "categories"

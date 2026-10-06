@@ -4,9 +4,11 @@ import Footer from "@/components/Footer";
 import ChurchMap from "@/components/ChurchMap";
 import { Button } from "@/components/ui/button";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
+import { Link } from "wouter";
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 import heroData from "@/data/hero_data.json";
 import homeContactData from "@/data/home_contact_data.json";
+import { announcementSettings, getActiveAnnouncements } from "@/data/announcements";
 
 function getMediaFit(value: string): "cover" | "contain" {
   return value === "contain" ? "contain" : "cover";
@@ -30,6 +32,7 @@ function colorWithOpacity(color: string, opacity: number): string {
 
 export default function Home() {
   const mediaFit = getMediaFit(heroData.mediaFit);
+  const featuredAnnouncement = getActiveAnnouncements()[0];
   const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
   const overlayStyle = {
     background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
@@ -54,6 +57,33 @@ export default function Home() {
           className="relative flex min-h-[600px] w-full items-center py-20"
           style={{ backgroundColor: heroData.backgroundColor }}
         >
+          {featuredAnnouncement && (
+            <Link
+              href="/announcements"
+              className={`absolute z-20 rounded-full border border-white/30 px-4 py-2 text-sm font-semibold shadow-lg backdrop-blur-md transition-opacity hover:opacity-100 ${
+                announcementSettings.heroLinkPosition === 'top-left'
+                  ? 'left-4 top-4 sm:left-8 sm:top-8'
+                  : announcementSettings.heroLinkPosition === 'bottom-right'
+                    ? 'bottom-4 right-4 sm:bottom-8 sm:right-8'
+                    : announcementSettings.heroLinkPosition === 'bottom-left'
+                      ? 'bottom-4 left-4 sm:bottom-8 sm:left-8'
+                      : 'right-4 top-4 sm:right-8 sm:top-8'
+              }`}
+              style={{
+                backgroundColor: colorWithOpacity(
+                  announcementSettings.heroLinkBackgroundColor,
+                  Math.max(0, Math.min(1, announcementSettings.heroLinkOpacity)),
+                ),
+                color: announcementSettings.heroLinkTextColor,
+                maxWidth: 'calc(100% - 2rem)',
+              }}
+            >
+              <span className="block text-[9px] font-bold uppercase tracking-[0.16em] opacity-75">
+                Parish announcement
+              </span>
+              <span className="block truncate">{featuredAnnouncement.title}</span>
+            </Link>
+          )}
           {/* Video background - Now purely a background layer */}
           <div className="absolute inset-0 z-0">
             {heroData.videoUrl ? (

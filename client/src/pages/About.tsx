@@ -51,7 +51,10 @@ export default function About() {
                   className="group overflow-hidden rounded-none border border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"
                 >
                   <Link href={`/staff/${member.slug}`} className="block">
-                    <div className="relative aspect-[2/3] w-full overflow-hidden bg-primary/5 flex items-center justify-center">
+                    <div
+                      className="relative w-full overflow-hidden bg-primary/5 flex items-center justify-center"
+                      style={{ aspectRatio: member.photoAspect?.replace('/', ' / ') ?? '2 / 3' }}
+                    >
                       {member.photo ? (
                         <img
                           src={member.photo}

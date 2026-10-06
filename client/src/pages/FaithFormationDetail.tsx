@@ -308,8 +308,11 @@ export default function FaithFormationDetail() {
                     </div>
 
                     {/* Replace `category.images` with your actual photo array */}
-                    {((category as any).images as string[] | undefined)?.length ? (
-                        <PhotoCarousel images={(category as any).images} />
+                    {category.photos?.length ? (
+                        <PhotoCarousel
+                            images={category.photos}
+                            objectPosition={faithFormationSettings.programPhotoPosition ?? 'center'}
+                        />
                     ) : (
                         <Card className="p-16 text-center border-2 border-dashed border-primary/15 bg-white rounded-3xl">
                             <BookOpen className="size-12 text-primary/20 mx-auto mb-4" />
@@ -359,7 +362,7 @@ export default function FaithFormationDetail() {
 /*             Photo Carousel (simple, no deps)                 */
 /* ============================================================ */
 
-function PhotoCarousel({ images }: { images: string[] }) {
+function PhotoCarousel({ images, objectPosition }: { images: string[]; objectPosition: string }) {
     const [index, setIndex] = useStateSafeState(0);
     const prev = () => setIndex((index - 1 + images.length) % images.length);
     const next = () => setIndex((index + 1) % images.length);
@@ -371,6 +374,7 @@ function PhotoCarousel({ images }: { images: string[] }) {
                     src={images[index]}
                     alt={`Program photo ${index + 1}`}
                     className="w-full h-full object-cover"
+                    style={{ objectPosition }}
                     loading="lazy"
                 />
             </div>

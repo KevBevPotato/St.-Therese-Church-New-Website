@@ -92,7 +92,7 @@ export function EventsListView({
         )}
       </div>
       {showCalendarLink && (
-        <Link href="/events?view=calendar" className="inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:text-accent">
+        <Link href="/events?view=calendar" className="inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:text-accent lg:hidden">
           <CalendarDays className="size-4" />
           View full parish calendar
         </Link>

@@ -9,6 +9,7 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
+import Announcements from "./pages/Announcements";
 import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
@@ -41,6 +42,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
+      <Route path={"/announcements"} component={Announcements} />
       <Route path={"/get-involved"} component={GetInvolved} />
       <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
       <Route path={"/get-involved/altar-society"} component={AltarSociety} />
