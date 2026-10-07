@@ -15,15 +15,10 @@ import {
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
-import getInvolvedData from '@/data/get-involved_data.json';
 // ✅ Fixed: use relative path since events.ts is in the same directory
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
-
-const FORM_URLS = {
-    referral: getInvolvedData.settings.referralUrl,
-};
 
 function getAltarSocietyEvents(): CalendarEvent[] {
     const now = new Date();
@@ -48,7 +43,7 @@ function getAltarSocietyEvents(): CalendarEvent[] {
 }
 
 export default function AltarSociety() {
-    const { openSignup } = useInterestSignup();
+    const { openSignup, openEngagement } = useInterestSignup();
     const org = getOrganizationById('altar-society');
     const upcomingEvents = getAltarSocietyEvents();
 
@@ -175,7 +170,7 @@ export default function AltarSociety() {
                             <Users size={16} className="mr-2" /> Become a Member
                         </Button>
                         <Button
-                            onClick={() => FORM_URLS.referral && window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
+                            onClick={() => openEngagement('referral', org.name)}
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >

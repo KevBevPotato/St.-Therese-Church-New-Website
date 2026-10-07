@@ -136,6 +136,11 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                         categories: rule.categories.map((c: any) => c.category || c),
                         organizationTags: rule.organizationTags ?? [],
                         description: rule.description,
+                        linkedOpportunityId:
+                            rule.linkedOpportunityId ??
+                            (rule.organizationTags?.includes('faith-formation')
+                                ? 'wednesday-faith-formation'
+                                : undefined),
                     });
                 }
             }

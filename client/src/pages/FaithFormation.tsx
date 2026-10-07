@@ -167,8 +167,7 @@ export default function FaithFormation() {
                     title.includes('family formation') ||
                     title.includes('faith formation') ||
                     event.organizationTags?.includes('faith-formation') ||
-                    event.linkedOpportunityId === 'wednesday-night-supper' ||
-                    event.id.includes('connect-groups') // Ensures Connect Groups show up here
+                    event.linkedOpportunityId === 'wednesday-night-supper'
                 );
             })
             .sort((a, b) => a.date.getTime() - b.date.getTime());

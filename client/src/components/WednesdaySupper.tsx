@@ -18,13 +18,8 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved_data.json';
-
-const FORM_URLS = {
-    contribute: getInvolvedData.settings.contributeNurseryUrl,
-    signUpToHelp: getInvolvedData.settings.signUpToHelpUrl,
-    suggestion: getInvolvedData.settings.suggestionUrl,
-    referral: getInvolvedData.settings.referralUrl,
-};
+import SupperVolunteerModal from '@/components/SupperVolunteerModal';
+import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 type RoleName = 'Grocery Pick-up' | 'Food Prep' | 'Food Server' | 'Clean-up Crew';
 
@@ -291,6 +286,7 @@ const monthGroups: MonthGroup[] = (() => {
 })();
 
 export default function WednesdaySupper() {
+    const { openEngagement } = useInterestSignup();
     const configuredOpportunities = getInvolvedData.opportunities as Array<{
         id: string;
         landingPageTitle?: string;
@@ -301,6 +297,8 @@ export default function WednesdaySupper() {
     const supperPage = configuredOpportunities.find((item) => item.id === 'supper-week');
     const [expandedMonth, setExpandedMonth] = useState<string>('September-2026');
     const [expandedWeek, setExpandedWeek] = useState<string | null>(null);
+    const [volunteerModalOpen, setVolunteerModalOpen] = useState(false);
+    const [volunteerWeek, setVolunteerWeek] = useState<WednesdayWeek | null>(null);
 
     const totalWeeks = allWeeks.length;
     const sponsoredWeeks = allWeeks.filter(w => w.sponsored).length;
@@ -313,8 +311,9 @@ export default function WednesdaySupper() {
         0
     );
 
-    const openForm = (url: string) => {
-        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    const openVolunteerSignup = (week: WednesdayWeek | null = null) => {
+        setVolunteerWeek(week);
+        setVolunteerModalOpen(true);
     };
 
     return (
@@ -370,13 +369,13 @@ export default function WednesdaySupper() {
                     {/* Action Buttons */}
                     <div className="flex flex-wrap gap-4 mb-12 justify-center">
                         <Button
-                            onClick={() => openForm(FORM_URLS.contribute)}
+                            onClick={() => openEngagement('pledge-supper-week')}
                             className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
                         >
                             <Heart size={16} className="mr-2" /> Sponsor a Week
                         </Button>
                         <Button
-                            onClick={() => openForm(FORM_URLS.signUpToHelp)}
+                            onClick={() => openVolunteerSignup()}
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >
@@ -481,7 +480,7 @@ export default function WednesdaySupper() {
                                                                     </div>
                                                                     {!week.sponsored && (
                                                                         <Button
-                                                                            onClick={() => openForm(FORM_URLS.contribute)}
+                                                                            onClick={() => openEngagement('pledge-supper-week')}
                                                                             size="sm"
                                                                             className="bg-accent hover:bg-accent/90 text-white text-xs font-bold uppercase tracking-widest"
                                                                         >
@@ -520,7 +519,7 @@ export default function WednesdaySupper() {
                                                                                     </div>
                                                                                     {!isFull && (
                                                                                         <Button
-                                                                                            onClick={() => openForm(FORM_URLS.signUpToHelp)}
+                                                                                            onClick={() => openVolunteerSignup(week)}
                                                                                             size="sm"
                                                                                             variant="outline"
                                                                                             className="text-xs font-bold uppercase tracking-widest shrink-0"
@@ -557,6 +556,15 @@ export default function WednesdaySupper() {
             </main>
 
             <Footer />
+            <SupperVolunteerModal
+                isOpen={volunteerModalOpen}
+                onClose={() => {
+                    setVolunteerModalOpen(false);
+                    setVolunteerWeek(null);
+                }}
+                week={volunteerWeek}
+                allWeeks={allWeeks}
+            />
         </div>
     );
 }

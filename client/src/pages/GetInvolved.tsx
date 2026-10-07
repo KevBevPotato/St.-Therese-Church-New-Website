@@ -76,13 +76,6 @@ const settings = getInvolvedData.settings;
 const categories = settings.categories as { id: Category; label: string }[];
 const tags = settings.tags as Tag[];
 const opportunities = getInvolvedData.opportunities as Opportunity[];
-const FORM_URLS = {
-    contributeNursery: settings.contributeNurseryUrl,
-    suggestion: settings.suggestionUrl,
-    referral: settings.referralUrl,
-    supperWeekVolunteer: settings.supperWeekVolunteerUrl,
-};
-
 function SignUpLinks({ links }: { links?: Opportunity['signUpLinks'] }) {
     if (!links?.length) return null;
 
@@ -104,7 +97,7 @@ function SignUpLinks({ links }: { links?: Opportunity['signUpLinks'] }) {
 }
 
 export default function GetInvolved() {
-    const { openSignup } = useInterestSignup();
+    const { openSignup, openEngagement } = useInterestSignup();
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [activeInterest, setActiveInterest] = useState<Tag | 'all'>('all');
     const [viewMode, setViewMode] = useState<ViewMode>('cards');
@@ -119,9 +112,7 @@ export default function GetInvolved() {
     });
 
     const handleContribute = (opportunityId: string) => {
-        if (opportunityId === 'nursery' && FORM_URLS.contributeNursery) {
-            window.open(FORM_URLS.contributeNursery, '_blank', 'noopener,noreferrer');
-        }
+        if (opportunityId === 'nursery') openEngagement('pledge-nursery');
     };
 
     const handleInterestSignup = (opportunity: Opportunity) => {
@@ -137,16 +128,16 @@ export default function GetInvolved() {
         });
     };
 
-    const handleSupperWeekSignup = (url = FORM_URLS.supperWeekVolunteer) => {
-        if (url) window.open(url, '_blank', 'noopener,noreferrer');
+    const handleSupperWeekSignup = () => {
+        openEngagement('signup-supper', 'Wednesday Night Supper');
     };
 
-    const handleSuggestion = () => {
-        if (FORM_URLS.suggestion) window.open(FORM_URLS.suggestion, '_blank', 'noopener,noreferrer');
+    const handleSuggestion = (contextProjectTitle?: string) => {
+        openEngagement('suggestion', contextProjectTitle);
     };
 
-    const handleRefer = () => {
-        if (FORM_URLS.referral) window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer');
+    const handleRefer = (contextProjectTitle?: string) => {
+        openEngagement('referral', contextProjectTitle);
     };
 
     return (
@@ -271,9 +262,9 @@ export default function GetInvolved() {
                                         <SupperWeekCard
                                             key={opportunity.id}
                                             op={opportunity}
-                                            onSupperWeekSignup={() => handleSupperWeekSignup(opportunity.signUpLinks?.[0]?.url)}
-                                            onSuggestion={handleSuggestion}
-                                            onRefer={handleRefer}
+                                            onSupperWeekSignup={handleSupperWeekSignup}
+                                            onSuggestion={() => handleSuggestion(opportunity.title)}
+                                            onRefer={() => handleRefer(opportunity.title)}
                                         />
                                     );
                                 }
@@ -284,8 +275,8 @@ export default function GetInvolved() {
                                             key={opportunity.id}
                                             op={opportunity}
                                             onJoin={() => handleInterestSignup(opportunity)}
-                                            onSuggestion={handleSuggestion}
-                                            onRefer={handleRefer}
+                                            onSuggestion={() => handleSuggestion(opportunity.title)}
+                                            onRefer={() => handleRefer(opportunity.title)}
                                         />
                                     );
                                 }
@@ -307,8 +298,8 @@ export default function GetInvolved() {
                                             }}
                                             onContribute={() => handleContribute(opportunity.id)}
                                             onSignUpToHelp={() => handleInterestSignup(opportunity)}
-                                            onRefer={handleRefer}
-                                            onSuggestion={handleSuggestion}
+                                            onRefer={() => handleRefer(opportunity.title)}
+                                            onSuggestion={() => handleSuggestion(opportunity.title)}
                                             signUpLinks={opportunity.signUpLinks}
                                         />
                                     );
@@ -319,8 +310,8 @@ export default function GetInvolved() {
                                         key={opportunity.id}
                                         op={opportunity}
                                         onSignUpToHelp={() => handleInterestSignup(opportunity)}
-                                        onSuggestion={handleSuggestion}
-                                        onRefer={handleRefer}
+                                        onSuggestion={() => handleSuggestion(opportunity.title)}
+                                        onRefer={() => handleRefer(opportunity.title)}
                                     />
                                 );
                             })}
@@ -360,7 +351,7 @@ export default function GetInvolved() {
                             </p>
                             <div className="text-center">
                                 <Button
-                                    onClick={handleSuggestion}
+                                    onClick={() => handleSuggestion()}
                                     className="bg-accent hover:bg-accent/90 py-6 px-12 font-bold uppercase tracking-widest"
                                 >
                                     Submit a Suggestion

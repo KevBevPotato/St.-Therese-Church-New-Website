@@ -410,6 +410,7 @@ collections:
       - label: "Organization Calendars (Optional)"
         name: "organizationTags"
         widget: "list"
+        hint: "Recurring events tagged Faith Formation open the shared Wednesday Faith Formation landing page when clicked."
         field:
           label: "Organization"
           name: "organization"
@@ -1111,36 +1112,6 @@ collections:
                   name: "contactEmail",
                   widget: "string",
                 }
-              - {
-                  label: "Contribute Form URL",
-                  name: "contributeNurseryUrl",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Volunteer Form URL",
-                  name: "signUpToHelpUrl",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Suggestion Form URL",
-                  name: "suggestionUrl",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Referral Form URL",
-                  name: "referralUrl",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Wednesday Supper Signup URL",
-                  name: "supperWeekVolunteerUrl",
-                  widget: "string",
-                  required: false,
-                }
               - label: "Serve Categories"
                 name: "categories"
                 widget: "list"
@@ -1309,7 +1280,7 @@ collections:
                 fields:
                   - { label: "Button Label", name: "label", widget: "string" }
                   - {
-                      label: "URL (Microsoft Forms, SignUpGenius, potluck page, etc.)",
+                      label: "External Sign-up URL",
                       name: "url",
                       widget: "string",
                     }

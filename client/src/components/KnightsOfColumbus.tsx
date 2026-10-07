@@ -15,14 +15,9 @@ import {
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
-import getInvolvedData from '@/data/get-involved_data.json';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
-
-const FORM_URLS = {
-    referral: getInvolvedData.settings.referralUrl,
-};
 
 /**
  * Pulls only events tagged with the 'knights-of-columbus' invisible org tag
@@ -51,7 +46,7 @@ function getKoCRelevantEvents(): CalendarEvent[] {
 }
 
 export default function KnightsOfColumbus() {
-    const { openSignup } = useInterestSignup();
+    const { openSignup, openEngagement } = useInterestSignup();
     const org = getOrganizationById('knights-of-columbus');
     const upcomingEvents = getKoCRelevantEvents();
     const visibleMembers = org?.members?.filter((member) => !member.isHidden) ?? [];
@@ -250,7 +245,7 @@ export default function KnightsOfColumbus() {
                             </a>
                         )}
                         <Button
-                            onClick={() => FORM_URLS.referral && window.open(FORM_URLS.referral, '_blank', 'noopener,noreferrer')}
+                            onClick={() => openEngagement('referral', org.name)}
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >
