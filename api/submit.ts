@@ -218,11 +218,7 @@ function validateBody(bodyValue: unknown): {
         "child_count",
       ];
       const childCount = Number(getString(body, "child_count"));
-      if (
-        !Number.isInteger(childCount) ||
-        childCount < 0 ||
-        childCount > 12
-      ) {
+      if (!Number.isInteger(childCount) || childCount < 0 || childCount > 12) {
         return { error: "The number of children must be between 0 and 12." };
       }
       for (let child = 1; child <= childCount; child++) {
@@ -386,14 +382,32 @@ function valueForHeader(header: string, body: JsonObject): string | number {
   return typeof value === "string" || typeof value === "number" ? value : "";
 }
 
+class RateLimitError extends Error {
+  constructor(
+    readonly reason: string,
+    readonly upstreamStatus?: number
+  ) {
+    super(reason);
+    this.name = "RateLimitError";
+  }
+}
+
 async function enforceRateLimit(request: ApiRequest): Promise<boolean> {
   const redisUrl = process.env.UPSTASH_REDIS_REST_URL?.replace(/\/+$/, "");
   const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
   const rawIp =
     request.headers["x-real-ip"] || request.headers["x-forwarded-for"];
   const ip = Array.isArray(rawIp) ? rawIp[0] : rawIp?.split(",")[0]?.trim();
-  if (!redisUrl || !redisToken || !ip) {
-    throw new Error("Form rate limiting is not configured.");
+  if (!redisUrl) throw new RateLimitError("missing_url");
+  if (!redisToken) throw new RateLimitError("missing_token");
+  if (!ip) throw new RateLimitError("missing_client_ip");
+  try {
+    if (new URL(redisUrl).protocol !== "https:") {
+      throw new RateLimitError("invalid_url_protocol");
+    }
+  } catch (error) {
+    if (error instanceof RateLimitError) throw error;
+    throw new RateLimitError("invalid_url");
   }
 
   const key = `public-form:${ip}`;
@@ -406,16 +420,26 @@ async function enforceRateLimit(request: ApiRequest): Promise<boolean> {
       "Content-Type": "application/json",
     },
     body: JSON.stringify(["EVAL", script, "1", key, RATE_LIMIT_WINDOW_SECONDS]),
+  }).catch(() => {
+    throw new RateLimitError("upstash_network_error");
   });
-  if (!response.ok) throw new Error("Form rate limiting is unavailable.");
-  const result: unknown = await response.json();
+  if (!response.ok) {
+    throw new RateLimitError("upstash_http_error", response.status);
+  }
+  const result: unknown = await response.json().catch(() => {
+    throw new RateLimitError("upstash_invalid_json");
+  });
   if (
     !result ||
     typeof result !== "object" ||
     !("result" in result) ||
     typeof result.result !== "number"
   ) {
-    throw new Error("Form rate limiting returned an invalid response.");
+    throw new RateLimitError(
+      result && typeof result === "object" && "error" in result
+        ? "upstash_command_error"
+        : "upstash_invalid_response"
+    );
   }
   return result.result <= RATE_LIMIT_PER_MINUTE;
 }
@@ -542,8 +566,14 @@ export default async function handler(
       });
       return;
     }
-  } catch {
-    console.error("Form rate limiting is not configured or available.");
+  } catch (error) {
+    console.error("Form rate-limit check failed.", {
+      reason:
+        error instanceof RateLimitError ? error.reason : "unexpected_error",
+      ...(error instanceof RateLimitError && error.upstreamStatus
+        ? { upstreamStatus: error.upstreamStatus }
+        : {}),
+    });
     respond(response, 503, {
       error: "Form submissions are temporarily unavailable.",
     });
