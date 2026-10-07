@@ -1,6 +1,11 @@
 export async function submitForm(
   formType:
-    "pledge" | "engagement" | "supper-volunteer" | "lector" | "membership",
+    | "pledge"
+    | "engagement"
+    | "supper-volunteer"
+    | "lector"
+    | "membership"
+    | "interest",
   payload: Record<string, unknown>
 ): Promise<void> {
   const response = await fetch("/api/submit", {

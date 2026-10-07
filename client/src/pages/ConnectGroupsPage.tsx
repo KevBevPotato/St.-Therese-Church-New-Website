@@ -5,8 +5,10 @@ import { Button } from '@/components/ui/button';
 import { ArrowLeft, BookOpen, Heart, Users, Sparkles } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved_data.json';
+import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 export default function ConnectGroupsPage() {
+  const { openSignup } = useInterestSignup();
   const configuredPages = getInvolvedData.opportunities as Array<{
     id: string;
     landingPageTitle?: string;
@@ -16,7 +18,6 @@ export default function ConnectGroupsPage() {
   }>;
   const page = configuredPages.find((item) => item.id === 'connect-groups');
   const title = page?.landingPageTitle ?? 'Connect Groups';
-  const contactEmail = page?.contactEmail ?? getInvolvedData.settings.contactEmail;
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -72,11 +73,18 @@ export default function ConnectGroupsPage() {
               <li>• Catholics who want to grow in discipleship and community</li>
             </ul>
             <div className="mt-8">
-              <a href={`mailto:${contactEmail}?subject=Connect%20Groups%20Interest`} className="block">
-                <Button className="w-full bg-primary hover:bg-primary/90 py-6 uppercase tracking-widest font-bold">
-                  Get Connected
-                </Button>
-              </a>
+              <Button
+                onClick={() =>
+                  openSignup({
+                    id: "connect-groups",
+                    title,
+                    kind: "join",
+                  })
+                }
+                className="w-full bg-primary hover:bg-primary/90 py-6 uppercase tracking-widest font-bold"
+              >
+                Get Connected
+              </Button>
             </div>
             {page?.signUpLinks?.map((link) => (
               <a key={`${link.label}-${link.url}`} href={link.url} target="_blank" rel="noopener noreferrer" className="mt-3 block">

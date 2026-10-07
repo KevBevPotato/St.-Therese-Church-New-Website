@@ -18,10 +18,12 @@ import getInvolvedData from '@/data/get-involved_data.json';
 import { staticEvents, generateRecurringEventsForMonth, type EventOrganizationTag } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
 import { getOrganizationById } from '@/data/organizations';
+import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 interface OpportunityDetailData {
     id: string;
     title: string;
+    categories?: string[];
     organization?: string;
     landingPageTitle?: string;
     contactName: string;
@@ -42,6 +44,7 @@ interface OpportunityDetailData {
 
 export default function OpportunityDetail() {
     const [match, params] = useRoute('/get-involved/:id');
+    const { openSignup } = useInterestSignup();
 
     const id = params?.id;
     const opportunities = getInvolvedData.opportunities as OpportunityDetailData[];
@@ -171,11 +174,23 @@ export default function OpportunityDetail() {
                                     </div>
                                 ))}
                             </div>
-                            <Link href="/get-involved">
-                                <Button className="w-full bg-primary hover:bg-primary/90 py-8 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20">
-                                    Fill Interest Form
-                                </Button>
-                            </Link>
+                            <Button
+                                onClick={() =>
+                                    openSignup({
+                                        id: opportunity.id,
+                                        title: details.title,
+                                        kind:
+                                            opportunity.id === 'wednesday-faith-formation'
+                                                ? 'choose'
+                                                : opportunity.categories?.includes('help')
+                                                  ? 'volunteer'
+                                                  : 'join',
+                                    })
+                                }
+                                className="w-full bg-primary hover:bg-primary/90 py-8 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20"
+                            >
+                                Fill Interest Form
+                            </Button>
                             {details.signUpLinks.map((link) => (
                                 <a
                                     key={`${link.label}-${link.url}`}

@@ -175,6 +175,25 @@
       "contactEmail": "office@sttherese.org"
     },
     {
+      "id": "wednesday-faith-formation",
+      "title": "Wednesday Faith Formation",
+      "categories": [
+        "help",
+        "join"
+      ],
+      "tags": [
+        "Parish Organizations"
+      ],
+      "organization": "Faith Formation",
+      "date": "Wednesdays during the school year",
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 342-1556",
+      "description": "Help form the faith of our parish children as a catechist or classroom helper, or register a participant for Wednesday Faith Formation.",
+      "signUpLinks": [],
+      "landingPageTitle": "Wednesday Faith Formation",
+      "landingPageDescription": "Our Wednesday Faith Formation program helps children and families grow in the Catholic faith. Share your interest in serving as a catechist or helper, or request information about registering a participant."
+    },
+    {
       "id": "group-studies",
       "title": "Group Studies",
       "categories": [

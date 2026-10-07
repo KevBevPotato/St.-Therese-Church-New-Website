@@ -25,6 +25,7 @@ import {
 import { Link } from 'wouter';
 import SponsorshipCard from '@/components/SponsorshipCard';
 import getInvolvedData from '@/data/get-involved_data.json';
+import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 type Category = 'all' | 'sponsor' | 'help' | 'join' | 'request';
 type Tag =
@@ -77,7 +78,6 @@ const tags = settings.tags as Tag[];
 const opportunities = getInvolvedData.opportunities as Opportunity[];
 const FORM_URLS = {
     contributeNursery: settings.contributeNurseryUrl,
-    signUpToHelp: settings.signUpToHelpUrl,
     suggestion: settings.suggestionUrl,
     referral: settings.referralUrl,
     supperWeekVolunteer: settings.supperWeekVolunteerUrl,
@@ -104,6 +104,7 @@ function SignUpLinks({ links }: { links?: Opportunity['signUpLinks'] }) {
 }
 
 export default function GetInvolved() {
+    const { openSignup } = useInterestSignup();
     const [activeCategory, setActiveCategory] = useState<Category>('all');
     const [activeInterest, setActiveInterest] = useState<Tag | 'all'>('all');
     const [viewMode, setViewMode] = useState<ViewMode>('cards');
@@ -123,8 +124,17 @@ export default function GetInvolved() {
         }
     };
 
-    const handleSignUpToHelp = () => {
-        if (FORM_URLS.signUpToHelp) window.open(FORM_URLS.signUpToHelp, '_blank', 'noopener,noreferrer');
+    const handleInterestSignup = (opportunity: Opportunity) => {
+        openSignup({
+            id: opportunity.id,
+            title: opportunity.title,
+            kind:
+                opportunity.id === 'wednesday-faith-formation'
+                    ? 'choose'
+                    : opportunity.categories.includes('help')
+                      ? 'volunteer'
+                      : 'join',
+        });
     };
 
     const handleSupperWeekSignup = (url = FORM_URLS.supperWeekVolunteer) => {
@@ -273,6 +283,7 @@ export default function GetInvolved() {
                                         <OrgCard
                                             key={opportunity.id}
                                             op={opportunity}
+                                            onJoin={() => handleInterestSignup(opportunity)}
                                             onSuggestion={handleSuggestion}
                                             onRefer={handleRefer}
                                         />
@@ -295,7 +306,7 @@ export default function GetInvolved() {
                                                 constructionTotal: opportunity.constructionTotal,
                                             }}
                                             onContribute={() => handleContribute(opportunity.id)}
-                                            onSignUpToHelp={handleSignUpToHelp}
+                                            onSignUpToHelp={() => handleInterestSignup(opportunity)}
                                             onRefer={handleRefer}
                                             onSuggestion={handleSuggestion}
                                             signUpLinks={opportunity.signUpLinks}
@@ -307,7 +318,7 @@ export default function GetInvolved() {
                                     <OpportunityCard
                                         key={opportunity.id}
                                         op={opportunity}
-                                        onSignUpToHelp={handleSignUpToHelp}
+                                        onSignUpToHelp={() => handleInterestSignup(opportunity)}
                                         onSuggestion={handleSuggestion}
                                         onRefer={handleRefer}
                                     />
@@ -582,20 +593,15 @@ function SupperWeekCard({
 
 function OrgCard({
     op,
+    onJoin,
     onSuggestion,
     onRefer,
 }: {
     op: Opportunity;
+    onJoin: () => void;
     onSuggestion: () => void;
     onRefer: () => void;
 }) {
-    const EXTERNAL_SIGNUP_URLS: Record<string, string> = {
-        'knights-of-columbus': 'https://www.kofc.org/get-involved/join-kofc/',
-        'altar-society': FORM_URLS.signUpToHelp,
-    };
-
-    const signupUrl = op.signUpLinks?.[0]?.url || EXTERNAL_SIGNUP_URLS[op.id] || FORM_URLS.signUpToHelp;
-
     return (
         <Card className="group flex flex-col border-2 border-primary/5 hover:border-primary/20 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl">
             <div className="p-8 pb-4 flex-grow">
@@ -649,7 +655,7 @@ function OrgCard({
 
             <div className="p-8 pt-2 space-y-3">
                 <Button
-                    onClick={() => window.open(signupUrl, '_blank', 'noopener,noreferrer')}
+                    onClick={onJoin}
                     className="w-full bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-6 shadow-lg shadow-accent/20"
                 >
                     {op.orgIcon === 'shield' ? <Shield size={14} className="mr-2" /> : <Flower size={14} className="mr-2" />}

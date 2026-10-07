@@ -49,6 +49,23 @@ const ALLOWED_ENGAGEMENT_IDS = new Set([
   "suggestion",
   "referral",
 ]);
+const ALLOWED_INTEREST_IDS = new Set([
+  "nursery",
+  "lector",
+  "usher",
+  "altar-server",
+  "music",
+  "supper-week",
+  "youth-ministry-mentors",
+  "connect-groups",
+  "group-studies",
+  "annual-parish-picnic",
+  "wednesday-faith-formation",
+  "st-vincent-de-paul-food-drive",
+  "altar-society",
+  "knights-of-columbus",
+  "catholic-daughters",
+]);
 const ALLOWED_FIELDS = new Set([
   "form_type",
   "from_name",
@@ -87,6 +104,10 @@ const ALLOWED_FIELDS = new Set([
   "phone",
   "notes",
   "signup_mode",
+  "signup_kind",
+  "participant_name",
+  "participant_grade",
+  "guardian_name",
   "week_id",
   "week_date",
   "availability_type",
@@ -217,6 +238,30 @@ function validateBody(bodyValue: unknown): {
   let required: string[];
 
   switch (formType) {
+    case "interest": {
+      tab = "Signups";
+      required = ["from_name", "from_email", "interest", "context_opportunity"];
+      const signupKind = getString(body, "signup_kind");
+      const interestId = getString(body, "context_opportunity");
+      if (!ALLOWED_INTEREST_IDS.has(interestId)) {
+        return { error: "The requested signup is invalid." };
+      }
+      if (!["join", "volunteer", "class_registration"].includes(signupKind)) {
+        return { error: "The selected signup type is invalid." };
+      }
+      if (
+        signupKind === "class_registration" &&
+        interestId !== "wednesday-faith-formation"
+      ) {
+        return {
+          error: "Class registration is not available for this signup.",
+        };
+      }
+      if (signupKind === "class_registration") {
+        required.push("participant_name", "guardian_name");
+      }
+      break;
+    }
     case "membership": {
       tab = "Membership Registration";
       required = [

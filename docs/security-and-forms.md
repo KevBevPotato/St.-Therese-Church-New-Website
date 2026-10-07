@@ -24,10 +24,13 @@ The replacement endpoint does not send email notifications. It saves submissions
    - `Lector Signups`
 5. Headers must normalize to the submission field names sent by the relevant form. The endpoint refuses to append if any non-empty submitted field lacks a matching column. `name`, `full_name`, `email`, `phone`, `timestamp`, `date_submitted`, `submission_date`, and `form` are supported aliases. Keep a `submitted_at` (or timestamp alias) column to record server time.
 6. For the membership form, add headers for the submitted fields in the `Membership Registration` tab. Primary-contact headers use names such as `family_name`, `first_name`, `street_address`, `city`, `zip_code`, `email`, `phone`, `marital_status`, `church_attendance`, and `child_count`. Adult detail headers use `head_` and `spouse_` prefixes (for example, `head_date_of_birth`, `head_baptism_year`, and `spouse_marriage_date`). Child detail headers use `child_1_` through `child_12_` (for example, `child_1_first_name`, `child_1_gender`, and `child_1_confirmation_year`). Use a first-row column for every field the form should save; blank optional values do not require a populated column, but any entered value without a matching header is rejected.
+7. For Get Involved interest forms, the `Signups` tab must include `from_name`, `from_email`, `from_phone`, `interest`, `context_opportunity`, `signup_kind`, `availability`, `notes`, `participant_name`, `participant_grade`, `guardian_name`, and `submitted_at`. `from_phone`, availability, notes, participant details, and guardian name may be blank for signups that do not use them. The Faith Formation form lets a person express catechist/helper interest or request class-registration information.
 
 Do not put service-account credentials, Upstash credentials, or any private key in `client/`, `VITE_*` variables, public assets, or Git commits. Configure them for Development/Preview/Production in Vercel as appropriate. Local `.env.local` is ignored by Git.
 
 Membership registrations contain contact details, religious/sacramental information, and information about children. Restrict access to the `Membership Registration` tab to staff who need it, use a separate test sheet for Preview, and establish an appropriate retention/deletion policy. Do not send test registrations containing real family or child information.
+
+Get Involved signups contain personal contact details. Limit access to the `Signups` tab to staff responsible for follow-up. The form collects a phone number for contact but does not enroll the person in SMS messaging.
 
 ## Rate limiting
 

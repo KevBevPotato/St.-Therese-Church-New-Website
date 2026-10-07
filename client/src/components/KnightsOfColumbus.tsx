@@ -18,6 +18,7 @@ import { getOrganizationById } from '@/data/organizations';
 import getInvolvedData from '@/data/get-involved_data.json';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
+import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 const FORM_URLS = {
     referral: getInvolvedData.settings.referralUrl,
@@ -50,6 +51,7 @@ function getKoCRelevantEvents(): CalendarEvent[] {
 }
 
 export default function KnightsOfColumbus() {
+    const { openSignup } = useInterestSignup();
     const org = getOrganizationById('knights-of-columbus');
     const upcomingEvents = getKoCRelevantEvents();
     const visibleMembers = org?.members?.filter((member) => !member.isHidden) ?? [];
@@ -225,6 +227,18 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     <div className="flex flex-wrap gap-4 mt-8 justify-center">
+                        <Button
+                            onClick={() =>
+                                openSignup({
+                                    id: 'knights-of-columbus',
+                                    title: org.name,
+                                    kind: 'join',
+                                })
+                            }
+                            className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
+                        >
+                            <Users size={16} className="mr-2" /> Request Local Follow-up
+                        </Button>
                         {org.joinUrl && (
                             <a
                                 href={org.joinUrl}
@@ -232,7 +246,7 @@ export default function KnightsOfColumbus() {
                                 rel="noopener noreferrer"
                                 className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg rounded-md transition-colors"
                             >
-                                <Users size={16} /> Join the Knights
+                                <Users size={16} /> Official Membership Application
                             </a>
                         )}
                         <Button
