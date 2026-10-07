@@ -20,6 +20,17 @@ const MAX_FIELD_LENGTH = 2_000;
 const RATE_LIMIT_PER_MINUTE = 6;
 const RATE_LIMIT_WINDOW_SECONDS = 60;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+class SheetsSubmissionError extends Error {
+  constructor(
+    readonly reason: string,
+    readonly upstreamStatus?: number
+  ) {
+    super(reason);
+    this.name = "SheetsSubmissionError";
+  }
+}
+
 const ENGAGEMENT_TABS: Record<string, string> = {
   pledge: "Pledges",
   signup: "Signups",
@@ -331,28 +342,46 @@ async function getGoogleAccessToken(
     })
   );
   const unsignedToken = `${header}.${claim}`;
-  const signer = createSign("RSA-SHA256");
-  signer.update(unsignedToken);
-  signer.end();
-  const assertion = `${unsignedToken}.${signer.sign(privateKey, "base64url")}`;
-  const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-    method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-    body: new URLSearchParams({
-      grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-      assertion,
-    }),
-  });
+  let assertion: string;
+  try {
+    const signer = createSign("RSA-SHA256");
+    signer.update(unsignedToken);
+    signer.end();
+    assertion = `${unsignedToken}.${signer.sign(privateKey, "base64url")}`;
+  } catch {
+    throw new SheetsSubmissionError("invalid_service_account_private_key");
+  }
 
-  if (!tokenResponse.ok) throw new Error("Google authorization failed.");
-  const tokenBody: unknown = await tokenResponse.json();
+  let tokenResponse: Response;
+  try {
+    tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams({
+        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
+        assertion,
+      }),
+    });
+  } catch {
+    throw new SheetsSubmissionError("google_token_network_error");
+  }
+
+  if (!tokenResponse.ok) {
+    throw new SheetsSubmissionError(
+      "google_token_http_error",
+      tokenResponse.status
+    );
+  }
+  const tokenBody: unknown = await tokenResponse.json().catch(() => {
+    throw new SheetsSubmissionError("google_token_invalid_json");
+  });
   if (
     !tokenBody ||
     typeof tokenBody !== "object" ||
     !("access_token" in tokenBody) ||
     typeof tokenBody.access_token !== "string"
   ) {
-    throw new Error("Google authorization returned an invalid response.");
+    throw new SheetsSubmissionError("google_token_invalid_response");
   }
   return tokenBody.access_token;
 }
@@ -593,8 +622,10 @@ export default async function handler(
     return;
   }
 
+  let submissionStage = "google_authorization";
   try {
     const accessToken = await getGoogleAccessToken(email, privateKey);
+    submissionStage = "sheets_append";
     await appendToSheet(
       spreadsheetId,
       accessToken,
@@ -603,7 +634,30 @@ export default async function handler(
     );
     respond(response, 200, { success: true });
   } catch (error) {
-    console.error("Form submission failed.");
+    const message = error instanceof Error ? error.message : "";
+    const knownReasons: Record<string, string> = {
+      "Could not read the destination sheet headers.":
+        "sheet_header_read_failed",
+      "The destination sheet has no header row.": "sheet_header_row_empty",
+      "The destination sheet headers are not configured.":
+        "sheet_headers_not_configured",
+      "The destination sheet is missing one or more submission columns.":
+        "sheet_submission_columns_missing",
+      "Could not append the submission.": "sheet_append_failed",
+      "Google authorization failed.": "google_authorization_failed",
+      "Google authorization returned an invalid response.":
+        "google_authorization_invalid_response",
+    };
+    console.error("Form submission failed.", {
+      stage: submissionStage,
+      reason:
+        error instanceof SheetsSubmissionError
+          ? error.reason
+          : knownReasons[message] || "unexpected_error",
+      ...(error instanceof SheetsSubmissionError && error.upstreamStatus
+        ? { upstreamStatus: error.upstreamStatus }
+        : {}),
+    });
     respond(response, 502, {
       error: "The submission could not be saved. Please try again later.",
     });
