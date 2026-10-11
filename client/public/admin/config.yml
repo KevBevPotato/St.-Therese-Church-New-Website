@@ -266,18 +266,20 @@ collections:
               - {
                   label: "Launch Date",
                   name: "launchDate",
-                  widget: "date",
+                  widget: "datetime",
                   format: "YYYY-MM-DD",
                   date_format: "YYYY-MM-DD",
+                  time_format: false,
                   picker_utc: false,
                   required: false,
                 }
               - {
                   label: "Expiration Date",
                   name: "expirationDate",
-                  widget: "date",
+                  widget: "datetime",
                   format: "YYYY-MM-DD",
                   date_format: "YYYY-MM-DD",
+                  time_format: false,
                   picker_utc: false,
                   required: false,
                   hint: "The announcement remains visible through this date.",
@@ -418,9 +420,10 @@ collections:
       - {
           label: "Date",
           name: "date",
-          widget: "date",
+          widget: "datetime",
           format: "YYYY-MM-DD",
           date_format: "YYYY-MM-DD",
+          time_format: false,
           picker_utc: false,
           required: false,
         }

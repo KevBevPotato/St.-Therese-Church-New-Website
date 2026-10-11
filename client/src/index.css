@@ -166,6 +166,11 @@
     min-width: 0;
   }
 
+  .prose ul {
+    padding-left: 1.5rem;
+    list-style-type: disc;
+  }
+
   @media (min-width: 640px) {
     .container {
       padding-left: 1.5rem; /* 24px - tablet padding */
