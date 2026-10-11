@@ -598,7 +598,7 @@
     {
       "photoAspect": "2/3",
       "name": "Katie Baltzer",
-      "isHidden": false,
+      "isHidden": true,
       "slug": "kevins-wife",
       "categories": [
         {
