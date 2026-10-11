@@ -4,17 +4,12 @@
 
 The prior Apps Script shared form token was included in browser-delivered source. Treat it as exposed even though it has now been removed from the current code. Revoke/rotate it in Apps Script and retire or restrict the old public Apps Script deployment after the replacement is live. Removing a value from Git does not revoke it, and it remains in Git history unless history is deliberately rewritten.
 
-The replacement endpoint does not send email notifications. It saves submissions to Google Sheets and returns success only after the Sheets API confirms the append.
+The replacement endpoint does not send email notifications. It forwards submissions to a private Power Automate flow and returns success only after the flow returns a successful response.
 
-## Google Sheets setup
+## Microsoft Excel setup
 
-1. Create a dedicated Google Cloud service account and enable the Google Sheets API for its project.
-2. Share only the target submissions spreadsheet with the service-account email. Grant the least privilege needed to append/read header rows.
-3. Set the Vercel server-only environment variables from `.env.example`:
-   - `GOOGLE_SERVICE_ACCOUNT_EMAIL`
-   - `GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY` (paste the private key as supplied; escaped `\n` is also accepted)
-   - `GOOGLE_SHEETS_SPREADSHEET_ID`
-4. Create or verify these tabs and their first-row column headers:
+1. Create a Power Automate cloud flow with the **When an HTTP request is received** trigger. Add Excel Online (Business) **Add a row into a table** actions for each destination below, selected by the incoming `destination` value.
+2. In the workbook, create a formatted Excel table for each destination. The existing destination names are:
    - `Membership Registration`
    - `Pledges`
    - `Signups`
@@ -22,11 +17,12 @@ The replacement endpoint does not send email notifications. It saves submissions
    - `Referrals`
    - `WednesdaySupperVolunteers`
    - `Lector Signups`
-5. Headers must normalize to the submission field names sent by the relevant form. The endpoint refuses to append if any non-empty submitted field lacks a matching column. `name`, `full_name`, `email`, `phone`, `timestamp`, `date_submitted`, `submission_date`, and `form` are supported aliases. Keep a `submitted_at` (or timestamp alias) column to record server time.
-6. For the membership form, add headers for the submitted fields in the `Membership Registration` tab. Primary-contact headers use names such as `family_name`, `first_name`, `street_address`, `city`, `zip_code`, `email`, `phone`, `marital_status`, `church_attendance`, and `child_count`. Adult detail headers use `head_` and `spouse_` prefixes (for example, `head_date_of_birth`, `head_baptism_year`, and `spouse_marriage_date`). Child detail headers use `child_1_` through `child_12_` (for example, `child_1_first_name`, `child_1_gender`, and `child_1_confirmation_year`). Use a first-row column for every field the form should save; blank optional values do not require a populated column, but any entered value without a matching header is rejected.
-7. For Get Involved interest forms, the `Signups` tab must include `from_name`, `from_email`, `from_phone`, `interest`, `context_opportunity`, `signup_kind`, `availability`, `notes`, `participant_name`, `participant_grade`, `guardian_name`, and `submitted_at`. `from_phone`, availability, notes, participant details, and guardian name may be blank for signups that do not use them. The Faith Formation form lets a person express catechist/helper interest or request class-registration information. The Wednesday Supper landing page uses its date- and role-specific form and saves those submissions to `WednesdaySupperVolunteers`.
+3. Configure the flow to map the incoming JSON properties to the matching table columns. The request includes `destination`, `form_type`, the submitted form fields, and `submitted_at`. Membership child sections arrive as fields such as `child_1_first_name`, `child_1_last_name`, continuing through `child_12_*`; create/map columns for the fields you want to save.
+4. For each Excel table, use column names matching the request properties. The existing Google Sheets implementation used first-row headers, but the flow is responsible for mapping Excel columns and should handle blank optional values. The `Signups` destination receives Get Involved interest forms. Wednesday Supper volunteers are sent to `WednesdaySupperVolunteers`.
+5. Add a **Response** action after the Excel write succeeds and return HTTP 200 with JSON such as `{"success":true}`. Return a non-2xx status if Excel fails; the website displays a success message only after it receives a successful response.
+6. Save the flow, copy its HTTP POST URL, and set it as `POWER_AUTOMATE_FLOW_URL` in Vercel for Production (and a test flow for Preview/Development). This URL contains a signing credential: keep it server-only, never use a `VITE_` prefix, and do not paste it into source, logs, or chat.
 
-Do not put service-account credentials, Upstash credentials, or any private key in `client/`, `VITE_*` variables, public assets, or Git commits. Configure them for Development/Preview/Production in Vercel as appropriate. Local `.env.local` is ignored by Git.
+The form endpoint is `/api/submit`; the browser already sends JSON there, including dynamic child fields, and handles success/error states. Microsoft Graph's Excel table-row API does not support application permissions, so the `MS_CLIENT_ID`, `MS_TENANT_ID`, `MS_CLIENT_SECRET`, and `EXCEL_FILE_ID` variables are not used by this Power Automate integration. They can be removed from Vercel after confirming no other project feature uses them. Do not put the flow URL or Upstash credentials in `client/`, `VITE_*` variables, public assets, or Git commits. Local `.env.local` is ignored by Git.
 
 Membership registrations contain contact details, religious/sacramental information, and information about children. Restrict access to the `Membership Registration` tab to staff who need it, use a separate test sheet for Preview, and establish an appropriate retention/deletion policy. Do not send test registrations containing real family or child information.
 
@@ -39,14 +35,14 @@ The endpoint uses Upstash Redis REST to enforce a fixed-window limit of 6 submis
 ## Vercel and CMS
 
 - Deploy the root project so Vercel detects `api/submit.ts` as a serverless function; the SPA fallback rewrite remains in place for browser routes.
-- Keep Google and Upstash variables server-only. Preview deployments must not use production Sheets credentials unless intentionally approved; prefer a separate test spreadsheet and separate service identity for Preview.
+- Keep the Power Automate flow URL and Upstash variables server-only. Preview deployments should use a separate test flow/workbook unless production submissions from Preview are intentionally approved.
 - `VITE_FRONTEND_FORGE_API_KEY` is intentionally sent to browsers for the map integration; treat it as a public, restricted client key, not a secret. Restrict it in the provider dashboard to the production/preview origins and required map APIs, and set quotas. Keep `BUILT_IN_FORGE_API_KEY` server-only.
 - Keep DecapBridge's PKCE backend. The site/bridge identifiers in `client/public/admin/config.yml` are public routing configuration, not credentials. Manage editor membership and bridge/site permissions in their respective services. Do not add a GitHub personal access token to the CMS config.
 - Enable available GitHub secret scanning and push protection for this repository, and protect the production branch/deployments. Review Vercel deployment protection so unpublished previews are not unintentionally public.
 
 ## Verification and incident response
 
-- Exercise each public submission form after setting Vercel variables; verify each row lands in the correct tab and invalid fields, cross-origin requests, honeypot submissions, and rate-limited requests are rejected.
+- Exercise each public submission form after setting Vercel variables; verify each row lands in the correct Excel table and invalid fields, cross-origin requests, honeypot submissions, and rate-limited requests are rejected.
 - Check built browser assets for old Apps Script URLs/tokens and scan Git history with secret-scanning tools. Do not paste token values into issues, logs, or reports.
 - Rotate any accidentally exposed credential first. History rewriting is optional, disruptive to collaborators, and never a substitute for revocation.
 - Review spreadsheet sharing, service-account access, and submission retention periodically.

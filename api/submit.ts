@@ -1,5 +1,3 @@
-import { createSign } from "node:crypto";
-
 type JsonObject = Record<string, unknown>;
 type HeaderMap = Record<string, string | string[] | undefined>;
 
@@ -20,16 +18,6 @@ const MAX_FIELD_LENGTH = 2_000;
 const RATE_LIMIT_PER_MINUTE = 6;
 const RATE_LIMIT_WINDOW_SECONDS = 60;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-class SheetsSubmissionError extends Error {
-  constructor(
-    readonly reason: string,
-    readonly upstreamStatus?: number
-  ) {
-    super(reason);
-    this.name = "SheetsSubmissionError";
-  }
-}
 
 const ENGAGEMENT_TABS: Record<string, string> = {
   pledge: "Pledges",
@@ -367,95 +355,6 @@ function validateBody(bodyValue: unknown): {
   return { body, tab };
 }
 
-function base64Url(value: string | Buffer): string {
-  return Buffer.from(value).toString("base64url");
-}
-
-async function getGoogleAccessToken(
-  serviceAccountEmail: string,
-  privateKey: string
-): Promise<string> {
-  const issuedAt = Math.floor(Date.now() / 1000);
-  const header = base64Url(JSON.stringify({ alg: "RS256", typ: "JWT" }));
-  const claim = base64Url(
-    JSON.stringify({
-      iss: serviceAccountEmail,
-      scope: "https://www.googleapis.com/auth/spreadsheets",
-      aud: "https://oauth2.googleapis.com/token",
-      iat: issuedAt,
-      exp: issuedAt + 3600,
-    })
-  );
-  const unsignedToken = `${header}.${claim}`;
-  let assertion: string;
-  try {
-    const signer = createSign("RSA-SHA256");
-    signer.update(unsignedToken);
-    signer.end();
-    assertion = `${unsignedToken}.${signer.sign(privateKey, "base64url")}`;
-  } catch {
-    throw new SheetsSubmissionError("invalid_service_account_private_key");
-  }
-
-  let tokenResponse: Response;
-  try {
-    tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({
-        grant_type: "urn:ietf:params:oauth:grant-type:jwt-bearer",
-        assertion,
-      }),
-    });
-  } catch {
-    throw new SheetsSubmissionError("google_token_network_error");
-  }
-
-  if (!tokenResponse.ok) {
-    throw new SheetsSubmissionError(
-      "google_token_http_error",
-      tokenResponse.status
-    );
-  }
-  const tokenBody: unknown = await tokenResponse.json().catch(() => {
-    throw new SheetsSubmissionError("google_token_invalid_json");
-  });
-  if (
-    !tokenBody ||
-    typeof tokenBody !== "object" ||
-    !("access_token" in tokenBody) ||
-    typeof tokenBody.access_token !== "string"
-  ) {
-    throw new SheetsSubmissionError("google_token_invalid_response");
-  }
-  return tokenBody.access_token;
-}
-
-function normalizeHeader(value: string): string {
-  return value
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "_")
-    .replace(/^_|_$/g, "");
-}
-
-function valueForHeader(header: string, body: JsonObject): string | number {
-  const normalizedHeader = normalizeHeader(header);
-  const aliases: Record<string, string> = {
-    name: "from_name",
-    full_name: "from_name",
-    email: "from_email",
-    phone: "from_phone",
-    timestamp: "submitted_at",
-    date_submitted: "submitted_at",
-    submission_date: "submitted_at",
-    form: "form_type",
-  };
-  const key = aliases[normalizedHeader] || normalizedHeader;
-  const value = body[normalizedHeader] ?? body[key];
-  return typeof value === "string" || typeof value === "number" ? value : "";
-}
-
 class RateLimitError extends Error {
   constructor(
     readonly reason: string,
@@ -518,93 +417,37 @@ async function enforceRateLimit(request: ApiRequest): Promise<boolean> {
   return result.result <= RATE_LIMIT_PER_MINUTE;
 }
 
-async function appendToSheet(
-  spreadsheetId: string,
-  accessToken: string,
+async function submitToPowerAutomate(
+  flowUrl: string,
   tab: string,
   body: JsonObject
 ): Promise<void> {
-  const baseUrl = `https://sheets.googleapis.com/v4/spreadsheets/${encodeURIComponent(spreadsheetId)}/values`;
-  const headerRange = encodeURIComponent(`'${tab.replace(/'/g, "''")}'!1:1`);
-  const headerResponse = await fetch(`${baseUrl}/${headerRange}`, {
-    headers: { Authorization: `Bearer ${accessToken}` },
+  let parsedUrl: URL;
+  try {
+    parsedUrl = new URL(flowUrl);
+  } catch {
+    throw new Error("The Power Automate URL is invalid.");
+  }
+  if (parsedUrl.protocol !== "https:") {
+    throw new Error("The Power Automate URL must use HTTPS.");
+  }
+
+  const submission = { ...body };
+  delete submission.website;
+  const response = await fetch(parsedUrl, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      ...submission,
+      destination: tab,
+      submitted_at: new Date().toISOString(),
+    }),
+  }).catch(() => {
+    throw new Error("The Power Automate flow could not be reached.");
   });
-  if (!headerResponse.ok)
-    throw new Error("Could not read the destination sheet headers.");
-
-  const headerData: unknown = await headerResponse.json();
-  const headers =
-    headerData &&
-    typeof headerData === "object" &&
-    "values" in headerData &&
-    Array.isArray(headerData.values) &&
-    Array.isArray(headerData.values[0])
-      ? headerData.values[0].filter(
-          (value): value is string => typeof value === "string"
-        )
-      : [];
-  if (headers.length === 0)
-    throw new Error("The destination sheet has no header row.");
-
-  const normalizedHeaders = new Set(headers.map(normalizeHeader));
-  const hasSubmissionColumn = [
-    "from_name",
-    "full_name",
-    "name",
-    "from_email",
-    "email",
-    "family_name",
-    "suggestion",
-    "their_name",
-  ].some(header => normalizedHeaders.has(header));
-  if (!hasSubmissionColumn)
-    throw new Error("The destination sheet headers are not configured.");
-
-  const submission = { ...body, submitted_at: new Date().toISOString() };
-  const headerKeys = new Set(
-    headers.map(header => {
-      const normalized = normalizeHeader(header);
-      const aliases: Record<string, string> = {
-        name: "from_name",
-        full_name: "from_name",
-        email: "from_email",
-        phone: "from_phone",
-        timestamp: "submitted_at",
-        date_submitted: "submitted_at",
-        submission_date: "submitted_at",
-        form: "form_type",
-      };
-      return aliases[normalized] || normalized;
-    })
-  );
-  const missingColumn = Object.entries(submission).some(
-    ([key, value]) =>
-      key !== "form_type" &&
-      key !== "website" &&
-      value !== "" &&
-      value !== undefined &&
-      !headerKeys.has(key) &&
-      !headers.some(header => normalizeHeader(header) === key)
-  );
-  if (missingColumn)
-    throw new Error(
-      "The destination sheet is missing one or more submission columns."
-    );
-
-  const row = headers.map(header => valueForHeader(header, submission));
-  const appendRange = encodeURIComponent(`'${tab.replace(/'/g, "''")}'!A:ZZ`);
-  const appendResponse = await fetch(
-    `${baseUrl}/${appendRange}:append?valueInputOption=RAW&insertDataOption=INSERT_ROWS`,
-    {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ values: [row] }),
-    }
-  );
-  if (!appendResponse.ok) throw new Error("Could not append the submission.");
+  if (response.status !== 200) {
+    throw new Error(`The Power Automate flow returned HTTP ${response.status}.`);
+  }
 }
 
 export default async function handler(
@@ -654,54 +497,29 @@ export default async function handler(
     return;
   }
 
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const privateKey = process.env.GOOGLE_SERVICE_ACCOUNT_PRIVATE_KEY?.replace(
-    /\\n/g,
-    "\n"
-  );
-  const spreadsheetId = process.env.GOOGLE_SHEETS_SPREADSHEET_ID;
-  if (!email || !privateKey || !spreadsheetId) {
+  const flowUrl = process.env.POWER_AUTOMATE_FLOW_URL;
+  if (!flowUrl) {
+    console.error("Form submission is not configured.", {
+      reason: "missing_power_automate_flow_url",
+    });
     respond(response, 503, {
       error: "Form submissions are temporarily unavailable.",
     });
     return;
   }
 
-  let submissionStage = "google_authorization";
   try {
-    const accessToken = await getGoogleAccessToken(email, privateKey);
-    submissionStage = "sheets_append";
-    await appendToSheet(
-      spreadsheetId,
-      accessToken,
-      validation.tab,
-      validation.body
-    );
+    await submitToPowerAutomate(flowUrl, validation.tab, validation.body);
     respond(response, 200, { success: true });
   } catch (error) {
-    const message = error instanceof Error ? error.message : "";
-    const knownReasons: Record<string, string> = {
-      "Could not read the destination sheet headers.":
-        "sheet_header_read_failed",
-      "The destination sheet has no header row.": "sheet_header_row_empty",
-      "The destination sheet headers are not configured.":
-        "sheet_headers_not_configured",
-      "The destination sheet is missing one or more submission columns.":
-        "sheet_submission_columns_missing",
-      "Could not append the submission.": "sheet_append_failed",
-      "Google authorization failed.": "google_authorization_failed",
-      "Google authorization returned an invalid response.":
-        "google_authorization_invalid_response",
-    };
+    const flowStatus =
+      error instanceof Error && /HTTP \d+$/.test(error.message)
+        ? Number(error.message.match(/HTTP (\d+)$/)?.[1])
+        : undefined;
     console.error("Form submission failed.", {
-      stage: submissionStage,
-      reason:
-        error instanceof SheetsSubmissionError
-          ? error.reason
-          : knownReasons[message] || "unexpected_error",
-      ...(error instanceof SheetsSubmissionError && error.upstreamStatus
-        ? { upstreamStatus: error.upstreamStatus }
-        : {}),
+      stage: "power_automate",
+      reason: error instanceof Error ? error.message : "unexpected_error",
+      ...(flowStatus ? { upstreamStatus: flowStatus } : {}),
     });
     respond(response, 502, {
       error: "The submission could not be saved. Please try again later.",
