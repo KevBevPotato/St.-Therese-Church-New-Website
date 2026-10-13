@@ -471,14 +471,18 @@
     "classTime": "6:15–7:30 PM",
     "classroomNote": "See classroom map for details.",
     "classroomMapUrl": "/About&Staff/DirectoryBoard_11zon.png",
+    "showSignupButton": false,
+    "showRegistrationButton": true,
     "pageTitle": "Wednesday Faith Formation Programs",
     "classNote": "All programs meet on Wednesdays.",
     "classroomMapLabel": "View Classroom Locations",
     "contactPhone": "(605) 342-1556",
     "mealTime": "5:30–6:15 PM",
+    "registrationUrl": "did this work?",
     "signupUrl": "https://www.signupgenius.com/",
     "programPhotoPosition": "center",
     "introduction": "Nurturing faith at every stage of life. From our littlest nursery babies to lifelong adult learners, discover programs designed to deepen your relationship with Christ and our parish community. - Bobby Myers",
+    "registrationLabel": "Register!",
     "signupLabel": "Help us serve food!"
   }
 }
