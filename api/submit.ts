@@ -402,13 +402,16 @@ async function submitToGoogleSheet(
   await spreadsheet.loadInfo();
   await spreadsheet.updateProperties({ timeZone: "America/Denver" });
 
-  const sheet = sheetTitle
-    ? spreadsheet.sheetsByTitle[sheetTitle]
-    : spreadsheet.sheetsByIndex[0];
+  const targetTab = sheetTitle ?? spreadsheet.sheetsByIndex[0]?.title;
+  console.log("Google Sheets submission target.", {
+    formType: getString(body, "form_type"),
+    targetTab: targetTab ?? "No worksheet found",
+  });
+  const sheet = targetTab ? spreadsheet.sheetsByTitle[targetTab] : undefined;
   if (!sheet) {
     throw new Error(
-      sheetTitle
-        ? `The Google spreadsheet does not contain a "${sheetTitle}" worksheet.`
+      targetTab
+        ? `The Google spreadsheet does not contain a "${targetTab}" worksheet.`
         : "The Google spreadsheet does not contain a worksheet."
     );
   }
