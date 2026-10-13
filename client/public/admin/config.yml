@@ -505,11 +505,11 @@ collections:
           required: false,
         }
       - {
-          label: "Landing Page Hero Image",
+          label: "Flyer / Landing Page Hero Image (Optional)",
           name: "image",
           widget: "image",
           required: false,
-          hint: "Shown at the top of the event's landing page, not on calendar cards.",
+          hint: "Optional. Shown at the top of the event's landing page, not on calendar cards. Leave blank if there is no flyer or image.",
         }
       - {
           label: "Sign-up URL",
@@ -539,6 +539,7 @@ collections:
         name: "gallery"
         widget: "list"
         required: false
+        hint: "Optional. Leave empty if this event has no gallery photos."
         fields:
           - {
               label: "Hide this photo",
@@ -659,7 +660,7 @@ collections:
               required: false,
             }
           - {
-              label: "Hero Image Override (optional)",
+              label: "Flyer / Hero Image Override (optional)",
               name: "image",
               widget: "image",
               required: false,
@@ -724,6 +725,7 @@ collections:
             name: "gallery"
             widget: "list"
             required: false
+            hint: "Optional. Leave empty to use the event's default gallery."
             fields:
               - { label: "Photo", name: "photo", widget: "image", required: false }
               - { label: "Caption", name: "caption", widget: "string", required: false }
@@ -748,11 +750,11 @@ collections:
           required: false,
         }
       - {
-          label: "Landing Page Hero Image",
+          label: "Flyer / Landing Page Hero Image (Optional)",
           name: "image",
           widget: "image",
           required: false,
-          hint: "Shown at the top of every occurrence's landing page, not on calendar cards.",
+          hint: "Optional. Shown at the top of every occurrence's landing page, not on calendar cards. Leave blank if there is no flyer or image.",
         }
       - {
           label: "Sign-up URL",
@@ -821,6 +823,7 @@ collections:
         name: "gallery"
         widget: "list"
         required: false
+        hint: "Optional. Leave empty if this recurring event has no gallery photos."
         fields:
           - {
               label: "Hide this photo",
@@ -869,7 +872,8 @@ collections:
             name: "bulletins"
             widget: "list"
             required: false
-            fields: # <--- THIS WAS THE MISSING LINE
+            summary: "{{fields.title}} ({{fields.startDate}})"
+            fields:
               - {
                   label: "Hide this bulletin",
                   name: "isHidden",
@@ -918,78 +922,91 @@ collections:
                   name: "mass_times",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Saturday**: 4:30 pm. Add one bullet per Mass time; include Reconciliation hours below.",
                 }
               - {
                   label: "Announcements",
                   name: "announcements",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: **Event Title** on its own line, followed by the date, time, details, and contact information.",
                 }
               - {
                   label: "New Parishioners",
                   name: "new_parishioners",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - First Last (Baptism), followed by *Welcome to our parish family!*",
                 }
               - {
                   label: "Mass Intentions",
                   name: "mass_intentions",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Monday 7:30 am**: Name †. Add one bullet per Mass intention.",
                 }
               - {
                   label: "Daily Scriptures",
                   name: "daily_scriptures",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Monday**: First Reading, Psalm, Gospel. Add one bullet per day.",
                 }
               - {
                   label: "Lectors",
                   name: "lectors",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Reader names.",
                 }
               - {
                   label: "Ushers",
                   name: "ushers",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Usher names.",
                 }
               - {
                   label: "Altar Servers",
                   name: "altar_servers",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Server names.",
                 }
               - {
                   label: "Contributions",
                   name: "contributions",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - General/Other: $4,625.00. Add one bullet per fund, then include Weekly Amount Needed and Total.",
                 }
               - {
                   label: "Prayer List",
                   name: "prayer_list",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Special Requests**: Names, then a **Bulletin List** heading and a bullet list of names.",
                 }
               - {
                   label: "A Little Laugh",
                   name: "a_little_laugh",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - *Write a short joke or riddle here.* Use one italicized bullet per joke.",
                 }
               - {
                   label: "Needs",
                   name: "needs",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - **Organization or category**: List the requested items or volunteer needs.",
                 }
               - {
                   label: "Sponsors",
                   name: "sponsors",
                   widget: "markdown",
                   required: false,
+                  hint: "Suggested format: - Business Name (Business Type). Add one bullet per sponsor.",
                 }
   - name: "resources"
     label: "Resource Page"

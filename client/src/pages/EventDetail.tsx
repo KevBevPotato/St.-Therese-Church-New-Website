@@ -136,6 +136,10 @@ export default function EventDetail() {
     );
   }
 
+  const eventGallery = (event.gallery ?? []).filter(
+    item => typeof item?.photo === "string" && item.photo.trim() !== ""
+  );
+
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
       <Header />
@@ -194,23 +198,24 @@ export default function EventDetail() {
               </h1>
             </div>
 
-            {/* --- UPDATED HERO IMAGE / CAROUSEL SECTION --- */}
-            <div className="w-full">
-              {event.gallery && event.gallery.length > 0 ? (
-                <EventCarousel
-                  gallery={event.gallery}
-                  eventTitle={event.title}
-                />
-              ) : event.image ? (
-                <div className="relative w-full overflow-hidden rounded-3xl shadow-xl">
-                  <img
-                    src={event.image}
-                    alt={event.title}
-                    className="w-full h-auto max-h-[800px] object-contain mx-auto block"
+            {(eventGallery.length > 0 || event.image) && (
+              <div className="w-full">
+                {eventGallery.length > 0 ? (
+                  <EventCarousel
+                    gallery={eventGallery}
+                    eventTitle={event.title}
                   />
-                </div>
-              ) : null}
-            </div>
+                ) : event.image ? (
+                  <div className="relative w-full overflow-hidden rounded-3xl shadow-xl">
+                    <img
+                      src={event.image}
+                      alt={event.title}
+                      className="w-full h-auto max-h-[800px] object-contain mx-auto block"
+                    />
+                  </div>
+                ) : null}
+              </div>
+            )}
 
             <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">
@@ -240,7 +245,7 @@ export default function EventDetail() {
             </Card>
 
             {/* --- UPDATED PHOTO GALLERY SECTION --- */}
-            {event.gallery && event.gallery.length > 0 && (
+            {eventGallery.length > 0 && (
               <div className="space-y-6">
                 <div className="flex items-center gap-2">
                   <ImageIcon className="text-primary size-5" />
@@ -249,7 +254,7 @@ export default function EventDetail() {
                   </h3>
                 </div>
                 <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {event.gallery.map((item: any, idx: number) => (
+                  {eventGallery.map((item: any, idx: number) => (
                     <a
                       key={idx}
                       href={
