@@ -1,3 +1,6 @@
+import { JWT } from "google-auth-library";
+import { GoogleSpreadsheet } from "google-spreadsheet";
+
 type JsonObject = Record<string, unknown>;
 type HeaderMap = Record<string, string | string[] | undefined>;
 
@@ -15,8 +18,6 @@ interface ApiResponse {
 
 const MAX_BODY_BYTES = 20_000;
 const MAX_FIELD_LENGTH = 2_000;
-const RATE_LIMIT_PER_MINUTE = 6;
-const RATE_LIMIT_WINDOW_SECONDS = 60;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ENGAGEMENT_TABS: Record<string, string> = {
@@ -194,7 +195,6 @@ function hasSameOrigin(request: ApiRequest): boolean {
 
 function validateBody(bodyValue: unknown): {
   body?: JsonObject;
-  tab?: string;
   error?: string;
 } {
   if (!bodyValue || typeof bodyValue !== "object" || Array.isArray(bodyValue)) {
@@ -213,7 +213,16 @@ function validateBody(bodyValue: unknown): {
       !(formType === "membership" && isMembershipField(key))
     )
       return { error: "The submission has an unsupported field." };
-    if (key === "quantity" || key === "pledge_amount") continue;
+    if (key === "quantity" || key === "pledge_amount") {
+      if (
+        (typeof value !== "string" &&
+          (typeof value !== "number" || !Number.isFinite(value))) ||
+        (typeof value === "string" && value.length > MAX_FIELD_LENGTH)
+      ) {
+        return { error: "A submission field is invalid or too long." };
+      }
+      continue;
+    }
     if (typeof value !== "string" || value.length > MAX_FIELD_LENGTH) {
       return { error: "A submission field is invalid or too long." };
     }
@@ -222,12 +231,10 @@ function validateBody(bodyValue: unknown): {
   if (getString(body, "website"))
     return { error: "The submission could not be accepted." };
 
-  let tab: string;
   let required: string[];
 
   switch (formType) {
     case "interest": {
-      tab = "Signups";
       required = ["from_name", "from_email", "interest", "context_opportunity"];
       const signupKind = getString(body, "signup_kind");
       const interestId = getString(body, "context_opportunity");
@@ -251,7 +258,6 @@ function validateBody(bodyValue: unknown): {
       break;
     }
     case "membership": {
-      tab = "Membership Registration";
       required = [
         "family_name",
         "first_name",
@@ -287,7 +293,6 @@ function validateBody(bodyValue: unknown): {
       break;
     }
     case "pledge":
-      tab = "Pledges";
       required = ["from_name", "from_email", "project_id", "item_id"];
       break;
     case "engagement": {
@@ -299,7 +304,6 @@ function validateBody(bodyValue: unknown): {
       ) {
         return { error: "The requested form is invalid." };
       }
-      tab = ENGAGEMENT_TABS[engagementType];
       required =
         engagementType === "pledge"
           ? ["from_name", "from_email", "item_id"]
@@ -311,14 +315,12 @@ function validateBody(bodyValue: unknown): {
       break;
     }
     case "supper-volunteer":
-      tab = "WednesdaySupperVolunteers";
       required = ["full_name", "email", "signup_mode"];
       if (!["specific", "willing"].includes(getString(body, "signup_mode"))) {
         return { error: "The signup mode is invalid." };
       }
       break;
     case "lector":
-      tab = "Lector Signups";
       required = ["from_name", "from_email", "sunday_mass"];
       break;
     default:
@@ -352,102 +354,77 @@ function validateBody(bodyValue: unknown): {
     }
   }
 
-  return { body, tab };
+  return { body };
 }
 
-class RateLimitError extends Error {
-  constructor(
-    readonly reason: string,
-    readonly upstreamStatus?: number
-  ) {
-    super(reason);
-    this.name = "RateLimitError";
+async function submitToGoogleSheet(body: JsonObject): Promise<void> {
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
+  const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
+  const sheetId = process.env.GOOGLE_SHEET_ID;
+  if (!email || !key || !sheetId) {
+    throw new Error("Google Sheets is missing required environment variables.");
   }
-}
 
-async function enforceRateLimit(request: ApiRequest): Promise<boolean> {
-  const redisUrl = process.env.UPSTASH_REDIS_REST_URL?.replace(/\/+$/, "");
-  const redisToken = process.env.UPSTASH_REDIS_REST_TOKEN;
-  const rawIp =
-    request.headers["x-real-ip"] || request.headers["x-forwarded-for"];
-  const ip = Array.isArray(rawIp) ? rawIp[0] : rawIp?.split(",")[0]?.trim();
-  if (!redisUrl) throw new RateLimitError("missing_url");
-  if (!redisToken) throw new RateLimitError("missing_token");
-  if (!ip) throw new RateLimitError("missing_client_ip");
-  try {
-    if (new URL(redisUrl).protocol !== "https:") {
-      throw new RateLimitError("invalid_url_protocol");
+  const auth = new JWT({
+    email,
+    key,
+    scopes: ["https://www.googleapis.com/auth/spreadsheets"],
+  });
+  const spreadsheet = new GoogleSpreadsheet(sheetId, auth);
+  await spreadsheet.loadInfo();
+  await spreadsheet.updateProperties({ timeZone: "America/Denver" });
+
+  const sheet = spreadsheet.sheetsByIndex[0];
+  if (!sheet) {
+    throw new Error("The Google spreadsheet does not contain a worksheet.");
+  }
+
+  const submission: Record<string, string | number | Date> = {
+    submitted_at: new Date(),
+  };
+  for (const [key, value] of Object.entries(body)) {
+    if (key === "website") continue;
+    if (typeof value !== "string" && typeof value !== "number") {
+      throw new Error(
+        "A validated form field cannot be written to Google Sheets."
+      );
     }
-  } catch (error) {
-    if (error instanceof RateLimitError) throw error;
-    throw new RateLimitError("invalid_url");
+    submission[key] = value;
   }
 
-  const key = `public-form:${ip}`;
-  const script =
-    "local count = redis.call('INCR', KEYS[1]); if count == 1 or redis.call('TTL', KEYS[1]) < 0 then redis.call('EXPIRE', KEYS[1], ARGV[1]); end; return count";
-  const response = await fetch(redisUrl, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${redisToken}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(["EVAL", script, "1", key, RATE_LIMIT_WINDOW_SECONDS]),
-  }).catch(() => {
-    throw new RateLimitError("upstash_network_error");
-  });
-  if (!response.ok) {
-    throw new RateLimitError("upstash_http_error", response.status);
-  }
-  const result: unknown = await response.json().catch(() => {
-    throw new RateLimitError("upstash_invalid_json");
-  });
-  if (
-    !result ||
-    typeof result !== "object" ||
-    !("result" in result) ||
-    typeof result.result !== "number"
-  ) {
-    throw new RateLimitError(
-      result && typeof result === "object" && "error" in result
-        ? "upstash_command_error"
-        : "upstash_invalid_response"
-    );
-  }
-  return result.result <= RATE_LIMIT_PER_MINUTE;
-}
-
-async function submitToPowerAutomate(
-  flowUrl: string,
-  tab: string,
-  body: JsonObject
-): Promise<void> {
-  let parsedUrl: URL;
+  let headers: string[];
   try {
-    parsedUrl = new URL(flowUrl);
-  } catch {
-    throw new Error("The Power Automate URL is invalid.");
-  }
-  if (parsedUrl.protocol !== "https:") {
-    throw new Error("The Power Automate URL must use HTTPS.");
+    await sheet.loadHeaderRow();
+    headers = [...sheet.headerValues];
+  } catch (error) {
+    if (
+      error instanceof Error &&
+      (error.message.startsWith("No values in the header row") ||
+        error.message.startsWith("All your header cells are blank"))
+    ) {
+      headers = [];
+    } else {
+      throw error;
+    }
   }
 
-  const submission = { ...body };
-  delete submission.website;
-  const response = await fetch(parsedUrl, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      ...submission,
-      destination: tab,
-      submitted_at: new Date().toISOString(),
-    }),
-  }).catch(() => {
-    throw new Error("The Power Automate flow could not be reached.");
-  });
-  if (response.status !== 200) {
-    throw new Error(`The Power Automate flow returned HTTP ${response.status}.`);
+  while (headers.length && !headers.at(-1)) headers.pop();
+  const knownHeaders = new Set(headers.filter(Boolean));
+  for (const key of Object.keys(submission)) {
+    if (!knownHeaders.has(key)) {
+      headers.push(key);
+      knownHeaders.add(key);
+    }
   }
+
+  if (headers.length > sheet.columnCount) {
+    await sheet.resize({
+      rowCount: sheet.rowCount,
+      columnCount: headers.length,
+    });
+  }
+  await sheet.setHeaderRow(headers);
+  await sheet.addRow(submission);
 }
 
 export default async function handler(
@@ -469,38 +446,20 @@ export default async function handler(
   }
 
   const validation = validateBody(request.body);
-  if (validation.error || !validation.body || !validation.tab) {
+  if (validation.error || !validation.body) {
     respond(response, 400, {
       error: validation.error || "Invalid submission.",
     });
     return;
   }
 
-  try {
-    if (!(await enforceRateLimit(request))) {
-      respond(response, 429, {
-        error: "Too many submissions. Please wait and try again.",
-      });
-      return;
-    }
-  } catch (error) {
-    console.error("Form rate-limit check failed.", {
-      reason:
-        error instanceof RateLimitError ? error.reason : "unexpected_error",
-      ...(error instanceof RateLimitError && error.upstreamStatus
-        ? { upstreamStatus: error.upstreamStatus }
-        : {}),
-    });
-    respond(response, 503, {
-      error: "Form submissions are temporarily unavailable.",
-    });
-    return;
-  }
-
-  const flowUrl = process.env.POWER_AUTOMATE_FLOW_URL;
-  if (!flowUrl) {
+  if (
+    !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
+    !process.env.GOOGLE_PRIVATE_KEY ||
+    !process.env.GOOGLE_SHEET_ID
+  ) {
     console.error("Form submission is not configured.", {
-      reason: "missing_power_automate_flow_url",
+      reason: "missing_google_sheets_configuration",
     });
     respond(response, 503, {
       error: "Form submissions are temporarily unavailable.",
@@ -509,17 +468,12 @@ export default async function handler(
   }
 
   try {
-    await submitToPowerAutomate(flowUrl, validation.tab, validation.body);
+    await submitToGoogleSheet(validation.body);
     respond(response, 200, { success: true });
   } catch (error) {
-    const flowStatus =
-      error instanceof Error && /HTTP \d+$/.test(error.message)
-        ? Number(error.message.match(/HTTP (\d+)$/)?.[1])
-        : undefined;
     console.error("Form submission failed.", {
-      stage: "power_automate",
+      stage: "google_sheets",
       reason: error instanceof Error ? error.message : "unexpected_error",
-      ...(flowStatus ? { upstreamStatus: flowStatus } : {}),
     });
     respond(response, 502, {
       error: "The submission could not be saved. Please try again later.",
