@@ -504,7 +504,13 @@ collections:
           widget: "text",
           required: false,
         }
-      - { label: "Hero Image", name: "image", widget: "image", required: false }
+      - {
+          label: "Landing Page Hero Image",
+          name: "image",
+          widget: "image",
+          required: false,
+          hint: "Shown at the top of the event's landing page, not on calendar cards.",
+        }
       - {
           label: "Sign-up URL",
           name: "signupLink",
@@ -529,7 +535,7 @@ collections:
           widget: "string",
           required: false,
         }
-      - label: "Event Gallery (Optional)"
+      - label: "Landing Page Photo Gallery (Optional)"
         name: "gallery"
         widget: "list"
         required: false
@@ -741,7 +747,13 @@ collections:
           widget: "text",
           required: false,
         }
-      - { label: "Hero Image", name: "image", widget: "image", required: false }
+      - {
+          label: "Landing Page Hero Image",
+          name: "image",
+          widget: "image",
+          required: false,
+          hint: "Shown at the top of every occurrence's landing page, not on calendar cards.",
+        }
       - {
           label: "Sign-up URL",
           name: "signupLink",
@@ -805,7 +817,7 @@ collections:
             - { label: "Catholic Daughters", value: "catholic-daughters" }
             - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
             - { label: "Faith Formation", value: "faith-formation" }
-      - label: "Event Gallery (Optional)"
+      - label: "Landing Page Photo Gallery (Optional)"
         name: "gallery"
         widget: "list"
         required: false

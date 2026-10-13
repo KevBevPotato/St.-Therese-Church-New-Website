@@ -80,13 +80,6 @@ export function EventCard({
       className={`group relative self-start flex-none h-fit w-full flex flex-row items-stretch gap-0 overflow-hidden rounded-2xl border border-gray-200 bg-white p-0 shadow-sm cursor-pointer transition-all hover:shadow-lg ${highlighted ? 'border-accent ring-2 ring-accent/20 scale-[1.02]' : 'ring-1 ring-black/5'}`}
       onClick={() => navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`)}
     >
-      {(event.image || event.gallery?.[0]?.photo) && (
-        <img
-          src={event.image || event.gallery?.[0]?.photo}
-          alt=""
-          className="hidden w-24 shrink-0 object-cover sm:block"
-        />
-      )}
       <div className="w-16 sm:w-20 shrink-0 rounded-l-2xl border-r border-gray-100 bg-white px-2 py-3 flex flex-col items-center justify-center">
         <span className="text-[10px] font-black uppercase tracking-tighter text-primary/40">
           {event.date.toLocaleDateString('en-US', { month: 'short' })}
