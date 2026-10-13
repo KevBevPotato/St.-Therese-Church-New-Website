@@ -2,6 +2,8 @@
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { EventMedia } from '@/components/EventMedia';
+import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import {
     ArrowLeft,
@@ -30,7 +32,7 @@ const ROSARY_IN_A_YEAR_URL =
 const MARYKNOLL_ROSARY_GUIDE =
     'https://www.maryknollsisters.org/pray-with-us/pray-rosary-us/?gad_source=1&gad_campaignid=23374479357&gbraid=0AAAAABtvOnY7g8nyvAdYShNA80_tMmxfx&gclid=Cj0KCQjw4orUBhCjARIsAIbF3qy2U8ni3lrwxi_-ukzHYXnDQclEm5tbqJaxn_U-9KQIW6nJ9Dt4BV8aAgaaEALw_wcB';
 
-export default function DailyRosary() {
+export default function DailyRosary({ event }: EventLandingPageProps) {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -100,6 +102,10 @@ export default function DailyRosary() {
                         </div>
                     </aside>
                 </div>
+            </section>
+
+            <section className="container mx-auto px-4">
+                <EventMedia event={event} />
             </section>
 
             {/* Fr. Mark-Mary Ames feature */}

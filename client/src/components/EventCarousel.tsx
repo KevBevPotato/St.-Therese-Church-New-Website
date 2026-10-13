@@ -10,29 +10,33 @@ interface GalleryItem {
 interface EventCarouselProps {
   gallery: GalleryItem[];
   eventTitle: string;
+  forceCarousel?: boolean;
 }
 
 export const EventCarousel: React.FC<EventCarouselProps> = ({
   gallery,
   eventTitle,
+  forceCarousel = false,
 }) => {
-  const isLooping = gallery.length > 3;
+  const isLooping =
+    gallery.length > 3 || (forceCarousel && gallery.length > 1);
 
   // 1. Determine how many items are visible based on screen size
-  const [visibleItems, setVisibleItems] = useState(3);
+  const [visibleItems, setVisibleItems] = useState(forceCarousel ? 1 : 3);
 
   useEffect(() => {
     if (!isLooping) return;
 
     const updateVisibleItems = () => {
-      if (window.innerWidth > 1024) setVisibleItems(3);
+      if (forceCarousel) setVisibleItems(1);
+      else if (window.innerWidth > 1024) setVisibleItems(3);
       else if (window.innerWidth > 768) setVisibleItems(2);
       else setVisibleItems(1);
     };
     updateVisibleItems();
     window.addEventListener("resize", updateVisibleItems);
     return () => window.removeEventListener("resize", updateVisibleItems);
-  }, [isLooping]);
+  }, [forceCarousel, isLooping]);
 
   // 2. Create the Infinite Loop Gallery: [Clones of End] + [Originals] + [Clones of Start]
   // We take the last 'visibleItems' and put them at the start, and first 'visibleItems' at the end.
@@ -107,7 +111,9 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({
 
   if (!isLooping) {
     return (
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={`grid grid-cols-1 gap-4 ${forceCarousel ? "" : "md:grid-cols-2 lg:grid-cols-3"}`}
+      >
         {gallery.map((item, idx) => (
           <div key={idx} className="flex flex-col gap-3">
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl shadow-lg bg-white border border-black/5">
@@ -129,7 +135,8 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({
       {/* Left Arrow */}
       <button
         onClick={handlePrev}
-        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-2 rounded-full shadow-xl hover:bg-accent hover:text-white transition-all opacity-0 group-hover:opacity-100 hidden md:block"
+        aria-label={`Previous ${eventTitle} photo`}
+        className="absolute left-2 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-2 rounded-full shadow-xl hover:bg-accent hover:text-white transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
       >
         <ChevronLeft size={24} />
       </button>
@@ -144,7 +151,7 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({
         {extendedGallery.map((item, idx) => (
           <div
             key={idx}
-            className="shrink-0 w-full md:w-1/2 lg:w-1/3 px-2 flex flex-col gap-3"
+            className={`shrink-0 ${forceCarousel ? "w-full" : "w-full md:w-1/2 lg:w-1/3"} px-2 flex flex-col gap-3`}
           >
             <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl shadow-lg bg-white border border-black/5">
               {renderPhoto(item, idx)}
@@ -161,7 +168,8 @@ export const EventCarousel: React.FC<EventCarouselProps> = ({
       {/* Right Arrow */}
       <button
         onClick={handleNext}
-        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-2 rounded-full shadow-xl hover:bg-accent hover:text-white transition-all opacity-0 group-hover:opacity-100 hidden md:block"
+        aria-label={`Next ${eventTitle} photo`}
+        className="absolute right-2 top-1/2 -translate-y-1/2 z-20 bg-white/90 p-2 rounded-full shadow-xl hover:bg-accent hover:text-white transition-all opacity-100 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
       >
         <ChevronRight size={24} />
       </button>

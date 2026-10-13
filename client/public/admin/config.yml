@@ -505,13 +505,6 @@ collections:
           required: false,
         }
       - {
-          label: "Flyer / Landing Page Hero Image (Optional)",
-          name: "image",
-          widget: "image",
-          required: false,
-          hint: "Optional. Shown at the top of the event's landing page, not on calendar cards. Leave blank if there is no flyer or image.",
-        }
-      - {
           label: "Sign-up URL",
           name: "signupLink",
           widget: "string",
@@ -535,11 +528,12 @@ collections:
           widget: "string",
           required: false,
         }
-      - label: "Landing Page Photo Gallery (Optional)"
+      - label: "Event Photos (Flyers and Gallery)"
         name: "gallery"
         widget: "list"
         required: false
-        hint: "Optional. Leave empty if this event has no gallery photos."
+        hint: "Add flyers and pictures here; they appear together in the event carousel. Turn off Include in carousel to archive a picture in the gallery below it."
+        summary: "{{fields.caption}}"
         fields:
           - {
               label: "Hide this photo",
@@ -561,6 +555,14 @@ collections:
               widget: "string",
               required: false,
               hint: "Use a site path such as /about or a full https:// URL. Leave blank to open the photo.",
+            }
+          - {
+              label: "Include in carousel",
+              name: "showInCarousel",
+              widget: "boolean",
+              default: true,
+              required: false,
+              hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
             }
       - label: "Frequently Asked Questions (Optional)"
         name: "faqItems"
@@ -660,12 +662,6 @@ collections:
               required: false,
             }
           - {
-              label: "Flyer / Hero Image Override (optional)",
-              name: "image",
-              widget: "image",
-              required: false,
-            }
-          - {
               label: "Sign-up URL Override (optional)",
               name: "signupLink",
               widget: "string",
@@ -721,15 +717,31 @@ collections:
                 - { label: "Catholic Daughters", value: "catholic-daughters" }
                 - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
                 - { label: "Faith Formation", value: "faith-formation" }
-          - label: "Gallery Overrides (optional)"
+          - label: "Event Photo Overrides (optional)"
             name: "gallery"
             widget: "list"
             required: false
-            hint: "Optional. Leave empty to use the event's default gallery."
+            hint: "Optional photo collection for this occurrence. Turn off Include in carousel to archive a photo in the gallery."
+            summary: "{{fields.caption}}"
             fields:
+              - {
+                  label: "Hide this photo",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
               - { label: "Photo", name: "photo", widget: "image", required: false }
               - { label: "Caption", name: "caption", widget: "string", required: false }
               - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
+              - {
+                  label: "Include in carousel",
+                  name: "showInCarousel",
+                  widget: "boolean",
+                  default: true,
+                  required: false,
+                  hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
+                }
           - label: "FAQ Overrides (optional)"
             name: "faqItems"
             widget: "list"
@@ -748,13 +760,6 @@ collections:
           name: "about",
           widget: "text",
           required: false,
-        }
-      - {
-          label: "Flyer / Landing Page Hero Image (Optional)",
-          name: "image",
-          widget: "image",
-          required: false,
-          hint: "Optional. Shown at the top of every occurrence's landing page, not on calendar cards. Leave blank if there is no flyer or image.",
         }
       - {
           label: "Sign-up URL",
@@ -819,11 +824,12 @@ collections:
             - { label: "Catholic Daughters", value: "catholic-daughters" }
             - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
             - { label: "Faith Formation", value: "faith-formation" }
-      - label: "Landing Page Photo Gallery (Optional)"
+      - label: "Event Photos (Flyers and Gallery)"
         name: "gallery"
         widget: "list"
         required: false
-        hint: "Optional. Leave empty if this recurring event has no gallery photos."
+        hint: "Add flyers and pictures here; they appear together in each occurrence's event carousel. Turn off Include in carousel to archive a picture in the gallery below it."
+        summary: "{{fields.caption}}"
         fields:
           - {
               label: "Hide this photo",
@@ -838,6 +844,21 @@ collections:
               name: "caption",
               widget: "string",
               required: false,
+            }
+          - {
+              label: "Link URL (optional)",
+              name: "linkUrl",
+              widget: "string",
+              required: false,
+              hint: "Use a site path such as /about or a full https:// URL. Leave blank to open the photo.",
+            }
+          - {
+              label: "Include in carousel",
+              name: "showInCarousel",
+              widget: "boolean",
+              default: true,
+              required: false,
+              hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
             }
       - label: "Frequently Asked Questions (Optional)"
         name: "faqItems"

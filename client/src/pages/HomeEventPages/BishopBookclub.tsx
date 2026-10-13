@@ -2,6 +2,8 @@
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { EventMedia } from '@/components/EventMedia';
+import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,7 +21,7 @@ const DIOCESE_URL = 'https://www.rapidcitydiocese.org/bookclub/';
  * and the Glory, Wheat that Springeth Green, etc.) are listed on the
  * diocesan page.
  */
-export default function BishopBookclub() {
+export default function BishopBookclub({ event }: EventLandingPageProps) {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -64,6 +66,10 @@ export default function BishopBookclub() {
                         </div>
                     </aside>
                 </div>
+            </section>
+
+            <section className="container mx-auto px-4">
+                <EventMedia event={event} />
             </section>
 
             {/* How it works */}

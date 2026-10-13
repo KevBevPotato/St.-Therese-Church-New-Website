@@ -194,4 +194,17 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
     return events; // <--- FIXED: Now the function returns the events array
 }
 
+export function getLatestRecurringScheduleEndDate(
+    organizationTag: EventOrganizationTag
+): Date | null {
+    const matchingRules = recurringRules.filter((rule: any) =>
+        rule.organizationTags?.includes(organizationTag)
+    );
+    const endDates = matchingRules
+        .map((rule: any) => normalizeDate((rule.schedule ?? rule).endDate))
+        .filter((date: Date | null): date is Date => date !== null);
+    if (endDates.length === 0) return null;
+    return endDates.reduce((latest, date) => date > latest ? date : latest);
+}
+
 staticEvents.sort((a, b) => a.date.getTime() - b.date.getTime());

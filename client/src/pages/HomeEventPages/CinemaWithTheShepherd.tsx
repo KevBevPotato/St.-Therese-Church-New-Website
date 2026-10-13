@@ -2,6 +2,8 @@
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { EventMedia } from '@/components/EventMedia';
+import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +20,7 @@ const DIOCESE_URL = 'https://www.rapidcitydiocese.org/cinema26/';
  * Specific film info (La Strada, Bicycle Thieves, Burmese Harp, Wizard of Oz,
  * Babette's Feast, etc.) is on the diocesan page linked above.
  */
-export default function CinemaWithTheShepherd() {
+export default function CinemaWithTheShepherd({ event }: EventLandingPageProps) {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -68,6 +70,10 @@ export default function CinemaWithTheShepherd() {
                         </div>
                     </aside>
                 </div>
+            </section>
+
+            <section className="container mx-auto px-4">
+                <EventMedia event={event} />
             </section>
 
             {/* Series overview */}

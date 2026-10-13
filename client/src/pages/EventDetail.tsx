@@ -12,15 +12,12 @@ import {
   Phone,
   Home,
   ArrowLeft,
-  Image as ImageIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-
-// 1. IMPORT THE CAROUSEL HERE
-import { EventCarousel } from "@/components/EventCarousel";
+import { EventMedia } from "@/components/EventMedia";
 
 import {
   staticEvents,
@@ -131,14 +128,10 @@ export default function EventDetail() {
           </div>
         }
       >
-        <CustomPage />
+        <CustomPage event={event} />
       </Suspense>
     );
   }
-
-  const eventGallery = (event.gallery ?? []).filter(
-    item => typeof item?.photo === "string" && item.photo.trim() !== ""
-  );
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -198,24 +191,7 @@ export default function EventDetail() {
               </h1>
             </div>
 
-            {(eventGallery.length > 0 || event.image) && (
-              <div className="w-full">
-                {eventGallery.length > 0 ? (
-                  <EventCarousel
-                    gallery={eventGallery}
-                    eventTitle={event.title}
-                  />
-                ) : event.image ? (
-                  <div className="relative w-full overflow-hidden rounded-3xl shadow-xl">
-                    <img
-                      src={event.image}
-                      alt={event.title}
-                      className="w-full h-auto max-h-[800px] object-contain mx-auto block"
-                    />
-                  </div>
-                ) : null}
-              </div>
-            )}
+            <EventMedia event={event} />
 
             <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">
@@ -243,56 +219,6 @@ export default function EventDetail() {
                 </Button>
               )}
             </Card>
-
-            {/* --- UPDATED PHOTO GALLERY SECTION --- */}
-            {eventGallery.length > 0 && (
-              <div className="space-y-6">
-                <div className="flex items-center gap-2">
-                  <ImageIcon className="text-primary size-5" />
-                  <h3 className="font-serif text-3xl font-bold text-primary">
-                    Event Gallery
-                  </h3>
-                </div>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                  {eventGallery.map((item: any, idx: number) => (
-                    <a
-                      key={idx}
-                      href={
-                        /^(https?:\/\/|\/(?!\/))/i.test(item.linkUrl || "")
-                          ? item.linkUrl
-                          : item.photo
-                      }
-                      target={
-                        !/^(https?:\/\/|\/(?!\/))/i.test(item.linkUrl || "") ||
-                        /^https?:\/\//i.test(item.linkUrl || "")
-                          ? "_blank"
-                          : undefined
-                      }
-                      rel={
-                        !/^(https?:\/\/|\/(?!\/))/i.test(item.linkUrl || "") ||
-                        /^https?:\/\//i.test(item.linkUrl || "")
-                          ? "noopener noreferrer"
-                          : undefined
-                      }
-                      className="group relative aspect-square overflow-hidden rounded-2xl shadow-md hover:opacity-90 transition-opacity cursor-pointer"
-                    >
-                      <img
-                        src={item.photo}
-                        alt={`${event.title} gallery ${idx + 1}`}
-                        className="w-full h-full object-cover"
-                      />
-                      {item.caption && (
-                        <div className="absolute inset-0 bg-black/60 flex items-end p-3 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <p className="text-white text-xs italic">
-                            {item.caption}
-                          </p>
-                        </div>
-                      )}
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
 
             {event.faqItems && event.faqItems.length > 0 && (
               <div className="space-y-6">

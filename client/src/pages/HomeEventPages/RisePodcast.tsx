@@ -2,6 +2,8 @@
 import { Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { EventMedia } from '@/components/EventMedia';
+import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
@@ -18,7 +20,7 @@ const RISE_PODCAST_URL = 'https://www.rapidcitydiocese.org/';
  *
  * Once you have the actual Rise podcast URL, replace RISE_PODCAST_URL above.
  */
-export default function RisePodcast() {
+export default function RisePodcast({ event }: EventLandingPageProps) {
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -63,6 +65,10 @@ export default function RisePodcast() {
                         </div>
                     </aside>
                 </div>
+            </section>
+
+            <section className="container mx-auto px-4">
+                <EventMedia event={event} />
             </section>
 
             {/* About */}

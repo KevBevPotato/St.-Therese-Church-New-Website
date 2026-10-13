@@ -2,7 +2,11 @@ import { useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import { staticEvents, generateRecurringEventsForMonth } from '../components/eventfolders/events';
+import {
+    staticEvents,
+    generateRecurringEventsForMonth,
+    getLatestRecurringScheduleEndDate,
+} from '../components/eventfolders/events';
 import { EventCard } from '../components/event-components';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
@@ -146,21 +150,29 @@ export default function FaithFormation() {
         return selectedGroups.has(cat.group);
     });
 
-    // UPDATED LOGIC: Now includes recurring events from Decap CMS
     const upcomingFaithFormationEvents = (() => {
         const now = new Date();
-        const currentMonth = now.getMonth();
-        const currentYear = now.getFullYear();
+        const lastScheduleDate = getLatestRecurringScheduleEndDate('faith-formation');
+        const allEvents = [...staticEvents];
 
-        // 1. Get one-time events
-        const statics = staticEvents;
+        if (lastScheduleDate) {
+            const month = new Date(now.getFullYear(), now.getMonth(), 1);
+            const lastMonth = new Date(
+                lastScheduleDate.getFullYear(),
+                lastScheduleDate.getMonth(),
+                1
+            );
 
-        // 2. Generate recurring events for this month and next month
-        const recurringThisMonth = generateRecurringEventsForMonth(currentMonth, currentYear);
-        const recurringNextMonth = generateRecurringEventsForMonth(currentMonth + 1, currentYear);
-
-        // Combine all
-        const allEvents = [...statics, ...recurringThisMonth, ...recurringNextMonth];
+            while (month <= lastMonth) {
+                allEvents.push(
+                    ...generateRecurringEventsForMonth(
+                        month.getMonth(),
+                        month.getFullYear()
+                    )
+                );
+                month.setMonth(month.getMonth() + 1);
+            }
+        }
 
         return allEvents
             .filter((event) => {

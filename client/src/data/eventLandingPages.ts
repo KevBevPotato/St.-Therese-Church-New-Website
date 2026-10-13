@@ -1,6 +1,7 @@
 // client/src/data/eventLandingPages.ts
 
 import { lazy, type ComponentType } from 'react';
+import type { EventLandingPageProps } from '@/components/eventfolders/types';
 
 /**
  * Maps an event ID prefix to a custom landing page component.
@@ -30,14 +31,16 @@ const CinemaWithTheShepherd = lazy(() => import('@/pages/HomeEventPages/CinemaWi
 const BishopBookclub = lazy(() => import('@/pages/HomeEventPages/BishopBookclub'));
 const RisePodcast = lazy(() => import('@/pages/HomeEventPages/RisePodcast'));
 
-const CUSTOM_PAGES: Record<string, ComponentType> = {
+const CUSTOM_PAGES: Record<string, ComponentType<EventLandingPageProps>> = {
     'rosary-daily': DailyRosary,
     'cinema-': CinemaWithTheShepherd,
     'bookclub-': BishopBookclub,
     'rise-podcast': RisePodcast,
 };
 
-export function getCustomLandingPage(eventId: string): ComponentType | null {
+export function getCustomLandingPage(
+    eventId: string
+): ComponentType<EventLandingPageProps> | null {
     for (const prefix of PREFIXES_IN_PRIORITY_ORDER) {
         if (CUSTOM_PAGES[prefix] && eventId.startsWith(prefix)) {
             return CUSTOM_PAGES[prefix];

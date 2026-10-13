@@ -16,18 +16,26 @@ export interface CalendarEvent {
     location: string;
     categories: EventCategory[];
     description?: string;
-    image?: string; // This is for the Hero image
+    image?: string;
     about?: string;
     contactPerson?: string;
     contactEmail?: string;
     contactPhone?: string;
     signupLink?: string;
-    photos?: string[]; // <--- CHANGE THIS from 'images' to 'photos'
-    gallery?: { photo: string; caption?: string }[]; // <--- ADD THIS LINE
+    photos?: string[];
+    gallery?: {
+        photo: string;
+        caption?: string;
+        linkUrl?: string;
+        showInCarousel?: boolean;
+    }[];
     faqItems?: Array<{ question: string; answer: string }>;
     linkedOpportunityId?: string;
     organizationTags?: EventOrganizationTag[];
     isHidden?: boolean;
+}
+export interface EventLandingPageProps {
+    event: CalendarEvent;
 }
 export const EVENT_COLORS: Record<EventCategory, { bg: string; border: string; dot: string; label: string; labelColor: string }> = {
     sacramental: { bg: 'bg-amber-50', border: 'border-amber-400', dot: 'bg-amber-500', label: 'Sacramental Life', labelColor: 'text-amber-700' },

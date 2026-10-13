@@ -1,9 +1,21 @@
 {
-  "photos": [
-    "/images/events/la-strada-1.jpg",
-    "/images/events/la-strada-2.jpg",
-    "/images/events/la-strada-3.jpg",
-    "/images/events/la-strada-4.jpg"
+  "gallery": [
+    {
+      "photo": "/images/events/la-strada-hero.jpg",
+      "caption": "La Strada"
+    },
+    {
+      "photo": "/images/events/la-strada-1.jpg"
+    },
+    {
+      "photo": "/images/events/la-strada-2.jpg"
+    },
+    {
+      "photo": "/images/events/la-strada-3.jpg"
+    },
+    {
+      "photo": "/images/events/la-strada-4.jpg"
+    }
   ],
   "faqItems": [
     {
@@ -22,7 +34,6 @@
   "location": "St. Joseph Hall, Cathedral",
   "title": "Cinema with the Shepherd: La Strada",
   "id": "cinema-la-strada",
-  "image": "/images/events/la-strada-hero.jpg",
   "categories": [
     {
       "category": "parishEvents"

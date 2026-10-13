@@ -12,6 +12,10 @@
   "time": "5:30-7:30pm",
   "gallery": [
     {
+      "photo": "/uploads/directoryboard_11zon.png",
+      "caption": "Faith Formation Registration"
+    },
+    {
       "isHidden": false,
       "photo": "/uploads/canva_welcome_poster.png"
     },
@@ -74,7 +78,6 @@
     ]
   },
   "title": "Wednesday Faith Formation (Safe Environment)",
-  "image": "/uploads/directoryboard_11zon.png",
   "categories": [
     {
       "isHidden": false,
