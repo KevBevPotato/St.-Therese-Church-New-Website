@@ -1,7 +1,9 @@
 {
   "faqItems": [
     {
-      "isHidden": false
+      "isHidden": false,
+      "question": "Will it be fun?",
+      "answer": "Absolutely"
     }
   ],
   "organizationTags": [
@@ -10,16 +12,22 @@
   "time": "5:30-7:30pm",
   "gallery": [
     {
-      "isHidden": false
+      "isHidden": false,
+      "photo": "/uploads/canva_welcome_poster.png"
+    },
+    {
+      "isHidden": false,
+      "photo": "/uploads/fr.markmary.png"
     }
   ],
   "isHidden": false,
+  "contactPerson": "Bobby Myers",
   "location": "St. Therese Church",
   "schedule": {
     "startDate": "2026-10-14",
     "endDate": "2027-01-27",
-    "recurrenceType": "weekly",
     "dayOfWeek": "Wednesday",
+    "recurrenceType": "weekly",
     "exclusions": [
       {
         "date": "2026-10-21"
@@ -66,15 +74,13 @@
     ]
   },
   "title": "Wednesday Faith Formation (Safe Environment)",
+  "image": "/uploads/directoryboard_11zon.png",
   "categories": [
     {
       "isHidden": false,
       "category": "parishEvents"
-    },
-    {
-      "isHidden": false,
-      "category": "meeting"
     }
   ],
-  "description": "Bobby will put more info here"
+  "contactEmail": "bobby@strcstaff.org",
+  "description": "Bobby will update"
 }
