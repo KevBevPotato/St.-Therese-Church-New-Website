@@ -1,0 +1,72 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false,
+      "question": "Will Bobby update this?",
+      "answer": "He sure will!"
+    }
+  ],
+  "organizationTags": [
+    "faith-formation"
+  ],
+  "time": "5:30-7:30pm",
+  "about": "Bobby will update this as well",
+  "gallery": [
+    {
+      "isHidden": false
+    }
+  ],
+  "isHidden": false,
+  "contactPerson": "Bobby Myers",
+  "location": "St. Therese Church",
+  "schedule": {
+    "startDate": "2026-10-21",
+    "endDate": "2027-05-12",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Wednesday",
+    "exclusions": [
+      {
+        "date": "2026-11-04"
+      },
+      {
+        "date": "2026-11-25"
+      },
+      {
+        "date": "2026-12-02"
+      },
+      {
+        "date": "2026-12-23"
+      },
+      {
+        "date": "2026-12-30"
+      },
+      {
+        "date": "2027-01-06"
+      },
+      {
+        "date": "2027-01-27"
+      },
+      {
+        "date": "2027-02-03"
+      },
+      {
+        "date": "2027-03-03"
+      },
+      {
+        "date": "2027-03-31"
+      },
+      {
+        "date": "2027-05-05"
+      }
+    ]
+  },
+  "title": "Wednesday Faith Formatioin",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "contactEmail": "bobby@strcstaff.org",
+  "description": "Bobby will update"
+}
