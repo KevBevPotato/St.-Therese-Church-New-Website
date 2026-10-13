@@ -33,7 +33,7 @@ interface OpportunityDetailData {
     landingPageDescription?: string;
     faqs?: Array<{ question: string; answer: string }>;
     requirements?: string[];
-    images?: string[];
+    images?: Array<string | { photo?: string }>;
     signUpLinks?: Array<{ label: string; url: string }>;
 }
 
@@ -80,7 +80,9 @@ export default function OpportunityDetail() {
         description: cmsOrganization?.description ?? opportunity.landingPageDescription ?? opportunity.description,
         faqs: opportunity.faqs ?? [],
         requirements: opportunity.requirements ?? [],
-        images: opportunity.images ?? [],
+        images: (opportunity.images ?? [])
+            .map((image) => typeof image === 'string' ? image : image.photo)
+            .filter((image): image is string => Boolean(image)),
         signUpLinks: opportunity.signUpLinks ?? [],
     };
     const calendarTagByOpportunityId: Record<string, EventOrganizationTag> = {
@@ -132,7 +134,7 @@ export default function OpportunityDetail() {
                             <h1 className="font-serif text-5xl md:text-6xl font-bold text-primary mb-6 leading-tight">
                                 {details.title}
                             </h1>
-                            <p className="text-xl text-muted-foreground leading-relaxed">
+                            <p className="text-xl text-muted-foreground leading-relaxed whitespace-pre-line">
                                 {details.description}
                             </p>
                         </div>
