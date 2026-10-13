@@ -1,14 +1,19 @@
 {
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
   "organizationTags": [
     "faith-formation"
   ],
-  "time": "5:30pm-7:30pm",
+  "time": "5:30-7:30pm",
   "gallery": [
     {
-      "photo": "/uploads/canva_welcome_poster.png",
-      "caption": "not the right pic"
+      "isHidden": false
     }
   ],
+  "isHidden": false,
   "location": "St. Therese Church",
   "schedule": {
     "startDate": "2026-10-14",
@@ -61,11 +66,15 @@
     ]
   },
   "title": "Wednesday Faith Formation (Safe Environment)",
-  "id": "wednesday-faith-formation",
   "categories": [
     {
+      "isHidden": false,
       "category": "parishEvents"
+    },
+    {
+      "isHidden": false,
+      "category": "meeting"
     }
   ],
-  "description": "Safe Environment. Bobby will update"
+  "description": "Bobby will put more info here"
 }
