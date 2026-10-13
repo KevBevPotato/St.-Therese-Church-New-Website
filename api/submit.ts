@@ -379,8 +379,11 @@ async function submitToGoogleSheet(body: JsonObject): Promise<void> {
     throw new Error("The Google spreadsheet does not contain a worksheet.");
   }
 
-  const submission: Record<string, string | number | Date> = {
-    submitted_at: new Date(),
+  const submission: Record<string, string | number> = {
+    submitted_at: new Date().toLocaleString("en-US", {
+      timeZone: "America/Denver",
+      hour12: true,
+    }),
   };
   for (const [key, value] of Object.entries(body)) {
     if (key === "website") continue;
