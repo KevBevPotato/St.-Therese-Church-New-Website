@@ -83,11 +83,6 @@ function recurringEventForDate(rule: any, dateString: string, override: any = {}
             category.category || category
         ),
         organizationTags: merged.organizationTags ?? [],
-        linkedOpportunityId:
-            merged.linkedOpportunityId ??
-            (merged.organizationTags?.includes('faith-formation')
-                ? 'wednesday-faith-formation'
-                : undefined),
     } as CalendarEvent;
 }
 
