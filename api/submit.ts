@@ -113,8 +113,7 @@ const MEMBERSHIP_FIELDS = new Set([
   "city",
   "zip_code",
   "phone_unlisted",
-  "date_registered",
-  "changing_membership_from",
+  "previous_church_membership",
   "marital_status",
   "email",
   "church_attendance",
@@ -140,10 +139,20 @@ const PERSON_FIELDS = [
   "confirmation",
   "confirmation_year",
 ];
-const ADULT_ONLY_FIELDS = [
-  "marriage_date",
-  "annulment_status",
-  "second_marriage_status",
+const ADULT_ONLY_FIELDS = ["marriage_date", "annulment_status"];
+const CHILD_PERSON_FIELDS = [
+  "first_name",
+  "preferred_name",
+  "last_name",
+  "religion",
+  "gender",
+  "date_of_birth",
+  "baptism",
+  "baptism_year",
+  "communion",
+  "communion_year",
+  "confirmation",
+  "confirmation_year",
 ];
 for (const member of ["head", "spouse"]) {
   for (const field of [...PERSON_FIELDS, ...ADULT_ONLY_FIELDS]) {
@@ -158,7 +167,7 @@ function isMembershipField(key: string): boolean {
     !!match &&
     Number(match[1]) >= 1 &&
     Number(match[1]) <= 12 &&
-    PERSON_FIELDS.includes(match[2])
+    CHILD_PERSON_FIELDS.includes(match[2])
   );
 }
 
@@ -195,6 +204,7 @@ function hasSameOrigin(request: ApiRequest): boolean {
 
 function validateBody(bodyValue: unknown): {
   body?: JsonObject;
+  tab?: string;
   error?: string;
 } {
   if (!bodyValue || typeof bodyValue !== "object" || Array.isArray(bodyValue)) {
@@ -354,10 +364,20 @@ function validateBody(bodyValue: unknown): {
     }
   }
 
-  return { body };
+  const signupKind = getString(body, "signup_kind");
+  const tab =
+    formType === "membership"
+      ? "Parish Registrations"
+      : formType === "interest" && signupKind === "class_registration"
+        ? "Faith Formation"
+        : undefined;
+  return { body, tab };
 }
 
-async function submitToGoogleSheet(body: JsonObject): Promise<void> {
+async function submitToGoogleSheet(
+  body: JsonObject,
+  sheetTitle?: string
+): Promise<void> {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
   const sheetId = process.env.GOOGLE_SHEET_ID;
@@ -374,9 +394,15 @@ async function submitToGoogleSheet(body: JsonObject): Promise<void> {
   await spreadsheet.loadInfo();
   await spreadsheet.updateProperties({ timeZone: "America/Denver" });
 
-  const sheet = spreadsheet.sheetsByIndex[0];
+  const sheet = sheetTitle
+    ? spreadsheet.sheetsByTitle[sheetTitle]
+    : spreadsheet.sheetsByIndex[0];
   if (!sheet) {
-    throw new Error("The Google spreadsheet does not contain a worksheet.");
+    throw new Error(
+      sheetTitle
+        ? `The Google spreadsheet does not contain a "${sheetTitle}" worksheet.`
+        : "The Google spreadsheet does not contain a worksheet."
+    );
   }
 
   const submission: Record<string, string | number> = {
@@ -471,7 +497,7 @@ export default async function handler(
   }
 
   try {
-    await submitToGoogleSheet(validation.body);
+    await submitToGoogleSheet(validation.body, validation.tab);
     respond(response, 200, { success: true });
   } catch (error) {
     console.error("Form submission failed.", {

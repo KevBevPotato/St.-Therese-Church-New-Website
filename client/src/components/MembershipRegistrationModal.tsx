@@ -45,11 +45,22 @@ const PERSON_FIELDS = [
   ["date_of_birth", "Date of Birth"],
 ] as const;
 
+const CHILD_PERSON_FIELDS = [
+  ["first_name", "First Name"],
+  ["preferred_name", "Preferred Name"],
+  ["last_name", "Last Name"],
+  ["religion", "Religion"],
+  ["date_of_birth", "Date of Birth"],
+] as const;
+
 function Field({
   label,
   name,
   type = "text",
   required = false,
+  placeholder,
+  pattern,
+  inputMode,
   children,
   ...props
 }: {
@@ -57,6 +68,9 @@ function Field({
   name: string;
   type?: string;
   required?: boolean;
+  placeholder?: string;
+  pattern?: string;
+  inputMode?: "numeric";
   children?: ReactNode;
   autoComplete?: string;
   maxLength?: number;
@@ -72,6 +86,9 @@ function Field({
           type={type}
           required={required}
           maxLength={props.maxLength ?? 200}
+          placeholder={placeholder}
+          pattern={pattern}
+          inputMode={inputMode}
           autoComplete={props.autoComplete}
         />
       )}
@@ -83,23 +100,31 @@ function PersonDetails({
   prefix,
   title,
   isAdult = false,
+  isChild = false,
 }: {
   prefix: string;
   title: string;
   isAdult?: boolean;
+  isChild?: boolean;
 }) {
+  const personFields = isChild ? CHILD_PERSON_FIELDS : PERSON_FIELDS;
+
   return (
     <fieldset className="space-y-4 rounded-xl border border-primary/10 bg-primary/[0.025] p-4">
       <legend className="px-1 font-serif text-lg font-semibold text-primary">
         {title}
       </legend>
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {PERSON_FIELDS.map(([field, label]) => (
+      <div className="grid gap-4 sm:grid-cols-2">
+        {personFields.map(([field, label]) => (
           <Field
             key={field}
             name={`${prefix}_${field}`}
             label={label}
-            type={field === "date_of_birth" ? "date" : "text"}
+            placeholder={field === "date_of_birth" ? "mm/dd/yyyy" : undefined}
+            pattern={
+              field === "date_of_birth" ? "\\d{2}/\\d{2}/\\d{4}" : undefined
+            }
+            inputMode={field === "date_of_birth" ? "numeric" : undefined}
           />
         ))}
         <Field name={`${prefix}_gender`} label="Gender">
@@ -114,11 +139,11 @@ function PersonDetails({
           </select>
         </Field>
         {(["baptism", "communion", "confirmation"] as const).map(sacrament => (
-          <div key={sacrament} className="space-y-1">
+          <div key={sacrament} className="space-y-1 sm:col-span-2">
             <span className={labelClassName}>
               {sacrament[0].toUpperCase() + sacrament.slice(1)}
             </span>
-            <div className="flex gap-2">
+            <div className="grid grid-cols-[minmax(0,1fr)_9rem] gap-2">
               <select
                 className={`${inputClassName} mt-0`}
                 name={`${prefix}_${sacrament}`}
@@ -148,7 +173,9 @@ function PersonDetails({
             <Field
               name={`${prefix}_marriage_date`}
               label="Marriage Date"
-              type="date"
+              placeholder="mm/dd/yyyy"
+              pattern="\\d{2}/\\d{2}/\\d{4}"
+              inputMode="numeric"
             />
             <Field name={`${prefix}_annulment_status`} label="Annulment Status">
               <select
@@ -160,21 +187,6 @@ function PersonDetails({
                 <option value="Yes">Yes</option>
                 <option value="No">No</option>
                 <option value="In process">In process</option>
-                <option value="Not applicable">Not applicable</option>
-              </select>
-            </Field>
-            <Field
-              name={`${prefix}_second_marriage_status`}
-              label="Second Marriage Status"
-            >
-              <select
-                className={inputClassName}
-                name={`${prefix}_second_marriage_status`}
-                defaultValue=""
-              >
-                <option value="">Select</option>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
                 <option value="Not applicable">Not applicable</option>
               </select>
             </Field>
@@ -423,13 +435,8 @@ export default function MembershipRegistrationModal({
                     </h3>
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Field
-                        name="date_registered"
-                        label="Date Registered"
-                        type="date"
-                      />
-                      <Field
-                        name="changing_membership_from"
-                        label="Changing Membership From"
+                        name="previous_church_membership"
+                        label="Name of Previous Church Membership"
                       />
                     </div>
                   </div>
@@ -471,7 +478,18 @@ export default function MembershipRegistrationModal({
                   <Field
                     name="mass_usually_attend"
                     label="Mass Usually Attended"
-                  />
+                  >
+                    <select
+                      className={inputClassName}
+                      name="mass_usually_attend"
+                      defaultValue=""
+                    >
+                      <option value="">Select</option>
+                      <option value="Saturday 4:30pm">Saturday 4:30pm</option>
+                      <option value="Sunday 9am">Sunday 9am</option>
+                      <option value="Sunday 5:30pm">Sunday 5:30pm</option>
+                    </select>
+                  </Field>
                   <Field
                     name="tithe_envelopes"
                     label="Tithe by check: Would you like envelopes?"
@@ -561,6 +579,7 @@ export default function MembershipRegistrationModal({
                       key={index + 1}
                       prefix={`child_${index + 1}`}
                       title={`Child ${index + 1}`}
+                      isChild
                     />
                   ))}
                 </div>
