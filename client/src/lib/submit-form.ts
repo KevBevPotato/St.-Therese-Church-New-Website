@@ -7,9 +7,10 @@ export async function submitForm(
     | "membership"
     | "interest"
     | "faith_formation",
-  payload: Record<string, unknown>
+  payload: Record<string, unknown>,
+  endpoint = "/api/submit"
 ): Promise<void> {
-  const response = await fetch("/api/submit", {
+  const response = await fetch(endpoint, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ ...payload, form_type: formType }),

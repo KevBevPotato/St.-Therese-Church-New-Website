@@ -64,11 +64,11 @@ export default function InterestSignupModal({
     setStatus("sending");
     setErrorMessage("");
     try {
+      const isFaithFormation = request.id === "wednesday-faith-formation";
       await submitForm(
-        request.id === "wednesday-faith-formation"
-          ? "faith_formation"
-          : "interest",
-        payload
+        isFaithFormation ? "faith_formation" : "interest",
+        payload,
+        isFaithFormation ? "/api/submit-faith" : "/api/submit"
       );
       setStatus("success");
     } catch (error) {

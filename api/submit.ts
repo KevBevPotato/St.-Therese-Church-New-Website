@@ -393,11 +393,13 @@ function validateBody(bodyValue: unknown): {
 
 async function submitToGoogleSheet(
   body: JsonObject,
-  sheetTitle?: string
+  sheetTitle: string | undefined,
+  sheetIdEnvironmentVariable: string,
+  useFirstTab: boolean
 ): Promise<void> {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const sheetId = process.env[sheetIdEnvironmentVariable];
   if (!email || !key || !sheetId) {
     throw new Error("Google Sheets is missing required environment variables.");
   }
@@ -411,7 +413,9 @@ async function submitToGoogleSheet(
   await spreadsheet.loadInfo();
   await spreadsheet.updateProperties({ timeZone: "America/Denver" });
 
-  const targetTab = sheetTitle ?? spreadsheet.sheetsByIndex[0]?.title;
+  const targetTab = useFirstTab
+    ? spreadsheet.sheetsByIndex[0]?.title
+    : (sheetTitle ?? spreadsheet.sheetsByIndex[0]?.title);
   console.log("Google Sheets submission target.", {
     formType: getString(body, "form_type"),
     targetTab: targetTab ?? "No worksheet found",
@@ -476,56 +480,87 @@ async function submitToGoogleSheet(
   await sheet.addRow(submission);
 }
 
-export default async function handler(
-  request: ApiRequest,
-  response: ApiResponse
-): Promise<void> {
-  response.setHeader("Cache-Control", "no-store");
-  response.setHeader("X-Content-Type-Options", "nosniff");
-  response.setHeader("Vary", "Origin");
-
-  if (request.method !== "POST") {
-    response.setHeader("Allow", "POST");
-    respond(response, 405, { error: "Method not allowed." });
-    return;
-  }
-  if (!hasSameOrigin(request)) {
-    respond(response, 403, { error: "Request origin is not allowed." });
-    return;
-  }
-
-  const validation = validateBody(request.body);
-  if (validation.error || !validation.body) {
-    respond(response, 400, {
-      error: validation.error || "Invalid submission.",
-    });
-    return;
-  }
-
-  if (
-    !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
-    !process.env.GOOGLE_PRIVATE_KEY ||
-    !process.env.GOOGLE_SHEET_ID
-  ) {
-    console.error("Form submission is not configured.", {
-      reason: "missing_google_sheets_configuration",
-    });
-    respond(response, 503, {
-      error: "Form submissions are temporarily unavailable.",
-    });
-    return;
-  }
-
-  try {
-    await submitToGoogleSheet(validation.body, validation.tab);
-    respond(response, 200, { success: true });
-  } catch (error) {
-    console.error("Form submission failed.", {
-      stage: "google_sheets",
-      reason: error instanceof Error ? error.message : "unexpected_error",
-    });
-    respond(response, 502, {
-      error: "The submission could not be saved. Please try again later.",
-    });
-  }
+interface SubmitHandlerOptions {
+  sheetIdEnvironmentVariable?: string;
+  useFirstTab?: boolean;
+  faithFormationOnly?: boolean;
 }
+
+export function createSubmitHandler({
+  sheetIdEnvironmentVariable = "GOOGLE_SHEET_ID",
+  useFirstTab = false,
+  faithFormationOnly = false,
+}: SubmitHandlerOptions = {}) {
+  return async function handler(
+    request: ApiRequest,
+    response: ApiResponse
+  ): Promise<void> {
+    response.setHeader("Cache-Control", "no-store");
+    response.setHeader("X-Content-Type-Options", "nosniff");
+    response.setHeader("Vary", "Origin");
+
+    if (request.method !== "POST") {
+      response.setHeader("Allow", "POST");
+      respond(response, 405, { error: "Method not allowed." });
+      return;
+    }
+    if (!hasSameOrigin(request)) {
+      respond(response, 403, { error: "Request origin is not allowed." });
+      return;
+    }
+
+    const validation = validateBody(request.body);
+    if (validation.error || !validation.body) {
+      respond(response, 400, {
+        error: validation.error || "Invalid submission.",
+      });
+      return;
+    }
+
+    if (
+      faithFormationOnly &&
+      (getString(validation.body, "form_type") !== "faith_formation" ||
+        getString(validation.body, "context_opportunity") !==
+          "wednesday-faith-formation")
+    ) {
+      respond(response, 400, {
+        error: "This endpoint only accepts Faith Formation submissions.",
+      });
+      return;
+    }
+
+    if (
+      !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
+      !process.env.GOOGLE_PRIVATE_KEY ||
+      !process.env[sheetIdEnvironmentVariable]
+    ) {
+      console.error("Form submission is not configured.", {
+        reason: "missing_google_sheets_configuration",
+      });
+      respond(response, 503, {
+        error: "Form submissions are temporarily unavailable.",
+      });
+      return;
+    }
+
+    try {
+      await submitToGoogleSheet(
+        validation.body,
+        validation.tab,
+        sheetIdEnvironmentVariable,
+        useFirstTab
+      );
+      respond(response, 200, { success: true });
+    } catch (error) {
+      console.error("Form submission failed.", {
+        stage: "google_sheets",
+        reason: error instanceof Error ? error.message : "unexpected_error",
+      });
+      respond(response, 502, {
+        error: "The submission could not be saved. Please try again later.",
+      });
+    }
+  };
+}
+
+export default createSubmitHandler();
