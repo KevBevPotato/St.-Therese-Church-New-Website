@@ -1,0 +1,98 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false,
+      "question": "Will Bobby update this too?",
+      "answer": "Of course he will!"
+    }
+  ],
+  "organizationTags": [
+    "faith-formation"
+  ],
+  "time": "5:30-7:30pm",
+  "gallery": [
+    {
+      "isHidden": false
+    }
+  ],
+  "isHidden": false,
+  "contactPerson": "Bobby Myers",
+  "location": "St. Therese Church",
+  "schedule": {
+    "startDate": "2026-11-04",
+    "endDate": "2027-05-05",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Wednesday",
+    "exclusions": [
+      {
+        "date": "2026-11-11"
+      },
+      {
+        "date": "2026-11-18"
+      },
+      {
+        "date": "2026-11-25"
+      },
+      {
+        "date": "2026-12-09"
+      },
+      {
+        "date": "2026-12-16"
+      },
+      {
+        "date": "2026-12-23"
+      },
+      {
+        "date": "2026-12-30"
+      },
+      {
+        "date": "2027-01-13"
+      },
+      {
+        "date": "2027-01-20"
+      },
+      {
+        "date": "2027-01-27"
+      },
+      {
+        "date": "2027-02-10"
+      },
+      {
+        "date": "2027-02-17"
+      },
+      {
+        "date": "2027-02-24"
+      },
+      {
+        "date": "2027-03-10"
+      },
+      {
+        "date": "2027-03-17"
+      },
+      {
+        "date": "2027-03-24"
+      },
+      {
+        "date": "2027-03-31"
+      },
+      {
+        "date": "2027-04-14"
+      },
+      {
+        "date": "2027-04-21"
+      },
+      {
+        "date": "2027-04-28"
+      }
+    ]
+  },
+  "title": "Wednesday Faith Formation (XLT)",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "contactEmail": "Bobby@strcstaff.org",
+  "description": "This will be a time of praise and adoration"
+}
