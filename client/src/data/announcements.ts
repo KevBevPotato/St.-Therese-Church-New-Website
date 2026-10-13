@@ -1,4 +1,5 @@
 import announcementsData from './announcements_data.json';
+import { visibleContent } from './visible-content';
 
 export interface Announcement {
   id: string;
@@ -23,7 +24,7 @@ export interface AnnouncementSettings {
   heroLinkOpacity: number;
 }
 
-const data = announcementsData as {
+const data = visibleContent(announcementsData) as {
   settings: AnnouncementSettings;
   announcements: Announcement[];
 };

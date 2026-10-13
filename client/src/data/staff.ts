@@ -1,4 +1,5 @@
 import * as staffDataModule from './staff_data.json';
+import { visibleContent } from './visible-content';
 
 export interface StaffMember {
     slug: string;
@@ -17,7 +18,8 @@ export interface StaffMember {
     isHidden?: boolean; 
 }
 
-const rawData = (staffDataModule as any).staff || (staffDataModule as any).default?.staff || [];
+const importedStaff = (staffDataModule as any).staff || (staffDataModule as any).default?.staff || [];
+const rawData = visibleContent(importedStaff) as any[];
 
 export const staffMembers = (rawData as any[]).map((member) => {
     // FLATTENING LOGIC: 

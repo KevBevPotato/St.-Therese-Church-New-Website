@@ -6,7 +6,8 @@ export async function submitForm(
     | "lector"
     | "membership"
     | "interest"
-    | "faith_formation",
+    | "faith_formation"
+    | "faith_formation_registration",
   payload: Record<string, unknown>,
   endpoint = "/api/submit"
 ): Promise<void> {

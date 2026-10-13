@@ -14,7 +14,7 @@ import {
     Heart
 } from 'lucide-react';
 import { Link } from 'wouter';
-import getInvolvedData from '@/data/get-involved_data.json';
+import getInvolvedData from '@/data/get-involved';
 import { staticEvents, generateRecurringEventsForMonth, type EventOrganizationTag } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
 import { getOrganizationById } from '@/data/organizations';

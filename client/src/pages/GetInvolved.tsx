@@ -24,7 +24,7 @@ import {
 } from 'lucide-react';
 import { Link } from 'wouter';
 import SponsorshipCard from '@/components/SponsorshipCard';
-import getInvolvedData from '@/data/get-involved_data.json';
+import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 type Category = 'all' | 'sponsor' | 'help' | 'join' | 'request';
@@ -350,12 +350,21 @@ export default function GetInvolved() {
                                 Have an idea for the parish or need assistance with a project? Share it with us, and our team will follow up.
                             </p>
                             <div className="text-center">
-                                <Button
-                                    onClick={() => handleSuggestion()}
-                                    className="bg-accent hover:bg-accent/90 py-6 px-12 font-bold uppercase tracking-widest"
-                                >
-                                    Submit a Suggestion
-                                </Button>
+                                <div className="flex flex-wrap justify-center gap-4">
+                                    <Button
+                                        onClick={() => handleSuggestion()}
+                                        className="bg-accent hover:bg-accent/90 py-6 px-12 font-bold uppercase tracking-widest"
+                                    >
+                                        Submit a Suggestion
+                                    </Button>
+                                    <Button
+                                        onClick={() => openEngagement('request-help')}
+                                        variant="outline"
+                                        className="py-6 px-12 font-bold uppercase tracking-widest"
+                                    >
+                                        Request Help
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     )}

@@ -4,8 +4,17 @@
 
 import { wnsWeeks, type SponsorshipItem } from '@/data/sponsorship-projects';
 
-export type EngagementType = 'pledge' | 'signup' | 'suggestion' | 'referral';
-export type SheetTab = 'Pledges' | 'Signups' | 'Suggestions' | 'Referrals';
+export type EngagementType =
+    | 'pledge'
+    | 'signup'
+    | 'suggestion'
+    | 'referral'
+    | 'request_help';
+export type SheetTab =
+    | 'Get Involved'
+    | 'Suggestions'
+    | 'Referrals'
+    | 'Request Help';
 
 export interface FormField {
     id: string;
@@ -37,7 +46,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'pledge-nursery',
         type: 'pledge',
-        sheetTab: 'Pledges',
+        sheetTab: 'Get Involved',
         title: 'Nursery',
         subtitle: 'Parish Council',
         description: 'Help us update the old side chapel into a nursery while retaining a space for mothers during Mass. Every gift brings us closer to a welcoming space for our youngest parishioners.',
@@ -55,7 +64,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'pledge-supper-week',
         type: 'pledge',
-        sheetTab: 'Pledges',
+        sheetTab: 'Get Involved',
         title: 'Wednesday Night Supper',
         subtitle: 'Sponsor a Week — $200',
         description: 'Sponsor one of our Wednesday Night Suppers by covering the cost of that meal for the parish community. Choose any un-sponsored week below.',
@@ -69,7 +78,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-lector',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Lector Sign-up',
         subtitle: 'Liturgy Ministry',
         description: 'Proclaim the Scriptures and lead the Prayers of the Faithful during Mass. Training and ongoing scheduling support are provided for all new lectors.',
@@ -94,7 +103,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-usher',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Usher Sign-up',
         subtitle: 'Liturgy Ministry',
         description: 'Ushers welcome parishioners, help people find seats in the pews, and assist with passing the offertory basket during Mass.',
@@ -118,7 +127,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-music',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Music Ministry Sign-up',
         subtitle: 'Liturgy & Music Ministry',
         description: 'Help lead the parish in sung prayer. We welcome people interested in joining the choir, serving as an instrumentalist, or becoming a cantor.',
@@ -143,7 +152,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-supper',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Wednesday Night Supper Volunteer',
         subtitle: 'Parish Hospitality',
         description: 'Help prepare and serve Wednesday Night Suppers throughout the school year. Pick a role and date.',
@@ -172,7 +181,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-youth-mentor',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Youth Ministry Mentor',
         subtitle: 'Faith Formation',
         description: 'Guide high school students in their faith journey as a small-group leader.',
@@ -195,7 +204,7 @@ export const engagements: EngagementConfig[] = [
     {
         id: 'signup-nursery-help',
         type: 'signup',
-        sheetTab: 'Signups',
+        sheetTab: 'Get Involved',
         title: 'Nursery Volunteer',
         subtitle: 'Parish Council',
         description: 'Help us build and set up the new nursery space.',
@@ -289,6 +298,29 @@ export const engagements: EngagementConfig[] = [
         ],
         thankYouMessage: '',
         skipSubmitterConfirmation: true,
+    },
+
+    {
+        id: 'request-help',
+        type: 'request_help',
+        sheetTab: 'Request Help',
+        title: 'Request Help',
+        subtitle: 'Tell us how the parish can help',
+        description: 'Share a little about the help you are looking for. Parish staff will follow up with you.',
+        fields: [
+            { id: 'from_name', label: 'Your Name', type: 'text', required: true },
+            { id: 'from_email', label: 'Email Address', type: 'email', required: true },
+            { id: 'from_phone', label: 'Phone (optional)', type: 'tel', required: false },
+            {
+                id: 'request_details',
+                label: 'How can we help?',
+                type: 'textarea',
+                required: true,
+                fullWidth: true,
+                placeholder: 'Please describe the help you are requesting.',
+            },
+        ],
+        thankYouMessage: 'Thank you for reaching out. Parish staff will follow up with you.',
     },
 ];
 

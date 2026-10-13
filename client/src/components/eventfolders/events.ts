@@ -1,12 +1,16 @@
 import { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter } from './types';
 import { oneTimeEvents } from './oneTimeEvents';
+import { visibleContent } from '../../data/visible-content';
 
-const recurringRules = Object.values(
+const recurringRules = Object.entries(
     import.meta.glob<Record<string, any>>('./recurring-events/*.json', {
         eager: true,
         import: 'default',
     })
-);
+).filter(([, rule]) => !rule.isHidden).map(([path, rule]) => ({
+    ...visibleContent(rule),
+    id: rule.id || path.split('/').at(-1)?.replace(/\.json$/, '') || 'recurring-event',
+}));
 
 export type { CalendarEvent, EventCategory, EventOrganizationTag, TimeFilter };
 export type ExtendedTimeFilter = TimeFilter | 'thisWeek' | 'calendarMonth' | 'specificDay';
@@ -135,6 +139,15 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                         location: rule.location,
                         categories: rule.categories.map((c: any) => c.category || c),
                         organizationTags: rule.organizationTags ?? [],
+                        image: rule.image,
+                        about: rule.about,
+                        gallery: rule.gallery,
+                        photos: rule.photos,
+                        signupLink: rule.signupLink,
+                        contactPerson: rule.contactPerson,
+                        contactEmail: rule.contactEmail,
+                        contactPhone: rule.contactPhone,
+                        faqItems: rule.faqItems,
                         description: rule.description,
                         linkedOpportunityId:
                             rule.linkedOpportunityId ??

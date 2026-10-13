@@ -2,6 +2,7 @@ import altarSociety from './organization-pages/altar-society.json';
 import catholicDaughters from './organization-pages/catholic-daughters.json';
 import knightsOfColumbus from './organization-pages/knights-of-columbus.json';
 import stVincentDePaul from './organization-pages/st-vincent-de-paul.json';
+import { visibleContent } from './visible-content';
 
 // --- File: client/src/data/organizations.ts ---
 
@@ -50,7 +51,7 @@ export const organizations: Organization[] = [
     altarSociety,
     stVincentDePaul,
     catholicDaughters,
-];
+].flatMap((organization) => visibleContent([organization]));
 
 export function getOrganizationById(id: string): Organization | undefined {
     return organizations.find(o => o.id === id);

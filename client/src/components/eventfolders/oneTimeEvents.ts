@@ -1,4 +1,5 @@
 import { CalendarEvent } from "./types";
+import { visibleContent } from "../../data/visible-content";
 
 function getEventDate(dateValue: string, timeValue: string): Date {
   const dateString =
@@ -23,14 +24,23 @@ function getEventDate(dateValue: string, timeValue: string): Date {
   return date;
 }
 
-const eventEntries = Object.values(
+const eventEntries = Object.entries(
   import.meta.glob<{ default: Record<string, any> }>(
     "./one-time-events/*.json",
     {
       eager: true,
     }
   )
-).map(module => module.default);
+).filter(([, module]) => !module.default.isHidden).map(([path, module]) => {
+  const event = module.default;
+  return {
+    ...visibleContent(event),
+    id:
+      event.id ||
+      path.split("/").at(-1)?.replace(/\.json$/, "") ||
+      "event",
+  };
+});
 
 export const oneTimeEvents: CalendarEvent[] = eventEntries.map((event: any) => {
   return {

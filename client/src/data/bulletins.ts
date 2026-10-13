@@ -1,4 +1,5 @@
 import bulletinDataRaw from './bulletins_data.json';
+import { visibleContent } from './visible-content';
 
 // 1. Define exactly what a Bulletin looks like in the JSON
 export interface BulletinCMS {
@@ -10,7 +11,9 @@ export interface BulletinCMS {
 }
 
 // 2. Tell TypeScript to treat the JSON as an object containing a list of BulletinCMS
-const bulletinData = (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins;
+const bulletinData = visibleContent(
+    (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins
+);
 
 function parseCMSDate(dateStr: string): Date {
     return new Date(`${dateStr}T00:00:00`);

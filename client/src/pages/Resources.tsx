@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'wouter';
-import resourceData from '../data/resources_data.json';
+import importedResourceData from '../data/resources_data.json';
+import { visibleContent } from '../data/visible-content';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
@@ -54,6 +55,7 @@ interface ResourceCategory {
 }
 
 const resourceIcons = { BookOpen, Calendar, Church, FileText, GraduationCap, Heart, HelpCircle, Phone, Shield, Users } as const;
+const resourceData = visibleContent(importedResourceData);
 const allCategories = resourceData.categories as ResourceCategory[];
 const resourceSettings = resourceData.settings;
 

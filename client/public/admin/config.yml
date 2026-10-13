@@ -249,6 +249,13 @@ collections:
             required: false
             summary: "{{fields.title}} · {{fields.launchDate}}"
             fields:
+              - {
+                  label: "Hide this announcement",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
               - { label: "ID (unique, URL-safe)", name: "id", widget: "string" , required: false }
               - { label: "Title", name: "title", widget: "string" , required: false }
               - {
@@ -336,6 +343,13 @@ collections:
                 widget: "list"
                 required: false
                 fields:
+                  - {
+                      label: "Hide this title",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - { label: "Title", name: "title", widget: "string" , required: false }
               - { label: "Email", name: "email", widget: "string" , required: false }
               - { label: "Phone", name: "phone", widget: "string" , required: false }
@@ -345,6 +359,13 @@ collections:
                 widget: "list"
                 required: false
                 fields:
+                  - {
+                      label: "Hide this category",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - label: "Category"
                     name: "category"
                     widget: "select"
@@ -403,6 +424,7 @@ collections:
     create: true
     extension: "json"
     format: "json"
+    slug: "{{slug}}-{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
     summary: "{{title}} · {{date}}"
     sortable_fields:
       - field: "date"
@@ -410,12 +432,13 @@ collections:
         default_sort: "asc"
     fields:
       - {
-          label: "Event ID (no spaces)",
-          name: "id",
-          widget: "string",
-          hint: "Keep this unique and stable; it is used in the event URL.",
+          label: "Hide this event",
+          name: "isHidden",
+          widget: "boolean",
+          default: false,
           required: false,
         }
+      - { label: "Automatic event ID", name: "id", widget: "hidden", required: false }
       - { label: "Title", name: "title", widget: "string" , required: false }
       - {
           label: "Date",
@@ -434,6 +457,13 @@ collections:
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this category",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - label: "Category"
             name: "category"
             widget: "select"
@@ -504,6 +534,13 @@ collections:
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this photo",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - { label: "Photo", name: "photo", widget: "image" , required: false }
           - {
               label: "Caption",
@@ -523,6 +560,13 @@ collections:
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this question",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - { label: "Question", name: "question", widget: "string" , required: false }
           - { label: "Answer", name: "answer", widget: "text" , required: false }
 
@@ -532,6 +576,7 @@ collections:
     create: true
     extension: "json"
     format: "json"
+    slug: "{{slug}}-{{year}}{{month}}{{day}}{{hour}}{{minute}}{{second}}"
     summary: "{{title}}"
     sortable_fields:
       - field: "schedule.startDate"
@@ -539,12 +584,13 @@ collections:
         default_sort: "asc"
     fields:
       - {
-          label: "Rule ID (no spaces)",
-          name: "id",
-          widget: "string",
-          hint: "Keep this unique and stable; it is used to create event URLs.",
+          label: "Hide this recurring event",
+          name: "isHidden",
+          widget: "boolean",
+          default: false,
           required: false,
         }
+      - { label: "Automatic rule ID", name: "id", widget: "hidden", required: false }
       - { label: "Event Title", name: "title", widget: "string" , required: false }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "string" , required: false }
@@ -559,11 +605,49 @@ collections:
           widget: "text",
           required: false,
         }
+      - {
+          label: "About this event",
+          name: "about",
+          widget: "text",
+          required: false,
+        }
+      - { label: "Hero Image", name: "image", widget: "image", required: false }
+      - {
+          label: "Sign-up URL",
+          name: "signupLink",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Person",
+          name: "contactPerson",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Email",
+          name: "contactEmail",
+          widget: "string",
+          required: false,
+        }
+      - {
+          label: "Contact Phone",
+          name: "contactPhone",
+          widget: "string",
+          required: false,
+        }
       - label: "Categories"
         name: "categories"
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this category",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - label: "Category"
             name: "category"
             widget: "select"
@@ -596,6 +680,13 @@ collections:
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this photo",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - { label: "Photo", name: "photo", widget: "image" , required: false }
           - {
               label: "Caption",
@@ -603,6 +694,20 @@ collections:
               widget: "string",
               required: false,
             }
+      - label: "Frequently Asked Questions (Optional)"
+        name: "faqItems"
+        widget: "list"
+        required: false
+        fields:
+          - {
+              label: "Hide this question",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
+          - { label: "Question", name: "question", widget: "string" , required: false }
+          - { label: "Answer", name: "answer", widget: "text", required: false }
           - {
               label: "Link URL (optional)",
               name: "linkUrl",
@@ -623,6 +728,13 @@ collections:
             widget: "list"
             required: false
             fields: # <--- THIS WAS THE MISSING LINE
+              - {
+                  label: "Hide this bulletin",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
               - {
                   label: "Bulletin Title",
                   name: "title",
@@ -766,6 +878,13 @@ collections:
             summary: "{{fields.title}}"
             fields:
               - {
+                  label: "Hide this resource category",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
+              - {
                   label: "Category ID (URL-safe)",
                   name: "id",
                   widget: "string",
@@ -780,6 +899,13 @@ collections:
                 required: false
                 summary: "{{fields.title}}"
                 fields:
+                  - {
+                      label: "Hide this resource",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - {
                       label: "Card ID (URL-safe)",
                       name: "id",
@@ -979,9 +1105,48 @@ collections:
               - { label: "Class Time", name: "classTime", widget: "string" , required: false }
               - { label: "Schedule Note", name: "classNote", widget: "string" , required: false }
               - {
+                  label: "Show registration button",
+                  name: "showRegistrationButton",
+                  widget: "boolean",
+                  default: true,
+                  required: false,
+                }
+              - {
+                  label: "Registration button label",
+                  name: "registrationLabel",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Registration button URL (optional)",
+                  name: "registrationUrl",
+                  widget: "string",
+                  required: false,
+                  hint: "If blank, the button opens the built-in registration form.",
+                }
+              - {
+                  label: "Registration flyer or image (optional)",
+                  name: "registrationFlyer",
+                  widget: "file",
+                  required: false,
+                }
+              - {
+                  label: "Show food signup button",
+                  name: "showSignupButton",
+                  widget: "boolean",
+                  default: true,
+                  required: false,
+                }
+              - {
                   label: "Food Signup URL",
                   name: "signupUrl",
                   widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Food signup flyer or image (optional)",
+                  name: "signupFlyer",
+                  widget: "file",
                   required: false,
                 }
               - {
@@ -991,9 +1156,22 @@ collections:
                   required: false,
                 }
               - {
+                  label: "Show classroom map button",
+                  name: "showClassroomMapButton",
+                  widget: "boolean",
+                  default: true,
+                  required: false,
+                }
+              - {
                   label: "Classroom Map URL",
                   name: "classroomMapUrl",
                   widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Classroom map flyer or image (optional)",
+                  name: "classroomMapFlyer",
+                  widget: "file",
                   required: false,
                 }
               - {
@@ -1029,6 +1207,13 @@ collections:
             summary: "{{fields.title}}"
             fields:
               - { label: "Program ID (URL-safe)", name: "id", widget: "string" , required: false }
+              - {
+                  label: "Hide this program",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
               - { label: "Title", name: "title", widget: "string" , required: false }
               - {
                   label: "Subtitle",
@@ -1082,6 +1267,13 @@ collections:
                 required: false
                 summary: "{{fields.name}}"
                 fields:
+                  - {
+                      label: "Hide this catechist",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - {
                       label: "ID",
                       name: "id",
@@ -1142,6 +1334,13 @@ collections:
                 required: false
                 summary: "{{fields.title}}"
                 fields:
+                  - {
+                      label: "Hide this resource",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - { label: "Title", name: "title", widget: "string" , required: false }
                   - {
                       label: "Description",
@@ -1207,6 +1406,13 @@ collections:
                 summary: "{{fields.label}}"
                 fields:
                   - {
+                      label: "Hide this category",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
+                  - {
                       label: "ID",
                       name: "id",
                       widget: "select",
@@ -1238,6 +1444,13 @@ collections:
             required: false
             summary: "{{fields.title}}"
             fields:
+              - {
+                  label: "Hide this opportunity",
+                  name: "isHidden",
+                  widget: "boolean",
+                  default: false,
+                  required: false,
+                }
               - {
                   label: "ID / URL Slug (do not change after publishing)",
                   name: "id",
@@ -1366,6 +1579,13 @@ collections:
                 required: false
                 summary: "{{fields.question}}"
                 fields:
+                  - {
+                      label: "Hide this question",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - { label: "Question", name: "question", widget: "string" , required: false }
                   - { label: "Answer", name: "answer", widget: "text" , required: false }
               - label: "Landing Page Photos"
@@ -1379,6 +1599,13 @@ collections:
                 required: false
                 summary: "{{fields.label}}"
                 fields:
+                  - {
+                      label: "Hide this signup link",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - { label: "Button Label", name: "label", widget: "string" , required: false }
                   - {
                       label: "External Sign-up URL",
@@ -1410,6 +1637,13 @@ collections:
                 required: false
                 summary: "{{fields.category}}"
                 fields:
+                  - {
+                      label: "Hide this construction category",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                    }
                   - { label: "Category", name: "category", widget: "string" , required: false }
                   - { label: "Subtotal", name: "subtotal", widget: "string" , required: false }
                   - label: "Items"
@@ -1417,6 +1651,13 @@ collections:
                     widget: "list"
                     required: false
                     fields:
+                      - {
+                          label: "Hide this item",
+                          name: "isHidden",
+                          widget: "boolean",
+                          default: false,
+                          required: false,
+                        }
                       - { label: "Name", name: "name", widget: "string" , required: false }
                       - { label: "Cost", name: "cost", widget: "string" , required: false }
   - name: "organizations"
@@ -1428,6 +1669,13 @@ collections:
     format: "json"
     fields:
       - { label: "ID (do not change)", name: "id", widget: "string" , required: false }
+      - {
+          label: "Hide this organization",
+          name: "isHidden",
+          widget: "boolean",
+          default: false,
+          required: false,
+        }
       - { label: "Name", name: "name", widget: "string" , required: false }
       - { label: "Tagline", name: "tagline", widget: "string", required: false }
       - { label: "Description", name: "description", widget: "text" , required: false }
@@ -1477,6 +1725,13 @@ collections:
         widget: "list"
         required: false
         fields:
+          - {
+              label: "Hide this statistic",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - { label: "Label", name: "label", widget: "string" , required: false }
           - { label: "Value", name: "value", widget: "string" , required: false }
       - label: "Officers"
@@ -1485,6 +1740,13 @@ collections:
         required: false
         summary: "{{fields.name}}"
         fields:
+          - {
+              label: "Hide this officer",
+              name: "isHidden",
+              widget: "boolean",
+              default: false,
+              required: false,
+            }
           - { label: "ID", name: "id", widget: "string" , required: false }
           - { label: "Name", name: "name", widget: "string" , required: false }
           - { label: "Title", name: "title", widget: "string" , required: false }

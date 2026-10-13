@@ -4,7 +4,7 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, BookOpen, Brain, CalendarClock, Compass } from 'lucide-react';
 import { Link } from 'wouter';
-import getInvolvedData from '@/data/get-involved_data.json';
+import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 
 export default function GroupStudiesPage() {

@@ -17,7 +17,7 @@ import {
     Heart,
 } from 'lucide-react';
 import { Link } from 'wouter';
-import getInvolvedData from '@/data/get-involved_data.json';
+import getInvolvedData from '@/data/get-involved';
 import SupperVolunteerModal from '@/components/SupperVolunteerModal';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 

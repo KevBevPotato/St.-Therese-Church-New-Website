@@ -6,6 +6,7 @@ import { staticEvents, generateRecurringEventsForMonth } from '../components/eve
 import { EventCard } from '../components/event-components';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
+import { submitForm } from '@/lib/submit-form';
 import {
     BookOpen,
     X,
@@ -221,7 +222,44 @@ export default function FaithFormation() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         setIsSubmitting(true);
-        setTimeout(() => {
+        const payload: Record<string, string> = {
+            number_of_children: String(formData.numberOfChildren),
+            father_full_name: formData.fatherFullName.trim(),
+            father_religion: formData.fatherReligion.trim(),
+            father_cell: formData.fatherCell.trim(),
+            father_email: formData.fatherEmail.trim(),
+            father_contact_preference: formData.fatherContactPreference,
+            mother_full_name: formData.motherFullName.trim(),
+            mother_religion: formData.motherReligion.trim(),
+            mother_cell: formData.motherCell.trim(),
+            mother_email: formData.motherEmail.trim(),
+            mother_contact_preference: formData.motherContactPreference,
+            street_address: formData.streetAddress.trim(),
+            city: formData.city.trim(),
+            state: formData.state.trim(),
+            zip_code: formData.zipCode.trim(),
+            is_member: formData.isMember,
+            mass_attendance: formData.massAttendance,
+            tuition_option: formData.tuitionOption,
+            tuition_paid: formData.tuitionPaid.trim(),
+            needs_financial_assistance: String(formData.needsFinancialAssistance),
+            special_needs: formData.specialNeeds.trim(),
+        };
+        formData.children.forEach((child, index) => {
+            const prefix = `child_${index + 1}_`;
+            payload[`${prefix}full_name`] = child.fullName.trim();
+            payload[`${prefix}preferred_name`] = child.preferredName.trim();
+            payload[`${prefix}school`] = child.school.trim();
+            payload[`${prefix}phone`] = child.phone.trim();
+            payload[`${prefix}sacraments_received`] = Object.entries(child.sacraments)
+                .filter(([, received]) => received)
+                .map(([sacrament]) => sacrament)
+                .join(', ');
+            payload[`${prefix}contact_preference`] = child.contactPreference;
+        });
+
+        try {
+            await submitForm('faith_formation_registration', payload);
             alert(
                 `Thank you for registering! Total cost due: $${tuitionCost}. We will contact you soon with more information.`
             );
@@ -251,7 +289,15 @@ export default function FaithFormation() {
                 needsFinancialAssistance: false,
                 specialNeeds: '',
             });
-        }, 1000);
+        } catch (error) {
+            console.error('Faith Formation registration failed:', error);
+            alert(
+                error instanceof Error
+                    ? error.message
+                    : 'We could not submit your registration. Please try again.'
+            );
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -280,16 +326,29 @@ export default function FaithFormation() {
                             </div>
                         </div>
                         <div className="flex flex-wrap gap-4 mt-8">
-                            <Button
-                                onClick={() => setIsFormOpen(true)}
-                                size="lg"
-                                className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
-                            >
-                                Register Here
-                            </Button>
-                            {faithFormationSettings.signupUrl && (
+                            {faithFormationSettings.showRegistrationButton !== false &&
+                                (faithFormationSettings.registrationUrl || faithFormationSettings.registrationFlyer ? (
+                                    <a
+                                        href={faithFormationSettings.registrationUrl || faithFormationSettings.registrationFlyer}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="inline-flex items-center rounded-md bg-accent px-8 py-6 font-bold uppercase tracking-widest text-white shadow-lg transition-colors hover:bg-accent/90"
+                                    >
+                                        {faithFormationSettings.registrationLabel || "Register Here"}
+                                    </a>
+                                ) : (
+                                    <Button
+                                        onClick={() => setIsFormOpen(true)}
+                                        size="lg"
+                                        className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
+                                    >
+                                        {faithFormationSettings.registrationLabel || "Register Here"}
+                                    </Button>
+                                ))}
+                            {faithFormationSettings.showSignupButton !== false &&
+                                (faithFormationSettings.signupUrl || faithFormationSettings.signupFlyer) && (
                                 <a
-                                    href={faithFormationSettings.signupUrl}
+                                    href={faithFormationSettings.signupUrl || faithFormationSettings.signupFlyer}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"
@@ -297,9 +356,10 @@ export default function FaithFormation() {
                                     {faithFormationSettings.signupLabel}
                                 </a>
                             )}
-                            {faithFormationSettings.classroomMapUrl && (
+                            {faithFormationSettings.showClassroomMapButton !== false &&
+                                (faithFormationSettings.classroomMapUrl || faithFormationSettings.classroomMapFlyer) && (
                                 <a
-                                    href={faithFormationSettings.classroomMapUrl}
+                                    href={faithFormationSettings.classroomMapUrl || faithFormationSettings.classroomMapFlyer}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-2 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"

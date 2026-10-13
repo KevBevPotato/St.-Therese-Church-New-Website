@@ -67,8 +67,7 @@ export default function InterestSignupModal({
       const isFaithFormation = request.id === "wednesday-faith-formation";
       await submitForm(
         isFaithFormation ? "faith_formation" : "interest",
-        payload,
-        isFaithFormation ? "/api/submit-faith" : "/api/submit"
+        payload
       );
       setStatus("success");
     } catch (error) {

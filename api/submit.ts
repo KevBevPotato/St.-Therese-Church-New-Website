@@ -21,10 +21,11 @@ const MAX_FIELD_LENGTH = 2_000;
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 const ENGAGEMENT_TABS: Record<string, string> = {
-  pledge: "Pledges",
-  signup: "Signups",
+  pledge: "Get Involved",
+  signup: "Get Involved",
   suggestion: "Suggestions",
   referral: "Referrals",
+  request_help: "Request Help",
 };
 const ALLOWED_ENGAGEMENT_IDS = new Set([
   "pledge-nursery",
@@ -35,9 +36,23 @@ const ALLOWED_ENGAGEMENT_IDS = new Set([
   "signup-supper",
   "signup-youth-mentor",
   "signup-nursery-help",
+  "request-help",
   "suggestion",
   "referral",
 ]);
+const ENGAGEMENT_FORM_NAMES: Record<string, string> = {
+  "pledge-nursery": "Nursery Pledge",
+  "pledge-supper-week": "Wednesday Supper Pledge",
+  "signup-lector": "Lector Signup",
+  "signup-usher": "Usher Signup",
+  "signup-music": "Music Ministry Signup",
+  "signup-supper": "Wednesday Supper Signup",
+  "signup-youth-mentor": "Youth Mentor Signup",
+  "signup-nursery-help": "Nursery Volunteer Signup",
+  "request-help": "Request Help",
+  suggestion: "Suggestion",
+  referral: "Referral",
+};
 const ALLOWED_INTEREST_IDS = new Set([
   "nursery",
   "lector",
@@ -83,6 +98,7 @@ const ALLOWED_FIELDS = new Set([
   "availability",
   "context_opportunity",
   "suggestion",
+  "request_details",
   "their_name",
   "their_phone",
   "your_name",
@@ -97,12 +113,41 @@ const ALLOWED_FIELDS = new Set([
   "participant_name",
   "participant_grade",
   "guardian_name",
+  "number_of_children",
+  "father_full_name",
+  "father_religion",
+  "father_cell",
+  "father_email",
+  "father_contact_preference",
+  "mother_full_name",
+  "mother_religion",
+  "mother_cell",
+  "mother_email",
+  "mother_contact_preference",
+  "street_address",
+  "city",
+  "state",
+  "zip_code",
+  "is_member",
+  "mass_attendance",
+  "tuition_option",
+  "tuition_paid",
+  "needs_financial_assistance",
+  "special_needs",
   "week_id",
   "week_date",
   "availability_type",
   "week_ids",
   "preferred_roles",
   "website",
+]);
+const FAITH_FORMATION_CHILD_FIELDS = new Set([
+  "full_name",
+  "preferred_name",
+  "school",
+  "phone",
+  "sacraments_received",
+  "contact_preference",
 ]);
 const MEMBERSHIP_FIELDS = new Set([
   "family_name",
@@ -177,6 +222,16 @@ function isMembershipField(key: string): boolean {
   );
 }
 
+function isFaithFormationRegistrationField(key: string): boolean {
+  const match = /^child_(\d{1,2})_(.+)$/.exec(key);
+  return (
+    !!match &&
+    Number(match[1]) >= 1 &&
+    Number(match[1]) <= 6 &&
+    FAITH_FORMATION_CHILD_FIELDS.has(match[2])
+  );
+}
+
 function respond(
   response: ApiResponse,
   status: number,
@@ -226,7 +281,11 @@ function validateBody(bodyValue: unknown): {
   for (const [key, value] of Object.entries(body)) {
     if (
       !ALLOWED_FIELDS.has(key) &&
-      !(formType === "membership" && isMembershipField(key))
+      !(formType === "membership" && isMembershipField(key)) &&
+      !(
+        formType === "faith_formation_registration" &&
+        isFaithFormationRegistrationField(key)
+      )
     )
       return { error: "The submission has an unsupported field." };
     if (key === "quantity" || key === "pledge_amount") {
@@ -315,6 +374,23 @@ function validateBody(bodyValue: unknown): {
       }
       break;
     }
+    case "faith_formation_registration": {
+      const childCount = Number(getString(body, "number_of_children"));
+      if (!Number.isInteger(childCount) || childCount < 1 || childCount > 6) {
+        return { error: "The number of children must be between 1 and 6." };
+      }
+      required = ["street_address", "city", "state", "zip_code"];
+      for (let child = 1; child <= childCount; child++) {
+        required.push(`child_${child}_full_name`);
+      }
+      if (
+        !getString(body, "father_full_name") &&
+        !getString(body, "mother_full_name")
+      ) {
+        return { error: "Please enter a parent or guardian name." };
+      }
+      break;
+    }
     case "pledge":
       required = ["from_name", "from_email", "project_id", "item_id"];
       break;
@@ -334,7 +410,9 @@ function validateBody(bodyValue: unknown): {
             ? ["their_name", "their_phone"]
             : engagementType === "suggestion"
               ? ["from_email", "suggestion"]
-              : ["from_name", "from_email"];
+              : engagementType === "request_help"
+                ? ["from_name", "from_email", "request_details"]
+                : ["from_name", "from_email"];
       break;
     }
     case "supper-volunteer":
@@ -354,7 +432,13 @@ function validateBody(bodyValue: unknown): {
     return { error: "Please complete all required fields." };
   }
 
-  for (const emailField of ["from_email", "email", "previous_church_email"]) {
+  for (const emailField of [
+    "from_email",
+    "email",
+    "previous_church_email",
+    "father_email",
+    "mother_email",
+  ]) {
     const email = getString(body, emailField);
     if (email && !EMAIL_PATTERN.test(email)) {
       return { error: "Please enter a valid email address." };
@@ -384,8 +468,15 @@ function validateBody(bodyValue: unknown): {
     case "membership":
       tab = "Parish Registrations";
       break;
+    case "faith_formation_registration":
+      tab = "Parish Registrations";
+      break;
+    case "interest":
     case "faith_formation":
-      tab = "Faith Formation";
+      tab = "Get Involved";
+      break;
+    case "engagement":
+      tab = ENGAGEMENT_TABS[getString(body, "engagement_type")];
       break;
   }
   return { body, tab };
@@ -393,13 +484,11 @@ function validateBody(bodyValue: unknown): {
 
 async function submitToGoogleSheet(
   body: JsonObject,
-  sheetTitle: string | undefined,
-  sheetIdEnvironmentVariable: string,
-  useFirstTab: boolean
+  sheetTitle: string | undefined
 ): Promise<void> {
   const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
   const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
-  const sheetId = process.env[sheetIdEnvironmentVariable];
+  const sheetId = process.env.GOOGLE_SHEET_ID;
   if (!email || !key || !sheetId) {
     throw new Error("Google Sheets is missing required environment variables.");
   }
@@ -413,14 +502,15 @@ async function submitToGoogleSheet(
   await spreadsheet.loadInfo();
   await spreadsheet.updateProperties({ timeZone: "America/Denver" });
 
-  const targetTab = useFirstTab
-    ? spreadsheet.sheetsByIndex[0]?.title
-    : (sheetTitle ?? spreadsheet.sheetsByIndex[0]?.title);
+  const targetTab = sheetTitle ?? spreadsheet.sheetsByIndex[0]?.title;
   console.log("Google Sheets submission target.", {
     formType: getString(body, "form_type"),
     targetTab: targetTab ?? "No worksheet found",
   });
-  const sheet = targetTab ? spreadsheet.sheetsByTitle[targetTab] : undefined;
+  let sheet = targetTab ? spreadsheet.sheetsByTitle[targetTab] : undefined;
+  if (!sheet && targetTab) {
+    sheet = await spreadsheet.addSheet({ title: targetTab });
+  }
   if (!sheet) {
     throw new Error(
       targetTab
@@ -429,11 +519,27 @@ async function submitToGoogleSheet(
     );
   }
 
+  const type = getString(body, "form_type");
+  const engagementName =
+    ENGAGEMENT_FORM_NAMES[getString(body, "engagement_id")];
+  const formName =
+    getString(body, "interest") ||
+    getString(body, "project_title") ||
+    engagementName ||
+    ({
+      faith_formation_registration: "Faith Formation Registration",
+      membership: "Parish Membership Registration",
+      pledge: "Parish Pledge",
+      "supper-volunteer": "Wednesday Supper Volunteer",
+      lector: "Lector Signup",
+    }[type] ??
+      type);
   const submission: Record<string, string | number> = {
     submitted_at: new Date().toLocaleString("en-US", {
       timeZone: "America/Denver",
       hour12: true,
     }),
+    form_name: formName,
   };
   for (const [key, value] of Object.entries(body)) {
     if (key === "website") continue;
@@ -480,87 +586,56 @@ async function submitToGoogleSheet(
   await sheet.addRow(submission);
 }
 
-interface SubmitHandlerOptions {
-  sheetIdEnvironmentVariable?: string;
-  useFirstTab?: boolean;
-  faithFormationOnly?: boolean;
+export default async function handler(
+  request: ApiRequest,
+  response: ApiResponse
+): Promise<void> {
+  response.setHeader("Cache-Control", "no-store");
+  response.setHeader("X-Content-Type-Options", "nosniff");
+  response.setHeader("Vary", "Origin");
+
+  if (request.method !== "POST") {
+    response.setHeader("Allow", "POST");
+    respond(response, 405, { error: "Method not allowed." });
+    return;
+  }
+  if (!hasSameOrigin(request)) {
+    respond(response, 403, { error: "Request origin is not allowed." });
+    return;
+  }
+
+  const validation = validateBody(request.body);
+  if (validation.error || !validation.body) {
+    respond(response, 400, {
+      error: validation.error || "Invalid submission.",
+    });
+    return;
+  }
+
+  if (
+    !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
+    !process.env.GOOGLE_PRIVATE_KEY ||
+    !process.env.GOOGLE_SHEET_ID
+  ) {
+    console.error("Form submission is not configured.", {
+      reason: "missing_google_sheets_configuration",
+    });
+    respond(response, 503, {
+      error: "Form submissions are temporarily unavailable.",
+    });
+    return;
+  }
+
+  try {
+    await submitToGoogleSheet(validation.body, validation.tab);
+    respond(response, 200, { success: true });
+  } catch (error) {
+    console.error("Form submission failed.", {
+      stage: "google_sheets",
+      reason: error instanceof Error ? error.message : "unexpected_error",
+    });
+    respond(response, 502, {
+      error: "The submission could not be saved. Please try again later.",
+    });
+  }
 }
-
-export function createSubmitHandler({
-  sheetIdEnvironmentVariable = "GOOGLE_SHEET_ID",
-  useFirstTab = false,
-  faithFormationOnly = false,
-}: SubmitHandlerOptions = {}) {
-  return async function handler(
-    request: ApiRequest,
-    response: ApiResponse
-  ): Promise<void> {
-    response.setHeader("Cache-Control", "no-store");
-    response.setHeader("X-Content-Type-Options", "nosniff");
-    response.setHeader("Vary", "Origin");
-
-    if (request.method !== "POST") {
-      response.setHeader("Allow", "POST");
-      respond(response, 405, { error: "Method not allowed." });
-      return;
-    }
-    if (!hasSameOrigin(request)) {
-      respond(response, 403, { error: "Request origin is not allowed." });
-      return;
-    }
-
-    const validation = validateBody(request.body);
-    if (validation.error || !validation.body) {
-      respond(response, 400, {
-        error: validation.error || "Invalid submission.",
-      });
-      return;
-    }
-
-    if (
-      faithFormationOnly &&
-      (getString(validation.body, "form_type") !== "faith_formation" ||
-        getString(validation.body, "context_opportunity") !==
-          "wednesday-faith-formation")
-    ) {
-      respond(response, 400, {
-        error: "This endpoint only accepts Faith Formation submissions.",
-      });
-      return;
-    }
-
-    if (
-      !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
-      !process.env.GOOGLE_PRIVATE_KEY ||
-      !process.env[sheetIdEnvironmentVariable]
-    ) {
-      console.error("Form submission is not configured.", {
-        reason: "missing_google_sheets_configuration",
-      });
-      respond(response, 503, {
-        error: "Form submissions are temporarily unavailable.",
-      });
-      return;
-    }
-
-    try {
-      await submitToGoogleSheet(
-        validation.body,
-        validation.tab,
-        sheetIdEnvironmentVariable,
-        useFirstTab
-      );
-      respond(response, 200, { success: true });
-    } catch (error) {
-      console.error("Form submission failed.", {
-        stage: "google_sheets",
-        reason: error instanceof Error ? error.message : "unexpected_error",
-      });
-      respond(response, 502, {
-        error: "The submission could not be saved. Please try again later.",
-      });
-    }
-  };
-}
-
-export default createSubmitHandler();

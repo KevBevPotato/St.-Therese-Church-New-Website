@@ -1,4 +1,5 @@
 import faithFormationData from './faith-formation.json';
+import { visibleContent } from './visible-content';
 
 // 2026-2027 Wednesday Night Catechists & Faith Formation Programs
 
@@ -40,10 +41,24 @@ export interface FaithCategory {
     aboutText: string;
 }
 
-export const MEETING_TIME = 'Wednesdays 6:15 PM - 7:30 PM';
-export const faithFormationSettings = faithFormationData.settings;
+interface FaithFormationButtonSettings {
+    showRegistrationButton?: boolean;
+    registrationLabel?: string;
+    registrationUrl?: string;
+    registrationFlyer?: string;
+    showSignupButton?: boolean;
+    signupFlyer?: string;
+    showClassroomMapButton?: boolean;
+    classroomMapFlyer?: string;
+}
 
-export const faithCategories: FaithCategory[] = faithFormationData.categories as FaithCategory[];
+export const MEETING_TIME = 'Wednesdays 6:15 PM - 7:30 PM';
+const visibleFaithFormation = visibleContent(faithFormationData);
+export const faithFormationSettings = visibleFaithFormation.settings as
+    typeof visibleFaithFormation.settings & FaithFormationButtonSettings;
+
+export const faithCategories: FaithCategory[] =
+    visibleFaithFormation.categories as FaithCategory[];
 
 export const substituteTeachers: Catechist[] = [
     {

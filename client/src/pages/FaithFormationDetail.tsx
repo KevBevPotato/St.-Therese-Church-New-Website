@@ -111,17 +111,31 @@ export default function FaithFormationDetail() {
                                 {category.shortDescription}
                             </p>
                             <div className="flex flex-wrap gap-4 mt-8">
-                                <Link href="/faith-formation#register">
-                                    <Button
-                                        size="lg"
-                                        className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
-                                    >
-                                        Register Your Child
-                                    </Button>
-                                </Link>
-                                {faithFormationSettings.classroomMapUrl && (
+                                {faithFormationSettings.showRegistrationButton !== false && (
+                                    faithFormationSettings.registrationUrl || faithFormationSettings.registrationFlyer ? (
+                                        <a
+                                            href={faithFormationSettings.registrationUrl || faithFormationSettings.registrationFlyer}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="inline-flex items-center rounded-md bg-accent px-8 py-6 font-bold uppercase tracking-widest text-white shadow-lg transition-colors hover:bg-accent/90"
+                                        >
+                                            {faithFormationSettings.registrationLabel || "Register Your Child"}
+                                        </a>
+                                    ) : (
+                                        <Link href="/faith-formation#register">
+                                            <Button
+                                                size="lg"
+                                                className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
+                                            >
+                                                {faithFormationSettings.registrationLabel || "Register Your Child"}
+                                            </Button>
+                                        </Link>
+                                    )
+                                )}
+                                {faithFormationSettings.showClassroomMapButton !== false &&
+                                    (faithFormationSettings.classroomMapUrl || faithFormationSettings.classroomMapFlyer) && (
                                     <a
-                                        href={faithFormationSettings.classroomMapUrl}
+                                        href={faithFormationSettings.classroomMapUrl || faithFormationSettings.classroomMapFlyer}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-2 bg-white text-accent border-2 border-accent hover:bg-accent/10 px-8 py-3 font-bold uppercase tracking-widest shadow-lg transition-all rounded-md"

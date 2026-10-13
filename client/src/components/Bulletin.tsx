@@ -20,8 +20,11 @@ import {
     BulletinCMS
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
+import { visibleContent } from '@/data/visible-content';
 
-const bulletinData = (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins;
+const bulletinData = visibleContent(
+    (bulletinDataRaw as { bulletins: BulletinCMS[] }).bulletins
+);
 
 const CATEGORY_MAP = [
     { key: 'mass_times', label: 'Mass Times' },
