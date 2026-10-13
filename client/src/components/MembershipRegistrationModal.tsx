@@ -436,7 +436,37 @@ export default function MembershipRegistrationModal({
                     <div className="grid gap-4 sm:grid-cols-2">
                       <Field
                         name="previous_church_membership"
-                        label="Name of Previous Church Membership"
+                        label="Name of Previous Church"
+                      />
+                      <Field
+                        name="previous_church_address"
+                        label="Previous Church Street Address"
+                        autoComplete="street-address"
+                      />
+                      <Field
+                        name="previous_church_city"
+                        label="Previous Church City"
+                      />
+                      <Field
+                        name="previous_church_state"
+                        label="Previous Church State"
+                      />
+                      <Field
+                        name="previous_church_zip"
+                        label="Previous Church ZIP Code"
+                        maxLength={10}
+                      />
+                      <Field
+                        name="previous_church_phone"
+                        label="Previous Church Phone"
+                        type="tel"
+                        autoComplete="tel"
+                      />
+                      <Field
+                        name="previous_church_email"
+                        label="Previous Church Email"
+                        type="email"
+                        autoComplete="email"
                       />
                     </div>
                   </div>

@@ -114,6 +114,12 @@ const MEMBERSHIP_FIELDS = new Set([
   "zip_code",
   "phone_unlisted",
   "previous_church_membership",
+  "previous_church_address",
+  "previous_church_city",
+  "previous_church_state",
+  "previous_church_zip",
+  "previous_church_phone",
+  "previous_church_email",
   "marital_status",
   "email",
   "church_attendance",
@@ -341,9 +347,11 @@ function validateBody(bodyValue: unknown): {
     return { error: "Please complete all required fields." };
   }
 
-  const email = getString(body, "from_email") || getString(body, "email");
-  if (email && !EMAIL_PATTERN.test(email)) {
-    return { error: "Please enter a valid email address." };
+  for (const emailField of ["from_email", "email", "previous_church_email"]) {
+    const email = getString(body, emailField);
+    if (email && !EMAIL_PATTERN.test(email)) {
+      return { error: "Please enter a valid email address." };
+    }
   }
 
   if (
@@ -364,11 +372,11 @@ function validateBody(bodyValue: unknown): {
     }
   }
 
-  const signupKind = getString(body, "signup_kind");
   const tab =
     formType === "membership"
       ? "Parish Registrations"
-      : formType === "interest" && signupKind === "class_registration"
+      : formType === "interest" &&
+          getString(body, "context_opportunity") === "wednesday-faith-formation"
         ? "Faith Formation"
         : undefined;
   return { body, tab };
