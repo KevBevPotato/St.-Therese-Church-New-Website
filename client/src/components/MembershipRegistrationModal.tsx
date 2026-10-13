@@ -1,6 +1,7 @@
 import { useState, type FormEvent, type ReactNode } from "react";
 import { CheckCircle2, Loader2, X } from "lucide-react";
 import { submitForm } from "@/lib/submit-form";
+import { useSubmissionReview } from "@/hooks/use-submission-review";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,7 @@ const inputClassName =
 const labelClassName = "block text-sm font-medium text-foreground";
 const sectionClassName =
   "space-y-5 rounded-2xl border border-primary/10 bg-card p-4 shadow-sm sm:p-6";
+const DATE_PATTERN = "[0-9]{1,2}/[0-9]{1,2}/[0-9]{4}";
 
 const MARITAL_STATUSES = [
   ["M", "Married, not valid — both Catholic"],
@@ -121,9 +123,7 @@ function PersonDetails({
             name={`${prefix}_${field}`}
             label={label}
             placeholder={field === "date_of_birth" ? "mm/dd/yyyy" : undefined}
-            pattern={
-              field === "date_of_birth" ? "\\d{2}/\\d{2}/\\d{4}" : undefined
-            }
+            pattern={field === "date_of_birth" ? DATE_PATTERN : undefined}
             inputMode={field === "date_of_birth" ? "numeric" : undefined}
           />
         ))}
@@ -174,7 +174,7 @@ function PersonDetails({
               name={`${prefix}_marriage_date`}
               label="Marriage Date"
               placeholder="mm/dd/yyyy"
-              pattern="\\d{2}/\\d{2}/\\d{4}"
+              pattern={DATE_PATTERN}
               inputMode="numeric"
             />
             <Field name={`${prefix}_annulment_status`} label="Annulment Status">
@@ -204,6 +204,7 @@ export default function MembershipRegistrationModal({
   const [childCount, setChildCount] = useState(0);
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const { reviewSubmission, reviewDialog } = useSubmissionReview();
 
   const handleClose = () => {
     setStatus("idle");
@@ -227,21 +228,23 @@ export default function MembershipRegistrationModal({
       .join(", ");
     payload.child_count = String(childCount);
 
-    setStatus("sending");
-    setErrorMessage("");
+    reviewSubmission("Parish Membership Registration", payload, async () => {
+      setStatus("sending");
+      setErrorMessage("");
 
-    try {
-      await submitForm("membership", payload);
-      setStatus("success");
-    } catch (error) {
-      console.error("Membership registration submission failed:", error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "We could not submit the registration. Please try again."
-      );
-      setStatus("error");
-    }
+      try {
+        await submitForm("membership", payload);
+        setStatus("success");
+      } catch (error) {
+        console.error("Membership registration submission failed:", error);
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "We could not submit the registration. Please try again."
+        );
+        setStatus("error");
+      }
+    });
   };
 
   return (
@@ -251,6 +254,7 @@ export default function MembershipRegistrationModal({
         if (!open) handleClose();
       }}
     >
+      {reviewDialog}
       <DialogContent
         className="flex h-[92dvh] max-h-[92dvh] max-w-5xl flex-col gap-0 overflow-hidden p-0"
         showCloseButton={false}

@@ -10,6 +10,7 @@ import {
 } from 'lucide-react';
 import { submitForm } from '@/lib/submit-form';
 import { type EngagementConfig } from '@/data/engagements';
+import { useSubmissionReview } from '@/hooks/use-submission-review';
 
 interface EngagementModalProps {
     isOpen: boolean;
@@ -36,6 +37,7 @@ export default function EngagementModal({
     const [status, setStatus] = useState<SubmitStatus>('idle');
     const [errorMessage, setErrorMessage] = useState('');
     const formRef = useRef<HTMLFormElement>(null);
+    const { reviewSubmission, reviewDialog } = useSubmissionReview();
 
     const buildInitialState = () => {
         const state: Record<string, any> = {};
@@ -111,43 +113,43 @@ export default function EngagementModal({
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const website = new FormData(e.currentTarget).get('website');
-        setStatus('sending');
-        setErrorMessage('');
+        const payload: Record<string, any> = {
+            website: typeof website === 'string' ? website : '',
+            engagement_type: engagement.type,
+            engagement_id: engagement.id,
+            project_title: engagement.title,
+        };
 
-        try {
-            const payload: Record<string, any> = {
-                website: typeof website === 'string' ? website : '',
-                engagement_type: engagement.type,
-                engagement_id: engagement.id,
-                project_title: engagement.title,
-            };
+        if (contextProjectId) payload.context_project_id = contextProjectId;
+        if (contextProjectTitle)
+            payload.context_project_title = contextProjectTitle;
 
-            if (contextProjectId) payload.context_project_id = contextProjectId;
-            if (contextProjectTitle)
-                payload.context_project_title = contextProjectTitle;
+        engagement.fields.forEach(f => {
+            payload[f.id] = formState[f.id] ?? '';
+        });
 
-            engagement.fields.forEach(f => {
-                payload[f.id] = formState[f.id] ?? '';
-            });
-
-            if (engagement.type === 'pledge' && selectedItem) {
-                payload.item_label = selectedItem.label;
-                payload.item_id = selectedItem.id;
-                payload.quantity = formState.quantity || 1;
-                payload.pledge_amount = Number(formState.pledge_amount) || 0;
-                payload.memo_template = selectedItem.memoTemplate;
-            }
-
-            await submitForm('engagement', payload);
-
-            setStatus('success');
-        } catch (err: any) {
-            console.error('Engagement POST error:', err);
-            setStatus('error');
-            setErrorMessage(
-                'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
-            );
+        if (engagement.type === 'pledge' && selectedItem) {
+            payload.item_label = selectedItem.label;
+            payload.item_id = selectedItem.id;
+            payload.quantity = formState.quantity || 1;
+            payload.pledge_amount = Number(formState.pledge_amount) || 0;
+            payload.memo_template = selectedItem.memoTemplate;
         }
+
+        reviewSubmission(engagement.title, payload, async () => {
+            setStatus('sending');
+            setErrorMessage('');
+            try {
+                await submitForm('engagement', payload);
+                setStatus('success');
+            } catch (err: any) {
+                console.error('Engagement POST error:', err);
+                setStatus('error');
+                setErrorMessage(
+                    'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
+                );
+            }
+        });
     };
 
     const handleClose = () => {
@@ -164,6 +166,7 @@ export default function EngagementModal({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+            {reviewDialog}
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>

@@ -39,6 +39,58 @@ const normalizeDate = (dStr: string) => {
     return dStr.length === 10 ? new Date(`${dStr}T00:00:00`) : new Date(dStr);
 };
 
+function eventDateTime(dateString: string, timeString: string): Date {
+    const date = normalizeDate(dateString) ?? new Date(dateString);
+    const times = Array.from(
+        timeString.matchAll(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/gi)
+    );
+    const time = times[0];
+    if (!time || Number.isNaN(date.getTime())) return date;
+
+    const meridiem = (time[3] || times.find(match => match[3])?.[3])?.toLowerCase();
+    let hours = Number(time[1]);
+    const minutes = Number(time[2] ?? 0);
+    if (meridiem === 'pm' && hours < 12) hours += 12;
+    if (meridiem === 'am' && hours === 12) hours = 0;
+    if (hours > 23 || minutes > 59) return date;
+
+    date.setHours(hours, minutes, 0, 0);
+    return date;
+}
+
+function recurringEventForDate(rule: any, dateString: string, override: any = {}) {
+    const appliedOverride = Object.fromEntries(
+        Object.entries(override).filter(
+            ([key, value]) =>
+                key === 'date' &&
+                typeof value === 'string' ||
+                (value !== undefined &&
+                    value !== null &&
+                    value !== '' &&
+                    (!Array.isArray(value) || value.length > 0))
+        )
+    );
+    const merged = { ...rule, ...appliedOverride };
+    const { schedule, oneTimeOccurrences, ...eventFields } = merged;
+    return {
+        ...eventFields,
+        id: `${rule.id}-${dateString}`,
+        title: merged.title,
+        date: eventDateTime(dateString, merged.time ?? ''),
+        time: merged.time ?? '',
+        location: merged.location ?? '',
+        categories: (merged.categories ?? []).map((category: any) =>
+            category.category || category
+        ),
+        organizationTags: merged.organizationTags ?? [],
+        linkedOpportunityId:
+            merged.linkedOpportunityId ??
+            (merged.organizationTags?.includes('faith-formation')
+                ? 'wednesday-faith-formation'
+                : undefined),
+    } as CalendarEvent;
+}
+
 export const staticEvents: CalendarEvent[] = [
     ...oneTimeEvents,
 ];
@@ -93,6 +145,14 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         // --- CMS-DRIVEN RECURRING RULES ---
         recurringRules.forEach((rule: any) => {
             const schedule = rule.schedule ?? rule;
+            const oneTimeOverride = rule.oneTimeOccurrences?.find(
+                (occurrence: any) => occurrence.date === dateStr
+            );
+            if (oneTimeOverride) {
+                events.push(recurringEventForDate(rule, dateStr, oneTimeOverride));
+                return;
+            }
+
             const ruleStartDate = normalizeDate(schedule.startDate) || new Date(0);
             const ruleEndDate = normalizeDate(schedule.endDate) || new Date(2100, 0, 1);
             const exclusions = Array.isArray(schedule.exclusions)
@@ -131,30 +191,7 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 }
 
                 if (shouldShow) {
-                    events.push({
-                        id: `${rule.id}-${dateStr}`,
-                        title: rule.title,
-                        date: new Date(year, month, day, 18, 0),
-                        time: rule.time,
-                        location: rule.location,
-                        categories: rule.categories.map((c: any) => c.category || c),
-                        organizationTags: rule.organizationTags ?? [],
-                        image: rule.image,
-                        about: rule.about,
-                        gallery: rule.gallery,
-                        photos: rule.photos,
-                        signupLink: rule.signupLink,
-                        contactPerson: rule.contactPerson,
-                        contactEmail: rule.contactEmail,
-                        contactPhone: rule.contactPhone,
-                        faqItems: rule.faqItems,
-                        description: rule.description,
-                        linkedOpportunityId:
-                            rule.linkedOpportunityId ??
-                            (rule.organizationTags?.includes('faith-formation')
-                                ? 'wednesday-faith-formation'
-                                : undefined),
-                    });
+                    events.push(recurringEventForDate(rule, dateStr));
                 }
             }
         });

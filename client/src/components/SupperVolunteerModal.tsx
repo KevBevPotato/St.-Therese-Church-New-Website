@@ -14,6 +14,7 @@ import {
     XIcon,
 } from 'lucide-react';
 import { submitForm } from '@/lib/submit-form';
+import { useSubmissionReview } from '@/hooks/use-submission-review';
 
 interface VolunteerRole {
     name: string;
@@ -59,6 +60,7 @@ export default function SupperVolunteerModal({
 }: SupperVolunteerModalProps) {
     const [status, setStatus] = useState<SubmitStatus>('idle');
     const [errorMessage, setErrorMessage] = useState('');
+    const { reviewSubmission, reviewDialog } = useSubmissionReview();
 
     // Mode: "specific" (sign up for this week) or "willing" (general availability)
     const [mode, setMode] = useState<SignupMode>(week ? 'specific' : 'willing');
@@ -100,47 +102,46 @@ export default function SupperVolunteerModal({
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const website = new FormData(e.currentTarget).get('website');
-        setStatus('sending');
-        setErrorMessage('');
+        const basePayload: Record<string, any> = {
+            website: typeof website === 'string' ? website : '',
+            full_name: name,
+            email: email,
+            phone: phone,
+            notes: notes,
+            signup_mode: mode,
+        };
 
-        try {
-            const basePayload: Record<string, any> = {
-                website: typeof website === 'string' ? website : '',
-                full_name: name,
-                email: email,
-                phone: phone,
-                notes: notes,
-                signup_mode: mode,
-            };
-
-            if (mode === 'specific' && week) {
-                basePayload.week_id = week.id;
-                basePayload.week_date = week.dateLabel;
-                basePayload.role = selectedRole;
-                basePayload.availability_type = '';
-                basePayload.week_ids = '';
-                basePayload.preferred_roles = '';
-            } else {
-                // "Willing" mode
-                basePayload.week_id = '';
-                basePayload.week_date = '';
-                basePayload.role = '';
-                basePayload.availability_type = availabilityType;
-                basePayload.week_ids = Array.from(selectedWeeks).join(', ');
-                basePayload.preferred_roles =
-                    Array.from(preferredRoles).join(', ');
-            }
-
-            await submitForm('supper-volunteer', basePayload);
-
-            setStatus('success');
-        } catch (err: any) {
-            console.error('Supper volunteer POST error:', err);
-            setStatus('error');
-            setErrorMessage(
-                'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
-            );
+        if (mode === 'specific' && week) {
+            basePayload.week_id = week.id;
+            basePayload.week_date = week.dateLabel;
+            basePayload.role = selectedRole;
+            basePayload.availability_type = '';
+            basePayload.week_ids = '';
+            basePayload.preferred_roles = '';
+        } else {
+            basePayload.week_id = '';
+            basePayload.week_date = '';
+            basePayload.role = '';
+            basePayload.availability_type = availabilityType;
+            basePayload.week_ids = Array.from(selectedWeeks).join(', ');
+            basePayload.preferred_roles =
+                Array.from(preferredRoles).join(', ');
         }
+
+        reviewSubmission('Wednesday Supper Volunteer Signup', basePayload, async () => {
+            setStatus('sending');
+            setErrorMessage('');
+            try {
+                await submitForm('supper-volunteer', basePayload);
+                setStatus('success');
+            } catch (err: any) {
+                console.error('Supper volunteer POST error:', err);
+                setStatus('error');
+                setErrorMessage(
+                    'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
+                );
+            }
+        });
     };
 
     const toggleWeek = (weekId: string) => {
@@ -180,6 +181,7 @@ export default function SupperVolunteerModal({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+            {reviewDialog}
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-2xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>

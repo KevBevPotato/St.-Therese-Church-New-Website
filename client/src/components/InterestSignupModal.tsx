@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import type { SignupRequest } from "@/contexts/InterestSignupContext";
 import { submitForm } from "@/lib/submit-form";
+import { useSubmissionReview } from "@/hooks/use-submission-review";
 
 const inputClassName =
   "mt-1 w-full rounded-lg border border-input bg-background px-3 py-2.5 text-sm text-foreground shadow-sm outline-none transition focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20";
@@ -25,6 +26,8 @@ export default function InterestSignupModal({
     "idle" | "sending" | "success" | "error"
   >("idle");
   const [errorMessage, setErrorMessage] = useState("");
+  const { reviewSubmission, reviewDialog } = useSubmissionReview();
+  const isFaithFormation = request?.id === "wednesday-faith-formation";
 
   useEffect(() => {
     setKind(
@@ -61,24 +64,25 @@ export default function InterestSignupModal({
       guardian_name: String(formData.get("guardian_name") ?? "").trim(),
     };
 
-    setStatus("sending");
-    setErrorMessage("");
-    try {
-      const isFaithFormation = request.id === "wednesday-faith-formation";
-      await submitForm(
-        isFaithFormation ? "faith_formation" : "interest",
-        payload
-      );
-      setStatus("success");
-    } catch (error) {
-      console.error("Get Involved signup failed:", error);
-      setErrorMessage(
-        error instanceof Error
-          ? error.message
-          : "We could not submit your interest. Please try again."
-      );
-      setStatus("error");
-    }
+    reviewSubmission(request.title, payload, async () => {
+      setStatus("sending");
+      setErrorMessage("");
+      try {
+        await submitForm(
+          isFaithFormation ? "faith_formation" : "interest",
+          payload
+        );
+        setStatus("success");
+      } catch (error) {
+        console.error("Get Involved signup failed:", error);
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "We could not submit your interest. Please try again."
+        );
+        setStatus("error");
+      }
+    });
   };
 
   return (
@@ -88,6 +92,7 @@ export default function InterestSignupModal({
         if (!open) handleClose();
       }}
     >
+      {reviewDialog}
       {request && (
         <DialogContent
           className="flex h-[92dvh] max-h-[92dvh] flex-col gap-0 overflow-hidden p-0 sm:max-w-2xl"
@@ -180,22 +185,24 @@ export default function InterestSignupModal({
 
                 <div className="grid gap-4 sm:grid-cols-2">
                   <label className="text-sm font-medium text-foreground">
-                    Your name <span aria-hidden="true">*</span>
+                    Your name
+                    {!isFaithFormation && <span aria-hidden="true"> *</span>}
                     <input
                       className={inputClassName}
                       name="from_name"
-                      required
+                      required={!isFaithFormation}
                       maxLength={200}
                       autoComplete="name"
                     />
                   </label>
                   <label className="text-sm font-medium text-foreground">
-                    Email <span aria-hidden="true">*</span>
+                    Email
+                    {!isFaithFormation && <span aria-hidden="true"> *</span>}
                     <input
                       className={inputClassName}
                       name="from_email"
                       type="email"
-                      required
+                      required={!isFaithFormation}
                       maxLength={200}
                       autoComplete="email"
                     />
@@ -214,11 +221,12 @@ export default function InterestSignupModal({
                   {kind === "class_registration" && (
                     <>
                       <label className="text-sm font-medium text-foreground">
-                        Participant name <span aria-hidden="true">*</span>
+                        Participant name
+                        {!isFaithFormation && <span aria-hidden="true"> *</span>}
                         <input
                           className={inputClassName}
                           name="participant_name"
-                          required
+                          required={!isFaithFormation}
                           maxLength={200}
                         />
                       </label>
@@ -245,11 +253,12 @@ export default function InterestSignupModal({
                         </select>
                       </label>
                       <label className="text-sm font-medium text-foreground sm:col-span-2">
-                        Parent/guardian name <span aria-hidden="true">*</span>
+                        Parent/guardian name
+                        {!isFaithFormation && <span aria-hidden="true"> *</span>}
                         <input
                           className={inputClassName}
                           name="guardian_name"
-                          required
+                          required={!isFaithFormation}
                           maxLength={200}
                           autoComplete="name"
                         />

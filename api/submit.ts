@@ -311,7 +311,10 @@ function validateBody(bodyValue: unknown): {
   switch (formType) {
     case "interest":
     case "faith_formation": {
-      required = ["from_name", "from_email", "interest", "context_opportunity"];
+      required =
+        formType === "faith_formation"
+          ? []
+          : ["from_name", "from_email", "interest", "context_opportunity"];
       const signupKind = getString(body, "signup_kind");
       const interestId = getString(body, "context_opportunity");
       if (!ALLOWED_INTEREST_IDS.has(interestId)) {
@@ -334,7 +337,7 @@ function validateBody(bodyValue: unknown): {
           error: "Class registration is not available for this signup.",
         };
       }
-      if (signupKind === "class_registration") {
+      if (signupKind === "class_registration" && formType !== "faith_formation") {
         required.push("participant_name", "guardian_name");
       }
       break;
@@ -376,19 +379,10 @@ function validateBody(bodyValue: unknown): {
     }
     case "faith_formation_registration": {
       const childCount = Number(getString(body, "number_of_children"));
-      if (!Number.isInteger(childCount) || childCount < 1 || childCount > 6) {
-        return { error: "The number of children must be between 1 and 6." };
+      if (!Number.isInteger(childCount) || childCount < 0 || childCount > 6) {
+        return { error: "The number of children must be between 0 and 6." };
       }
-      required = ["street_address", "city", "state", "zip_code"];
-      for (let child = 1; child <= childCount; child++) {
-        required.push(`child_${child}_full_name`);
-      }
-      if (
-        !getString(body, "father_full_name") &&
-        !getString(body, "mother_full_name")
-      ) {
-        return { error: "Please enter a parent or guardian name." };
-      }
+      required = [];
       break;
     }
     case "pledge":

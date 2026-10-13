@@ -7,6 +7,7 @@ import { EventCard } from '../components/event-components';
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { submitForm } from '@/lib/submit-form';
+import { useSubmissionReview } from '@/hooks/use-submission-review';
 import {
     BookOpen,
     X,
@@ -95,6 +96,7 @@ export default function FaithFormation() {
     const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(new Set<GroupFilter>(['all']));
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const { reviewSubmission, reviewDialog } = useSubmissionReview();
     const [formData, setFormData] = useState<FormData>({
         numberOfChildren: 1,
         children: [{ ...defaultChildData }],
@@ -221,7 +223,6 @@ export default function FaithFormation() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        setIsSubmitting(true);
         const payload: Record<string, string> = {
             number_of_children: String(formData.numberOfChildren),
             father_full_name: formData.fatherFullName.trim(),
@@ -258,46 +259,49 @@ export default function FaithFormation() {
             payload[`${prefix}contact_preference`] = child.contactPreference;
         });
 
-        try {
-            await submitForm('faith_formation_registration', payload);
-            alert(
-                `Thank you for registering! Total cost due: $${tuitionCost}. We will contact you soon with more information.`
-            );
-            setIsSubmitting(false);
-            setIsFormOpen(false);
-            setFormData({
-                numberOfChildren: 1,
-                children: [{ ...defaultChildData }],
-                fatherFullName: '',
-                fatherReligion: '',
-                fatherCell: '',
-                fatherEmail: '',
-                fatherContactPreference: 'email',
-                motherFullName: '',
-                motherReligion: '',
-                motherCell: '',
-                motherEmail: '',
-                motherContactPreference: 'email',
-                streetAddress: '',
-                city: '',
-                state: '',
-                zipCode: '',
-                isMember: '',
-                massAttendance: '',
-                tuitionOption: 'per-child',
-                tuitionPaid: '',
-                needsFinancialAssistance: false,
-                specialNeeds: '',
-            });
-        } catch (error) {
-            console.error('Faith Formation registration failed:', error);
-            alert(
-                error instanceof Error
-                    ? error.message
-                    : 'We could not submit your registration. Please try again.'
-            );
-            setIsSubmitting(false);
-        }
+        reviewSubmission('Faith Formation Registration', payload, async () => {
+            setIsSubmitting(true);
+            try {
+                await submitForm('faith_formation_registration', payload);
+                alert(
+                    `Thank you for registering! Total cost due: $${tuitionCost}. We will contact you soon with more information.`
+                );
+                setIsSubmitting(false);
+                setIsFormOpen(false);
+                setFormData({
+                    numberOfChildren: 1,
+                    children: [{ ...defaultChildData }],
+                    fatherFullName: '',
+                    fatherReligion: '',
+                    fatherCell: '',
+                    fatherEmail: '',
+                    fatherContactPreference: 'email',
+                    motherFullName: '',
+                    motherReligion: '',
+                    motherCell: '',
+                    motherEmail: '',
+                    motherContactPreference: 'email',
+                    streetAddress: '',
+                    city: '',
+                    state: '',
+                    zipCode: '',
+                    isMember: '',
+                    massAttendance: '',
+                    tuitionOption: 'per-child',
+                    tuitionPaid: '',
+                    needsFinancialAssistance: false,
+                    specialNeeds: '',
+                });
+            } catch (error) {
+                console.error('Faith Formation registration failed:', error);
+                alert(
+                    error instanceof Error
+                        ? error.message
+                        : 'We could not submit your registration. Please try again.'
+                );
+                setIsSubmitting(false);
+            }
+        });
     };
 
     return (
@@ -496,6 +500,7 @@ export default function FaithFormation() {
                                         onChange={(e) => handleNumberOfChildrenChange(parseInt(e.target.value))}
                                         className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
                                     >
+                                        <option value={0}>No children</option>
                                         {[1, 2, 3, 4, 5, 6].map((num) => (
                                             <option key={num} value={num}>
                                                 {num} {num === 1 ? 'Child' : 'Children'}
@@ -535,7 +540,6 @@ export default function FaithFormation() {
                                             value={child.fullName}
                                             onChange={(e) => handleChildChange(idx, 'fullName', e.target.value)}
                                             className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                            required
                                         />
                                         <input
                                             type="text"
@@ -677,12 +681,13 @@ export default function FaithFormation() {
                                 disabled={isSubmitting}
                                 className="w-full bg-primary hover:bg-primary/90 py-6 text-sm font-bold uppercase tracking-widest"
                             >
-                                {isSubmitting ? 'Processing...' : 'Complete Registration'}
+                                {isSubmitting ? 'Processing...' : 'Review Registration'}
                             </Button>
                         </form>
                     </div>
                 </div>
             )}
+            {reviewDialog}
             <Footer />
         </div>
     );

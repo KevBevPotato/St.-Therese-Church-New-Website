@@ -11,6 +11,7 @@ import {
 } from 'lucide-react';
 import { submitForm } from '@/lib/submit-form';
 import { type SponsorshipItem } from '@/data/sponsorship-projects';
+import { useSubmissionReview } from '@/hooks/use-submission-review';
 
 interface PledgeModalProps {
     isOpen: boolean;
@@ -49,6 +50,7 @@ export default function PledgeModal({
 }: PledgeModalProps) {
     const [status, setStatus] = useState<SubmitStatus>({ state: 'idle' });
     const formRef = useRef<HTMLFormElement>(null);
+    const { reviewSubmission, reviewDialog } = useSubmissionReview();
 
     const initialItemId =
         defaultItemId ??
@@ -109,38 +111,38 @@ export default function PledgeModal({
             return;
         }
 
-        setStatus({ state: 'sending' });
+        const payload = {
+            website: typeof website === 'string' ? website : '',
+            from_name: form.from_name,
+            from_email: form.from_email,
+            from_phone: form.from_phone || '',
+            project_id: projectId,
+            project_title: projectTitle,
+            item_id: form.itemId,
+            item_label: selectedItem?.label ?? '(unspecified)',
+            quantity: form.quantity,
+            pledge_amount: pledgeAmount,
+            memo_template: selectedItem?.memoTemplate ?? projectTitle,
+            note: form.note || '',
+        };
 
-        try {
-            const payload = {
-                website: typeof website === 'string' ? website : '',
-                from_name: form.from_name,
-                from_email: form.from_email,
-                from_phone: form.from_phone || '',
-                project_id: projectId,
-                project_title: projectTitle,
-                item_id: form.itemId,
-                item_label: selectedItem?.label ?? '(unspecified)',
-                quantity: form.quantity,
-                pledge_amount: pledgeAmount,
-                memo_template: selectedItem?.memoTemplate ?? projectTitle,
-                note: form.note || '',
-            };
-
-            await submitForm('pledge', payload);
-
-            setStatus({
-                state: 'success',
-                message: `Thank you! Your pledge has been received. The parish office will follow up within 24 hours to coordinate payment.`,
-            });
-        } catch (err: any) {
-            console.error('Sheets POST error:', err);
-            setStatus({
-                state: 'error',
-                message:
-                    'There was an issue submitting your pledge. Please email kevin.baltzer@strcstaff.org directly.',
-            });
-        }
+        reviewSubmission(`Pledge for ${projectTitle}`, payload, async () => {
+            setStatus({ state: 'sending' });
+            try {
+                await submitForm('pledge', payload);
+                setStatus({
+                    state: 'success',
+                    message: `Thank you! Your pledge has been received. The parish office will follow up within 24 hours to coordinate payment.`,
+                });
+            } catch (err: any) {
+                console.error('Sheets POST error:', err);
+                setStatus({
+                    state: 'error',
+                    message:
+                        'There was an issue submitting your pledge. Please email kevin.baltzer@strcstaff.org directly.',
+                });
+            }
+        });
     };
 
     const handleClose = () => {
@@ -152,6 +154,7 @@ export default function PledgeModal({
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+            {reviewDialog}
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>

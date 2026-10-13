@@ -9,6 +9,7 @@ import {
     BookOpen,
 } from 'lucide-react';
 import { submitForm } from '@/lib/submit-form';
+import { useSubmissionReview } from '@/hooks/use-submission-review';
 
 interface LectorSignupModalProps {
     isOpen: boolean;
@@ -37,6 +38,7 @@ export default function LectorSignupModal({
     const [email, setEmail] = useState('');
     const [phone, setPhone] = useState('');
     const [sundayMass, setSundayMass] = useState('');
+    const { reviewSubmission, reviewDialog } = useSubmissionReview();
 
     const resetForm = () => {
         setStatus('idle');
@@ -55,34 +57,35 @@ export default function LectorSignupModal({
     const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const website = new FormData(e.currentTarget).get('website');
-        setStatus('sending');
-        setErrorMessage('');
+        const payload = {
+            website: typeof website === 'string' ? website : '',
+            from_name: name,
+            from_email: email,
+            from_phone: phone,
+            sunday_mass: sundayMass,
+        };
 
-        try {
-            const payload = {
-                website: typeof website === 'string' ? website : '',
-                from_name: name,
-                from_email: email,
-                from_phone: phone,
-                sunday_mass: sundayMass,
-            };
-
-            await submitForm('lector', payload);
-
-            setStatus('success');
-        } catch (err: any) {
-            console.error('Lector signup POST error:', err);
-            setStatus('error');
-            setErrorMessage(
-                'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
-            );
-        }
+        reviewSubmission('Lector Signup', payload, async () => {
+            setStatus('sending');
+            setErrorMessage('');
+            try {
+                await submitForm('lector', payload);
+                setStatus('success');
+            } catch (err: any) {
+                console.error('Lector signup POST error:', err);
+                setStatus('error');
+                setErrorMessage(
+                    'There was an issue submitting. Please email kevin.baltzer@strcstaff.org directly.'
+                );
+            }
+        });
     };
 
     if (!isOpen) return null;
 
     return (
         <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+            {reviewDialog}
             <div className="bg-white rounded-3xl shadow-2xl w-full max-w-xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                 <div className="bg-primary p-6 text-white flex justify-between items-center">
                     <div>

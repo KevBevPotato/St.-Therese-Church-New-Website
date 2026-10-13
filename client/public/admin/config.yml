@@ -591,7 +591,13 @@ collections:
           required: false,
         }
       - { label: "Automatic rule ID", name: "id", widget: "hidden", required: false }
-      - { label: "Event Title", name: "title", widget: "string" , required: false }
+      - {
+          label: "Event Title",
+          name: "title",
+          widget: "string",
+          required: false,
+          hint: "Top-level event details are shared by every occurrence. Add an entry under One-time Occurrences below to adjust a single date.",
+        }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "string" , required: false }
       - label: "Schedule and Occurrences"
@@ -599,6 +605,130 @@ collections:
         widget: "recurrence-schedule"
         required: false
         hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it."
+      - label: "One-time Occurrences (edit individually)"
+        name: "oneTimeOccurrences"
+        widget: "list"
+        required: false
+        summary: "{{fields.date}} · {{fields.title}}"
+        hint: "Add a date from this recurring schedule to make that occurrence a separate, editable one-time event. It inherits this event's details unless you fill in an override below."
+        fields:
+          - {
+              label: "Occurrence Date",
+              name: "date",
+              widget: "datetime",
+              format: "YYYY-MM-DD",
+              date_format: "YYYY-MM-DD",
+              time_format: false,
+              picker_utc: false,
+              required: true,
+            }
+          - {
+              label: "Title Override (optional)",
+              name: "title",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Time Override (optional)",
+              name: "time",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Location Override (optional)",
+              name: "location",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Description Override (optional)",
+              name: "description",
+              widget: "text",
+              required: false,
+            }
+          - {
+              label: "About this event Override (optional)",
+              name: "about",
+              widget: "text",
+              required: false,
+            }
+          - {
+              label: "Hero Image Override (optional)",
+              name: "image",
+              widget: "image",
+              required: false,
+            }
+          - {
+              label: "Sign-up URL Override (optional)",
+              name: "signupLink",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Contact Person Override (optional)",
+              name: "contactPerson",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Contact Email Override (optional)",
+              name: "contactEmail",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Contact Phone Override (optional)",
+              name: "contactPhone",
+              widget: "string",
+              required: false,
+            }
+          - label: "Category Overrides (optional)"
+            name: "categories"
+            widget: "list"
+            required: false
+            fields:
+              - label: "Category"
+                name: "category"
+                widget: "select"
+                required: false
+                options:
+                  [
+                    "sacramental",
+                    "parishEvents",
+                    "meeting",
+                    "vocations",
+                    "diocesan",
+                  ]
+          - label: "Organization Calendar Overrides (optional)"
+            name: "organizationTags"
+            widget: "list"
+            required: false
+            field:
+              label: "Organization"
+              name: "organization"
+              widget: "select"
+              required: false
+              options:
+                - { label: "Knights of Columbus", value: "knights-of-columbus" }
+                - { label: "Altar Society", value: "altar-society" }
+                - { label: "Catholic Daughters", value: "catholic-daughters" }
+                - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
+                - { label: "Faith Formation", value: "faith-formation" }
+          - label: "Gallery Overrides (optional)"
+            name: "gallery"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Photo", name: "photo", widget: "image", required: false }
+              - { label: "Caption", name: "caption", widget: "string", required: false }
+              - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
+          - label: "FAQ Overrides (optional)"
+            name: "faqItems"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "Question", name: "question", widget: "string", required: false }
+              - { label: "Answer", name: "answer", widget: "text", required: false }
       - {
           label: "Description",
           name: "description",
