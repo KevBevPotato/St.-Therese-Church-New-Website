@@ -64,7 +64,12 @@ export default function InterestSignupModal({
     setStatus("sending");
     setErrorMessage("");
     try {
-      await submitForm("interest", payload);
+      await submitForm(
+        request.id === "wednesday-faith-formation"
+          ? "faith_formation"
+          : "interest",
+        payload
+      );
       setStatus("success");
     } catch (error) {
       console.error("Get Involved signup failed:", error);

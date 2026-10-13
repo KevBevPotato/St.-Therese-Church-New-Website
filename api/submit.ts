@@ -250,12 +250,19 @@ function validateBody(bodyValue: unknown): {
   let required: string[];
 
   switch (formType) {
-    case "interest": {
+    case "interest":
+    case "faith_formation": {
       required = ["from_name", "from_email", "interest", "context_opportunity"];
       const signupKind = getString(body, "signup_kind");
       const interestId = getString(body, "context_opportunity");
       if (!ALLOWED_INTEREST_IDS.has(interestId)) {
         return { error: "The requested signup is invalid." };
+      }
+      if (
+        formType === "faith_formation" &&
+        interestId !== "wednesday-faith-formation"
+      ) {
+        return { error: "The requested faith formation signup is invalid." };
       }
       if (!["join", "volunteer", "class_registration"].includes(signupKind)) {
         return { error: "The selected signup type is invalid." };
@@ -372,13 +379,15 @@ function validateBody(bodyValue: unknown): {
     }
   }
 
-  const tab =
-    formType === "membership"
-      ? "Parish Registrations"
-      : formType === "interest" &&
-          getString(body, "context_opportunity") === "wednesday-faith-formation"
-        ? "Faith Formation"
-        : undefined;
+  let tab: string | undefined;
+  switch (formType) {
+    case "membership":
+      tab = "Parish Registrations";
+      break;
+    case "faith_formation":
+      tab = "Faith Formation";
+      break;
+  }
   return { body, tab };
 }
 

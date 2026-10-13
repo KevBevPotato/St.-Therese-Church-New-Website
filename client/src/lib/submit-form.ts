@@ -5,7 +5,8 @@ export async function submitForm(
     | "supper-volunteer"
     | "lector"
     | "membership"
-    | "interest",
+    | "interest"
+    | "faith_formation",
   payload: Record<string, unknown>
 ): Promise<void> {
   const response = await fetch("/api/submit", {
