@@ -1,0 +1,71 @@
+{
+  "organizationTags": [
+    "faith-formation"
+  ],
+  "time": "5:30pm-7:30pm",
+  "gallery": [
+    {
+      "photo": "/uploads/canva_welcome_poster.png",
+      "caption": "not the right pic"
+    }
+  ],
+  "location": "St. Therese Church",
+  "schedule": {
+    "startDate": "2026-10-14",
+    "endDate": "2027-01-27",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Wednesday",
+    "exclusions": [
+      {
+        "date": "2026-10-21"
+      },
+      {
+        "date": "2026-10-28"
+      },
+      {
+        "date": "2026-11-04"
+      },
+      {
+        "date": "2026-11-11"
+      },
+      {
+        "date": "2026-11-18"
+      },
+      {
+        "date": "2026-11-25"
+      },
+      {
+        "date": "2026-12-02"
+      },
+      {
+        "date": "2026-12-09"
+      },
+      {
+        "date": "2026-12-16"
+      },
+      {
+        "date": "2026-12-23"
+      },
+      {
+        "date": "2026-12-30"
+      },
+      {
+        "date": "2027-01-06"
+      },
+      {
+        "date": "2027-01-13"
+      },
+      {
+        "date": "2027-01-20"
+      }
+    ]
+  },
+  "title": "Wednesday Faith Formation (Safe Environment)",
+  "id": "wednesday-faith-formation",
+  "categories": [
+    {
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Safe Environment. Bobby will update"
+}
