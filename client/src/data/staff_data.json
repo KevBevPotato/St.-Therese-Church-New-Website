@@ -93,7 +93,7 @@
       "photoFit": "cover"
     },
     {
-      "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation, \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia.",
+      "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation. \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia.",
       "name": "Kevin Baltzer",
       "slug": "kevin-baltzer",
       "phone": "(605) 342-1556 Ext. 1018",
@@ -121,12 +121,12 @@
       "slug": "connie-heeren",
       "phone": "(605) 342-1556 Ext. 1010",
       "photo": "/ConnieHeeran.jpg",
-      "duties": "Serving the parish community with care and dedication.",
+      "duties": "I do everything (except IT, but including the bulletin)  :-)\n\n",
       "isHidden": false,
       "officeRoom": "110",
       "titles": [
         {
-          "title": "Staff"
+          "title": "Parish Secretary"
         }
       ],
       "photoPosition": "center 21%",
