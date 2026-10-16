@@ -4,7 +4,7 @@
       "bio": "Fr. Mark was born in Rapid City, SD, and grew up in the Black Hills. He attended St. Martin's College in Lacey, WA, and graduated with a degree in Philosophy. He then attended Mount Angel Seminary in St. Benedict, OR, where he earned a Master of Divinity degree. Fr. Mark was ordained to the priesthood on May 30, 1999, and has served in various parishes throughout the Diocese of Rapid City.",
       "name": "Fr. Mark McCormick",
       "slug": "fr-mark-mccormick",
-      "phone": "(605) 342-1556 Ext. 1011",
+      "phone": "(605) 342-1556 Ext. 1",
       "photo": "/FrMark.jpg",
       "duties": "Fr. Mark is serving as Head Pastor of St. Thérèse the Little Flower & the St. Carlo Acutis Catholic Student Center, serving alongside Fr. Todd VanderMay.",
       "isHidden": false,
@@ -27,7 +27,7 @@
       "bio": "More information about this ministry role will be shared soon.",
       "name": "Fr. Todd VanderMay",
       "slug": "fr-todd-vandermay",
-      "phone": "(605) 342-1556 Ext. 1017",
+      "phone": "(605) 342-1556 Ext. 2",
       "photo": "/FrToddVanderMay.jpg",
       "duties": "Serving the parish community with care and dedication.",
       "isHidden": false,
@@ -50,7 +50,7 @@
       "bio": "More information about this ministry role will be shared soon.",
       "name": "Deacon Don Moore",
       "slug": "dcn-don-moore",
-      "phone": "(605) 342-1556 Ext. 1014",
+      "phone": "(605) 342-1556 Ext. 7",
       "photo": "/DcnDon.jpg",
       "duties": "Serving the parish community with care and dedication.",
       "isHidden": false,
@@ -70,12 +70,12 @@
       "photoFit": "cover"
     },
     {
-      "bio": "More information about this ministry role will be shared soon.",
+      "bio": "Hi, my name is Bobby Myers, I started here in 2018. I got my beautiful wife Kaitlin & 5 children! I enjoy spending time with family, hunting, coaching my kids in sports, and I have more animals than you at my farm!",
       "name": "Bobby Myers",
       "slug": "bobby-myers",
-      "phone": "(605) 342-1556 Ext. 1012",
+      "phone": "(605) 342-1556 Ext. 5",
       "photo": "/BobbyMeyers.jpg",
-      "duties": "Serving the parish community with care and dedication.",
+      "duties": "Serving the parish community with care and dedication. ",
       "isHidden": false,
       "officeRoom": "101",
       "titles": [
@@ -93,10 +93,10 @@
       "photoFit": "cover"
     },
     {
-      "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation, \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia.",
+      "bio": "Growing up on a farm southwest of Huron, SD, I earned my Chemical Engineering degree from South Dakota Mines before spending three years as a full-time missionary with FOCUS Catholic. Today, I serve as the Director of Evangelization and Adult & Family Formation at St. Thérèse the Little Flower Parish in Rapid City. Driven by a love for classical learning and Catholic youth formation. \n\nI currently live in the Rapid Valley area with my wife Katie and daughter Lucia.",
       "name": "Kevin Baltzer",
       "slug": "kevin-baltzer",
-      "phone": "(605) 342-1556 Ext. 1018",
+      "phone": "(605) 342-1556 Ext. 6",
       "photo": "/Kevin-Baltzer.jpg",
       "duties": "I'm in charge of Adult & Family Ministry, which is being taught on Wednesdays — see the \"Faith Formation\" tab for more information.\nI'm also the staff designated IT guy who built this new website and will keep it running and updated!",
       "isHidden": false,
@@ -116,20 +116,20 @@
       "photoFit": "cover"
     },
     {
-      "bio": "More information about this ministry role will be shared soon.",
+      "bio": "I have been blessed to work at the parish for over 22 years!  \nI grew up in Rapid City and went to college at USD.  I was in advertising with the RC Journal until my 3rd child was born, then stayed home with kiddos.  After my 4th child was 2 years old, I answered the ad for the church and was hired!!\nThe BEST part of my job is THE PEOPLE!  I have the privilege to witness God at work through them...experiencing their true servant hearts.  So many never seek anything in return.  I use them as my role models in life.\nMy husband Kurt, and I, live on a small acreage by the airport with our mini donkeys and cows.  We enjoy spending time with our mommas, friends, and our 6 children and their families, including 6 beautiful grandgifts!",
       "name": "Connie Heeren",
       "slug": "connie-heeren",
-      "phone": "(605) 342-1556 Ext. 1010",
+      "phone": "(605) 342-1556 Ext. 3",
       "photo": "/ConnieHeeran.jpg",
-      "duties": "Serving the parish community with care and dedication.",
+      "duties": "I do everything including the bulletin. (except IT)    :-)\n\n\n",
       "isHidden": false,
       "officeRoom": "110",
       "titles": [
         {
-          "title": "Staff"
+          "title": "Parish Secretary"
         }
       ],
-      "photoPosition": "center 21%",
+      "photoPosition": "center 18%",
       "categories": [
         {
           "category": "staff"
@@ -142,7 +142,7 @@
       "bio": "More information about this ministry role will be shared soon.",
       "name": "Melanie Karp",
       "slug": "melanie-karp",
-      "phone": "(605) 342-1556 Ext. 1015",
+      "phone": "(605) 342-1556 Ext. 4",
       "photo": "/MelanieKarp.jpg",
       "duties": "Serving the parish community with care and dedication.",
       "isHidden": false,
