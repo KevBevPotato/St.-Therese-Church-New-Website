@@ -15,6 +15,7 @@ export interface Officer {
     email?: string;
     phone?: string;
     bio?: string;
+    isHidden?: boolean;
 }
 
 export interface Member {
@@ -23,6 +24,9 @@ export interface Member {
     photo?: string;
     photoPosition?: string;
     yearsAsMember?: number;
+    email?: string;
+    phone?: string;
+    bio?: string;
     isHidden?: boolean;
 }
 
@@ -43,6 +47,8 @@ export interface Organization {
         linkUrl?: string;
         showInCarousel?: boolean;
     }>;
+    hideMembersSection?: boolean;
+    hideUpcomingEventsSection?: boolean;
     contactName: string;
     contactPhone: string;
     contactEmail?: string;

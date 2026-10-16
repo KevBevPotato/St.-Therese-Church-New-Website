@@ -49,6 +49,10 @@ export default function KnightsOfColumbus() {
     const org = getOrganizationById('knights-of-columbus');
     const upcomingEvents = getKoCRelevantEvents();
     const visibleMembers = org?.members?.filter((member) => !member.isHidden) ?? [];
+    const visibleOfficers =
+        org?.officers?.filter(
+            officer => !officer.isHidden && !/^\[.*\]$/.test(officer.name.trim()),
+        ) ?? [];
 
     if (!org) {
         return (
@@ -67,6 +71,8 @@ export default function KnightsOfColumbus() {
         const target = document.getElementById('upcoming-events');
         if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
+    const showMembersSection = org.hideMembersSection !== true;
+    const showUpcomingEventsSection = org.hideUpcomingEventsSection !== true;
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
@@ -151,14 +157,16 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     {/* ✅ Calendar button at the bottom of the hero */}
-                    <div className="flex justify-center md:justify-start">
-                        <button
-                            onClick={scrollToUpcomingEvents}
-                            className="inline-flex items-center gap-2 bg-white hover:bg-[#f4ead5] text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs shadow-lg transition-all hover:scale-[1.02] active:scale-95"
-                        >
-                            <Calendar size={16} /> View Upcoming Calendar
-                        </button>
-                    </div>
+                    {showUpcomingEventsSection && (
+                        <div className="flex justify-center md:justify-start">
+                            <button
+                                onClick={scrollToUpcomingEvents}
+                                className="inline-flex items-center gap-2 bg-white hover:bg-[#f4ead5] text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs shadow-lg transition-all hover:scale-[1.02] active:scale-95"
+                            >
+                                <Calendar size={16} /> View Upcoming Calendar
+                            </button>
+                        </div>
+                    )}
                 </div>
             </section>
 
@@ -263,8 +271,7 @@ export default function KnightsOfColumbus() {
                 </div>
             </section>
 
-            {/* Officers Section - Temporarily hidden until positions/photos are ready.
-            <section className="py-16 md:py-20 bg-background">
+            {visibleOfficers.length > 0 && <section className="py-16 md:py-20 bg-background">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3 flex items-center justify-center gap-2">
@@ -279,7 +286,7 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
-                        {(org.officers ?? []).map(officer => (
+                        {visibleOfficers.map(officer => (
                             <Card
                                 key={officer.id}
                                 className="group overflow-hidden border-2 border-primary/12 bg-white shadow-sm transition-all hover:-translate-y-1 hover:border-primary/30"
@@ -316,15 +323,27 @@ export default function KnightsOfColumbus() {
                                             <Mail size={11} /> <span className="truncate">{officer.email}</span>
                                         </a>
                                     )}
+                                    {officer.phone && (
+                                        <a
+                                            href={`tel:${officer.phone.replace(/\D/g, '')}`}
+                                            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-primary transition-colors mt-2"
+                                        >
+                                            <Phone size={11} /> <span>{officer.phone}</span>
+                                        </a>
+                                    )}
+                                    {officer.bio && (
+                                        <p className="mt-3 text-xs leading-relaxed text-muted-foreground">
+                                            {officer.bio}
+                                        </p>
+                                    )}
                                 </div>
                             </Card>
                         ))}
                     </div>
                 </div>
-            </section>
-            */}
+            </section>}
 
-            <section className="py-16 md:py-20 bg-secondary/20 border-t border-primary/10">
+            {showMembersSection && <section className="py-16 md:py-20 bg-secondary/20 border-t border-primary/10">
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3 flex items-center justify-center gap-2">
@@ -369,15 +388,36 @@ export default function KnightsOfColumbus() {
                                             {member.yearsAsMember} years
                                         </p>
                                     )}
+                                    {member.email && (
+                                        <a
+                                            href={`mailto:${member.email}`}
+                                            className="mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                                        >
+                                            <Mail size={11} /> <span className="max-w-full truncate">{member.email}</span>
+                                        </a>
+                                    )}
+                                    {member.phone && (
+                                        <a
+                                            href={`tel:${member.phone.replace(/\D/g, '')}`}
+                                            className="mt-1 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-primary"
+                                        >
+                                            <Phone size={11} /> <span>{member.phone}</span>
+                                        </a>
+                                    )}
+                                    {member.bio && (
+                                        <p className="mt-2 text-center text-xs leading-relaxed text-muted-foreground">
+                                            {member.bio}
+                                        </p>
+                                    )}
                                 </div>
                             ))}
                         </div>
                     )}
                 </div>
-            </section>
+            </section>}
 
             {/* ✅ Upcoming Events — id="upcoming-events" is the scroll target for the hero button */}
-            <section id="upcoming-events" className="py-16 md:py-20 bg-background border-t border-primary/10 scroll-mt-[100px]">
+            {showUpcomingEventsSection && <section id="upcoming-events" className="py-16 md:py-20 bg-background border-t border-primary/10 scroll-mt-[100px]">
                 <div className="container mx-auto px-4 max-w-5xl">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3 flex items-center justify-center gap-2">
@@ -405,7 +445,7 @@ export default function KnightsOfColumbus() {
                         </Link>
                     </div>
                 </div>
-            </section>
+            </section>}
 
             <Footer />
         </div>

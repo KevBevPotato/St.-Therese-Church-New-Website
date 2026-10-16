@@ -2028,6 +2028,22 @@ collections:
           widget: "string",
           required: false,
         }
+      - {
+          label: "Hide Knights Members Section",
+          name: "hideMembersSection",
+          widget: "boolean",
+          default: false,
+          required: false,
+          hint: "Only applies to the Knights of Columbus page.",
+        }
+      - {
+          label: "Hide Knights Upcoming Events Section",
+          name: "hideUpcomingEventsSection",
+          widget: "boolean",
+          default: false,
+          required: false,
+          hint: "Also hides the View Upcoming Calendar button. Only applies to the Knights of Columbus page.",
+        }
       - label: "Statistics"
         name: "stats"
         widget: "list"
@@ -2089,6 +2105,9 @@ collections:
               widget: "number",
               required: false,
             }
+          - { label: "Email", name: "email", widget: "string", required: false }
+          - { label: "Phone", name: "phone", widget: "string", required: false }
+          - { label: "Bio", name: "bio", widget: "text", required: false }
           - {
               label: "Hide from Members Gallery",
               name: "isHidden",
