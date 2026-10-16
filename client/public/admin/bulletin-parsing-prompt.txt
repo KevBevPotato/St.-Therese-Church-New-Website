@@ -124,6 +124,8 @@ FILES AND FORMATS
 - Do not infer a business type that is not stated.
 
 OUTPUT
+- Give me code files. I want to see them in markdown file format: for example **Bolded Text**
 - Return exactly these 12 Markdown files, clearly labeled with their filenames.
+- Before you give me those 12 markdown files, please give me Bulletin Title in the format i requested above, along with start & end dates
 - Also provide the CMS Bulletin Title as a single separate line in the specified format. This is metadata for the CMS, not a thirteenth Markdown file.
 - After the files and title, provide “Questions for staff” only if source information was missing, unclear, or unreadable.
