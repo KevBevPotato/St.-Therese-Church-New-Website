@@ -503,7 +503,7 @@ export default function FaithFormation() {
             </main>
 
             {isFormOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
+                <div className="fixed inset-0 z-40 flex items-center justify-center p-4 bg-primary/40 backdrop-blur-sm animate-in fade-in duration-200 overflow-y-auto">
                     <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl my-8 overflow-hidden animate-in zoom-in-95 duration-200">
                         <div className="bg-primary p-6 text-white flex justify-between items-center">
                             <div>
