@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { Link } from 'wouter';
 import { Card } from '@/components/ui/card';
 import ReactMarkdown from 'react-markdown';
-import { Calendar, FileText, Phone, Mail, Filter, ExternalLink, ArrowLeft } from 'lucide-react';
+import { Calendar, FileText, Phone, Mail, Filter, ExternalLink, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export interface BulletinSection { id: string; label: string; content: string; }
 export interface Bulletin { id: string; week: string; startDate: Date; endDate: Date; pdfUrl?: string; sections: BulletinSection[]; hasContent?: boolean; }
-interface BulletinViewProps { bulletin: Bulletin; title: string; subtitle: string; backHref?: string; backLabel?: string; showEmptyPdfWarning?: boolean; emptyPdfMessage?: string; hideSectionsWithoutPdf?: boolean; }
+interface BulletinViewProps { bulletin: Bulletin; title: string; subtitle: string; backHref?: string; backLabel?: string; showEmptyPdfWarning?: boolean; emptyPdfMessage?: string; hideSectionsWithoutPdf?: boolean; showAnnouncementsLink?: boolean; }
 interface ContactInfo { name: string; title: string; phone: string; email: string; }
 
 const defaultContactInfo: ContactInfo = { name: 'Connie Heeren', title: 'Bulletin Coordinator', phone: '(605) 342-1556 Ext. 1', email: 'connie.heeren@strcstaff.org' };
@@ -82,7 +82,7 @@ function renderContributionSection(content: string) {
     );
 }
 
-export default function BulletinView({ bulletin, title, subtitle, backHref, backLabel = "Back to Current Week's Bulletin", showEmptyPdfWarning = false, emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.", hideSectionsWithoutPdf = false }: BulletinViewProps) {
+export default function BulletinView({ bulletin, title, subtitle, backHref, backLabel = "Back to Current Week's Bulletin", showEmptyPdfWarning = false, emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.", hideSectionsWithoutPdf = false, showAnnouncementsLink = false }: BulletinViewProps) {
     const [selectedSections, setSelectedSections] = useState<Set<string>>(new Set());
     const toggleSection = (id: string) => {
         const next = new Set(selectedSections);
@@ -163,6 +163,14 @@ export default function BulletinView({ bulletin, title, subtitle, backHref, back
                                         <div className="text-muted-foreground">
                                             {s.id === 'contributions' ? renderContributionSection(s.content) : (
                                                 <div className="text-sm prose prose-sm max-w-none"><ReactMarkdown>{s.content}</ReactMarkdown></div>
+                                            )}
+                                            {s.id === 'announcements' && showAnnouncementsLink && (
+                                                <Link
+                                                    href="/announcements"
+                                                    className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-primary/90"
+                                                >
+                                                    View All Announcements <ArrowRight size={15} />
+                                                </Link>
                                             )}
                                         </div>
                                     </div>

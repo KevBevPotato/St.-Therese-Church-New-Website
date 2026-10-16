@@ -18,6 +18,7 @@ import { getOrganizationById } from '@/data/organizations';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
+import { EventMedia } from '@/components/EventMedia';
 
 /**
  * Pulls only events tagged with the 'knights-of-columbus' invisible org tag
@@ -163,6 +164,15 @@ export default function KnightsOfColumbus() {
                 </div>
             </section>
 
+            {org.gallery?.length ? (
+                <section className="container mx-auto w-full max-w-6xl px-4 py-12">
+                    <EventMedia
+                        event={{ title: org.name, image: undefined, photos: [], gallery: org.gallery }}
+                        galleryTitle={`${org.name} Gallery`}
+                    />
+                </section>
+            ) : null}
+
             {/* Stats Bar - Temporarily hidden; keep for future updates.
             <section className="bg-primary text-white py-8">
                 <div className="container mx-auto px-4">
@@ -221,7 +231,7 @@ export default function KnightsOfColumbus() {
                         </Card>
                     </div>
 
-                    <div className="flex flex-wrap gap-4 mt-8 justify-center">
+                    <div className="mx-auto mt-8 flex max-w-5xl flex-nowrap items-stretch justify-center gap-3">
                         <Button
                             onClick={() =>
                                 openSignup({
@@ -230,26 +240,26 @@ export default function KnightsOfColumbus() {
                                     kind: 'join',
                                 })
                             }
-                            className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
+                            className="h-auto min-h-14 min-w-0 flex-1 whitespace-normal break-words bg-accent px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-white shadow-lg hover:bg-accent/90 sm:px-5 sm:text-sm sm:tracking-widest"
                         >
-                            <Users size={16} className="mr-2" /> Request Local Follow-up
+                            <Users size={16} className="mr-2 shrink-0" /> Request Local Follow-up
                         </Button>
                         {org.joinUrl && (
                             <a
                                 href={org.joinUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
-                                className="inline-flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg rounded-md transition-colors"
+                                className="inline-flex min-h-14 min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-white shadow-lg transition-colors hover:bg-primary/90 sm:px-5 sm:text-sm sm:tracking-widest"
                             >
-                                <Users size={16} /> Official Membership Application
+                                <Users size={16} className="shrink-0" /> Official Membership Application
                             </a>
                         )}
                         <Button
                             onClick={() => openEngagement('referral', org.name)}
                             variant="outline"
-                            className="px-8 py-6 font-bold uppercase tracking-widest border-2"
+                            className="h-auto min-h-14 min-w-0 flex-1 whitespace-normal break-words border-2 px-3 py-3 text-center text-xs font-bold uppercase tracking-wide sm:px-5 sm:text-sm sm:tracking-widest"
                         >
-                            <Heart size={16} className="mr-2" /> Refer a Knight
+                            <Heart size={16} className="mr-2 shrink-0" /> Refer a Knight
                         </Button>
                     </div>
                 </div>

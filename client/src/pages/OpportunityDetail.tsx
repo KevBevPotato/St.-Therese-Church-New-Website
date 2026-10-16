@@ -11,7 +11,9 @@ import {
     CheckCircle2,
     HelpCircle,
     Users,
-    Heart
+    Heart,
+    MessageSquare,
+    UserPlus
 } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
@@ -19,6 +21,14 @@ import { staticEvents, generateRecurringEventsForMonth, type EventOrganizationTa
 import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
 import { getOrganizationById } from '@/data/organizations';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
+import { EventMedia } from '@/components/EventMedia';
+
+interface OpportunityGalleryItem {
+    photo: string;
+    caption?: string;
+    linkUrl?: string;
+    showInCarousel?: boolean;
+}
 
 interface OpportunityDetailData {
     id: string;
@@ -34,6 +44,7 @@ interface OpportunityDetailData {
     faqs?: Array<{ question: string; answer: string }>;
     requirements?: string[];
     images?: Array<string | { photo?: string }>;
+    gallery?: OpportunityGalleryItem[];
     signUpLinks?: Array<{ label: string; url: string }>;
 }
 
@@ -44,7 +55,7 @@ interface OpportunityDetailData {
 
 export default function OpportunityDetail() {
     const [match, params] = useRoute('/get-involved/:id');
-    const { openSignup } = useInterestSignup();
+    const { openSignup, openEngagement } = useInterestSignup();
 
     const id = params?.id;
     const opportunities = getInvolvedData.opportunities as OpportunityDetailData[];
@@ -80,11 +91,18 @@ export default function OpportunityDetail() {
         description: cmsOrganization?.description ?? opportunity.landingPageDescription ?? opportunity.description,
         faqs: opportunity.faqs ?? [],
         requirements: opportunity.requirements ?? [],
-        images: (opportunity.images ?? [])
-            .map((image) => typeof image === 'string' ? image : image.photo)
-            .filter((image): image is string => Boolean(image)),
+        gallery: [
+            ...(cmsOrganization?.gallery ?? []),
+            ...(opportunity.images ?? [])
+                .map((image) => typeof image === 'string' ? { photo: image } : image)
+                .filter((image): image is { photo: string } => Boolean(image?.photo))
+                .map((image) => ({ photo: image.photo })),
+            ...(opportunity.gallery ?? []).filter((item) => Boolean(item.photo)),
+        ],
         signUpLinks: opportunity.signUpLinks ?? [],
     };
+    const isLiturgyOpportunity = ['lector', 'usher', 'altar-server', 'music'].includes(opportunity.id);
+    const liturgyPageSettings = getInvolvedData.settings.parishLifePages?.liturgy;
     const calendarTagByOpportunityId: Record<string, EventOrganizationTag> = {
         'catholic-daughters': 'catholic-daughters',
         'st-vincent-de-paul-food-drive': 'st-vincent-de-paul',
@@ -137,17 +155,92 @@ export default function OpportunityDetail() {
                             <p className="text-xl text-muted-foreground leading-relaxed whitespace-pre-line">
                                 {details.description}
                             </p>
+                            {details.requirements.length > 0 && (
+                                <ul className="mt-6 space-y-3">
+                                    {details.requirements.map((requirement, index) => (
+                                        <li key={`${requirement}-${index}`} className="flex items-start gap-3 text-sm text-muted-foreground">
+                                            <CheckCircle2 className="mt-0.5 shrink-0 text-green-500" size={18} />
+                                            <span>{requirement}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            )}
+                            {isLiturgyOpportunity && (
+                                <div className="mt-8 max-w-xl space-y-3">
+                                    <Button
+                                        onClick={() =>
+                                            openSignup({
+                                                id: opportunity.id,
+                                                title: details.title,
+                                                kind: 'volunteer',
+                                            })
+                                        }
+                                        className="w-full bg-primary py-6 text-sm font-bold uppercase tracking-widest text-white shadow-lg shadow-primary/20 hover:bg-primary/90"
+                                    >
+                                        {liturgyPageSettings?.signUpButton ?? 'Sign Up to Help'}
+                                    </Button>
+                                    <div className="grid grid-cols-2 gap-3">
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => openEngagement('suggestion', details.title)}
+                                            className="gap-2 border-primary/15 text-xs font-bold uppercase tracking-widest"
+                                        >
+                                            <MessageSquare size={14} /> {liturgyPageSettings?.suggestionButton ?? 'Suggestion'}
+                                        </Button>
+                                        <Button
+                                            variant="outline"
+                                            onClick={() => openEngagement('referral', details.title)}
+                                            className="gap-2 border-primary/15 text-xs font-bold uppercase tracking-widest"
+                                        >
+                                            <UserPlus size={14} /> {liturgyPageSettings?.referralButton ?? 'Refer'}
+                                        </Button>
+                                    </div>
+                                </div>
+                            )}
+                            {!isLiturgyOpportunity && (
+                                <div className="mt-8 max-w-xl space-y-3">
+                                    <Button
+                                        onClick={() =>
+                                            openSignup({
+                                                id: opportunity.id,
+                                                title: details.title,
+                                                kind:
+                                                    opportunity.id === 'wednesday-faith-formation'
+                                                        ? 'choose'
+                                                        : opportunity.categories?.includes('help')
+                                                          ? 'volunteer'
+                                                          : 'join',
+                                            })
+                                        }
+                                        className="w-full bg-primary py-6 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20 hover:bg-primary/90"
+                                    >
+                                        Fill Interest Form
+                                    </Button>
+                                    {details.signUpLinks.map((link) => (
+                                        <a
+                                            key={`${link.label}-${link.url}`}
+                                            href={link.url}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block rounded-full border border-primary/20 bg-white px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:border-accent hover:text-accent"
+                                        >
+                                            {link.label}
+                                        </a>
+                                    ))}
+                                </div>
+                            )}
                         </div>
 
-                        {details.images.length > 0 && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                {details.images.map((image, index) => (
-                                    <div key={`${image}-${index}`} className="aspect-video bg-gray-200 rounded-3xl overflow-hidden relative group">
-                                        <img src={image} alt={`${details.title} ${index + 1}`} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                                        <div className="absolute inset-0 bg-primary/10" />
-                                    </div>
-                                ))}
-                            </div>
+                        {details.gallery.length > 0 && (
+                            <EventMedia
+                                event={{
+                                    title: details.title,
+                                    image: undefined,
+                                    photos: [],
+                                    gallery: details.gallery,
+                                }}
+                                galleryTitle="Photo Gallery"
+                            />
                         )}
 
                         {details.faqs.length > 0 && <div className="space-y-8 pt-8">
@@ -166,46 +259,6 @@ export default function OpportunityDetail() {
                     </div>
 
                     <div className="space-y-8">
-                        <Card className="p-8 border-none shadow-xl bg-white rounded-[2rem]">
-                            <h3 className="font-serif text-2xl font-bold text-primary mb-6">Ready to Serve?</h3>
-                            <div className="space-y-4 mb-8">
-                                {details.requirements.map((req, i) => (
-                                    <div key={i} className="flex items-start gap-3 text-sm text-muted-foreground">
-                                        <CheckCircle2 className="text-green-500 shrink-0 mt-0.5" size={18} />
-                                        <span>{req}</span>
-                                    </div>
-                                ))}
-                            </div>
-                            <Button
-                                onClick={() =>
-                                    openSignup({
-                                        id: opportunity.id,
-                                        title: details.title,
-                                        kind:
-                                            opportunity.id === 'wednesday-faith-formation'
-                                                ? 'choose'
-                                                : opportunity.categories?.includes('help')
-                                                  ? 'volunteer'
-                                                  : 'join',
-                                    })
-                                }
-                                className="w-full bg-primary hover:bg-primary/90 py-8 text-sm font-bold uppercase tracking-widest shadow-lg shadow-primary/20"
-                            >
-                                Fill Interest Form
-                            </Button>
-                            {details.signUpLinks.map((link) => (
-                                <a
-                                    key={`${link.label}-${link.url}`}
-                                    href={link.url}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="block rounded-full border border-primary/20 bg-white px-4 py-3 text-center text-xs font-bold uppercase tracking-wider text-primary transition-colors hover:border-accent hover:text-accent"
-                                >
-                                    {link.label}
-                                </a>
-                            ))}
-                        </Card>
-
                         <Card className="p-8 border-none shadow-lg bg-primary text-white rounded-[2rem] relative overflow-hidden">
                             <div className="absolute top-0 right-0 p-4 opacity-10">
                                 <Users size={80} />

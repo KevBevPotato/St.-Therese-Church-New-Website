@@ -121,6 +121,7 @@ export default function Bulletin() {
                             title="This Week's Bulletin"
                             subtitle="Current Week"
                             hideSectionsWithoutPdf
+                            showAnnouncementsLink
                         />
                     </div>
 

@@ -1544,7 +1544,7 @@ collections:
     label: "Get Involved"
     files:
       - file: "client/src/data/get-involved_data.json"
-        label: "Opportunities and Signup Links"
+        label: "Parish Life Pages, Organizations, Opportunities, and Signup Links"
         name: "get_involved_file"
         fields:
           - label: "Page Settings and Forms"
@@ -1579,6 +1579,90 @@ collections:
                   widget: "string",
                   required: false,
                 }
+              - label: "Parish Life Pages and Navigation"
+                name: "parishLifePages"
+                widget: "object"
+                required: false
+                fields:
+                  - label: "Navigation Labels"
+                    name: "navigation"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Announcements", name: "announcements", widget: "string", required: false }
+                      - { label: "Join an Organization", name: "organizations", widget: "string", required: false }
+                      - { label: "Knights of Columbus", name: "knightsOfColumbus", widget: "string", required: false }
+                      - { label: "Catholic Daughters", name: "catholicDaughters", widget: "string", required: false }
+                      - { label: "Altar Society", name: "altarSociety", widget: "string", required: false }
+                      - { label: "St. Vincent de Paul", name: "stVincentDePaul", widget: "string", required: false }
+                      - { label: "Wednesday Faith Formation", name: "faithFormation", widget: "string", required: false }
+                      - { label: "Help with the Liturgy", name: "liturgy", widget: "string", required: false }
+                      - { label: "Lector", name: "lector", widget: "string", required: false }
+                      - { label: "Usher", name: "usher", widget: "string", required: false }
+                      - { label: "Altar Server", name: "altarServer", widget: "string", required: false }
+                      - { label: "Music Ministry", name: "musicMinistry", widget: "string", required: false }
+                      - { label: "Connect Groups", name: "connectGroups", widget: "string", required: false }
+                      - { label: "Group Studies", name: "groupStudies", widget: "string", required: false }
+                      - { label: "Sacraments", name: "sacraments", widget: "string", required: false }
+                      - { label: "Resources", name: "resources", widget: "string", required: false }
+                      - { label: "Need Help", name: "needHelp", widget: "string", required: false }
+                      - { label: "Contribute", name: "contribute", widget: "string", required: false }
+                  - label: "Help with the Liturgy Page"
+                    name: "liturgy"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Page Title", name: "title", widget: "string", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
+                      - { label: "Sign Up Button", name: "signUpButton", widget: "string", required: false }
+                      - { label: "Suggestion Button", name: "suggestionButton", widget: "string", required: false }
+                      - { label: "Refer Button", name: "referralButton", widget: "string", required: false }
+                      - { label: "Learn More Link", name: "learnMoreButton", widget: "string", required: false }
+                  - label: "Need Help Page"
+                    name: "needHelp"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Page Title", name: "title", widget: "string", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
+                      - { label: "Request Help Button", name: "requestButton", widget: "string", required: false }
+                  - label: "Contribute Page"
+                    name: "contribute"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Page Title", name: "title", widget: "string", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
+                      - label: "Contribution Ideas"
+                        name: "opportunities"
+                        widget: "list"
+                        required: false
+                        summary: "{{fields.title}}"
+                        fields:
+                          - { label: "ID", name: "id", widget: "string", required: false }
+                          - { label: "Title", name: "title", widget: "string", required: false }
+                          - { label: "Description", name: "description", widget: "text", required: false }
+                          - { label: "Button Label", name: "button", widget: "string", required: false }
+                          - {
+                              label: "Button Action",
+                              name: "action",
+                              widget: "select",
+                              options:
+                                [
+                                  "wednesday_supper_signup",
+                                  "lead_connect_group",
+                                  "external_link",
+                                  "none",
+                                ],
+                              required: false,
+                              hint: "Use External Link for a custom URL, or None to show a card without a button.",
+                            }
+                          - {
+                              label: "External URL",
+                              name: "url",
+                              widget: "string",
+                              required: false,
+                            }
               - label: "Serve Categories"
                 name: "categories"
                 widget: "list"
@@ -1768,11 +1852,33 @@ collections:
                     }
                   - { label: "Question", name: "question", widget: "string" , required: false }
                   - { label: "Answer", name: "answer", widget: "text" , required: false }
-              - label: "Landing Page Photos"
+              - label: "Legacy Landing Page Photos"
                 name: "images"
                 widget: "list"
                 required: false
                 field: { label: "Photo", name: "photo", widget: "image" , required: false }
+              - label: "Landing Page Carousel and Gallery"
+                name: "gallery"
+                widget: "list"
+                required: false
+                summary: "{{fields.caption}}"
+                fields:
+                  - { label: "Photo", name: "photo", widget: "image", required: true }
+                  - { label: "Caption", name: "caption", widget: "string", required: false }
+                  - {
+                      label: "Link URL (optional)",
+                      name: "linkUrl",
+                      widget: "string",
+                      required: false,
+                    }
+                  - {
+                      label: "Include in carousel",
+                      name: "showInCarousel",
+                      widget: "boolean",
+                      default: true,
+                      required: false,
+                      hint: "Turn off to show this photo in the gallery below the carousel.",
+                    }
               - label: "Sign-up / Event Links"
                 name: "signUpLinks"
                 widget: "list"
@@ -1886,6 +1992,28 @@ collections:
           widget: "image",
           required: false,
         }
+      - label: "Page Photo Carousel and Gallery"
+        name: "gallery"
+        widget: "list"
+        required: false
+        summary: "{{fields.caption}}"
+        fields:
+          - { label: "Photo", name: "photo", widget: "image", required: true }
+          - { label: "Caption", name: "caption", widget: "string", required: false }
+          - {
+              label: "Link URL (optional)",
+              name: "linkUrl",
+              widget: "string",
+              required: false,
+            }
+          - {
+              label: "Include in carousel",
+              name: "showInCarousel",
+              widget: "boolean",
+              default: true,
+              required: false,
+              hint: "Turn off to show this photo in the gallery below the carousel.",
+            }
       - { label: "Contact Name", name: "contactName", widget: "string" , required: false }
       - { label: "Contact Phone", name: "contactPhone", widget: "string" , required: false }
       - {

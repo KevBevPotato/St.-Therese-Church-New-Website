@@ -3,6 +3,8 @@ import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { AlertTriangle } from 'lucide-react';
 import { announcementSettings, getActiveAnnouncements } from '@/data/announcements';
+import ReactMarkdown from 'react-markdown';
+import { buildBulletinForRange, getCurrentWeekRange } from '@/data/bulletins';
 
 function formatDate(dateString: string): string {
   const [year, month, day] = dateString.split('-').map(Number);
@@ -15,6 +17,11 @@ function formatDate(dateString: string): string {
 
 export default function Announcements() {
   const announcements = getActiveAnnouncements();
+  const currentWeek = getCurrentWeekRange();
+  const currentBulletin = buildBulletinForRange(currentWeek.start, currentWeek.end);
+  const bulletinAnnouncements = currentBulletin.sections.find(
+    (section) => section.id === 'announcements',
+  )?.content;
   const columns = announcementSettings.cardColumns === 2 ? 'md:grid-cols-2' : 'md:grid-cols-2 xl:grid-cols-3';
   const aspectRatio = announcementSettings.cardImageAspect.replace('/', ' / ');
 
@@ -35,6 +42,34 @@ export default function Announcements() {
             {announcementSettings.description}
           </p>
         </header>
+
+        <section className="mb-12 max-w-4xl">
+          <div className="mb-5">
+            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
+              This Week’s Bulletin
+            </p>
+            <h2 className="mt-2 font-serif text-3xl font-bold text-primary">
+              Bulletin Announcements
+            </h2>
+            <p className="mt-2 text-sm text-muted-foreground">{currentBulletin.week}</p>
+          </div>
+          {bulletinAnnouncements ? (
+            <Card className="p-6 leading-relaxed text-muted-foreground shadow-sm md:p-8">
+              <div className="prose prose-sm max-w-none prose-headings:font-serif prose-headings:text-primary prose-strong:text-primary">
+                <ReactMarkdown>{bulletinAnnouncements}</ReactMarkdown>
+              </div>
+            </Card>
+          ) : (
+            <div className="rounded-xl border border-dashed border-primary/20 bg-white p-8 text-center">
+              <p className="font-serif text-xl font-bold text-primary">
+                No bulletin announcements available
+              </p>
+              <p className="mt-2 text-muted-foreground">
+                Please check back when this week’s bulletin has been updated.
+              </p>
+            </div>
+          )}
+        </section>
 
         {announcements.length ? (
           <div className={`grid grid-cols-1 gap-6 ${columns}`}>

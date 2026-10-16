@@ -306,6 +306,63 @@
     "contactName": "Parish Office",
     "contactPhone": "(605) 342-1556",
     "contactEmail": "connie.heeren@strcstaff.org",
+    "parishLifePages": {
+      "navigation": {
+        "announcements": "Announcements",
+        "organizations": "Join an Organization!",
+        "knightsOfColumbus": "Knights of Columbus",
+        "catholicDaughters": "Catholic Daughters",
+        "altarSociety": "Altar Society",
+        "stVincentDePaul": "St. Vincent de Paul",
+        "faithFormation": "Wednesday Faith Formation",
+        "liturgy": "Help with the Liturgy!",
+        "lector": "Lector",
+        "usher": "Usher",
+        "altarServer": "Altar Server",
+        "musicMinistry": "Music Ministry",
+        "connectGroups": "Connect Groups",
+        "groupStudies": "Group Studies",
+        "sacraments": "Sacraments",
+        "resources": "Resources",
+        "needHelp": "Need Help?",
+        "contribute": "Looking for a way to contribute?"
+      },
+      "liturgy": {
+        "title": "Help with the Liturgy!",
+        "introduction": "Help our parish celebrate the Mass through one of these liturgical ministries. Learn more about each role and sign up to serve.",
+        "signUpButton": "Sign Up to Help",
+        "suggestionButton": "Suggestion",
+        "referralButton": "Refer",
+        "learnMoreButton": "Learn More"
+      },
+      "needHelp": {
+        "title": "Need Help?",
+        "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",
+        "requestButton": "Request Help"
+      },
+      "contribute": {
+        "title": "Looking for a way to contribute?",
+        "introduction": "Share your time and gifts with the parish community through these opportunities.",
+        "opportunities": [
+          {
+          "id": "wednesday-supper",
+          "title": "Wednesday Night Supper Signup",
+          "description": "Help with grocery pickup, food preparation, serving, or cleanup for Wednesday Night Supper.",
+          "button": "Sign Up",
+          "action": "wednesday_supper_signup",
+          "url": ""
+          },
+          {
+          "id": "lead-connect-group",
+          "title": "Lead a Connect Group",
+          "description": "Let parish staff know you are interested in helping lead a Connect Group.",
+          "button": "Share Your Interest",
+          "action": "lead_connect_group",
+          "url": ""
+          }
+        ]
+      }
+    },
     "categories": [
       {
         "id": "all",

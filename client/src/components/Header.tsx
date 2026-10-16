@@ -6,6 +6,7 @@ import { staticEvents, generateRecurringEventsForMonth } from './eventfolders/ev
 import { organizations } from '@/data/organizations';
 import { staffMembers } from '../data/staff';
 import { faithCategories } from '@/data/faith-formation';
+import getInvolvedData from '@/data/get-involved';
 
 interface HeaderProps {
   showMassTimes?: boolean;
@@ -18,6 +19,111 @@ interface SearchResult {
   searchableText: string;
 }
 
+interface ParishLifeLink {
+  href?: string;
+  label: string;
+  children?: ParishLifeLink[];
+}
+
+function DesktopParishLifeItem({
+  link,
+  depth = 0,
+}: {
+  link: ParishLifeLink;
+  depth?: number;
+}) {
+  const hasChildren = !!link.children?.length;
+  const groupStyles =
+    depth === 0
+      ? {
+          group: "group/level0",
+          item: "group-hover/level0:bg-secondary group-hover/level0:text-primary group-focus-within/level0:bg-secondary group-focus-within/level0:text-primary",
+          submenu:
+            "group-hover/level0:visible group-hover/level0:opacity-100 group-focus-within/level0:visible group-focus-within/level0:opacity-100",
+        }
+      : {
+          group: "group/level1",
+          item: "group-hover/level1:bg-secondary group-hover/level1:text-primary group-focus-within/level1:bg-secondary group-focus-within/level1:text-primary",
+          submenu:
+            "group-hover/level1:visible group-hover/level1:opacity-100 group-focus-within/level1:visible group-focus-within/level1:opacity-100",
+        };
+  const className =
+    `flex items-center justify-between gap-3 px-4 py-2 text-sm text-foreground transition-colors hover:bg-secondary hover:text-primary ${groupStyles.item}`;
+  const trailingIcon = hasChildren ? (
+    <ChevronDown size={14} className="rotate-[-90deg]" aria-hidden="true" />
+  ) : null;
+
+  return (
+    <div className={`relative ${groupStyles.group}`}>
+      {link.href ? (
+        <Link href={link.href} className={className}>
+          <span>{link.label}</span>
+          {trailingIcon}
+        </Link>
+      ) : (
+        <button type="button" className={`${className} w-full text-left`} aria-haspopup={hasChildren ? "true" : undefined}>
+          <span>{link.label}</span>
+          {trailingIcon}
+        </button>
+      )}
+      {hasChildren && (
+        <div className={`invisible absolute left-full top-0 z-[61] min-w-[240px] rounded-r-md border border-l-0 border-border bg-white py-2 opacity-0 shadow-lg transition-opacity duration-200 ${groupStyles.submenu}`}>
+          {link.children?.map((child) => (
+            <DesktopParishLifeItem
+              key={child.href ?? child.label}
+              link={child}
+              depth={depth + 1}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MobileParishLifeItem({
+  link,
+  depth = 0,
+  onNavigate,
+}: {
+  link: ParishLifeLink;
+  depth?: number;
+  onNavigate: () => void;
+}) {
+  const indentation =
+    depth === 0
+      ? ""
+      : depth === 1
+        ? "ml-4 border-l-2 border-primary/15 pl-4"
+        : "ml-8 border-l-2 border-primary/10 pl-4";
+
+  return (
+    <div className={`flex flex-col ${indentation}`}>
+      {link.href ? (
+        <Link
+          href={link.href}
+          className={`block py-2 font-medium transition-colors hover:text-primary ${
+            depth === 0 ? "text-foreground" : "text-muted-foreground"
+          }`}
+          onClick={onNavigate}
+        >
+          {link.label}
+        </Link>
+      ) : (
+        <span className="block py-2 font-semibold text-foreground">{link.label}</span>
+      )}
+      {link.children?.map((child) => (
+        <MobileParishLifeItem
+          key={child.href ?? child.label}
+          link={child}
+          depth={depth + 1}
+          onNavigate={onNavigate}
+        />
+      ))}
+    </div>
+  );
+}
+
 const searchablePages: SearchResult[] = [
   { title: 'Home', type: 'Page', href: '/', searchableText: 'home saint therese church' },
   { title: 'About & Staff', type: 'Page', href: '/about', searchableText: 'about staff parish team' },
@@ -28,6 +134,9 @@ const searchablePages: SearchResult[] = [
   { title: 'Sacraments', type: 'Page', href: '/sacraments', searchableText: 'sacraments baptism reconciliation marriage communion confirmation' },
   { title: 'Faith Formation', type: 'Page', href: '/faith-formation', searchableText: 'faith formation catechism religious education' },
   { title: 'Get Involved', type: 'Page', href: '/get-involved', searchableText: 'get involved ministries volunteer organizations lector usher altar server music ministry volunteer opportunities' },
+  { title: 'Help with the Liturgy', type: 'Page', href: '/get-involved/liturgy', searchableText: 'lector usher altar server music ministry liturgy serve at mass' },
+  { title: 'Need Help?', type: 'Page', href: '/need-help', searchableText: 'request help parish assistance support' },
+  { title: 'Looking for a way to contribute?', type: 'Page', href: '/contribute', searchableText: 'contribute volunteer serve Wednesday Night Supper Lead a Connect Group' },
   { title: 'Connect Groups', type: 'Page', href: '/get-involved/connect-groups', searchableText: 'connect groups parish life prayer fellowship scripture discussion small group community' },
   { title: 'Group Studies', type: 'Page', href: '/get-involved/group-studies', searchableText: 'group studies parish life bible study catholic teaching faith formation seasonal study groups' },
   { title: 'Parish Calendar', type: 'Page', href: '/events', searchableText: 'parish calendar events schedule' },
@@ -175,23 +284,35 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
     { href: '/bulletin', label: 'Bulletin' },
   ];
 
-  const parishLifeLinks: Array<{
-    href: string;
-    label: string;
-    children?: Array<{ href: string; label: string }>;
-  }> = [
-    { href: '/announcements', label: 'Announcements' },
-    { href: '/sacraments', label: 'Sacraments' },
-    { href: '/resources', label: 'Resources' },
-    { href: '/faith-formation', label: 'Wednesday Faith Formation' },
+  const parishLifeNavigation = getInvolvedData.settings.parishLifePages?.navigation;
+  const parishLifeLinks: ParishLifeLink[] = [
+    { href: '/announcements', label: parishLifeNavigation?.announcements ?? 'Announcements' },
     {
-      href: '/get-involved',
-      label: 'Get Involved',
+      label: parishLifeNavigation?.organizations ?? 'Join an Organization!',
       children: [
-        { href: '/get-involved/connect-groups', label: 'Connect Groups' },
-        { href: '/get-involved/group-studies', label: 'Group Studies' },
+        { href: '/get-involved/knights-of-columbus', label: parishLifeNavigation?.knightsOfColumbus ?? 'Knights of Columbus' },
+        { href: '/get-involved/catholic-daughters', label: parishLifeNavigation?.catholicDaughters ?? 'Catholic Daughters' },
+        { href: '/get-involved/altar-society', label: parishLifeNavigation?.altarSociety ?? 'Altar Society' },
+        { href: '/get-involved/st-vincent-de-paul-food-drive', label: parishLifeNavigation?.stVincentDePaul ?? 'St. Vincent de Paul' },
       ],
     },
+    { href: '/faith-formation', label: parishLifeNavigation?.faithFormation ?? 'Wednesday Faith Formation' },
+    {
+      href: '/get-involved/liturgy',
+      label: parishLifeNavigation?.liturgy ?? 'Help with the Liturgy!',
+      children: [
+        { href: '/get-involved/lector', label: parishLifeNavigation?.lector ?? 'Lector' },
+        { href: '/get-involved/usher', label: parishLifeNavigation?.usher ?? 'Usher' },
+        { href: '/get-involved/altar-server', label: parishLifeNavigation?.altarServer ?? 'Altar Server' },
+        { href: '/get-involved/music', label: parishLifeNavigation?.musicMinistry ?? 'Music Ministry' },
+      ],
+    },
+    { href: '/get-involved/connect-groups', label: parishLifeNavigation?.connectGroups ?? 'Connect Groups' },
+    { href: '/get-involved/group-studies', label: parishLifeNavigation?.groupStudies ?? 'Group Studies' },
+    { href: '/sacraments', label: parishLifeNavigation?.sacraments ?? 'Sacraments' },
+    { href: '/resources', label: parishLifeNavigation?.resources ?? 'Resources' },
+    { href: '/need-help', label: parishLifeNavigation?.needHelp ?? 'Need Help?' },
+    { href: '/contribute', label: parishLifeNavigation?.contribute ?? 'Looking for a way to contribute?' },
   ];
 
   const externalLinks = [
@@ -336,34 +457,10 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
             </button>
 
             {isDropdownOpen && (
-              <div className="absolute left-0 top-full z-[60] w-56 rounded-b-lg border border-border bg-white py-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
+              <div className="absolute left-0 top-full z-[60] w-72 rounded-b-lg border border-border bg-white py-2 shadow-lg animate-in fade-in slide-in-from-top-2 duration-200">
                 {parishLifeLinks.map((link) => {
-                  const hasChildren = !!link.children?.length;
-
                   return (
-                    <div key={link.href} className="relative group/submenu">
-                      <Link
-                        href={link.href}
-                        className="flex items-center justify-between px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary group-hover/submenu:bg-secondary group-hover/submenu:text-primary group-focus-within/submenu:bg-secondary group-focus-within/submenu:text-primary transition-colors"
-                      >
-                        <span>{link.label}</span>
-                        {hasChildren && <ChevronDown size={14} className="rotate-[-90deg]" />}
-                      </Link>
-
-                      {hasChildren && (
-                        <div className="invisible absolute left-full top-0 min-w-[180px] rounded-r-md border border-l-0 border-border bg-white py-2 opacity-0 shadow-lg transition-opacity duration-200 group-hover/submenu:visible group-hover/submenu:opacity-100 group-focus-within/submenu:visible group-focus-within/submenu:opacity-100">
-                          {link.children?.map((child) => (
-                            <Link
-                              key={child.href}
-                              href={child.href}
-                              className="block px-4 py-2 text-sm text-foreground hover:bg-secondary hover:text-primary transition-colors"
-                            >
-                              {child.label}
-                            </Link>
-                          ))}
-                        </div>
-                      )}
-                    </div>
+                    <DesktopParishLifeItem key={link.href ?? link.label} link={link} />
                   );
                 })}
               </div>
@@ -494,27 +591,16 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
                 {link.label}
               </Link>
             ))}
-            {parishLifeLinks.map((link) => (
-              <div key={link.href} className="flex flex-col">
-                <Link
-                  href={link.href}
-                  className="block py-2 font-medium text-foreground transition-colors hover:text-primary"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  {link.label}
-                </Link>
-                {link.children?.map((child) => (
-                  <Link
-                    key={child.href}
-                    href={child.href}
-                    className="ml-4 block border-l-2 border-primary/15 py-2 pl-4 font-medium text-muted-foreground transition-colors hover:text-primary"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    {child.label}
-                  </Link>
-                ))}
-              </div>
-            ))}
+            <div className="flex flex-col">
+              <p className="py-2 text-xs font-bold uppercase tracking-widest text-[#9b762f]">Parish Life</p>
+              {parishLifeLinks.map((link) => (
+                <MobileParishLifeItem
+                  key={link.href ?? link.label}
+                  link={link}
+                  onNavigate={() => setIsMenuOpen(false)}
+                />
+              ))}
+            </div>
             {externalLinks.map((link) => (
               <a
                 key={link.href}

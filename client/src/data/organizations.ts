@@ -37,6 +37,12 @@ export interface Organization {
     meetingSchedule?: string;
     room?: string;
     heroImage?: string;
+    gallery?: Array<{
+        photo: string;
+        caption?: string;
+        linkUrl?: string;
+        showInCarousel?: boolean;
+    }>;
     contactName: string;
     contactPhone: string;
     contactEmail?: string;

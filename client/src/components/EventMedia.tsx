@@ -4,9 +4,10 @@ import type { CalendarEvent } from "@/components/eventfolders/types";
 
 interface EventMediaProps {
   event: Pick<CalendarEvent, "title" | "image" | "photos" | "gallery">;
+  galleryTitle?: string;
 }
 
-export function EventMedia({ event }: EventMediaProps) {
+export function EventMedia({ event, galleryTitle = "Event Gallery" }: EventMediaProps) {
   const { title, image, photos, gallery } = event;
   const mediaByPhoto = new Map<
     string,
@@ -47,7 +48,7 @@ export function EventMedia({ event }: EventMediaProps) {
           <div className="flex items-center gap-2">
             <ImageIcon className="size-5 text-primary" />
             <h2 className="font-serif text-3xl font-bold text-primary">
-              Event Gallery
+              {galleryTitle}
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">

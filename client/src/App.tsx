@@ -18,6 +18,9 @@ import StaffDetail from "./pages/StaffDetail";
 import FaithFormationDetail from './pages/FaithFormationDetail';
 import ConnectGroupsPage from './pages/ConnectGroupsPage';
 import GroupStudiesPage from './pages/GroupStudiesPage';
+import LiturgyPage from './pages/LiturgyPage';
+import NeedHelp from './pages/NeedHelp';
+import Contribute from './pages/Contribute';
 
 import Bulletin from "./components/Bulletin";
 import PreviousBulletins from "./components/PreviousBulletins";
@@ -50,6 +53,9 @@ function Router() {
       <Route path={"/get-involved/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/get-involved/connect-groups"} component={ConnectGroupsPage} />
       <Route path={"/get-involved/group-studies"} component={GroupStudiesPage} />
+      <Route path={"/get-involved/liturgy"} component={LiturgyPage} />
+      <Route path={"/need-help"} component={NeedHelp} />
+      <Route path={"/contribute"} component={Contribute} />
       <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       <Route path="/faith-formation/:categoryId" component={FaithFormationDetail} />

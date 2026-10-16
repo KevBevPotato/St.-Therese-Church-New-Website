@@ -19,6 +19,7 @@ import { getOrganizationById } from '@/data/organizations';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from './eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
+import { EventMedia } from '@/components/EventMedia';
 
 function getAltarSocietyEvents(): CalendarEvent[] {
     const now = new Date();
@@ -104,6 +105,15 @@ export default function AltarSociety() {
                     </div>
                 </div>
             </section>
+
+            {org.gallery?.length ? (
+                <section className="container mx-auto w-full max-w-6xl px-4 py-12">
+                    <EventMedia
+                        event={{ title: org.name, image: undefined, photos: [], gallery: org.gallery }}
+                        galleryTitle={`${org.name} Gallery`}
+                    />
+                </section>
+            ) : null}
 
             {/* Stats Bar */}
             <section className="bg-primary text-white py-8">
