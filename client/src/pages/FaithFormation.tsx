@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'wouter';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
@@ -32,43 +32,46 @@ import {
 
 type FormSacraments = {
     baptism: boolean;
-    firstCommunion: boolean;
-    confession: boolean;
+    reconciliation: boolean;
+    eucharist: boolean;
     confirmation: boolean;
 };
 
 interface ChildData {
-    fullName: string;
-    preferredName: string;
+    firstName: string;
+    lastName: string;
+    grade: string;
+    dateOfBirth: string;
     school: string;
-    phone: string;
+    emergencyContactGuardianFirstName: string;
     sacraments: FormSacraments;
-    contactPreference: 'email' | 'text';
+}
+
+interface ParentData {
+    firstName: string;
+    lastName: string;
+    relationship: string;
+    otherRelationship: string;
+    cell: string;
+    religion: string;
+    email: string;
 }
 
 interface FormData {
     numberOfChildren: number;
     children: ChildData[];
-    fatherFullName: string;
-    fatherReligion: string;
-    fatherCell: string;
-    fatherEmail: string;
-    fatherContactPreference: 'email' | 'text';
-    motherFullName: string;
-    motherReligion: string;
-    motherCell: string;
-    motherEmail: string;
-    motherContactPreference: 'email' | 'text';
+    sameEmergencyContact: boolean;
+    parent1: ParentData;
+    parent2: ParentData;
+    hasSecondParent: boolean;
+    parent2DifferentAddress: boolean;
     streetAddress: string;
     city: string;
-    state: string;
     zipCode: string;
     isMember: string;
-    massAttendance: string;
-    tuitionOption: 'per-child' | 'family';
-    tuitionPaid: string;
-    needsFinancialAssistance: boolean;
-    specialNeeds: string;
+    parent2StreetAddress: string;
+    parent2City: string;
+    parent2ZipCode: string;
 }
 
 type GroupFilter = FaithGroup | 'all';
@@ -81,19 +84,47 @@ const groupFilters: { id: GroupFilter; label: string }[] = [
     { id: 'adult', label: 'Adult' },
 ];
 
-const defaultChildData: ChildData = {
-    fullName: '',
-    preferredName: '',
+const createDefaultChildData = (): ChildData => ({
+    firstName: '',
+    lastName: '',
+    grade: '',
+    dateOfBirth: '',
     school: '',
-    phone: '',
+    emergencyContactGuardianFirstName: '',
     sacraments: {
         baptism: false,
-        firstCommunion: false,
-        confession: false,
+        reconciliation: false,
+        eucharist: false,
         confirmation: false,
     },
-    contactPreference: 'email',
-};
+});
+
+const createDefaultParentData = (): ParentData => ({
+    firstName: '',
+    lastName: '',
+    relationship: '',
+    otherRelationship: '',
+    cell: '',
+    religion: '',
+    email: '',
+});
+
+const createDefaultFormData = (): FormData => ({
+    numberOfChildren: 1,
+    children: [createDefaultChildData()],
+    sameEmergencyContact: false,
+    parent1: createDefaultParentData(),
+    parent2: createDefaultParentData(),
+    hasSecondParent: false,
+    parent2DifferentAddress: false,
+    streetAddress: '',
+    city: '',
+    zipCode: '',
+    isMember: '',
+    parent2StreetAddress: '',
+    parent2City: '',
+    parent2ZipCode: '',
+});
 
 export default function FaithFormation() {
     const [, navigate] = useLocation();
@@ -101,30 +132,20 @@ export default function FaithFormation() {
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const { reviewSubmission, reviewDialog } = useSubmissionReview();
-    const [formData, setFormData] = useState<FormData>({
-        numberOfChildren: 1,
-        children: [{ ...defaultChildData }],
-        fatherFullName: '',
-        fatherReligion: '',
-        fatherCell: '',
-        fatherEmail: '',
-        fatherContactPreference: 'email',
-        motherFullName: '',
-        motherReligion: '',
-        motherCell: '',
-        motherEmail: '',
-        motherContactPreference: 'email',
-        streetAddress: '',
-        city: '',
-        state: '',
-        zipCode: '',
-        isMember: '',
-        massAttendance: '',
-        tuitionOption: 'per-child',
-        tuitionPaid: '',
-        needsFinancialAssistance: false,
-        specialNeeds: '',
-    });
+    const [formData, setFormData] = useState<FormData>(createDefaultFormData);
+
+    useEffect(() => {
+        if (window.location.hash === '#register') {
+            setIsFormOpen(true);
+        }
+    }, []);
+
+    const closeRegistrationForm = () => {
+        setIsFormOpen(false);
+        if (window.location.hash === '#register') {
+            window.history.replaceState(null, '', `${window.location.pathname}${window.location.search}`);
+        }
+    };
 
     const toggleGroup = (id: GroupFilter) => {
         const next = new Set(selectedGroups);
@@ -188,90 +209,121 @@ export default function FaithFormation() {
             .sort((a, b) => a.date.getTime() - b.date.getTime());
     })();
 
-    const tuitionCost = (() => {
-        const isMember = formData.isMember === 'Yes';
-        const numChildren = formData.numberOfChildren;
-        if (formData.tuitionOption === 'family') {
-            return isMember ? 50 : 100;
-        }
-        return isMember ? 25 * numChildren : 50 * numChildren;
-    })();
+    const tuitionCost = Math.min(
+        formData.numberOfChildren * 25,
+        formData.isMember === 'Yes' ? 50 : 75,
+    );
 
     const handleNumberOfChildrenChange = (num: number) => {
         const newChildren = [...formData.children];
         if (num > formData.numberOfChildren) {
             for (let i = formData.numberOfChildren; i < num; i++) {
-                newChildren.push({ ...defaultChildData });
+                newChildren.push(createDefaultChildData());
             }
         } else {
             newChildren.splice(num);
         }
-        setFormData((prev) => ({ ...prev, numberOfChildren: num, children: newChildren }));
+        setFormData((prev) => ({
+            ...prev,
+            numberOfChildren: num,
+            children: newChildren,
+            sameEmergencyContact: num > 1 ? prev.sameEmergencyContact : false,
+        }));
     };
 
-    const handleChildChange = (childIndex: number, field: keyof ChildData, value: any) => {
-        const newChildren = [...formData.children];
-        if (field === 'sacraments') {
-            newChildren[childIndex].sacraments = value;
-        } else {
-            (newChildren[childIndex] as any)[field] = value;
-        }
-        setFormData((prev) => ({ ...prev, children: newChildren }));
-    };
-
-    const handleInputChange = (
-        e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    const handleChildTextChange = (
+        childIndex: number,
+        field: Exclude<keyof ChildData, 'sacraments'>,
+        value: string,
     ) => {
-        const { name, value, type } = e.target;
-        if (type === 'checkbox') {
-            setFormData((prev) => ({
-                ...prev,
-                [name]: (e.target as HTMLInputElement).checked,
+        setFormData((previous) => ({
+            ...previous,
+            children: previous.children.map((child, index) => {
+                if (index === childIndex || (previous.sameEmergencyContact && field.startsWith('emergencyContact'))) {
+                    return { ...child, [field]: value };
+                }
+                return child;
+            }),
+        }));
+    };
+
+    const handleParentChange = (
+        parent: 'parent1' | 'parent2',
+        field: keyof ParentData,
+        value: string,
+    ) => {
+        setFormData((previous) => ({
+            ...previous,
+            [parent]: { ...previous[parent], [field]: value },
+        }));
+    };
+
+    const handleSameEmergencyContactChange = (checked: boolean) => {
+        setFormData((previous) => {
+            if (!checked) return { ...previous, sameEmergencyContact: false };
+            const emergencyContactGuardianFirstName =
+                previous.children[0].emergencyContactGuardianFirstName;
+            const children = previous.children.map((child) => ({
+                ...child,
+                emergencyContactGuardianFirstName,
             }));
-        } else {
-            setFormData((prev) => ({ ...prev, [name]: value }));
-        }
+            return { ...previous, sameEmergencyContact: true, children };
+        });
+    };
+
+    const handleSecondParentChange = (hasSecondParent: boolean) => {
+        setFormData((previous) => ({ ...previous, hasSecondParent }));
     };
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        if (formData.children.some((child) => !child.emergencyContactGuardianFirstName.trim())) {
+            window.alert('Please enter an emergency contact guardian first name for each child.');
+            return;
+        }
         const payload: Record<string, string> = {
             number_of_children: String(formData.numberOfChildren),
-            father_full_name: formData.fatherFullName.trim(),
-            father_religion: formData.fatherReligion.trim(),
-            father_cell: formData.fatherCell.trim(),
-            father_email: formData.fatherEmail.trim(),
-            father_contact_preference: formData.fatherContactPreference,
-            mother_full_name: formData.motherFullName.trim(),
-            mother_religion: formData.motherReligion.trim(),
-            mother_cell: formData.motherCell.trim(),
-            mother_email: formData.motherEmail.trim(),
-            mother_contact_preference: formData.motherContactPreference,
+            same_emergency_contact: String(formData.sameEmergencyContact),
+            has_second_parent: String(formData.hasSecondParent),
+            parent_2_different_address: String(formData.parent2DifferentAddress),
             street_address: formData.streetAddress.trim(),
             city: formData.city.trim(),
-            state: formData.state.trim(),
             zip_code: formData.zipCode.trim(),
             is_member: formData.isMember,
-            mass_attendance: formData.massAttendance,
-            tuition_option: formData.tuitionOption,
-            tuition_paid: formData.tuitionPaid.trim(),
-            needs_financial_assistance: String(formData.needsFinancialAssistance),
-            special_needs: formData.specialNeeds.trim(),
+            parent_2_street_address: formData.parent2DifferentAddress ? formData.parent2StreetAddress.trim() : '',
+            parent_2_city: formData.parent2DifferentAddress ? formData.parent2City.trim() : '',
+            parent_2_zip_code: formData.parent2DifferentAddress ? formData.parent2ZipCode.trim() : '',
         };
+        [formData.parent1, formData.parent2].forEach((parent, index) => {
+            const prefix = `parent_${index + 1}_`;
+            payload[`${prefix}first_name`] = parent.firstName.trim();
+            payload[`${prefix}last_name`] = parent.lastName.trim();
+            payload[`${prefix}relationship`] = parent.relationship;
+            payload[`${prefix}other_relationship`] = parent.relationship === 'Other'
+                ? parent.otherRelationship.trim()
+                : '';
+            payload[`${prefix}cell`] = parent.cell.trim();
+            payload[`${prefix}religion`] = parent.religion.trim();
+            payload[`${prefix}email`] = parent.email.trim();
+        });
         formData.children.forEach((child, index) => {
             const prefix = `child_${index + 1}_`;
-            payload[`${prefix}full_name`] = child.fullName.trim();
-            payload[`${prefix}preferred_name`] = child.preferredName.trim();
+            payload[`${prefix}first_name`] = child.firstName.trim();
+            payload[`${prefix}last_name`] = child.lastName.trim();
+            payload[`${prefix}grade`] = child.grade.trim();
+            payload[`${prefix}date_of_birth`] = child.dateOfBirth;
             payload[`${prefix}school`] = child.school.trim();
-            payload[`${prefix}phone`] = child.phone.trim();
+            payload[`${prefix}emergency_contact_guardian_first_name`] = child.emergencyContactGuardianFirstName.trim();
             payload[`${prefix}sacraments_received`] = Object.entries(child.sacraments)
                 .filter(([, received]) => received)
                 .map(([sacrament]) => sacrament)
                 .join(', ');
-            payload[`${prefix}contact_preference`] = child.contactPreference;
         });
 
-        reviewSubmission('Faith Formation Registration', payload, async () => {
+        reviewSubmission('Faith Formation Registration', {
+            ...payload,
+            tuition_owed: `$${tuitionCost}`,
+        }, async () => {
             setIsSubmitting(true);
             try {
                 await submitForm('faith_formation_registration', payload);
@@ -280,30 +332,7 @@ export default function FaithFormation() {
                 );
                 setIsSubmitting(false);
                 setIsFormOpen(false);
-                setFormData({
-                    numberOfChildren: 1,
-                    children: [{ ...defaultChildData }],
-                    fatherFullName: '',
-                    fatherReligion: '',
-                    fatherCell: '',
-                    fatherEmail: '',
-                    fatherContactPreference: 'email',
-                    motherFullName: '',
-                    motherReligion: '',
-                    motherCell: '',
-                    motherEmail: '',
-                    motherContactPreference: 'email',
-                    streetAddress: '',
-                    city: '',
-                    state: '',
-                    zipCode: '',
-                    isMember: '',
-                    massAttendance: '',
-                    tuitionOption: 'per-child',
-                    tuitionPaid: '',
-                    needsFinancialAssistance: false,
-                    specialNeeds: '',
-                });
+                setFormData(createDefaultFormData());
             } catch (error) {
                 console.error('Faith Formation registration failed:', error);
                 alert(
@@ -482,7 +511,7 @@ export default function FaithFormation() {
                                 <p className="text-xs text-white/70 uppercase tracking-widest mt-1">Faith Formation 2026-2027</p>
                             </div>
                             <button
-                                onClick={() => setIsFormOpen(false)}
+                                onClick={closeRegistrationForm}
                                 className="p-2 hover:bg-white/10 rounded-full transition-colors"
                                 aria-label="Close registration form"
                             >
@@ -494,7 +523,7 @@ export default function FaithFormation() {
                             className="p-8 space-y-8 max-h-[80vh] overflow-y-auto custom-scrollbar"
                             onSubmit={handleSubmit}
                         >
-                            <div className="bg-accent/5 p-6 rounded-2xl border border-accent/10 mb-8">
+                            <div className="bg-accent/5 p-6 rounded-2xl border border-accent/10">
                                 <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
                                     <Heart size={18} className="text-accent" /> Registration Information
                                 </h4>
@@ -503,190 +532,262 @@ export default function FaithFormation() {
                                 </p>
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <section className="space-y-5">
                                 <div className="space-y-2">
-                                    <label className="text-xs font-bold text-primary uppercase tracking-widest">Number of Children</label>
+                                    <label htmlFor="numberOfChildren" className="text-xs font-bold text-primary uppercase tracking-widest">
+                                        How many children?
+                                    </label>
                                     <select
-                                        name="numberOfChildren"
+                                        id="numberOfChildren"
                                         value={formData.numberOfChildren}
-                                        onChange={(e) => handleNumberOfChildrenChange(parseInt(e.target.value))}
-                                        className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
+                                        onChange={(event) => handleNumberOfChildrenChange(Number(event.target.value))}
+                                        className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary"
                                     >
-                                        <option value={0}>No children</option>
-                                        {[1, 2, 3, 4, 5, 6].map((num) => (
-                                            <option key={num} value={num}>
-                                                {num} {num === 1 ? 'Child' : 'Children'}
+                                        {Array.from({ length: 12 }, (_, index) => index + 1).map((number) => (
+                                            <option key={number} value={number}>
+                                                {number} {number === 1 ? 'Child' : 'Children'}
                                             </option>
                                         ))}
                                     </select>
                                 </div>
-                                <div className="space-y-2">
-                                    <label className="text-xs font-bold text-primary uppercase tracking-widest">
-                                        Are you a member at St. Thérèse?
+
+                                <section className="space-y-5 border-t border-gray-100 pt-8">
+                                    <h4 className="font-bold text-primary uppercase tracking-widest text-sm">Guardian 1</h4>
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            First name
+                                            <input required type="text" value={formData.parent1.firstName} onChange={(event) => handleParentChange('parent1', 'firstName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Last name
+                                            <input required type="text" value={formData.parent1.lastName} onChange={(event) => handleParentChange('parent1', 'lastName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Relationship to child
+                                            <select required value={formData.parent1.relationship} onChange={(event) => handleParentChange('parent1', 'relationship', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary">
+                                                <option value="">Select relationship</option>
+                                                <option>Father</option>
+                                                <option>Mother</option>
+                                                <option>Other</option>
+                                            </select>
+                                        </label>
+                                        {formData.parent1.relationship === 'Other' && (
+                                            <label className="space-y-2 text-sm font-medium text-primary">
+                                                Please specify relationship
+                                                <input required type="text" value={formData.parent1.otherRelationship} onChange={(event) => handleParentChange('parent1', 'otherRelationship', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                        )}
+                                        <fieldset className="space-y-2">
+                                            <legend className="text-sm font-medium text-primary">Member at St. Thérèse?</legend>
+                                            <div className="flex gap-4">
+                                                {['Yes', 'No'].map((answer) => (
+                                                    <label key={answer} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <input required type="radio" name="isMember" value={answer} checked={formData.isMember === answer} onChange={(event) => setFormData((previous) => ({ ...previous, isMember: event.target.value }))} className="accent-primary" />
+                                                        {answer}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </fieldset>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Cell
+                                            <input required type="tel" autoComplete="tel" value={formData.parent1.cell} onChange={(event) => handleParentChange('parent1', 'cell', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Religion
+                                            <input required type="text" value={formData.parent1.religion} onChange={(event) => handleParentChange('parent1', 'religion', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Email
+                                            <input required type="email" autoComplete="email" value={formData.parent1.email} onChange={(event) => handleParentChange('parent1', 'email', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary md:col-span-2">
+                                            Address
+                                            <input required type="text" autoComplete="street-address" value={formData.streetAddress} onChange={(event) => setFormData((previous) => ({ ...previous, streetAddress: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            City
+                                            <input required type="text" autoComplete="address-level2" value={formData.city} onChange={(event) => setFormData((previous) => ({ ...previous, city: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                        <label className="space-y-2 text-sm font-medium text-primary">
+                                            Zipcode
+                                            <input required type="text" autoComplete="postal-code" value={formData.zipCode} onChange={(event) => setFormData((previous) => ({ ...previous, zipCode: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                        </label>
+                                    </div>
+
+                                    <label className="flex items-center gap-2 text-sm text-primary">
+                                        <input type="checkbox" checked={formData.hasSecondParent} onChange={(event) => handleSecondParentChange(event.target.checked)} className="accent-primary" />
+                                        Add Guardian 2
                                     </label>
-                                    <div className="flex gap-4 pt-2">
-                                        {['Yes', 'No'].map((opt) => (
-                                            <label key={opt} className="flex items-center gap-2 cursor-pointer">
-                                                <input
-                                                    type="radio"
-                                                    name="isMember"
-                                                    value={opt}
-                                                    checked={formData.isMember === opt}
-                                                    onChange={handleInputChange}
-                                                    className="accent-primary"
-                                                />
-                                                <span className="text-sm text-muted-foreground">{opt}</span>
-                                            </label>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
 
-                            {formData.children.map((child, idx) => (
-                                <div key={idx} className="p-6 border-2 border-gray-50 rounded-2xl space-y-4">
-                                    <h4 className="font-bold text-primary uppercase tracking-widest text-sm">Child #{idx + 1}</h4>
-                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <input
-                                            type="text"
-                                            placeholder="Full Name"
-                                            value={child.fullName}
-                                            onChange={(e) => handleChildChange(idx, 'fullName', e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="Preferred Name"
-                                            value={child.preferredName}
-                                            onChange={(e) => handleChildChange(idx, 'preferredName', e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="text"
-                                            placeholder="School"
-                                            value={child.school}
-                                            onChange={(e) => handleChildChange(idx, 'school', e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="tel"
-                                            placeholder="Phone (if applicable)"
-                                            value={child.phone}
-                                            onChange={(e) => handleChildChange(idx, 'phone', e.target.value)}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                    </div>
-                                    <div className="space-y-2">
-                                        <label className="text-xs font-bold text-primary uppercase tracking-widest">Sacraments Received:</label>
-                                        <div className="flex flex-wrap gap-4">
-                                            {Object.keys(child.sacraments).map((sac) => (
-                                                <label key={sac} className="flex items-center gap-2 cursor-pointer">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={(child.sacraments as any)[sac]}
-                                                        onChange={(e) =>
-                                                            handleChildChange(idx, 'sacraments', {
-                                                                ...child.sacraments,
-                                                                [sac]: e.target.checked,
-                                                            })
-                                                        }
-                                                        className="accent-primary"
-                                                    />
-                                                    <span className="text-xs text-muted-foreground capitalize">
-                                                        {sac.replace(/([A-Z])/g, ' $1')}
-                                                    </span>
+                                    {formData.hasSecondParent && (
+                                        <div className="space-y-5 rounded-2xl border-2 border-gray-100 p-6">
+                                            <h5 className="font-bold text-primary">Guardian 2</h5>
+                                            <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                                <label className="space-y-2 text-sm font-medium text-primary">
+                                                    First name
+                                                    <input required type="text" value={formData.parent2.firstName} onChange={(event) => handleParentChange('parent2', 'firstName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
                                                 </label>
-                                            ))}
+                                                <label className="space-y-2 text-sm font-medium text-primary">
+                                                    Last name
+                                                    <input required type="text" value={formData.parent2.lastName} onChange={(event) => handleParentChange('parent2', 'lastName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                </label>
+                                                <label className="space-y-2 text-sm font-medium text-primary">
+                                                    Relationship to child
+                                                    <select required value={formData.parent2.relationship} onChange={(event) => handleParentChange('parent2', 'relationship', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary">
+                                                        <option value="">Select relationship</option>
+                                                        <option>Father</option>
+                                                        <option>Mother</option>
+                                                        <option>Other</option>
+                                                    </select>
+                                                </label>
+                                                {formData.parent2.relationship === 'Other' && (
+                                                    <label className="space-y-2 text-sm font-medium text-primary">
+                                                        Please specify relationship
+                                                        <input required type="text" value={formData.parent2.otherRelationship} onChange={(event) => handleParentChange('parent2', 'otherRelationship', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                    </label>
+                                                )}
+                                                <label className="space-y-2 text-sm font-medium text-primary">
+                                                    Cell
+                                                    <input required type="tel" value={formData.parent2.cell} onChange={(event) => handleParentChange('parent2', 'cell', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                </label>
+                                                <label className="space-y-2 text-sm font-medium text-primary">
+                                                    Religion
+                                                    <input required type="text" value={formData.parent2.religion} onChange={(event) => handleParentChange('parent2', 'religion', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                </label>
+                                                <label className="space-y-2 text-sm font-medium text-primary md:col-span-2">
+                                                    Email
+                                                    <input required type="email" value={formData.parent2.email} onChange={(event) => handleParentChange('parent2', 'email', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                </label>
+                                            </div>
+                                            <label className="flex items-center gap-2 text-sm text-primary">
+                                                <input type="checkbox" checked={formData.parent2DifferentAddress} onChange={(event) => setFormData((previous) => ({ ...previous, parent2DifferentAddress: event.target.checked }))} className="accent-primary" />
+                                                Guardians live separately — enter Guardian 2&apos;s address
+                                            </label>
+                                            {formData.parent2DifferentAddress && (
+                                                <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                                    <label className="space-y-2 text-sm font-medium text-primary md:col-span-2">
+                                                        Address
+                                                        <input required type="text" value={formData.parent2StreetAddress} onChange={(event) => setFormData((previous) => ({ ...previous, parent2StreetAddress: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                    </label>
+                                                    <label className="space-y-2 text-sm font-medium text-primary">
+                                                        City
+                                                        <input required type="text" value={formData.parent2City} onChange={(event) => setFormData((previous) => ({ ...previous, parent2City: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                    </label>
+                                                    <label className="space-y-2 text-sm font-medium text-primary">
+                                                        Zipcode
+                                                        <input required type="text" value={formData.parent2ZipCode} onChange={(event) => setFormData((previous) => ({ ...previous, parent2ZipCode: event.target.value }))} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                                    </label>
+                                                </div>
+                                            )}
                                         </div>
-                                    </div>
-                                </div>
-                            ))}
+                                    )}
+                                </section>
 
-                            <div className="pt-8 border-t border-gray-100">
-                                <h4 className="font-bold text-primary mb-4 uppercase tracking-widest text-sm">Parent/Guardian Information</h4>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                    <div className="space-y-4">
-                                        <input
-                                            type="text"
-                                            name="fatherFullName"
-                                            placeholder="Father's Full Name"
-                                            value={formData.fatherFullName}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="tel"
-                                            name="fatherCell"
-                                            placeholder="Father's Cell Phone"
-                                            value={formData.fatherCell}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="email"
-                                            name="fatherEmail"
-                                            placeholder="Father's Email"
-                                            value={formData.fatherEmail}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                    </div>
-                                    <div className="space-y-4">
-                                        <input
-                                            type="text"
-                                            name="motherFullName"
-                                            placeholder="Mother's Full Name"
-                                            value={formData.motherFullName}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="tel"
-                                            name="motherCell"
-                                            placeholder="Mother's Cell Phone"
-                                            value={formData.motherCell}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                        <input
-                                            type="email"
-                                            name="motherEmail"
-                                            placeholder="Mother's Email"
-                                            value={formData.motherEmail}
-                                            onChange={handleInputChange}
-                                            className="w-full px-4 py-3 rounded-xl border-2 border-gray-100 focus:border-primary outline-none"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
+                                {formData.children.map((child, index) => (
+                                    <div key={index} className="space-y-5 rounded-2xl border-2 border-gray-100 p-6">
+                                        <h4 className="font-bold text-primary uppercase tracking-widest text-sm">
+                                            Child {index + 1}
+                                        </h4>
+                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                            <label className="space-y-2 text-sm font-medium text-primary">
+                                                First name
+                                                <input required type="text" autoComplete="given-name" value={child.firstName} onChange={(event) => handleChildTextChange(index, 'firstName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                            <label className="space-y-2 text-sm font-medium text-primary">
+                                                Last name
+                                                <input required type="text" autoComplete="family-name" value={child.lastName} onChange={(event) => handleChildTextChange(index, 'lastName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                            <label className="space-y-2 text-sm font-medium text-primary">
+                                                Grade
+                                                <input required type="text" value={child.grade} onChange={(event) => handleChildTextChange(index, 'grade', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                            <label className="space-y-2 text-sm font-medium text-primary">
+                                                Date of Birth
+                                                <input required type="date" value={child.dateOfBirth} onChange={(event) => handleChildTextChange(index, 'dateOfBirth', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                            <label className="space-y-2 text-sm font-medium text-primary md:col-span-2">
+                                                School Attends
+                                                <input required type="text" value={child.school} onChange={(event) => handleChildTextChange(index, 'school', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </label>
+                                        </div>
 
-                            <div className="pt-8 border-t border-gray-100">
-                                <h4 className="font-bold text-primary mb-4 uppercase tracking-widest text-sm">Tuition & Payment</h4>
-                                <div className="bg-primary/5 p-6 rounded-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
-                                    <div>
-                                        <p className="text-sm text-muted-foreground">
-                                            Tuition Fee ({formData.isMember === 'Yes' ? 'Member' : 'Non-Member'})
-                                        </p>
-                                        <p className="text-3xl font-serif font-bold text-primary">${tuitionCost}</p>
-                                    </div>
-                                    <div className="flex gap-4">
-                                        {['per-child', 'family'].map((opt) => (
-                                            <label key={opt} className="flex items-center gap-2 cursor-pointer bg-white px-4 py-2 rounded-xl border border-primary/10">
+                                        <fieldset className="space-y-3">
+                                            <legend className="text-xs font-bold uppercase tracking-widest text-primary">Sacraments</legend>
+                                            <div className="flex flex-wrap gap-4">
+                                                {([
+                                                    ['baptism', 'Baptism'],
+                                                    ['reconciliation', 'Reconciliation'],
+                                                    ['eucharist', 'Eucharist'],
+                                                    ['confirmation', 'Confirmation'],
+                                                ] as const).map(([key, label]) => (
+                                                    <label key={key} className="flex items-center gap-2 text-sm text-muted-foreground">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={child.sacraments[key]}
+                                                            onChange={(event) => setFormData((previous) => ({
+                                                                ...previous,
+                                                                children: previous.children.map((item, childIndex) => childIndex === index
+                                                                    ? { ...item, sacraments: { ...item.sacraments, [key]: event.target.checked } }
+                                                                    : item),
+                                                            }))}
+                                                            className="accent-primary"
+                                                        />
+                                                        {label}
+                                                    </label>
+                                                ))}
+                                            </div>
+                                        </fieldset>
+
+                                        {formData.children.length > 1 && index === 0 && (
+                                            <label className="flex items-center gap-2 text-sm text-primary">
                                                 <input
-                                                    type="radio"
-                                                    name="tuitionOption"
-                                                    value={opt}
-                                                    checked={formData.tuitionOption === opt}
-                                                    onChange={handleInputChange}
+                                                    type="checkbox"
+                                                    checked={formData.sameEmergencyContact}
+                                                    onChange={(event) => handleSameEmergencyContactChange(event.target.checked)}
                                                     className="accent-primary"
                                                 />
-                                                <span className="text-sm text-primary font-bold capitalize">
-                                                    {opt.replace('-', ' ')}
-                                                </span>
+                                                Apply to all children if the same
                                             </label>
-                                        ))}
+                                        )}
+
+                                        {(!formData.sameEmergencyContact || index === 0) && (
+                                            <fieldset className="space-y-3">
+                                                <legend className="text-xs font-bold uppercase tracking-widest text-primary">Emergency contact guardian first name</legend>
+                                                <input required type="text" value={child.emergencyContactGuardianFirstName} onChange={(event) => handleChildTextChange(index, 'emergencyContactGuardianFirstName', event.target.value)} className="w-full rounded-xl border-2 border-gray-100 px-4 py-3 outline-none focus:border-primary" />
+                                            </fieldset>
+                                        )}
                                     </div>
+                                ))}
+                            </section>
+
+                            <section className="space-y-4 border-t border-gray-100 pt-8">
+                                <h4 className="font-bold text-primary uppercase tracking-widest text-sm">Tuition Fees</h4>
+                                <div className="rounded-2xl bg-primary/5 p-6">
+                                    <p className="text-sm text-muted-foreground">
+                                        {formData.isMember
+                                            ? formData.isMember === 'Yes'
+                                                ? '$25 per child for parishioners; $50 maximum per family.'
+                                                : '$25 per child for non-parishioners; $75 maximum per family.'
+                                            : 'Registration is $25 per child, up to $50 per family for parishioners or $75 per family for non-parishioners.'}
+                                    </p>
+                                    <p className="mt-1 font-serif text-3xl font-bold text-primary">
+                                        {formData.isMember
+                                            ? `$${tuitionCost} total for ${formData.numberOfChildren} ${formData.numberOfChildren === 1 ? 'child' : 'children'}`
+                                            : 'Select parish membership to calculate tuition'}
+                                    </p>
+                                    <p className="mt-4 text-sm text-muted-foreground">
+                                        Tuition fees can be paid by donating to the Church using our secure online giving link.
+                                    </p>
+                                    <a
+                                        href="https://secure.myvanco.com/L-ZAYT/home"
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-3 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary/90"
+                                    >
+                                        Donate to the Church
+                                    </a>
                                 </div>
-                            </div>
+                            </section>
 
                             <Button
                                 type="submit"

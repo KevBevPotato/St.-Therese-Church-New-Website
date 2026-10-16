@@ -27,6 +27,14 @@ const ENGAGEMENT_TABS: Record<string, string> = {
   referral: "Referrals",
   request_help: "Request Help",
 };
+const POWERCHURCH_TRACKING_TABS = new Set([
+  "Parish Registrations",
+  "Faith Formation",
+  "Suggestions",
+  "Referrals",
+  "Get Involved",
+  "Request Help",
+]);
 const ALLOWED_ENGAGEMENT_IDS = new Set([
   "pledge-nursery",
   "pledge-supper-week",
@@ -134,6 +142,26 @@ const ALLOWED_FIELDS = new Set([
   "tuition_paid",
   "needs_financial_assistance",
   "special_needs",
+  "parent_1_first_name",
+  "parent_1_last_name",
+  "parent_1_relationship",
+  "parent_1_other_relationship",
+  "parent_1_cell",
+  "parent_1_religion",
+  "parent_1_email",
+  "parent_2_first_name",
+  "parent_2_last_name",
+  "parent_2_relationship",
+  "parent_2_other_relationship",
+  "parent_2_cell",
+  "parent_2_religion",
+  "parent_2_email",
+  "has_second_parent",
+  "parent_2_different_address",
+  "parent_2_street_address",
+  "parent_2_city",
+  "parent_2_zip_code",
+  "same_emergency_contact",
   "week_id",
   "week_date",
   "availability_type",
@@ -142,12 +170,13 @@ const ALLOWED_FIELDS = new Set([
   "website",
 ]);
 const FAITH_FORMATION_CHILD_FIELDS = new Set([
-  "full_name",
-  "preferred_name",
+  "first_name",
+  "last_name",
+  "grade",
+  "date_of_birth",
   "school",
-  "phone",
+  "emergency_contact_guardian_first_name",
   "sacraments_received",
-  "contact_preference",
 ]);
 const MEMBERSHIP_FIELDS = new Set([
   "family_name",
@@ -227,7 +256,7 @@ function isFaithFormationRegistrationField(key: string): boolean {
   return (
     !!match &&
     Number(match[1]) >= 1 &&
-    Number(match[1]) <= 6 &&
+    Number(match[1]) <= 12 &&
     FAITH_FORMATION_CHILD_FIELDS.has(match[2])
   );
 }
@@ -379,10 +408,99 @@ function validateBody(bodyValue: unknown): {
     }
     case "faith_formation_registration": {
       const childCount = Number(getString(body, "number_of_children"));
-      if (!Number.isInteger(childCount) || childCount < 0 || childCount > 6) {
-        return { error: "The number of children must be between 0 and 6." };
+      if (!Number.isInteger(childCount) || childCount < 1 || childCount > 12) {
+        return { error: "The number of children must be between 1 and 12." };
       }
-      required = [];
+      required = [
+        "is_member",
+        "parent_1_first_name",
+        "parent_1_last_name",
+        "parent_1_relationship",
+        "parent_1_cell",
+        "parent_1_religion",
+        "parent_1_email",
+        "street_address",
+        "city",
+        "zip_code",
+        "has_second_parent",
+        "parent_2_different_address",
+        "same_emergency_contact",
+      ];
+      for (let child = 1; child <= childCount; child++) {
+        required.push(
+          `child_${child}_first_name`,
+          `child_${child}_last_name`,
+          `child_${child}_grade`,
+          `child_${child}_date_of_birth`,
+          `child_${child}_school`,
+          `child_${child}_emergency_contact_guardian_first_name`,
+        );
+      }
+      const relationshipFields = ["parent_1", "parent_2"];
+      for (const parent of relationshipFields) {
+        const isRequired = parent === "parent_1" || getString(body, "has_second_parent") === "true";
+        const relationship = getString(body, `${parent}_relationship`);
+        if (
+          isRequired &&
+          !["Father", "Mother", "Other"].includes(relationship)
+        ) {
+          return { error: `Please select a relationship for ${parent.replace("_", " ")}.` };
+        }
+        if (
+          isRequired &&
+          relationship === "Other" &&
+          !getString(body, `${parent}_other_relationship`)
+        ) {
+          return { error: "Please specify the guardian's relationship to the child." };
+        }
+      }
+      if (getString(body, "has_second_parent") === "true") {
+        required.push(
+          "parent_2_first_name",
+          "parent_2_last_name",
+          "parent_2_relationship",
+          "parent_2_cell",
+          "parent_2_religion",
+          "parent_2_email",
+        );
+      }
+      if (getString(body, "parent_2_different_address") === "true") {
+        required.push(
+          "parent_2_street_address",
+          "parent_2_city",
+          "parent_2_zip_code",
+        );
+      }
+      if (!["Yes", "No"].includes(getString(body, "is_member"))) {
+        return { error: "Please select whether you are a parish member." };
+      }
+      if (
+        !["true", "false"].includes(getString(body, "has_second_parent")) ||
+        !["true", "false"].includes(
+          getString(body, "parent_2_different_address"),
+        ) ||
+        !["true", "false"].includes(
+          getString(body, "same_emergency_contact"),
+        )
+      ) {
+        return { error: "A registration option is invalid." };
+      }
+      if (
+        childCount === 1 &&
+        getString(body, "same_emergency_contact") === "true"
+      ) {
+        return {
+          error: "Apply to all children is only available for multiple children.",
+        };
+      }
+      if (
+        getString(body, "parent_2_different_address") === "true" &&
+        getString(body, "has_second_parent") !== "true"
+      ) {
+        return {
+          error: "A separate address requires a second parent or guardian.",
+        };
+      }
       break;
     }
     case "pledge":
@@ -432,6 +550,8 @@ function validateBody(bodyValue: unknown): {
     "previous_church_email",
     "father_email",
     "mother_email",
+    "parent_1_email",
+    "parent_2_email",
   ]) {
     const email = getString(body, emailField);
     if (email && !EMAIL_PATTERN.test(email)) {
@@ -463,7 +583,7 @@ function validateBody(bodyValue: unknown): {
       tab = "Parish Registrations";
       break;
     case "faith_formation_registration":
-      tab = "Parish Registrations";
+      tab = "Faith Formation";
       break;
     case "interest":
     case "faith_formation":
@@ -528,11 +648,13 @@ async function submitToGoogleSheet(
       lector: "Lector Signup",
     }[type] ??
       type);
-  const submission: Record<string, string | number> = {
-    submitted_at: new Date().toLocaleString("en-US", {
-      timeZone: "America/Denver",
-      hour12: true,
-    }),
+  const submittedAt = new Date().toLocaleString("en-US", {
+    timeZone: "America/Denver",
+    hour12: true,
+  });
+  const submission: Record<string, string | number | boolean> = {
+    submitted_at: submittedAt,
+    "Time Submitted": submittedAt,
     form_name: formName,
   };
   for (const [key, value] of Object.entries(body)) {
@@ -543,6 +665,16 @@ async function submitToGoogleSheet(
       );
     }
     submission[key] = value;
+  }
+  if (POWERCHURCH_TRACKING_TABS.has(sheet.title)) {
+    submission["Uploaded to PowerChurch"] = false;
+  }
+  if (type === "faith_formation_registration") {
+    submission["Paid?"] = false;
+    const childCount = Number(getString(body, "number_of_children"));
+    const maximumTuition =
+      getString(body, "is_member") === "Yes" ? 50 : 75;
+    submission["Tuition Owed"] = Math.min(childCount * 25, maximumTuition);
   }
 
   let headers: string[];
@@ -578,6 +710,28 @@ async function submitToGoogleSheet(
   }
   await sheet.setHeaderRow(headers);
   await sheet.addRow(submission);
+
+  for (const trackingHeader of [
+    "Uploaded to PowerChurch",
+    ...(type === "faith_formation_registration" ? ["Paid?"] : []),
+  ]) {
+    const columnIndex = headers.indexOf(trackingHeader);
+    if (columnIndex >= 0) {
+      await sheet.setDataValidation(
+        {
+          startRowIndex: 1,
+          endRowIndex: Math.max(sheet.rowCount, 2),
+          startColumnIndex: columnIndex,
+          endColumnIndex: columnIndex + 1,
+        },
+        {
+          condition: { type: "BOOLEAN", values: [] },
+          strict: true,
+          showCustomUi: true,
+        },
+      );
+    }
+  }
 }
 
 export default async function handler(
