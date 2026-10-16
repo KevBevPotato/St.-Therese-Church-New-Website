@@ -1,28 +1,42 @@
 (function () {
-  const link = document.createElement("a");
-  link.href = "/admin/bulletin-parsing-prompt.txt";
-  link.download = "bulletin-parsing-prompt.txt";
-  link.textContent = "Download AI prompt";
-  link.dataset.bulletinPromptDownload = "true";
-  link.setAttribute("aria-label", "Download the bulletin AI parsing prompt as a text file");
-  Object.assign(link.style, {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    marginLeft: "8px",
-    padding: "0 12px",
-    minHeight: "36px",
-    border: "1px solid #cbd5e1",
-    borderRadius: "4px",
-    background: "#fff",
-    color: "#17324f",
-    font: "600 14px system-ui, sans-serif",
-    textDecoration: "none",
-    whiteSpace: "nowrap",
-    boxSizing: "border-box",
+  const links = [
+    {
+      href: "/admin/bulletin-parsing-prompt.txt",
+      filename: "bulletin-parsing-prompt.txt",
+      label: "Download AI prompt",
+    },
+    {
+      href: "/admin/bulletin-uploading-instructions.txt",
+      filename: "Bulletin Uploading Instructions.txt",
+      label: "Download Bulletin Uploading Instructions",
+    },
+  ].map(({ href, filename, label }) => {
+    const link = document.createElement("a");
+    link.href = href;
+    link.download = filename;
+    link.textContent = label;
+    link.dataset.bulletinPromptDownload = "true";
+    link.setAttribute("aria-label", label);
+    Object.assign(link.style, {
+      display: "inline-flex",
+      alignItems: "center",
+      justifyContent: "center",
+      marginLeft: "8px",
+      padding: "0 12px",
+      minHeight: "36px",
+      border: "1px solid #cbd5e1",
+      borderRadius: "4px",
+      background: "#fff",
+      color: "#17324f",
+      font: "600 14px system-ui, sans-serif",
+      textDecoration: "none",
+      whiteSpace: "nowrap",
+      boxSizing: "border-box",
+    });
+    link.hidden = true;
+    document.body.append(link);
+    return link;
   });
-  link.hidden = true;
-  document.body.append(link);
 
   function updateVisibility() {
     const pathname = window.location.pathname.replace(/\/+$/, "");
@@ -31,7 +45,9 @@
       pathname === "/admin" &&
       hash === "#/collections/bulletins/entries/bulletins_file";
     if (!isTargetEditor) {
-      link.hidden = true;
+      links.forEach(link => {
+        link.hidden = true;
+      });
       return;
     }
 
@@ -60,7 +76,9 @@
       .sort((left, right) => left.rect.top - right.rect.top)[0]?.control;
 
     if (!publishButton?.parentElement) {
-      link.hidden = true;
+      links.forEach(link => {
+        link.hidden = true;
+      });
       return;
     }
 
@@ -72,10 +90,16 @@
       alignItems: "center",
       gap: "8px",
     });
-    link.hidden = false;
-    if (link.previousElementSibling !== publishButton) {
-      publishButton.insertAdjacentElement("afterend", link);
-    }
+    links.forEach(link => {
+      link.hidden = false;
+    });
+    let previous = publishButton;
+    links.forEach(link => {
+      if (link.previousElementSibling !== previous) {
+        previous.insertAdjacentElement("afterend", link);
+      }
+      previous = link;
+    });
   }
 
   const observer = new MutationObserver(updateVisibility);
