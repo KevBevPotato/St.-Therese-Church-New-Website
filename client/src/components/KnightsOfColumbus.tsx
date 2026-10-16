@@ -9,9 +9,7 @@ import {
     Phone,
     Mail,
     Shield,
-    Users,
     Calendar,
-    Heart,
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
@@ -242,7 +240,7 @@ export default function KnightsOfColumbus() {
                             }
                             className="h-auto min-h-14 min-w-0 flex-1 whitespace-normal break-words bg-accent px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-white shadow-lg hover:bg-accent/90 sm:px-5 sm:text-sm sm:tracking-widest"
                         >
-                            <Users size={16} className="mr-2 shrink-0" /> Request Local Follow-up
+                            Request Local Follow-up
                         </Button>
                         {org.joinUrl && (
                             <a
@@ -251,7 +249,7 @@ export default function KnightsOfColumbus() {
                                 rel="noopener noreferrer"
                                 className="inline-flex min-h-14 min-w-0 flex-1 items-center justify-center gap-2 rounded-md bg-primary px-3 py-3 text-center text-xs font-bold uppercase tracking-wide text-white shadow-lg transition-colors hover:bg-primary/90 sm:px-5 sm:text-sm sm:tracking-widest"
                             >
-                                <Users size={16} className="shrink-0" /> Official Membership Application
+                                Official Membership Application
                             </a>
                         )}
                         <Button
@@ -259,7 +257,7 @@ export default function KnightsOfColumbus() {
                             variant="outline"
                             className="h-auto min-h-14 min-w-0 flex-1 whitespace-normal break-words border-2 px-3 py-3 text-center text-xs font-bold uppercase tracking-wide sm:px-5 sm:text-sm sm:tracking-widest"
                         >
-                            <Heart size={16} className="mr-2 shrink-0" /> Refer a Knight
+                            Refer a Knight
                         </Button>
                     </div>
                 </div>
@@ -330,7 +328,7 @@ export default function KnightsOfColumbus() {
                 <div className="container mx-auto px-4 max-w-6xl">
                     <div className="text-center mb-12">
                         <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3 flex items-center justify-center gap-2">
-                            <Users size={14} /> Our Brotherhood
+                            Our Brotherhood
                         </p>
                         <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-4">
                             Members
