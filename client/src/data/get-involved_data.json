@@ -1,24 +1,11 @@
 {
   "opportunities": [
     {
-      "id": "nursery",
-      "title": "Nursery",
-      "categories": [
-        "sponsor",
-        "help",
-        "join"
-      ],
-      "tags": [
-        "Liturgy",
-        "Parish Events"
-      ],
-      "organization": "Parish Council",
-      "date": "Ongoing Project",
+      "signUpLinks": [],
+      "goalAmount": 2500,
       "contactName": "Kelly Whartman",
       "contactPhone": "(605) 867-5309",
-      "description": "We are looking to update the old side chapel into a nursery while retaining a space for mothers during Mass. Donations and volunteers are welcome.",
-      "goalAmount": 2500,
-      "currentAmount": 1200,
+      "date": "Ongoing Project",
       "constructionItems": [
         {
           "category": "2x4 Lumber & Construction Screws",
@@ -51,281 +38,290 @@
           "subtotal": "$31.50"
         }
       ],
+      "currentAmount": 1200,
       "constructionTotal": "~$242.30",
-      "signUpLinks": []
+      "organization": "Parish Council",
+      "title": "Nursery",
+      "tags": [
+        "Liturgy",
+        "Parish Events"
+      ],
+      "id": "nursery",
+      "categories": [
+        "sponsor",
+        "help",
+        "join"
+      ],
+      "description": "We are looking to update the old side chapel into a nursery while retaining a space for mothers during Mass. Donations and volunteers are welcome."
     },
     {
-      "id": "lector",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Ongoing Ministry",
+      "organization": "Liturgy Ministry",
       "title": "Lector Sign-up",
-      "categories": [
-        "help"
-      ],
       "tags": [
         "Liturgy"
       ],
-      "organization": "Liturgy Ministry",
-      "date": "Ongoing Ministry",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Proclaim the Scriptures and lead the Prayers of the Faithful during Mass. Training and scheduling support are provided for new lectors.",
-      "signUpLinks": []
+      "id": "lector",
+      "categories": [
+        "help"
+      ],
+      "description": "Proclaim the Scriptures and lead the Prayers of the Faithful during Mass. Training and scheduling support are provided for new lectors."
     },
     {
-      "id": "usher",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Ongoing Ministry",
+      "organization": "Liturgy Ministry",
       "title": "Usher Sign-up",
-      "categories": [
-        "help"
-      ],
       "tags": [
         "Liturgy"
       ],
-      "organization": "Liturgy Ministry",
-      "date": "Ongoing Ministry",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Ushers welcome parishioners, help people find seats in the pews—especially when the church is full—and assist with passing the offertory basket during Mass.",
-      "signUpLinks": []
+      "id": "usher",
+      "categories": [
+        "help"
+      ],
+      "description": "Ushers welcome parishioners, help people find seats in the pews—especially when the church is full—and assist with passing the offertory basket during Mass."
     },
     {
-      "id": "altar-server",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Ongoing Ministry",
+      "organization": "Liturgy Ministry",
       "title": "Altar Server Sign-up",
-      "categories": [
-        "help"
-      ],
       "tags": [
         "Liturgy"
       ],
-      "organization": "Liturgy Ministry",
-      "date": "Ongoing Ministry",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Serve at the altar during Mass. Altar servers assist the priest with liturgical functions such as carrying the Book of the Gospels, presenting the chalice, and other sacred items. Training is provided for all new servers, and adults and children (typically 4th grade and up) are both welcome.",
-      "signUpLinks": []
+      "id": "altar-server",
+      "categories": [
+        "help"
+      ],
+      "description": "Serve at the altar during Mass. Altar servers assist the priest with liturgical functions such as carrying the Book of the Gospels, presenting the chalice, and other sacred items. Training is provided for all new servers, and adults and children (typically 4th grade and up) are both welcome."
     },
     {
-      "id": "music",
-      "title": "Music Ministry Sign-up",
-      "categories": [
-        "help"
-      ],
-      "tags": [
-        "Liturgy"
-      ],
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Ongoing Ministry",
       "organization": "Liturgy & Music Ministry",
-      "date": "Ongoing Ministry",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Help lead the parish in sung prayer. We welcome people interested in joining the choir, serving as an instrumentalist, or becoming a cantor.",
-      "signUpLinks": []
+      "title": "Music Ministry Sign-up",
+      "tags": [
+        "Liturgy"
+      ],
+      "id": "music",
+      "categories": [
+        "help"
+      ],
+      "description": "Help lead the parish in sung prayer. We welcome people interested in joining the choir, serving as an instrumentalist, or becoming a cantor."
     },
     {
-      "id": "supper-week",
+      "customPage": "supper-week",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Sept. 2, 2026 – May 19, 2027",
+      "landingPageTitle": "Wednesday Night Supper",
+      "organization": "Parish Hospitality",
+      "landingPageDescription": "Every Wednesday during the school year, our parish family gathers for supper from 5:30-6:00 PM before Faith Formation classes. Sponsor a week for $200, or sign up to help with grocery pick-up, food prep, serving, or cleanup.",
       "title": "Wednesday Night Supper",
+      "tags": [
+        "Parish Events"
+      ],
+      "id": "supper-week",
       "categories": [
         "sponsor",
         "help"
       ],
-      "tags": [
-        "Parish Events"
-      ],
-      "organization": "Parish Hospitality",
-      "date": "Sept. 2, 2026 – May 19, 2027",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year.",
-      "customPage": "supper-week",
-      "signUpLinks": [],
-      "landingPageTitle": "Wednesday Night Supper",
-      "landingPageDescription": "Every Wednesday during the school year, our parish family gathers for supper from 5:30-6:00 PM before Faith Formation classes. Sponsor a week for $200, or sign up to help with grocery pick-up, food prep, serving, or cleanup."
+      "description": "Sponsor a Wednesday supper for $200 per week, or sign up to help with grocery pick-up, food prep, serving, or cleanup. Every Wednesday during the school year."
     },
     {
-      "id": "youth-ministry-mentors",
+      "signUpLinks": [],
+      "contactName": "Jane Doe",
+      "contactPhone": "(605) 867-5309",
+      "date": "Starts Sept. 2026",
+      "organization": "Faith Formation",
       "title": "Youth Ministry Mentors",
+      "tags": [
+        "Parish Organizations"
+      ],
+      "id": "youth-ministry-mentors",
       "categories": [
         "help"
       ],
+      "description": "Guide high school students in their faith journey as a small-group leader."
+    },
+    {
+      "customPage": "connect-groups",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Year-round small groups",
+      "landingPageTitle": "Connect Groups",
+      "organization": "Parish Life",
+      "landingPageDescription": "Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.",
+      "title": "Connect Groups",
       "tags": [
         "Parish Organizations"
       ],
-      "organization": "Faith Formation",
-      "date": "Starts Sept. 2026",
-      "contactName": "Jane Doe",
-      "contactPhone": "(605) 867-5309",
-      "description": "Guide high school students in their faith journey as a small-group leader.",
-      "signUpLinks": []
-    },
-    {
       "id": "connect-groups",
-      "title": "Connect Groups",
       "categories": [
         "join"
       ],
+      "contactEmail": "office@sttherese.org",
+      "description": "Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion."
+    },
+    {
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 342-1556",
+      "date": "Wednesdays during the school year",
+      "landingPageTitle": "Wednesday Faith Formation",
+      "organization": "Faith Formation",
+      "landingPageDescription": "Our Wednesday Faith Formation program helps children and families grow in the Catholic faith. Share your interest in serving as a catechist or helper, or request information about registering a participant.",
+      "title": "Wednesday Faith Formation",
       "tags": [
         "Parish Organizations"
       ],
-      "organization": "Parish Life",
-      "date": "Year-round small groups",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion.",
-      "customPage": "connect-groups",
-      "signUpLinks": [],
-      "landingPageTitle": "Connect Groups",
-      "landingPageDescription": "Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.",
-      "contactEmail": "office@sttherese.org"
-    },
-    {
       "id": "wednesday-faith-formation",
-      "title": "Wednesday Faith Formation",
       "categories": [
         "help",
         "join"
       ],
+      "description": "Help form the faith of our parish children as a catechist or classroom helper, or register a participant for Wednesday Faith Formation."
+    },
+    {
+      "customPage": "group-studies",
+      "signUpLinks": [],
+      "contactName": "Parish Office",
+      "contactPhone": "(605) 867-5309",
+      "date": "Seasonal study groups",
+      "landingPageTitle": "Group Studies",
+      "organization": "Parish Life",
+      "landingPageDescription": "Group Studies invite parishioners to explore Scripture, Catholic teaching, and spiritual formation in a prayerful, reflective setting. These seasonal studies help us deepen our relationship with Christ and one another.",
+      "title": "Group Studies",
       "tags": [
         "Parish Organizations"
       ],
-      "organization": "Faith Formation",
-      "date": "Wednesdays during the school year",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 342-1556",
-      "description": "Help form the faith of our parish children as a catechist or classroom helper, or register a participant for Wednesday Faith Formation.",
-      "signUpLinks": [],
-      "landingPageTitle": "Wednesday Faith Formation",
-      "landingPageDescription": "Our Wednesday Faith Formation program helps children and families grow in the Catholic faith. Share your interest in serving as a catechist or helper, or request information about registering a participant."
-    },
-    {
       "id": "group-studies",
-      "title": "Group Studies",
       "categories": [
         "join"
       ],
-      "tags": [
-        "Parish Organizations"
-      ],
-      "organization": "Parish Life",
-      "date": "Seasonal study groups",
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "description": "Explore the Bible, Catholic teaching, and spiritual growth with a parish study group.",
-      "customPage": "group-studies",
-      "signUpLinks": [],
-      "landingPageTitle": "Group Studies",
-      "landingPageDescription": "Group Studies invite parishioners to explore Scripture, Catholic teaching, and spiritual formation in a prayerful, reflective setting. These seasonal studies help us deepen our relationship with Christ and one another.",
-      "contactEmail": "office@sttherese.org"
+      "contactEmail": "office@sttherese.org",
+      "description": "Explore the Bible, Catholic teaching, and spiritual growth with a parish study group."
     },
     {
-      "id": "annual-parish-picnic",
+      "signUpLinks": [],
+      "expired": true,
+      "contactName": "John Doe",
+      "contactPhone": "(605) 867-5309",
+      "date": "August 23, 2026",
+      "organization": "Knights of Columbus",
       "title": "Annual Parish Picnic",
-      "categories": [
-        "help"
-      ],
       "tags": [
         "Parish Events"
       ],
-      "organization": "Knights of Columbus",
-      "date": "August 23, 2026",
-      "contactName": "John Doe",
-      "contactPhone": "(605) 867-5309",
-      "description": "Help host our largest community event of the year.",
-      "expired": true,
-      "signUpLinks": []
+      "id": "annual-parish-picnic",
+      "categories": [
+        "help"
+      ],
+      "description": "Help host our largest community event of the year."
     },
     {
-      "id": "st-vincent-de-paul-food-drive",
-      "title": "St. Vincent de Paul Food Drive",
-      "categories": [
-        "join"
-      ],
-      "tags": [
-        "Parish Organizations"
-      ],
-      "organization": "St. Vincent de Paul",
-      "date": "Every 1st Sunday",
+      "signUpLinks": [],
       "contactName": "Jane Doe",
       "contactPhone": "(605) 867-5309",
-      "description": "Help sort and distribute food donations to local families in need.",
-      "signUpLinks": []
-    },
-    {
-      "id": "altar-society",
-      "title": "Altar Society",
-      "categories": [
-        "join"
-      ],
+      "date": "Every 1st Sunday",
+      "organization": "St. Vincent de Paul",
+      "title": "St. Vincent de Paul Food Drive",
       "tags": [
         "Parish Organizations"
       ],
-      "organization": "Altar Society",
-      "date": "Quarterly",
-      "contactName": "President",
-      "contactPhone": "(605) 867-5309",
-      "description": "The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.",
-      "customPage": "altar-society",
-      "orgIcon": "flower",
-      "signUpLinks": []
-    },
-    {
-      "id": "knights-of-columbus",
-      "title": "Knights of Columbus",
+      "id": "st-vincent-de-paul-food-drive",
       "categories": [
         "join"
       ],
+      "description": "Help sort and distribute food donations to local families in need."
+    },
+    {
+      "customPage": "altar-society",
+      "signUpLinks": [],
+      "contactName": "President",
+      "contactPhone": "(605) 867-5309",
+      "date": "Quarterly",
+      "organization": "Altar Society",
+      "title": "Altar Society",
+      "tags": [
+        "Parish Organizations"
+      ],
+      "id": "altar-society",
+      "categories": [
+        "join"
+      ],
+      "description": "The women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. A beautiful way to serve the Lord through care of His house.",
+      "orgIcon": "flower"
+    },
+    {
+      "customPage": "knights-of-columbus",
+      "signUpLinks": [],
+      "contactName": "Grand Knight: Doug Keyser",
+      "contactPhone": "",
+      "date": "2nd Monday of each Month",
+      "organization": "Knights of Columbus",
+      "title": "Knights of Columbus",
       "tags": [
         "Parish Organizations",
         "Diocesan"
       ],
-      "organization": "Knights of Columbus",
-      "date": "1st Thursday of each month",
-      "contactName": "Grand Knight",
-      "contactPhone": "(605) 867-5309",
-      "description": "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
-      "customPage": "knights-of-columbus",
-      "orgIcon": "shield",
-      "signUpLinks": []
-    },
-    {
-      "id": "catholic-daughters",
-      "title": "Catholic Daughters of the Americas",
+      "id": "knights-of-columbus",
       "categories": [
         "join"
       ],
+      "description": "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship.",
+      "orgIcon": "shield"
+    },
+    {
+      "signUpLinks": [],
+      "contactName": "Jane Doe",
+      "contactPhone": "(605) 867-5309",
+      "date": "Monthly – 2nd Tuesday",
+      "organization": "Catholic Daughters",
+      "title": "Catholic Daughters of the Americas",
       "tags": [
         "Diocesan"
       ],
-      "organization": "Catholic Daughters",
-      "date": "Monthly – 2nd Tuesday",
-      "contactName": "Jane Doe",
-      "contactPhone": "(605) 867-5309",
-      "description": "Join us for prayer, fellowship, and planning charitable works.",
-      "signUpLinks": []
+      "id": "catholic-daughters",
+      "categories": [
+        "join"
+      ],
+      "description": "Join us for prayer, fellowship, and planning charitable works."
     }
   ],
   "settings": {
     "pageTitle": "Get Involved",
-    "introduction": "Discover ways to serve, connect, and support our parish community.",
-    "contactName": "Parish Office",
-    "contactPhone": "(605) 342-1556",
-    "contactEmail": "connie.heeren@strcstaff.org",
     "parishLifePages": {
       "navigation": {
-        "announcements": "Announcements",
         "organizations": "Join an Organization!",
-        "knightsOfColumbus": "Knights of Columbus",
         "catholicDaughters": "Catholic Daughters",
-        "altarSociety": "Altar Society",
-        "stVincentDePaul": "St. Vincent de Paul",
-        "faithFormation": "Wednesday Faith Formation",
+        "musicMinistry": "Music Ministry",
+        "resources": "Resources",
+        "knightsOfColumbus": "Knights of Columbus",
         "liturgy": "Help with the Liturgy!",
+        "groupStudies": "Group Studies",
+        "stVincentDePaul": "St. Vincent de Paul",
+        "announcements": "Announcements",
+        "contribute": "Looking for a way to contribute?",
         "lector": "Lector",
+        "altarSociety": "Altar Society",
+        "faithFormation": "Wednesday Faith Formation",
+        "sacraments": "Sacraments",
+        "needHelp": "Need Help?",
         "usher": "Usher",
         "altarServer": "Altar Server",
-        "musicMinistry": "Music Ministry",
-        "connectGroups": "Connect Groups",
-        "groupStudies": "Group Studies",
-        "sacraments": "Sacraments",
-        "resources": "Resources",
-        "needHelp": "Need Help?",
-        "contribute": "Looking for a way to contribute?"
+        "connectGroups": "Connect Groups"
       },
       "liturgy": {
         "title": "Help with the Liturgy!",
@@ -345,24 +341,35 @@
         "introduction": "Share your time and gifts with the parish community through these opportunities.",
         "opportunities": [
           {
-          "id": "wednesday-supper",
-          "title": "Wednesday Night Supper Signup",
-          "description": "Help with grocery pickup, food preparation, serving, or cleanup for Wednesday Night Supper.",
-          "button": "Sign Up",
-          "action": "wednesday_supper_signup",
-          "url": ""
+            "id": "wednesday-supper",
+            "title": "Wednesday Night Supper Signup",
+            "description": "Help with grocery pickup, food preparation, serving, or cleanup for Wednesday Night Supper.",
+            "button": "Sign Up",
+            "action": "wednesday_supper_signup",
+            "url": ""
           },
           {
-          "id": "lead-connect-group",
-          "title": "Lead a Connect Group",
-          "description": "Let parish staff know you are interested in helping lead a Connect Group.",
-          "button": "Share Your Interest",
-          "action": "lead_connect_group",
-          "url": ""
+            "id": "lead-connect-group",
+            "title": "Lead a Connect Group",
+            "description": "Let parish staff know you are interested in helping lead a Connect Group.",
+            "button": "Share Your Interest",
+            "action": "lead_connect_group",
+            "url": ""
           }
         ]
       }
     },
+    "contactName": "Parish Office",
+    "contactPhone": "(605) 342-1556",
+    "serveHeading": "How Would You Like to Serve",
+    "interestHeading": "By Interest",
+    "tags": [
+      "Liturgy",
+      "Parish Events",
+      "Parish Organizations",
+      "Diocesan"
+    ],
+    "introduction": "Discover ways to serve, connect, and support our parish community.",
     "categories": [
       {
         "id": "all",
@@ -385,13 +392,6 @@
         "label": "Request"
       }
     ],
-    "tags": [
-      "Liturgy",
-      "Parish Events",
-      "Parish Organizations",
-      "Diocesan"
-    ],
-    "serveHeading": "How Would You Like to Serve",
-    "interestHeading": "By Interest"
+    "contactEmail": "connie.heeren@strcstaff.org"
   }
 }
