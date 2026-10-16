@@ -1,0 +1,129 @@
+Please parse the uploaded parish bulletin source into the 12 categories below. Return one valid Markdown (.md) file per category. Use the exact filenames listed here. Each file must contain only the content for its category—no explanation or summary.
+
+CMS BULLETIN TITLE
+Also provide the title to enter in the CMS using exactly this format:
+October 10 - October 17th, 2026 (2026-10-10)
+
+Use the bulletin's actual first Saturday, final Saturday, and year. The date in parentheses must be the start date in YYYY-MM-DD format. Use this same title format for every bulletin.
+
+Bulletin date range:
+- Start date (first Saturday): [ENTER DATE]
+- End date (final Saturday): [ENTER DATE]
+
+GENERAL RULES
+- Use only information present in the uploaded files. Do not invent missing names, times, readings, amounts, or details.
+- Preserve names, dates, times, dollar amounts, and wording accurately. Correct obvious OCR errors only when the intended text is unambiguous.
+- If a category has no source information, return an empty file for it.
+- Use Markdown syntax literally. For example, bold text must use two asterisks on each side: **Bolded**. Italic text must use one asterisk on each side: *Italicized*.
+- Do not return HTML in place of Markdown.
+- Use Markdown bullets where specified. Put each entry on its own line.
+- Do not combine separate entries into paragraphs.
+- For dates, use a readable format such as “Saturday, Oct 17th”.
+- Keep the dates within the requested bulletin range. Use the actual dates in the source; do not guess the year or weekday.
+- At the end, list any unclear or unreadable source details separately under “Questions for staff”. Do not put those questions into the category files.
+
+FILES AND FORMATS
+
+1. mass_times.md
+- Include every Mass time for the bulletin date range.
+- Include Reconciliation / Confession times as well.
+- Use one bullet per service or time.
+- Format:
+  - **Saturday**: 4:30 pm
+  - **Sunday**: 8:00 am, 10:00 am
+  - **Reconciliation**: Saturday, 3:00–4:00 pm
+- Include location or special service details when stated in the source.
+
+2. announcements.md
+- Include each announcement as a separate bullet.
+- Bold the announcement title, followed by its dates, times, details, and contact information.
+- Format:
+  - **Announcement title** — Date and time. Details. Contact information.
+- Do not omit sign-up instructions, deadlines, or URLs that appear in the source.
+
+3. mass_intentions.md
+- Include intentions chronologically, starting with the first Saturday (start date) and ending with the final Saturday (end date), inclusive.
+- Use one bullet per intention, in this format:
+  - **Saturday, Oct 17th**: Name
+- Include the Mass time after the date if it is given.
+- Preserve intention names and symbols such as † when shown in the source.
+- If an intention is not provided for a day, do not make one up.
+
+4. daily_scriptures.md
+- Include the daily scripture readings chronologically from the first Saturday through the final Saturday, inclusive.
+- Use one bullet per day, in this format:
+  - **Saturday, Oct 17th**: First Reading; Psalm; Second Reading (if listed); Gospel.
+- Preserve book names, chapter and verse references, and reading titles as given.
+- Do not substitute readings from a calendar or another source. If the source does not provide a day’s readings, leave that day out and note it under “Questions for staff”.
+
+5. lectors.md
+- Separate assignments into “This Weekend” and “Next Weekend,” using the actual dates from the source.
+- Under each heading, list each Mass separately in chronological order.
+- Format:
+  ## This Weekend — [date range]
+  - **Saturday, Oct 17th, 4:30 pm**: Reader name(s)
+  - **Sunday, Oct 18th, 8:00 am**: Reader name(s)
+  ## Next Weekend — [date range]
+  - **Saturday, Oct 24th, 4:30 pm**: Reader name(s)
+- Include only assignments supported by the source. Do not infer missing assignments.
+
+6. ushers.md
+- Use the same “This Weekend” / “Next Weekend” structure and date/Mass formatting as lectors.md.
+- List usher assignments for each Mass separately.
+- Do not infer missing assignments.
+
+7. altar_servers.md
+- Use the same “This Weekend” / “Next Weekend” structure and date/Mass formatting as lectors.md.
+- List altar server assignments for each Mass separately.
+- Do not infer missing assignments.
+
+8. contributions.md
+- This section is rendered by the website as one row per line. Each row must use:
+  - Label: $1,234.56
+- Include one bullet per fund or collection, for example:
+  - General/Other: $4,625.00
+  - Building Improvements: $2,639.56
+  - Cash Collections: $200.00
+- Include these summary rows when provided:
+  - Weekly Amount Needed: $16,500.00
+  - Total: $17,738.61
+- Always spell the summary labels exactly “Weekly Amount Needed” and “Total”.
+- Use a colon between the label and amount. Include the dollar sign and two decimal places.
+- Do not put extra colons in a row’s label.
+- Do not calculate, adjust, or assume amounts. If the source provides a total, preserve it exactly; if it does not, do not calculate one.
+- The website compares Total with Weekly Amount Needed to color the total, so keep both labels and amounts on their own lines.
+
+9. prayer_list.md
+- If the source separates urgent/special requests from the regular bulletin prayer list, preserve that distinction.
+- Use this format:
+  **Special Requests**
+  - Name or request as printed
+  **Bulletin List**
+  - Name as printed
+- Do not add people from other sources or silently change names.
+
+10. a_little_laugh.md
+- Put each joke or riddle on its own separated block, with a blank line between jokes.
+- Format the joke/question in bold and its answer in italics:
+  **Why did ...?**
+
+  *Because ...*
+- Preserve the original wording and do not invent punchlines. If the source does not identify an answer, do not make one up.
+
+11. needs.md
+- Include each organization, category, or volunteer need as its own bullet.
+- Format:
+  - **Organization or category**: Requested items, volunteer roles, dates, and contact details.
+- Preserve quantities, deadlines, and contact information from the source.
+
+12. sponsors.md
+- Include one sponsor per bullet.
+- Format:
+  - Business Name (Business Type)
+- If the source includes a sponsorship message or recognition detail, include it after the business type.
+- Do not infer a business type that is not stated.
+
+OUTPUT
+- Return exactly these 12 Markdown files, clearly labeled with their filenames.
+- Also provide the CMS Bulletin Title as a single separate line in the specified format. This is metadata for the CMS, not a thirteenth Markdown file.
+- After the files and title, provide “Questions for staff” only if source information was missing, unclear, or unreadable.
