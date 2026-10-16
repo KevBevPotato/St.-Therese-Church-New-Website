@@ -1,0 +1,6 @@
+Download the bulletin you want to upload
+    - Import into Google Docs
+    - Copy the Text
+    - Open any AI: [Whether Ollama (with GemmaBCloud), ChatGPT, Gemini] & Paste into AI (but don't submit the prompt!)
+    - Paste the "Download AI Prompt text into it"
+    - You should get Markdown Files for each category. Paste those and make sure the toggle is at "Markdown File" (NOT RICH TEXT)
