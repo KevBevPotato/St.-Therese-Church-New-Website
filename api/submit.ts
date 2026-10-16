@@ -35,6 +35,7 @@ const POWERCHURCH_TRACKING_TABS = new Set([
   "Get Involved",
   "Request Help",
 ]);
+const POWERCHURCH_TRACKING_HEADER = "Uploaded to PowerChurch?";
 const ALLOWED_ENGAGEMENT_IDS = new Set([
   "pledge-nursery",
   "pledge-supper-week",
@@ -653,7 +654,6 @@ async function submitToGoogleSheet(
     hour12: true,
   });
   const submission: Record<string, string | number | boolean> = {
-    submitted_at: submittedAt,
     "Time Submitted": submittedAt,
     form_name: formName,
   };
@@ -667,7 +667,7 @@ async function submitToGoogleSheet(
     submission[key] = value;
   }
   if (POWERCHURCH_TRACKING_TABS.has(sheet.title)) {
-    submission["Uploaded to PowerChurch"] = false;
+    submission[POWERCHURCH_TRACKING_HEADER] = false;
   }
   if (type === "faith_formation_registration") {
     submission["Paid?"] = false;
@@ -693,6 +693,30 @@ async function submitToGoogleSheet(
     }
   }
 
+  const submittedAtIndex = headers.indexOf("submitted_at");
+  const timeSubmittedIndex = headers.indexOf("Time Submitted");
+  if (submittedAtIndex >= 0 && timeSubmittedIndex >= 0) {
+    await sheet.deleteDimension("COLUMNS", {
+      startIndex: submittedAtIndex,
+      endIndex: submittedAtIndex + 1,
+    });
+    headers.splice(submittedAtIndex, 1);
+  } else if (submittedAtIndex >= 0) {
+    headers[submittedAtIndex] = "Time Submitted";
+  }
+
+  const oldPowerChurchHeaderIndex = headers.indexOf("Uploaded to PowerChurch");
+  const powerChurchHeaderIndex = headers.indexOf(POWERCHURCH_TRACKING_HEADER);
+  if (oldPowerChurchHeaderIndex >= 0 && powerChurchHeaderIndex >= 0) {
+    await sheet.deleteDimension("COLUMNS", {
+      startIndex: oldPowerChurchHeaderIndex,
+      endIndex: oldPowerChurchHeaderIndex + 1,
+    });
+    headers.splice(oldPowerChurchHeaderIndex, 1);
+  } else if (oldPowerChurchHeaderIndex >= 0) {
+    headers[oldPowerChurchHeaderIndex] = POWERCHURCH_TRACKING_HEADER;
+  }
+
   while (headers.length && !headers.at(-1)) headers.pop();
   const knownHeaders = new Set(headers.filter(Boolean));
   for (const key of Object.keys(submission)) {
@@ -708,11 +732,29 @@ async function submitToGoogleSheet(
       columnCount: headers.length,
     });
   }
+
+  if (type === "faith_formation_registration") {
+    const firstHeaders = [POWERCHURCH_TRACKING_HEADER, "Paid?"];
+    for (let destinationIndex = 0; destinationIndex < firstHeaders.length; destinationIndex++) {
+      const header = firstHeaders[destinationIndex];
+      const sourceIndex = headers.indexOf(header);
+      if (sourceIndex !== destinationIndex) {
+        await sheet.moveDimension(
+          "COLUMNS",
+          { startIndex: sourceIndex, endIndex: sourceIndex + 1 },
+          destinationIndex,
+        );
+        const [movedHeader] = headers.splice(sourceIndex, 1);
+        headers.splice(destinationIndex, 0, movedHeader);
+      }
+    }
+  }
+
   await sheet.setHeaderRow(headers);
   await sheet.addRow(submission);
 
   for (const trackingHeader of [
-    "Uploaded to PowerChurch",
+    POWERCHURCH_TRACKING_HEADER,
     ...(type === "faith_formation_registration" ? ["Paid?"] : []),
   ]) {
     const columnIndex = headers.indexOf(trackingHeader);
