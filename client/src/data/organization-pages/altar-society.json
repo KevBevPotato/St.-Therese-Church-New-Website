@@ -1,29 +1,25 @@
 {
-  "id": "altar-society",
-  "name": "Altar Society",
-  "tagline": "Serving the Altar, Serving the Parish",
-  "description": "The Altar Society is a long-standing tradition at Saint Thérèse, where the women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. It is a beautiful way to serve the Lord through care of His house.",
-  "audienceTag": "Women's",
-  "audience": "Catholic Women of the Parish",
   "founded": 1950,
-  "meetingSchedule": "Quarterly",
-  "room": "Room 103",
-  "contactName": "President",
-  "contactPhone": "(605) 867-5309",
-  "stats": [
+  "audience": "Catholic Women of the Parish",
+  "name": "Altar Society",
+  "contactName": "Elaine Kocher",
+  "contactPhone": "",
+  "tagline": "Serving the Altar, Serving the Parish",
+  "meetingSchedule": "Monthly",
+  "audienceTag": "Women's",
+  "members": [
     {
-      "label": "Active Members",
-      "value": "40+"
+      "id": "m1",
+      "name": "Member Name 1"
     },
     {
-      "label": "Years at Saint Thérèse",
-      "value": "70+"
-    },
-    {
-      "label": "Altars Cared For",
-      "value": "2"
+      "id": "m2",
+      "name": "Member Name 2"
     }
   ],
+  "room": "Room 103",
+  "id": "altar-society",
+  "description": "All lady’s from our parish ages 18+ are members. We meet the first Sunday of the month; unless its a holiday then we have the meeting on the second Sunday of the month. Not only do we serve funerals. We make sure the kitchen is supplied, Priests vestment and altar items are taken care of. Please join us!\n\nThe Altar Society is a long-standing tradition at Saint Thérèse, where the women of the parish care for the sacred linens, altar vessels, flowers, and decorations of our church. It is a beautiful way to serve the Lord through care of His house.",
   "officers": [
     {
       "id": "president",
@@ -46,14 +42,18 @@
       "title": "Treasurer"
     }
   ],
-  "members": [
+  "stats": [
     {
-      "id": "m1",
-      "name": "Member Name 1"
+      "label": "Active Members",
+      "value": ""
     },
     {
-      "id": "m2",
-      "name": "Member Name 2"
+      "label": "Years at Saint Thérèse",
+      "value": ""
+    },
+    {
+      "label": "Altars Cared For",
+      "value": ""
     }
   ]
 }
