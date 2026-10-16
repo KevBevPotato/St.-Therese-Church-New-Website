@@ -25,45 +25,56 @@
   document.body.append(link);
 
   function updateVisibility() {
-    const route = `${window.location.pathname}${window.location.hash}`;
-    const isBulletinEditor = /bulletins/i.test(route);
-    if (!isBulletinEditor) {
+    const pathname = window.location.pathname.replace(/\/+$/, "");
+    const hash = window.location.hash.replace(/\/+$/, "");
+    const isTargetEditor =
+      pathname === "/admin" &&
+      hash === "#/collections/bulletins/entries/bulletins_file";
+    if (!isTargetEditor) {
       link.hidden = true;
       return;
     }
 
-    const publishButton = [...document.querySelectorAll("button, [role='button'], a")]
+    const publishButton = [...document.querySelectorAll("button, [role='button']")]
       .filter(control => !control.hasAttribute("data-bulletin-prompt-download"))
-      .find(control => {
-        const label = [
-          control.textContent,
-          control.getAttribute("aria-label"),
-          control.getAttribute("title"),
-        ]
-          .filter(Boolean)
-          .join(" ")
+      .map(control => {
+        const label = (
+          control.getAttribute("aria-label") ||
+          control.textContent ||
+          control.getAttribute("title") ||
+          ""
+        )
           .replace(/\s+/g, " ")
           .trim();
-        return /\bpublish\b/i.test(label);
-      });
+        return { control, label, rect: control.getBoundingClientRect() };
+      })
+      .filter(
+        ({ control, label, rect }) =>
+          /^publish(?:\s+(?:now|changes))?$/i.test(label) &&
+          rect.width > 0 &&
+          rect.height > 0 &&
+          rect.top >= 0 &&
+          rect.top < 160 &&
+          getComputedStyle(control).visibility !== "hidden",
+      )
+      .sort((left, right) => left.rect.top - right.rect.top)[0]?.control;
 
-    if (publishButton) {
-      link.style.position = "static";
-      link.style.right = "";
-      link.style.top = "";
-      link.style.zIndex = "";
-      link.style.boxShadow = "none";
-      link.hidden = false;
-      if (link.previousElementSibling !== publishButton) {
-        publishButton.insertAdjacentElement("afterend", link);
-      }
-    } else {
-      link.style.position = "fixed";
-      link.style.right = "20px";
-      link.style.top = "20px";
-      link.style.zIndex = "10000";
-      link.style.boxShadow = "0 4px 14px #0003";
-      link.hidden = false;
+    if (!publishButton?.parentElement) {
+      link.hidden = true;
+      return;
+    }
+
+    const toolbar = publishButton.parentElement;
+    Object.assign(toolbar.style, {
+      display: "flex",
+      flexDirection: "row",
+      flexWrap: "nowrap",
+      alignItems: "center",
+      gap: "8px",
+    });
+    link.hidden = false;
+    if (link.previousElementSibling !== publishButton) {
+      publishButton.insertAdjacentElement("afterend", link);
     }
   }
 
@@ -75,5 +86,6 @@
   });
   window.addEventListener("hashchange", updateVisibility);
   window.addEventListener("popstate", updateVisibility);
+  window.addEventListener("resize", updateVisibility);
   updateVisibility();
 })();
