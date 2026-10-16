@@ -18,7 +18,6 @@
     link.dataset.bulletinPromptDownload = "true";
     link.setAttribute("aria-label", label);
     Object.assign(link.style, {
-      display: "inline-flex",
       alignItems: "center",
       justifyContent: "center",
       marginLeft: "8px",
@@ -33,10 +32,15 @@
       whiteSpace: "nowrap",
       boxSizing: "border-box",
     });
-    link.hidden = true;
+    setLinkVisibility(link, false);
     document.body.append(link);
     return link;
   });
+
+  function setLinkVisibility(link, isVisible) {
+    link.hidden = !isVisible;
+    link.style.display = isVisible ? "inline-flex" : "none";
+  }
 
   function updateVisibility() {
     const pathname = window.location.pathname.replace(/\/+$/, "");
@@ -45,9 +49,7 @@
       pathname === "/admin" &&
       hash === "#/collections/bulletins/entries/bulletins_file";
     if (!isTargetEditor) {
-      links.forEach(link => {
-        link.hidden = true;
-      });
+      links.forEach(link => setLinkVisibility(link, false));
       return;
     }
 
@@ -76,9 +78,7 @@
       .sort((left, right) => left.rect.top - right.rect.top)[0]?.control;
 
     if (!publishButton?.parentElement) {
-      links.forEach(link => {
-        link.hidden = true;
-      });
+      links.forEach(link => setLinkVisibility(link, false));
       return;
     }
 
@@ -90,9 +90,7 @@
       alignItems: "center",
       gap: "8px",
     });
-    links.forEach(link => {
-      link.hidden = false;
-    });
+    links.forEach(link => setLinkVisibility(link, true));
     let previous = publishButton;
     links.forEach(link => {
       if (link.previousElementSibling !== previous) {
