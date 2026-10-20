@@ -825,7 +825,7 @@ export default function FaithFormation() {
                             Donate to Faith Formation
                         </a>
                         <p className="mt-5 text-muted-foreground">
-                            A staff member from St. Therese should be able to reach out within 1–2 business days. If you have questions, please reach out to Bobby Myers at{' '}
+                            If you have questions, please reach out to Bobby Myers at{' '}
                             <a className="font-medium text-primary underline" href="mailto:Bobby@strcstaff.org">
                                 Bobby@strcstaff.org
                             </a>.
