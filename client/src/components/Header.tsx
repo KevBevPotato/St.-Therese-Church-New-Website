@@ -10,6 +10,7 @@ import getInvolvedData from '@/data/get-involved';
 
 interface HeaderProps {
   showMassTimes?: boolean;
+  donateUrl?: string;
 }
 
 interface SearchResult {
@@ -256,7 +257,10 @@ const searchableOpportunities: SearchResult[] = [
   },
 ];
 
-export default function Header({ showMassTimes = false }: HeaderProps) {
+export default function Header({
+  showMassTimes = false,
+  donateUrl = 'https://secure.myvanco.com/L-ZAYT/home',
+}: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
@@ -495,7 +499,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
           </a>
 
           <a
-            href="https://secure.myvanco.com/L-ZAYT/home"
+            href={donateUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0"
@@ -631,7 +635,7 @@ export default function Header({ showMassTimes = false }: HeaderProps) {
             </div>
 
             <a
-              href="https://secure.myvanco.com/L-ZAYT/home"
+              href={donateUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}

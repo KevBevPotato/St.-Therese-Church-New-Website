@@ -26,6 +26,9 @@ import {
     type FaithGroup,
 } from '../data/faith-formation';
 
+const FAITH_FORMATION_DONATION_URL =
+    'https://secure.myvanco.com/L-ZAYT/campaign/C-10ACK';
+
 /**
  * Faith Formation Landing Page
  */
@@ -131,6 +134,7 @@ export default function FaithFormation() {
     const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(new Set<GroupFilter>(['all']));
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [registrationSuccessTuition, setRegistrationSuccessTuition] = useState<number | null>(null);
     const { reviewSubmission, reviewDialog } = useSubmissionReview();
     const [formData, setFormData] = useState<FormData>(createDefaultFormData);
 
@@ -327,9 +331,7 @@ export default function FaithFormation() {
             setIsSubmitting(true);
             try {
                 await submitForm('faith_formation_registration', payload);
-                alert(
-                    `Thank you for registering! Total cost due: $${tuitionCost}. Please donate via the Donate link in the website header. A staff member from St. Therese should be able to reach out within 1-2 business days. If you have questions, please reach out to Bobby Myers at Bobby@strcstaff.org.`
-                );
+                setRegistrationSuccessTuition(tuitionCost);
                 setIsSubmitting(false);
                 setIsFormOpen(false);
                 setFormData(createDefaultFormData());
@@ -347,7 +349,7 @@ export default function FaithFormation() {
 
     return (
         <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
-            <Header />
+            <Header donateUrl={FAITH_FORMATION_DONATION_URL} />
             <div className="pt-[69px]" />
 
             <section className="relative overflow-hidden border-b border-primary/10 bg-[#fbfaf6] py-16 md:py-20">
@@ -776,10 +778,10 @@ export default function FaithFormation() {
                                             : 'Select parish membership to calculate tuition'}
                                     </p>
                                     <p className="mt-4 text-sm text-muted-foreground">
-                                        Tuition fees can be paid by donating to the Church using our secure online giving link.
+                                        Tuition fees can be paid using our secure Faith Formation giving link.
                                     </p>
                                     <a
-                                        href="https://secure.myvanco.com/L-ZAYT/home"
+                                        href={FAITH_FORMATION_DONATION_URL}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className="mt-3 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary/90"
@@ -798,6 +800,44 @@ export default function FaithFormation() {
                             </Button>
                         </form>
                     </div>
+                </div>
+            )}
+            {registrationSuccessTuition !== null && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-primary/40 p-4 backdrop-blur-sm">
+                    <section
+                        role="dialog"
+                        aria-modal="true"
+                        aria-labelledby="registration-success-title"
+                        className="w-full max-w-lg rounded-3xl bg-white p-8 shadow-2xl"
+                    >
+                        <h2 id="registration-success-title" className="font-serif text-2xl font-bold text-primary">
+                            Thank you for registering!
+                        </h2>
+                        <p className="mt-4 text-muted-foreground">
+                            Total cost due: ${registrationSuccessTuition}. Please make your donation using the Faith Formation link below.
+                        </p>
+                        <a
+                            href={FAITH_FORMATION_DONATION_URL}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="mt-5 inline-flex rounded-full bg-primary px-5 py-3 text-sm font-bold text-white transition hover:bg-primary/90"
+                        >
+                            Donate to Faith Formation
+                        </a>
+                        <p className="mt-5 text-muted-foreground">
+                            A staff member from St. Therese should be able to reach out within 1–2 business days. If you have questions, please reach out to Bobby Myers at{' '}
+                            <a className="font-medium text-primary underline" href="mailto:Bobby@strcstaff.org">
+                                Bobby@strcstaff.org
+                            </a>.
+                        </p>
+                        <Button
+                            type="button"
+                            className="mt-6 w-full"
+                            onClick={() => setRegistrationSuccessTuition(null)}
+                        >
+                            Close
+                        </Button>
+                    </section>
                 </div>
             )}
             {reviewDialog}
