@@ -328,7 +328,7 @@ export default function FaithFormation() {
             try {
                 await submitForm('faith_formation_registration', payload);
                 alert(
-                    `Thank you for registering! Total cost due: $${tuitionCost}. We will contact you soon with more information.`
+                    `Thank you for registering! Total cost due: $${tuitionCost}. Please donate via the Donate link in the website header. A staff member from St. Therese should be able to reach out within 1-2 business days. If you have questions, please reach out to Bobby Myers at Bobby@strcstaff.org.`
                 );
                 setIsSubmitting(false);
                 setIsFormOpen(false);
