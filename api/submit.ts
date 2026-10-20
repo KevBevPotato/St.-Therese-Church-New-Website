@@ -29,7 +29,7 @@ const ENGAGEMENT_TABS: Record<string, string> = {
 };
 const POWERCHURCH_TRACKING_TABS = new Set([
   "Parish Registrations",
-  "Faith Formation",
+  "Wednesday Faith Formation",
   "Suggestions",
   "Referrals",
   "Get Involved",
@@ -584,7 +584,7 @@ function validateBody(bodyValue: unknown): {
       tab = "Parish Registrations";
       break;
     case "faith_formation_registration":
-      tab = "Faith Formation";
+      tab = "Wednesday Faith Formation";
       break;
     case "interest":
     case "faith_formation":
