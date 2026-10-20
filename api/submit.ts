@@ -36,6 +36,18 @@ const POWERCHURCH_TRACKING_TABS = new Set([
   "Request Help",
 ]);
 const POWERCHURCH_TRACKING_HEADER = "Uploaded to PowerChurch?";
+
+function columnToLetter(columnIndex: number): string {
+  let columnNumber = columnIndex + 1;
+  let column = "";
+  while (columnNumber > 0) {
+    const remainder = (columnNumber - 1) % 26;
+    column = String.fromCharCode(65 + remainder) + column;
+    columnNumber = Math.floor((columnNumber - 1) / 26);
+  }
+  return column;
+}
+
 const ALLOWED_ENGAGEMENT_IDS = new Set([
   "pledge-nursery",
   "pledge-supper-week",
@@ -751,27 +763,107 @@ async function submitToGoogleSheet(
   }
 
   await sheet.setHeaderRow(headers);
-  await sheet.addRow(submission);
+  let rowNumber: number;
+  if (type === "faith_formation_registration") {
+    const firstDataColumnIndex = headers.indexOf("Time Submitted");
+    if (firstDataColumnIndex < 0) {
+      throw new Error("The Google worksheet is missing its submission timestamp column.");
+    }
+    const firstDataColumn = columnToLetter(firstDataColumnIndex);
+    const timestampRows = await sheet.getCellsInRange(
+      `${firstDataColumn}2:${firstDataColumn}${sheet.rowCount}`
+    );
+    rowNumber = 2;
+    for (let rowIndex = 0; rowIndex < timestampRows.length; rowIndex++) {
+      const timestamp = timestampRows[rowIndex]?.[0];
+      if (timestamp === undefined || timestamp === null || timestamp === "") {
+        rowNumber = rowIndex + 2;
+        break;
+      }
+      rowNumber = rowIndex + 3;
+    }
+    const values = headers.map((header) => {
+      const value = submission[header] ?? "";
+      if (typeof value === "string") {
+        return { userEnteredValue: { stringValue: value } };
+      }
+      if (typeof value === "number") {
+        return { userEnteredValue: { numberValue: value } };
+      }
+      return { userEnteredValue: { boolValue: value } };
+    });
+    await spreadsheet.sheetsApi.post(":batchUpdate", {
+      json: {
+        requests: [
+          {
+            insertDimension: {
+              range: {
+                sheetId: sheet.sheetId,
+                dimension: "ROWS",
+                startIndex: rowNumber - 1,
+                endIndex: rowNumber,
+              },
+              inheritFromBefore: true,
+            },
+          },
+          {
+            updateCells: {
+              range: {
+                sheetId: sheet.sheetId,
+                startRowIndex: rowNumber - 1,
+                startColumnIndex: 0,
+              },
+              rows: [{ values }],
+              fields: "userEnteredValue",
+            },
+          },
+          {
+            setDataValidation: {
+              range: {
+                sheetId: sheet.sheetId,
+                startRowIndex: rowNumber - 1,
+                endRowIndex: rowNumber,
+                startColumnIndex: 0,
+                endColumnIndex: 2,
+              },
+              rule: {
+                condition: { type: "BOOLEAN", values: [] },
+                strict: true,
+                showCustomUi: true,
+              },
+            },
+          },
+        ],
+      },
+    });
+  } else {
+    const row = await sheet.addRow(submission);
+    rowNumber = row.rowNumber;
+  }
+  console.log("Google Sheets submission saved.", {
+    formType: type,
+    targetTab: sheet.title,
+    rowNumber,
+  });
 
-  for (const trackingHeader of [
-    POWERCHURCH_TRACKING_HEADER,
-    ...(type === "faith_formation_registration" ? ["Paid?"] : []),
-  ]) {
-    const columnIndex = headers.indexOf(trackingHeader);
-    if (columnIndex >= 0) {
-      await sheet.setDataValidation(
-        {
-          startRowIndex: 1,
-          endRowIndex: Math.max(sheet.rowCount, 2),
-          startColumnIndex: columnIndex,
-          endColumnIndex: columnIndex + 1,
-        },
-        {
-          condition: { type: "BOOLEAN", values: [] },
-          strict: true,
-          showCustomUi: true,
-        },
-      );
+  if (type !== "faith_formation_registration") {
+    for (const trackingHeader of [POWERCHURCH_TRACKING_HEADER]) {
+      const columnIndex = headers.indexOf(trackingHeader);
+      if (columnIndex >= 0) {
+        await sheet.setDataValidation(
+          {
+            startRowIndex: rowNumber - 1,
+            endRowIndex: rowNumber,
+            startColumnIndex: columnIndex,
+            endColumnIndex: columnIndex + 1,
+          },
+          {
+            condition: { type: "BOOLEAN", values: [] },
+            strict: true,
+            showCustomUi: true,
+          },
+        );
+      }
     }
   }
 }
