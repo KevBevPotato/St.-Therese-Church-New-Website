@@ -17,6 +17,7 @@ import {
     getCurrentWeekRange,
     getPdfUrlForWeek,
     formatBulletinRange,
+    formatDateKey,
     BulletinCMS
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
@@ -83,6 +84,14 @@ function buildBulletinForRange(start: Date, end: Date): BulletinType {
 export default function Bulletin() {
     const currentRange = getCurrentWeekRange();
     const currentBulletin = buildBulletinForRange(currentRange.start, currentRange.end);
+    const currentDate = formatDateKey(new Date());
+    const activeSchedule = (liturgicalSchedule.schedules ?? [])
+        .filter(schedule =>
+            schedule.pdfUrl &&
+            schedule.startDate <= currentDate &&
+            schedule.endDate >= currentDate
+        )
+        .sort((a, b) => b.startDate.localeCompare(a.startDate))[0];
 
     return (
         <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -121,7 +130,7 @@ export default function Bulletin() {
                             bulletin={currentBulletin}
                             title="This Week's Bulletin"
                             subtitle="Current Week"
-                            schedulePdfUrl={liturgicalSchedule.pdfUrl}
+                            schedulePdfUrl={activeSchedule?.pdfUrl}
                             hideSectionsWithoutPdf
                             showAnnouncementsLink
                         />

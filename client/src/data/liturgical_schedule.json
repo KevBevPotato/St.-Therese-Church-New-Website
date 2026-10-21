@@ -1,3 +1,10 @@
 {
-  "pdfUrl": "/resources/Liturgical+Schedule+SEPT.+6+thru+NOV.+29,+2026.pdf"
+  "schedules": [
+    {
+      "title": "September 6 through November 29, 2026",
+      "startDate": "2026-09-06",
+      "endDate": "2026-11-29",
+      "pdfUrl": "/resources/Liturgical+Schedule+SEPT.+6+thru+NOV.+29,+2026.pdf"
+    }
+  ]
 }

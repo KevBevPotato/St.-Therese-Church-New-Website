@@ -1029,20 +1029,49 @@ collections:
                   required: false,
                   hint: "Suggested format: - Business Name (Business Type). Add one bullet per sponsor.",
                 }
-  - name: "liturgical_schedule"
-    label: "Liturgical Schedule"
-    files:
       - file: "client/src/data/liturgical_schedule.json"
-        label: "Current Liturgical Schedule PDF"
-        name: "liturgical_schedule_file"
+        label: "Liturgical Schedule"
+        name: "liturgical_schedules_file"
         fields:
-          - {
-              label: "Liturgical Schedule PDF",
-              name: "pdfUrl",
-              widget: "file",
-              required: false,
-              hint: "Upload a replacement PDF here when the current liturgical schedule expires.",
-            }
+          - label: "Liturgical Schedules"
+            name: "schedules"
+            widget: "list"
+            required: false
+            summary: "{{fields.title}} ({{fields.startDate}} - {{fields.endDate}})"
+            hint: "Schedules are shown on the current bulletin only within their start and end dates. If ranges overlap, the schedule with the latest start date is shown."
+            fields:
+              - {
+                  label: "Schedule Title",
+                  name: "title",
+                  widget: "string",
+                  required: false,
+                }
+              - {
+                  label: "Start Date",
+                  name: "startDate",
+                  widget: "datetime",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  picker_utc: false,
+                  required: false,
+                }
+              - {
+                  label: "End Date",
+                  name: "endDate",
+                  widget: "datetime",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  picker_utc: false,
+                  required: false,
+                }
+              - {
+                  label: "PDF Upload",
+                  name: "pdfUrl",
+                  widget: "file",
+                  required: false,
+                }
   - name: "resources"
     label: "Resource Page"
     files:
