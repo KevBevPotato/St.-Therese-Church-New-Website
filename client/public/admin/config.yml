@@ -1029,6 +1029,20 @@ collections:
                   required: false,
                   hint: "Suggested format: - Business Name (Business Type). Add one bullet per sponsor.",
                 }
+  - name: "liturgical_schedule"
+    label: "Liturgical Schedule"
+    files:
+      - file: "client/src/data/liturgical_schedule.json"
+        label: "Current Liturgical Schedule PDF"
+        name: "liturgical_schedule_file"
+        fields:
+          - {
+              label: "Liturgical Schedule PDF",
+              name: "pdfUrl",
+              widget: "file",
+              required: false,
+              hint: "Upload a replacement PDF here when the current liturgical schedule expires.",
+            }
   - name: "resources"
     label: "Resource Page"
     files:

@@ -6,7 +6,7 @@ import { Calendar, FileText, Phone, Mail, Filter, ExternalLink, ArrowLeft, Arrow
 
 export interface BulletinSection { id: string; label: string; content: string; }
 export interface Bulletin { id: string; week: string; startDate: Date; endDate: Date; pdfUrl?: string; sections: BulletinSection[]; hasContent?: boolean; }
-interface BulletinViewProps { bulletin: Bulletin; title: string; subtitle: string; backHref?: string; backLabel?: string; showEmptyPdfWarning?: boolean; emptyPdfMessage?: string; hideSectionsWithoutPdf?: boolean; showAnnouncementsLink?: boolean; }
+interface BulletinViewProps { bulletin: Bulletin; title: string; subtitle: string; backHref?: string; backLabel?: string; showEmptyPdfWarning?: boolean; emptyPdfMessage?: string; hideSectionsWithoutPdf?: boolean; showAnnouncementsLink?: boolean; schedulePdfUrl?: string; }
 interface ContactInfo { name: string; title: string; phone: string; email: string; }
 
 const defaultContactInfo: ContactInfo = { name: 'Connie Heeren', title: 'Bulletin Coordinator', phone: '(605) 342-1556 Ext. 1', email: 'connie.heeren@strcstaff.org' };
@@ -82,7 +82,7 @@ function renderContributionSection(content: string) {
     );
 }
 
-export default function BulletinView({ bulletin, title, subtitle, backHref, backLabel = "Back to Current Week's Bulletin", showEmptyPdfWarning = false, emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.", hideSectionsWithoutPdf = false, showAnnouncementsLink = false }: BulletinViewProps) {
+export default function BulletinView({ bulletin, title, subtitle, backHref, backLabel = "Back to Current Week's Bulletin", showEmptyPdfWarning = false, emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.", hideSectionsWithoutPdf = false, showAnnouncementsLink = false, schedulePdfUrl }: BulletinViewProps) {
     const [selectedSections, setSelectedSections] = useState<Set<string>>(new Set());
     const toggleSection = (id: string) => {
         const next = new Set(selectedSections);
@@ -110,6 +110,11 @@ export default function BulletinView({ bulletin, title, subtitle, backHref, back
                         {hasPdf && (
                             <a href={bulletin.pdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95">
                                 <ExternalLink size={16} /> View PDF
+                            </a>
+                        )}
+                        {schedulePdfUrl && (
+                            <a href={schedulePdfUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-accent hover:bg-accent/90 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95">
+                                <ExternalLink size={16} /> Liturgical Schedule PDF
                             </a>
                         )}
                     </div>

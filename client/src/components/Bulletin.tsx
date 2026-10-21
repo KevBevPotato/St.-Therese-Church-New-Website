@@ -20,6 +20,7 @@ import {
     BulletinCMS
 } from '@/data/bulletins';
 import bulletinDataRaw from '@/data/bulletins_data.json';
+import liturgicalSchedule from '@/data/liturgical_schedule.json';
 import { visibleContent } from '@/data/visible-content';
 
 const bulletinData = visibleContent(
@@ -120,6 +121,7 @@ export default function Bulletin() {
                             bulletin={currentBulletin}
                             title="This Week's Bulletin"
                             subtitle="Current Week"
+                            schedulePdfUrl={liturgicalSchedule.pdfUrl}
                             hideSectionsWithoutPdf
                             showAnnouncementsLink
                         />
