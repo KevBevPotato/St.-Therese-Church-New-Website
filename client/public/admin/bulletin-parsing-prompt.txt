@@ -1,4 +1,4 @@
-Please parse the uploaded parish bulletin source into the 12 categories below. Return one valid Markdown (.md) file per category. Use the exact filenames listed here. Each file must contain only the content for its category—no explanation or summary.
+Please parse the uploaded parish bulletin source into the 12 categories below. Return one valid Markdown (.md) file per category. Use the exact filenames listed here. In your response, show each filename as a label outside its fenced code block, then put only that file's Markdown content inside a ```md code block. Do not put the filename, a title, or any explanation inside the code block. If a category has no source information, show an empty code block for that file.
 
 CMS BULLETIN TITLE
 Also provide the title to enter in the CMS using exactly this format:
@@ -7,8 +7,9 @@ October 10 - October 17th, 2026 (2026-10-10)
 Use the bulletin's actual first Saturday, final Saturday, and year. The date in parentheses must be the start date in YYYY-MM-DD format. Use this same title format for every bulletin.
 
 Bulletin date range:
-- Start date (first Saturday): [ENTER DATE]
-- End date (final Saturday): [ENTER DATE]
+- Start date (first Saturday): October 10, 2026
+- End date (final Saturday): October 17, 2026
+- These dates are prefilled from the example CMS title. Before parsing a different bulletin, replace both dates above with that bulletin's actual first and final Saturday, and update the CMS title to match.
 
 GENERAL RULES
 - Use only information present in the uploaded files. Do not invent missing names, times, readings, amounts, or details.
@@ -104,11 +105,17 @@ FILES AND FORMATS
 - Do not add people from other sources or silently change names.
 
 10. a_little_laugh.md
-- Put each joke or riddle on its own separated block, with a blank line between jokes.
+- Put each joke or riddle in its own block. Separate joke blocks with a Markdown horizontal rule (`---`) and a blank line before and after the rule. Do not use HTML such as `<br>`.
 - Format the joke/question in bold and its answer in italics:
   **Why did ...?**
 
   *Because ...*
+
+  ---
+
+  **What ...?**
+
+  *Answer ...*
 - Preserve the original wording and do not invent punchlines. If the source does not identify an answer, do not make one up.
 
 11. needs.md
@@ -125,8 +132,6 @@ FILES AND FORMATS
 - Do not infer a business type that is not stated.
 
 OUTPUT
-- Give me code files. I want to see them in markdown file format: for example **Bolded Text**
-- Return exactly these 12 Markdown files, clearly labeled with their filenames.
-- Before you give me those 12 markdown files, please give me Bulletin Title in the format i requested above, along with start & end dates
-- Also provide the CMS Bulletin Title as a single separate line in the specified format. This is metadata for the CMS, not a thirteenth Markdown file.
+- First provide the bulletin date range (start date and end date) and the CMS Bulletin Title as a single separate line in the specified format. The title and dates are metadata, not a thirteenth Markdown file.
+- Then return exactly these 12 Markdown files, in the order listed above. Clearly label each file with its filename outside the code block. Put only that file's Markdown content inside a fenced ```md code block; do not include the filename or any heading in the code block. Use literal Markdown syntax in the code, for example **Bolded Text**.
 - After the files and title, provide “Questions for staff” only if source information was missing, unclear, or unreadable.

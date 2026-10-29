@@ -119,6 +119,7 @@ const ALLOWED_FIELDS = new Set([
   "availability",
   "context_opportunity",
   "suggestion",
+  "feedback",
   "request_details",
   "their_name",
   "their_phone",
@@ -181,6 +182,7 @@ const ALLOWED_FIELDS = new Set([
   "week_ids",
   "preferred_roles",
   "website",
+  "page_url",
 ]);
 const FAITH_FORMATION_CHILD_FIELDS = new Set([
   "first_name",
@@ -379,7 +381,10 @@ function validateBody(bodyValue: unknown): {
           error: "Class registration is not available for this signup.",
         };
       }
-      if (signupKind === "class_registration" && formType !== "faith_formation") {
+      if (
+        signupKind === "class_registration" &&
+        formType !== "faith_formation"
+      ) {
         required.push("participant_name", "guardian_name");
       }
       break;
@@ -446,25 +451,31 @@ function validateBody(bodyValue: unknown): {
           `child_${child}_grade`,
           `child_${child}_date_of_birth`,
           `child_${child}_school`,
-          `child_${child}_emergency_contact_guardian_first_name`,
+          `child_${child}_emergency_contact_guardian_first_name`
         );
       }
       const relationshipFields = ["parent_1", "parent_2"];
       for (const parent of relationshipFields) {
-        const isRequired = parent === "parent_1" || getString(body, "has_second_parent") === "true";
+        const isRequired =
+          parent === "parent_1" ||
+          getString(body, "has_second_parent") === "true";
         const relationship = getString(body, `${parent}_relationship`);
         if (
           isRequired &&
           !["Father", "Mother", "Other"].includes(relationship)
         ) {
-          return { error: `Please select a relationship for ${parent.replace("_", " ")}.` };
+          return {
+            error: `Please select a relationship for ${parent.replace("_", " ")}.`,
+          };
         }
         if (
           isRequired &&
           relationship === "Other" &&
           !getString(body, `${parent}_other_relationship`)
         ) {
-          return { error: "Please specify the guardian's relationship to the child." };
+          return {
+            error: "Please specify the guardian's relationship to the child.",
+          };
         }
       }
       if (getString(body, "has_second_parent") === "true") {
@@ -474,14 +485,14 @@ function validateBody(bodyValue: unknown): {
           "parent_2_relationship",
           "parent_2_cell",
           "parent_2_religion",
-          "parent_2_email",
+          "parent_2_email"
         );
       }
       if (getString(body, "parent_2_different_address") === "true") {
         required.push(
           "parent_2_street_address",
           "parent_2_city",
-          "parent_2_zip_code",
+          "parent_2_zip_code"
         );
       }
       if (!["Yes", "No"].includes(getString(body, "is_member"))) {
@@ -490,11 +501,9 @@ function validateBody(bodyValue: unknown): {
       if (
         !["true", "false"].includes(getString(body, "has_second_parent")) ||
         !["true", "false"].includes(
-          getString(body, "parent_2_different_address"),
+          getString(body, "parent_2_different_address")
         ) ||
-        !["true", "false"].includes(
-          getString(body, "same_emergency_contact"),
-        )
+        !["true", "false"].includes(getString(body, "same_emergency_contact"))
       ) {
         return { error: "A registration option is invalid." };
       }
@@ -503,7 +512,8 @@ function validateBody(bodyValue: unknown): {
         getString(body, "same_emergency_contact") === "true"
       ) {
         return {
-          error: "Apply to all children is only available for multiple children.",
+          error:
+            "Apply to all children is only available for multiple children.",
         };
       }
       if (
@@ -518,6 +528,15 @@ function validateBody(bodyValue: unknown): {
     }
     case "pledge":
       required = ["from_name", "from_email", "project_id", "item_id"];
+      break;
+    case "feedback":
+      required = ["feedback"];
+      if (
+        getString(body, "from_email") &&
+        !EMAIL_PATTERN.test(getString(body, "from_email"))
+      ) {
+        return { error: "Please enter a valid email address." };
+      }
       break;
     case "engagement": {
       const engagementType = getString(body, "engagement_type");
@@ -605,6 +624,9 @@ function validateBody(bodyValue: unknown): {
     case "engagement":
       tab = ENGAGEMENT_TABS[getString(body, "engagement_type")];
       break;
+    case "feedback":
+      tab = "Website Feedback";
+      break;
   }
   return { body, tab };
 }
@@ -655,6 +677,7 @@ async function submitToGoogleSheet(
     engagementName ||
     ({
       faith_formation_registration: "Faith Formation Registration",
+      feedback: "Website Feedback",
       membership: "Parish Membership Registration",
       pledge: "Parish Pledge",
       "supper-volunteer": "Wednesday Supper Volunteer",
@@ -684,8 +707,7 @@ async function submitToGoogleSheet(
   if (type === "faith_formation_registration") {
     submission["Paid?"] = false;
     const childCount = Number(getString(body, "number_of_children"));
-    const maximumTuition =
-      getString(body, "is_member") === "Yes" ? 50 : 75;
+    const maximumTuition = getString(body, "is_member") === "Yes" ? 50 : 75;
     submission["Tuition Owed"] = Math.min(childCount * 25, maximumTuition);
   }
 
@@ -747,14 +769,18 @@ async function submitToGoogleSheet(
 
   if (type === "faith_formation_registration") {
     const firstHeaders = [POWERCHURCH_TRACKING_HEADER, "Paid?"];
-    for (let destinationIndex = 0; destinationIndex < firstHeaders.length; destinationIndex++) {
+    for (
+      let destinationIndex = 0;
+      destinationIndex < firstHeaders.length;
+      destinationIndex++
+    ) {
       const header = firstHeaders[destinationIndex];
       const sourceIndex = headers.indexOf(header);
       if (sourceIndex !== destinationIndex) {
         await sheet.moveDimension(
           "COLUMNS",
           { startIndex: sourceIndex, endIndex: sourceIndex + 1 },
-          destinationIndex,
+          destinationIndex
         );
         const [movedHeader] = headers.splice(sourceIndex, 1);
         headers.splice(destinationIndex, 0, movedHeader);
@@ -767,7 +793,9 @@ async function submitToGoogleSheet(
   if (type === "faith_formation_registration") {
     const firstDataColumnIndex = headers.indexOf("Time Submitted");
     if (firstDataColumnIndex < 0) {
-      throw new Error("The Google worksheet is missing its submission timestamp column.");
+      throw new Error(
+        "The Google worksheet is missing its submission timestamp column."
+      );
     }
     const firstDataColumn = columnToLetter(firstDataColumnIndex);
     const timestampRows = await sheet.getCellsInRange(
@@ -782,7 +810,7 @@ async function submitToGoogleSheet(
       }
       rowNumber = rowIndex + 3;
     }
-    const values = headers.map((header) => {
+    const values = headers.map(header => {
       const value = submission[header] ?? "";
       if (typeof value === "string") {
         return { userEnteredValue: { stringValue: value } };
@@ -861,7 +889,7 @@ async function submitToGoogleSheet(
             condition: { type: "BOOLEAN", values: [] },
             strict: true,
             showCustomUi: true,
-          },
+          }
         );
       }
     }
