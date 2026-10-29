@@ -182,6 +182,7 @@ const ALLOWED_FIELDS = new Set([
   "week_ids",
   "preferred_roles",
   "website",
+  "feedback_website",
   "page_url",
 ]);
 const FAITH_FORMATION_CHILD_FIELDS = new Set([
@@ -347,7 +348,7 @@ function validateBody(bodyValue: unknown): {
     }
   }
 
-  if (getString(body, "website"))
+  if (getString(body, "website") || getString(body, "feedback_website"))
     return { error: "The submission could not be accepted." };
 
   let required: string[];

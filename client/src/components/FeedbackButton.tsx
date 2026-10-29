@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { CheckCircle2, Loader2, MessageSquare, X } from "lucide-react";
+import { CheckCircle2, Loader2, MessageSquare } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -37,7 +37,7 @@ export default function FeedbackButton() {
     setErrorMessage("");
     try {
       await submitForm("feedback", {
-        website: String(formData.get("website") ?? ""),
+        feedback_website: String(formData.get("feedback_website") ?? ""),
         feedback: String(formData.get("feedback") ?? "").trim(),
         from_name: String(formData.get("from_name") ?? "").trim(),
         from_email: String(formData.get("from_email") ?? "").trim(),
@@ -121,7 +121,8 @@ export default function FeedbackButton() {
               </div>
               <input
                 type="text"
-                name="website"
+                name="feedback_website"
+                id="feedback-website"
                 tabIndex={-1}
                 autoComplete="off"
                 aria-hidden="true"
@@ -139,16 +140,6 @@ export default function FeedbackButton() {
                 {status === "sending" ? "Sending..." : "Send Feedback"}
               </Button>
             </form>
-          )}
-          {status !== "success" && (
-            <button
-              type="button"
-              onClick={() => setOpen(false)}
-              className="absolute right-4 top-4 rounded-full p-2 text-muted-foreground hover:bg-muted"
-              aria-label="Close feedback form"
-            >
-              <X size={18} />
-            </button>
           )}
         </DialogContent>
       </Dialog>
