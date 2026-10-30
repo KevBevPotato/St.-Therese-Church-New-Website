@@ -636,9 +636,9 @@ async function submitToGoogleSheet(
   body: JsonObject,
   sheetTitle: string | undefined
 ): Promise<void> {
-  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
-  const key = process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n");
-  const sheetId = process.env.GOOGLE_SHEET_ID;
+  const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_PERSONAL;
+  const key = process.env.GOOGLE_PRIVATE_KEY_PERSONAL?.replace(/\\n/g, "\n");
+  const sheetId = process.env.GOOGLE_SHEET_ID_PERSONAL;
   if (!email || !key || !sheetId) {
     throw new Error("Google Sheets is missing required environment variables.");
   }
@@ -924,9 +924,9 @@ export default async function handler(
   }
 
   if (
-    !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL ||
-    !process.env.GOOGLE_PRIVATE_KEY ||
-    !process.env.GOOGLE_SHEET_ID
+    !process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL_PERSONAL ||
+    !process.env.GOOGLE_PRIVATE_KEY_PERSONAL ||
+    !process.env.GOOGLE_SHEET_ID_PERSONAL
   ) {
     console.error("Form submission is not configured.", {
       reason: "missing_google_sheets_configuration",

@@ -9,7 +9,7 @@ The endpoint does not send email notifications or use Power Automate/Excel. It w
 ## Google Sheets setup
 
 1. Create or choose the Google spreadsheet for form submissions. Create a Google service account and share the spreadsheet with its email address, granting Editor access.
-2. Set these server-only variables in Vercel for each deployment environment: `GOOGLE_SHEET_ID`, `GOOGLE_SERVICE_ACCOUNT_EMAIL`, and `GOOGLE_PRIVATE_KEY`. The private key may use literal `\n` line breaks; the API converts them to newlines. `.env.example` lists the variable names.
+2. Set these server-only variables in Vercel for each deployment environment: `GOOGLE_SHEET_ID_PERSONAL`, `GOOGLE_SERVICE_ACCOUNT_EMAIL_PERSONAL`, and `GOOGLE_PRIVATE_KEY_PERSONAL`. The private key may use literal `\n` line breaks; the API converts them to newlines. `.env.example` lists the variable names.
 3. Deploy the project with `api/submit.ts` available as a Vercel serverless function. The endpoint is `/api/submit`. It creates the destination worksheet if it does not exist and adds submission fields as headers when needed.
 4. Faith Formation registrations, including the “Register!” form, are written to the `Wednesday Faith Formation` worksheet. Parish membership registrations go to `Parish Registrations`; other forms are routed by form type in `api/submit.ts`.
    Website feedback is written to the `Website Feedback` worksheet. Each row includes the page URL where it was submitted, plus the visitor's optional name and email.
