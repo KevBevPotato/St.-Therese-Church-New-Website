@@ -9,7 +9,7 @@ export default function CmsMarkdown({ children, className = '' }: CmsMarkdownPro
   if (!children) return null;
 
   return (
-    <div className={`prose prose-sm max-w-none ${className}`}>
+    <div className={`prose prose-sm max-w-none whitespace-pre-wrap ${className}`}>
       <ReactMarkdown
         components={{
           a: ({ node: _node, ...props }) => (
