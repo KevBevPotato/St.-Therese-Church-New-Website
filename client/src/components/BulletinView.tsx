@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
 import { Card } from '@/components/ui/card';
-import ReactMarkdown from 'react-markdown';
+import CmsMarkdown from './CmsMarkdown';
 import { Calendar, FileText, Phone, Mail, Filter, ExternalLink, ArrowLeft, ArrowRight } from 'lucide-react';
 
 export interface BulletinSection { id: string; label: string; content: string; }
@@ -167,7 +167,7 @@ export default function BulletinView({ bulletin, title, subtitle, backHref, back
                                         <h4 className="font-bold text-primary mb-4 text-lg">{s.label}</h4>
                                         <div className="text-muted-foreground">
                                             {s.id === 'contributions' ? renderContributionSection(s.content) : (
-                                                <div className="text-sm prose prose-sm max-w-none"><ReactMarkdown>{s.content}</ReactMarkdown></div>
+                                                <CmsMarkdown className="text-sm">{s.content}</CmsMarkdown>
                                             )}
                                             {s.id === 'announcements' && showAnnouncementsLink && (
                                                 <Link

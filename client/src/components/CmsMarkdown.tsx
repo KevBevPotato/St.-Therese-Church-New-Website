@@ -13,7 +13,12 @@ export default function CmsMarkdown({ children, className = '' }: CmsMarkdownPro
       <ReactMarkdown
         components={{
           a: ({ node: _node, ...props }) => (
-            <a {...props} target="_blank" rel="noopener noreferrer" />
+            <a
+              {...props}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline decoration-1 underline-offset-2 hover:decoration-2"
+            />
           ),
         }}
       >
