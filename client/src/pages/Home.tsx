@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
 import { Link } from "wouter";
 import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
+import CmsMarkdown from "@/components/CmsMarkdown";
 import heroData from "@/data/hero_data.json";
 import homeContactData from "@/data/home_contact_data.json";
 import { announcementSettings, getActiveAnnouncements } from "@/data/announcements";
@@ -140,12 +141,9 @@ export default function Home() {
                   {heroData.title}
                 </h1>
 
-                <p
-                  className="mt-6 sm:mt-8 lg:mt-10 max-w-2xl leading-relaxed"
-                  style={{ fontSize: "clamp(0.95rem, 1.8vw, 1.25rem)" }}
-                >
+                <CmsMarkdown className="mt-6 max-w-2xl text-white sm:mt-8 lg:mt-10">
                   {heroData.description}
-                </p>
+                </CmsMarkdown>
 
                 <div className="mt-8 sm:mt-10 lg:mt-12 flex flex-col gap-3 sm:flex-row">
                   <Button
@@ -183,12 +181,9 @@ export default function Home() {
                 </div>
 
                 <div className="mt-12 sm:mt-16 lg:mt-20 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
-                  <p
-                    className="font-serif italic leading-snug"
-                    style={{ fontSize: "clamp(1rem, 2vw, 1.5rem)" }}
-                  >
+                  <CmsMarkdown className="font-serif text-white italic">
                     {heroData.quote}
-                  </p>
+                  </CmsMarkdown>
                   <p
                     className="mt-2 font-bold uppercase tracking-[0.18em]"
                     style={{
@@ -218,9 +213,9 @@ export default function Home() {
               <h2 className="mt-3 font-serif text-4xl font-bold text-primary md:text-5xl">
                 {homeContactData.title}
               </h2>
-              <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted-foreground">
+              <CmsMarkdown className="mt-5 max-w-lg text-lg text-muted-foreground">
                 {homeContactData.description}
-              </p>
+              </CmsMarkdown>
 
               <div className="mt-8 space-y-3">
                 <div className="flex gap-3 border-b border-primary/10 pb-4">

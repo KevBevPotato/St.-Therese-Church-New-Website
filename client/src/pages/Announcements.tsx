@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { announcementSettings } from '@/data/announcements';
-import ReactMarkdown from 'react-markdown';
+import CmsMarkdown from '@/components/CmsMarkdown';
 import { buildBulletinForRange, getCurrentWeekRange } from '@/data/bulletins';
 
 export default function Announcements() {
@@ -24,9 +24,9 @@ export default function Announcements() {
           <h1 className="mt-3 font-serif text-4xl font-bold text-primary md:text-6xl">
             {announcementSettings.title}
           </h1>
-          <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
+          <CmsMarkdown className="mt-5 text-lg text-muted-foreground">
             {announcementSettings.description}
-          </p>
+          </CmsMarkdown>
         </header>
 
         <section className="mb-12 max-w-4xl">
@@ -41,9 +41,9 @@ export default function Announcements() {
           </div>
           {bulletinAnnouncements ? (
             <Card className="p-6 leading-relaxed text-muted-foreground shadow-sm md:p-8">
-              <div className="prose prose-sm max-w-none prose-headings:font-serif prose-headings:text-primary prose-strong:text-primary">
-                <ReactMarkdown>{bulletinAnnouncements}</ReactMarkdown>
-              </div>
+              <CmsMarkdown className="prose-headings:font-serif prose-headings:text-primary prose-strong:text-primary">
+                {bulletinAnnouncements}
+              </CmsMarkdown>
             </Card>
           ) : (
             <div className="rounded-xl border border-dashed border-primary/20 bg-white p-8 text-center">

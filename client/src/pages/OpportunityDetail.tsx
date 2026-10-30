@@ -22,6 +22,7 @@ import UpcomingOrgEvents from '@/components/UpcomingOrgEvents';
 import { getOrganizationById } from '@/data/organizations';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 import { EventMedia } from '@/components/EventMedia';
+import CmsMarkdown from '@/components/CmsMarkdown';
 
 interface OpportunityGalleryItem {
     photo: string;
@@ -152,9 +153,9 @@ export default function OpportunityDetail() {
                             <h1 className="font-serif text-5xl md:text-6xl font-bold text-primary mb-6 leading-tight">
                                 {details.title}
                             </h1>
-                            <p className="text-xl text-muted-foreground leading-relaxed whitespace-pre-line">
+                            <CmsMarkdown className="text-xl text-muted-foreground">
                                 {details.description}
-                            </p>
+                            </CmsMarkdown>
                             {details.requirements.length > 0 && (
                                 <ul className="mt-6 space-y-3">
                                     {details.requirements.map((requirement, index) => (
@@ -251,7 +252,7 @@ export default function OpportunityDetail() {
                                 {details.faqs.map((faq, i) => (
                                     <div key={i} className="bg-white p-8 rounded-3xl border border-primary/5 shadow-sm">
                                         <h4 className="font-bold text-primary mb-3">{faq.question}</h4>
-                                        <p className="text-muted-foreground leading-relaxed">{faq.answer}</p>
+                                        <CmsMarkdown className="text-muted-foreground">{faq.answer}</CmsMarkdown>
                                     </div>
                                 ))}
                             </div>

@@ -1,6 +1,7 @@
 import { useState, useMemo } from 'react';
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, Clock, ExternalLink, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import CmsMarkdown from '@/components/CmsMarkdown';
 import { Card } from '@/components/ui/card';
 import { useLocation, useSearch, Link } from 'wouter';
 
@@ -155,7 +156,9 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
               </div>
               <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
                 <h2 className="font-serif text-2xl font-bold text-primary mb-4">About this Event</h2>
-                <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">{event.description || event.about || 'No additional information available.'}</p>
+                <CmsMarkdown className="text-lg text-muted-foreground">
+                  {event.description || event.about || 'No additional information available.'}
+                </CmsMarkdown>
                 {event.signupLink && (<Button className="mt-8 bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest w-full sm:w-auto" asChild><a href={event.signupLink} target="_blank" rel="noopener noreferrer"><ExternalLink className="mr-2 size-5" /> Register / More Info</a></Button>)}
               </Card>
             </div>

@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'wouter';
 import { EventCategory, EVENT_COLORS, CalendarEvent } from './eventfolders/events';
 import { CalendarCellEvent } from './event-components';
+import CmsMarkdown from './CmsMarkdown';
 
 interface CalendarViewProps {
   currentDate: Date;
@@ -193,7 +194,10 @@ export function CalendarView({
                       <div className="mt-4 space-y-2 text-sm text-muted-foreground">
                         <p><strong className="text-primary">Time:</strong> {event.time}</p>
                         <p><strong className="text-primary">Location:</strong> {event.location}</p>
-                        <p className="whitespace-pre-line"><strong className="text-primary">About:</strong> {event.description || event.about || 'No additional information available.'}</p>
+                        <div className="flex gap-1">
+                          <strong className="shrink-0 text-primary">About:</strong>
+                          <CmsMarkdown>{event.description || event.about || 'No additional information available.'}</CmsMarkdown>
+                        </div>
                       </div>
                     </Link>
                   );

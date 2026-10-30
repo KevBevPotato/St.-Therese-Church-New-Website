@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import CmsMarkdown from "@/components/CmsMarkdown";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { EventMedia } from "@/components/EventMedia";
@@ -197,11 +198,11 @@ export default function EventDetail() {
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">
                 About this Event
               </h2>
-              <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">
+              <CmsMarkdown className="text-lg text-muted-foreground">
                 {event.description ||
                   event.about ||
                   "No additional information available for this event."}
-              </p>
+              </CmsMarkdown>
 
               {event.signupLink && (
                 <Button

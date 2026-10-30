@@ -24,6 +24,7 @@ import {
     faithFormationSettings,
     type FaithCategory,
 } from '@/data/faith-formation';
+import CmsMarkdown from '@/components/CmsMarkdown';
 
 /**
  * Faith Formation Program Detail Page
@@ -207,9 +208,9 @@ export default function FaithFormationDetail() {
                     </div>
 
                     <Card className="p-10 border-none shadow-xl bg-white rounded-3xl">
-                        <p className="text-muted-foreground leading-relaxed text-lg whitespace-pre-line">
+                        <CmsMarkdown className="text-lg text-muted-foreground">
                             {category.aboutText || category.longDescription || category.shortDescription}
-                        </p>
+                        </CmsMarkdown>
 
                         {(category as any).details && Array.isArray((category as any).details) && (
                             <div className="mt-8 pt-8 border-t border-gray-100">

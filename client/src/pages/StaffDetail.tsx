@@ -2,6 +2,7 @@
 import { useParams, Link } from 'wouter';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import CmsMarkdown from '@/components/CmsMarkdown';
 import { getStaffBySlug, staffMembers, staffCategories, StaffMember } from '@/data/staff';
 import { Mail, Phone, ArrowLeft, MapPin } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -130,9 +131,9 @@ export default function StaffDetail() {
               <h2 className="font-serif text-2xl font-bold text-primary mb-3">
                 Duties & Ministry
               </h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
+              <CmsMarkdown className="text-base text-muted-foreground">
                 {member.duties}
-              </p>
+              </CmsMarkdown>
             </div>
 
             {/* Bio */}
@@ -140,9 +141,9 @@ export default function StaffDetail() {
               <h2 className="font-serif text-2xl font-bold text-primary mb-3">
                 About
               </h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
+              <CmsMarkdown className="text-base text-muted-foreground">
                 {member.bio}
-              </p>
+              </CmsMarkdown>
             </div>
 
             {/* Category badges */}
