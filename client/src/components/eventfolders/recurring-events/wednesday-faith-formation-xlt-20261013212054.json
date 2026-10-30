@@ -1,11 +1,5 @@
 {
-  "faqItems": [
-    {
-      "isHidden": false,
-      "question": "Will Bobby update this too?",
-      "answer": "Of course he will!"
-    }
-  ],
+  "faqItems": [],
   "organizationTags": [
     "faith-formation"
   ],
