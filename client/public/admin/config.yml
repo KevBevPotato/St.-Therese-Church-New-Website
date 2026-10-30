@@ -126,20 +126,20 @@ collections:
               default: "#d4b36a",
               required: false,
             }
-          - { label: "Eyebrow", name: "eyebrow", widget: "string" , required: false }
-          - { label: "Headline", name: "title", widget: "string" , required: false }
-          - { label: "Description", name: "description", widget: "text" , required: false }
+          - { label: "Eyebrow", name: "eyebrow", widget: "markdown" , required: false }
+          - { label: "Headline", name: "title", widget: "markdown" , required: false }
+          - { label: "Description", name: "description", widget: "markdown" , required: false }
           - {
               label: "Primary Button Label",
               name: "primaryButtonLabel",
-              widget: "string",
+              widget: "markdown",
               hint: "This button opens the parish membership registration form.",
               required: false,
             }
           - {
               label: "Secondary Button Label",
               name: "secondaryButtonLabel",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -148,21 +148,21 @@ collections:
               widget: "string",
               required: false,
             }
-          - { label: "Quote", name: "quote", widget: "string" , required: false }
+          - { label: "Quote", name: "quote", widget: "markdown" , required: false }
           - {
               label: "Quote Attribution",
               name: "quoteAttribution",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
       - file: "client/src/data/home_contact_data.json"
         label: "Contact Info"
         name: "home_contact"
         fields:
-          - { label: "Eyebrow", name: "eyebrow", widget: "string" , required: false }
-          - { label: "Headline", name: "title", widget: "string" , required: false }
-          - { label: "Introduction", name: "description", widget: "text" , required: false }
-          - { label: "Office Hours", name: "officeHours", widget: "string" , required: false }
+          - { label: "Eyebrow", name: "eyebrow", widget: "markdown" , required: false }
+          - { label: "Headline", name: "title", widget: "markdown" , required: false }
+          - { label: "Introduction", name: "description", widget: "markdown" , required: false }
+          - { label: "Office Hours", name: "officeHours", widget: "markdown" , required: false }
           - { label: "Phone Display", name: "phone", widget: "string" , required: false }
           - {
               label: "Phone Link Number",
@@ -172,7 +172,7 @@ collections:
               required: false,
             }
           - { label: "Email", name: "email", widget: "string" , required: false }
-          - { label: "Address", name: "address", widget: "string" , required: false }
+          - { label: "Address", name: "address", widget: "markdown" , required: false }
       - file: "client/src/data/announcements_data.json"
         label: "Parish Announcements"
         name: "announcements_file"
@@ -182,8 +182,8 @@ collections:
             widget: "object"
             required: false
             fields:
-              - { label: "Page Title", name: "title", widget: "string" , required: false }
-              - { label: "Introduction", name: "description", widget: "text" , required: false }
+              - { label: "Page Title", name: "title", widget: "markdown" , required: false }
+              - { label: "Introduction", name: "description", widget: "markdown" , required: false }
               - {
                   label: "Announcement Card Columns",
                   name: "cardColumns",
@@ -257,7 +257,7 @@ collections:
                   required: false,
                 }
               - { label: "ID (unique, URL-safe)", name: "id", widget: "string" , required: false }
-              - { label: "Title", name: "title", widget: "string" , required: false }
+              - { label: "Title", name: "title", widget: "markdown" , required: false }
               - {
                   label: "Category (optional)",
                   name: "category",
@@ -267,7 +267,7 @@ collections:
               - {
                   label: "Announcement",
                   name: "description",
-                  widget: "text",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -322,7 +322,7 @@ collections:
               - {
                   label: "Full Name",
                   name: "name",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 } # MOVED TO TOP
               - {
@@ -350,7 +350,7 @@ collections:
                       default: false,
                       required: false,
                     }
-                  - { label: "Title", name: "title", widget: "string" , required: false }
+                  - { label: "Title", name: "title", widget: "markdown" , required: false }
               - { label: "Email", name: "email", widget: "string" , required: false }
               - { label: "Phone", name: "phone", widget: "string" , required: false }
               - { label: "Office Room", name: "officeRoom", widget: "string" , required: false }
@@ -402,20 +402,20 @@ collections:
                   hint: "Controls the portrait image area on the About & Staff directory cards.",
                   required: false,
                 }
-              - { label: "Duties", name: "duties", widget: "text" , required: false }
-              - { label: "Bio", name: "bio", widget: "text" , required: false }
+              - { label: "Duties", name: "duties", widget: "markdown" , required: false }
+              - { label: "Bio", name: "bio", widget: "markdown" , required: false }
       - file: "client/src/data/about_page_data.json"
         label: "About Page Text"
         name: "about_page_text"
         fields:
-          - { label: "Eyebrow", name: "eyebrow", widget: "string" , required: false }
-          - { label: "Headline", name: "title", widget: "string" , required: false }
-          - { label: "Description", name: "description", widget: "text" , required: false }
-          - { label: "Quote", name: "quote", widget: "text" , required: false }
+          - { label: "Eyebrow", name: "eyebrow", widget: "markdown" , required: false }
+          - { label: "Headline", name: "title", widget: "markdown" , required: false }
+          - { label: "Description", name: "description", widget: "markdown" , required: false }
+          - { label: "Quote", name: "quote", widget: "markdown" , required: false }
           - {
               label: "Quote Attribution",
               name: "quoteAttribution",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
   - name: "one_time_events"
@@ -439,7 +439,7 @@ collections:
           required: false,
         }
       - { label: "Automatic event ID", name: "id", widget: "hidden", required: false }
-      - { label: "Title", name: "title", widget: "string" , required: false }
+      - { label: "Title", name: "title", widget: "markdown" , required: false }
       - {
           label: "Date",
           name: "date",
@@ -451,7 +451,7 @@ collections:
           required: false,
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
-      - { label: "Location", name: "location", widget: "string" , required: false }
+      - { label: "Location", name: "location", widget: "markdown" , required: false }
       - label: "Categories"
         name: "categories"
         widget: "list"
@@ -495,13 +495,13 @@ collections:
       - {
           label: "Description",
           name: "description",
-          widget: "text",
+          widget: "markdown",
           required: false,
         }
       - {
           label: "About this event",
           name: "about",
-          widget: "text",
+          widget: "markdown",
           required: false,
         }
       - {
@@ -513,7 +513,7 @@ collections:
       - {
           label: "Contact Person",
           name: "contactPerson",
-          widget: "string",
+          widget: "markdown",
           required: false,
         }
       - {
@@ -546,7 +546,7 @@ collections:
           - {
               label: "Caption",
               name: "caption",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -576,8 +576,8 @@ collections:
               default: false,
               required: false,
             }
-          - { label: "Question", name: "question", widget: "string" , required: false }
-          - { label: "Answer", name: "answer", widget: "text" , required: false }
+          - { label: "Question", name: "question", widget: "markdown" , required: false }
+          - { label: "Answer", name: "answer", widget: "markdown" , required: false }
 
   - name: "recurring_events"
     label: "Parish Events · Recurring Events"
@@ -603,12 +603,12 @@ collections:
       - {
           label: "Event Title",
           name: "title",
-          widget: "string",
+          widget: "markdown",
           required: false,
           hint: "Top-level event details are shared by every occurrence. Add an entry under One-time Occurrences below to adjust a single date.",
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
-      - { label: "Location", name: "location", widget: "string" , required: false }
+      - { label: "Location", name: "location", widget: "markdown" , required: false }
       - label: "Schedule and Occurrences"
         name: "schedule"
         widget: "recurrence-schedule"
@@ -634,7 +634,7 @@ collections:
           - {
               label: "Title Override (optional)",
               name: "title",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -646,19 +646,19 @@ collections:
           - {
               label: "Location Override (optional)",
               name: "location",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
               label: "Description Override (optional)",
               name: "description",
-              widget: "text",
+              widget: "markdown",
               required: false,
             }
           - {
               label: "About this event Override (optional)",
               name: "about",
-              widget: "text",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -670,7 +670,7 @@ collections:
           - {
               label: "Contact Person Override (optional)",
               name: "contactPerson",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -732,7 +732,7 @@ collections:
                   required: false,
                 }
               - { label: "Photo", name: "photo", widget: "image", required: false }
-              - { label: "Caption", name: "caption", widget: "string", required: false }
+              - { label: "Caption", name: "caption", widget: "markdown", required: false }
               - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
               - {
                   label: "Include in carousel",
@@ -747,18 +747,18 @@ collections:
             widget: "list"
             required: false
             fields:
-              - { label: "Question", name: "question", widget: "string", required: false }
-              - { label: "Answer", name: "answer", widget: "text", required: false }
+              - { label: "Question", name: "question", widget: "markdown", required: false }
+              - { label: "Answer", name: "answer", widget: "markdown", required: false }
       - {
           label: "Description",
           name: "description",
-          widget: "text",
+          widget: "markdown",
           required: false,
         }
       - {
           label: "About this event",
           name: "about",
-          widget: "text",
+          widget: "markdown",
           required: false,
         }
       - {
@@ -770,7 +770,7 @@ collections:
       - {
           label: "Contact Person",
           name: "contactPerson",
-          widget: "string",
+          widget: "markdown",
           required: false,
         }
       - {
@@ -842,7 +842,7 @@ collections:
           - {
               label: "Caption",
               name: "caption",
-              widget: "string",
+              widget: "markdown",
               required: false,
             }
           - {
@@ -872,8 +872,8 @@ collections:
               default: false,
               required: false,
             }
-          - { label: "Question", name: "question", widget: "string" , required: false }
-          - { label: "Answer", name: "answer", widget: "text", required: false }
+          - { label: "Question", name: "question", widget: "markdown" , required: false }
+          - { label: "Answer", name: "answer", widget: "markdown", required: false }
           - {
               label: "Link URL (optional)",
               name: "linkUrl",
@@ -905,7 +905,7 @@ collections:
               - {
                   label: "Bulletin Title",
                   name: "title",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                   hint: "e.g., Oct 12 - Oct 19, 2024",
                 }
@@ -1043,7 +1043,7 @@ collections:
               - {
                   label: "Schedule Title",
                   name: "title",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1084,14 +1084,14 @@ collections:
             widget: "object"
             required: false
             fields:
-              - { label: "Eyebrow", name: "eyebrow", widget: "string" , required: false }
-              - { label: "Page Title", name: "title", widget: "string" , required: false }
-              - { label: "Introduction", name: "introduction", widget: "text" , required: false }
-              - { label: "Quote", name: "quote", widget: "text" , required: false }
+              - { label: "Eyebrow", name: "eyebrow", widget: "markdown" , required: false }
+              - { label: "Page Title", name: "title", widget: "markdown" , required: false }
+              - { label: "Introduction", name: "introduction", widget: "markdown" , required: false }
+              - { label: "Quote", name: "quote", widget: "markdown" , required: false }
               - {
                   label: "Quote Attribution",
                   name: "quoteAttribution",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
           - label: "Resource Categories (drag to reorder)"
@@ -1114,8 +1114,8 @@ collections:
                   hint: "Keep existing IDs unchanged so category anchors remain stable.",
                   required: false,
                 }
-              - { label: "Title", name: "title", widget: "string" , required: false }
-              - { label: "Description", name: "description", widget: "text" , required: false }
+              - { label: "Title", name: "title", widget: "markdown" , required: false }
+              - { label: "Description", name: "description", widget: "markdown" , required: false }
               - label: "Resource Cards (drag to reorder)"
                 name: "links"
                 widget: "list"
@@ -1135,11 +1135,11 @@ collections:
                       widget: "string",
                       required: false,
                     }
-                  - { label: "Title", name: "title", widget: "string" , required: false }
+                  - { label: "Title", name: "title", widget: "markdown" , required: false }
                   - {
                       label: "Description",
                       name: "description",
-                      widget: "text",
+                      widget: "markdown",
                       required: false,
                     }
                   - {
@@ -1322,11 +1322,11 @@ collections:
             widget: "object"
             required: false
             fields:
-              - { label: "Page Title", name: "pageTitle", widget: "string" , required: false }
-              - { label: "Introduction", name: "introduction", widget: "text" , required: false }
-              - { label: "Meal Time", name: "mealTime", widget: "string" , required: false }
-              - { label: "Class Time", name: "classTime", widget: "string" , required: false }
-              - { label: "Schedule Note", name: "classNote", widget: "string" , required: false }
+              - { label: "Page Title", name: "pageTitle", widget: "markdown" , required: false }
+              - { label: "Introduction", name: "introduction", widget: "markdown" , required: false }
+              - { label: "Meal Time", name: "mealTime", widget: "markdown" , required: false }
+              - { label: "Class Time", name: "classTime", widget: "markdown" , required: false }
+              - { label: "Schedule Note", name: "classNote", widget: "markdown" , required: false }
               - {
                   label: "Show registration button",
                   name: "showRegistrationButton",
@@ -1337,7 +1337,7 @@ collections:
               - {
                   label: "Registration button label",
                   name: "registrationLabel",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1375,7 +1375,7 @@ collections:
               - {
                   label: "Food Signup Button",
                   name: "signupLabel",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1400,13 +1400,13 @@ collections:
               - {
                   label: "Classroom Map Button",
                   name: "classroomMapLabel",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
                   label: "Classroom Map Note",
                   name: "classroomNote",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1437,20 +1437,20 @@ collections:
                   default: false,
                   required: false,
                 }
-              - { label: "Title", name: "title", widget: "string" , required: false }
+              - { label: "Title", name: "title", widget: "markdown" , required: false }
               - {
                   label: "Subtitle",
                   name: "subtitle",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
                   label: "Program Name",
                   name: "programName",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
-              - { label: "Age Range", name: "ageRange", widget: "string" , required: false }
+              - { label: "Age Range", name: "ageRange", widget: "markdown" , required: false }
               - {
                   label: "Group",
                   name: "group",
@@ -1462,26 +1462,26 @@ collections:
               - {
                   label: "Short Description",
                   name: "shortDescription",
-                  widget: "text",
+                  widget: "markdown",
                   required: false,
                 }
               - {
                   label: "Long Description",
                   name: "longDescription",
-                  widget: "text",
+                  widget: "markdown",
                   required: false,
                 }
-              - { label: "Meeting Time", name: "meetingTime", widget: "string" , required: false }
+              - { label: "Meeting Time", name: "meetingTime", widget: "markdown" , required: false }
               - {
                   label: "Classroom / Room",
                   name: "location",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
                   label: "About This Program",
                   name: "aboutText",
-                  widget: "text",
+                  widget: "markdown",
                   required: false,
                 }
               - label: "Catechists"
@@ -1503,11 +1503,11 @@ collections:
                       widget: "string",
                       required: false,
                     }
-                  - { label: "Name", name: "name", widget: "string" , required: false }
+                  - { label: "Name", name: "name", widget: "markdown" , required: false }
                   - {
                       label: "Role",
                       name: "role",
-                      widget: "string",
+                      widget: "markdown",
                       required: false,
                     }
                   - {
@@ -1543,7 +1543,7 @@ collections:
                   - {
                       label: "Bio",
                       name: "bio",
-                      widget: "text",
+                      widget: "markdown",
                       required: false,
                     }
               - label: "Program Photos"
@@ -1564,17 +1564,17 @@ collections:
                       default: false,
                       required: false,
                     }
-                  - { label: "Title", name: "title", widget: "string" , required: false }
+                  - { label: "Title", name: "title", widget: "markdown" , required: false }
                   - {
                       label: "Description",
                       name: "description",
-                      widget: "text",
+                      widget: "markdown",
                       required: false,
                     }
                   - {
                       label: "Publisher",
                       name: "publisher",
-                      widget: "string",
+                      widget: "markdown",
                       required: false,
                     }
                   - {
@@ -1595,21 +1595,21 @@ collections:
             widget: "object"
             required: false
             fields:
-              - { label: "Page Title", name: "pageTitle", widget: "string" , required: false }
-              - { label: "Introduction", name: "introduction", widget: "text" , required: false }
+              - { label: "Page Title", name: "pageTitle", widget: "markdown" , required: false }
+              - { label: "Introduction", name: "introduction", widget: "markdown" , required: false }
               - {
                   label: "Serve Filter Heading",
                   name: "serveHeading",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
                   label: "Interest Filter Heading",
                   name: "interestHeading",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
-              - { label: "Contact Name", name: "contactName", widget: "string" , required: false }
+              - { label: "Contact Name", name: "contactName", widget: "markdown" , required: false }
               - {
                   label: "Contact Phone",
                   name: "contactPhone",
@@ -1632,50 +1632,50 @@ collections:
                     widget: "object"
                     required: false
                     fields:
-                      - { label: "Announcements", name: "announcements", widget: "string", required: false }
-                      - { label: "Join an Organization", name: "organizations", widget: "string", required: false }
-                      - { label: "Knights of Columbus", name: "knightsOfColumbus", widget: "string", required: false }
-                      - { label: "Catholic Daughters", name: "catholicDaughters", widget: "string", required: false }
-                      - { label: "Altar Society", name: "altarSociety", widget: "string", required: false }
-                      - { label: "St. Vincent de Paul", name: "stVincentDePaul", widget: "string", required: false }
-                      - { label: "Wednesday Faith Formation", name: "faithFormation", widget: "string", required: false }
-                      - { label: "Help with the Liturgy", name: "liturgy", widget: "string", required: false }
-                      - { label: "Lector", name: "lector", widget: "string", required: false }
-                      - { label: "Usher", name: "usher", widget: "string", required: false }
-                      - { label: "Altar Server", name: "altarServer", widget: "string", required: false }
-                      - { label: "Music Ministry", name: "musicMinistry", widget: "string", required: false }
-                      - { label: "Connect Groups", name: "connectGroups", widget: "string", required: false }
-                      - { label: "Group Studies", name: "groupStudies", widget: "string", required: false }
-                      - { label: "Sacraments", name: "sacraments", widget: "string", required: false }
-                      - { label: "Resources", name: "resources", widget: "string", required: false }
-                      - { label: "Need Help", name: "needHelp", widget: "string", required: false }
-                      - { label: "Contribute", name: "contribute", widget: "string", required: false }
+                      - { label: "Announcements", name: "announcements", widget: "markdown", required: false }
+                      - { label: "Join an Organization", name: "organizations", widget: "markdown", required: false }
+                      - { label: "Knights of Columbus", name: "knightsOfColumbus", widget: "markdown", required: false }
+                      - { label: "Catholic Daughters", name: "catholicDaughters", widget: "markdown", required: false }
+                      - { label: "Altar Society", name: "altarSociety", widget: "markdown", required: false }
+                      - { label: "St. Vincent de Paul", name: "stVincentDePaul", widget: "markdown", required: false }
+                      - { label: "Wednesday Faith Formation", name: "faithFormation", widget: "markdown", required: false }
+                      - { label: "Help with the Liturgy", name: "liturgy", widget: "markdown", required: false }
+                      - { label: "Lector", name: "lector", widget: "markdown", required: false }
+                      - { label: "Usher", name: "usher", widget: "markdown", required: false }
+                      - { label: "Altar Server", name: "altarServer", widget: "markdown", required: false }
+                      - { label: "Music Ministry", name: "musicMinistry", widget: "markdown", required: false }
+                      - { label: "Connect Groups", name: "connectGroups", widget: "markdown", required: false }
+                      - { label: "Group Studies", name: "groupStudies", widget: "markdown", required: false }
+                      - { label: "Sacraments", name: "sacraments", widget: "markdown", required: false }
+                      - { label: "Resources", name: "resources", widget: "markdown", required: false }
+                      - { label: "Need Help", name: "needHelp", widget: "markdown", required: false }
+                      - { label: "Contribute", name: "contribute", widget: "markdown", required: false }
                   - label: "Help with the Liturgy Page"
                     name: "liturgy"
                     widget: "object"
                     required: false
                     fields:
-                      - { label: "Page Title", name: "title", widget: "string", required: false }
-                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
-                      - { label: "Sign Up Button", name: "signUpButton", widget: "string", required: false }
-                      - { label: "Suggestion Button", name: "suggestionButton", widget: "string", required: false }
-                      - { label: "Refer Button", name: "referralButton", widget: "string", required: false }
-                      - { label: "Learn More Link", name: "learnMoreButton", widget: "string", required: false }
+                      - { label: "Page Title", name: "title", widget: "markdown", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
+                      - { label: "Sign Up Button", name: "signUpButton", widget: "markdown", required: false }
+                      - { label: "Suggestion Button", name: "suggestionButton", widget: "markdown", required: false }
+                      - { label: "Refer Button", name: "referralButton", widget: "markdown", required: false }
+                      - { label: "Learn More Link", name: "learnMoreButton", widget: "markdown", required: false }
                   - label: "Need Help Page"
                     name: "needHelp"
                     widget: "object"
                     required: false
                     fields:
-                      - { label: "Page Title", name: "title", widget: "string", required: false }
-                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
-                      - { label: "Request Help Button", name: "requestButton", widget: "string", required: false }
+                      - { label: "Page Title", name: "title", widget: "markdown", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
+                      - { label: "Request Help Button", name: "requestButton", widget: "markdown", required: false }
                   - label: "Contribute Page"
                     name: "contribute"
                     widget: "object"
                     required: false
                     fields:
-                      - { label: "Page Title", name: "title", widget: "string", required: false }
-                      - { label: "Introduction", name: "introduction", widget: "text", required: false }
+                      - { label: "Page Title", name: "title", widget: "markdown", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
                       - label: "Contribution Ideas"
                         name: "opportunities"
                         widget: "list"
@@ -1683,9 +1683,9 @@ collections:
                         summary: "{{fields.title}}"
                         fields:
                           - { label: "ID", name: "id", widget: "string", required: false }
-                          - { label: "Title", name: "title", widget: "string", required: false }
-                          - { label: "Description", name: "description", widget: "text", required: false }
-                          - { label: "Button Label", name: "button", widget: "string", required: false }
+                          - { label: "Title", name: "title", widget: "markdown", required: false }
+                          - { label: "Description", name: "description", widget: "markdown", required: false }
+                          - { label: "Button Label", name: "button", widget: "markdown", required: false }
                           - {
                               label: "Button Action",
                               name: "action",
@@ -1726,7 +1726,7 @@ collections:
                       options: ["all", "sponsor", "help", "join", "request"],
                       required: false,
                     }
-                  - { label: "Label", name: "label", widget: "string" , required: false }
+                  - { label: "Label", name: "label", widget: "markdown" , required: false }
               - label: "Interest Tags"
                 name: "tags"
                 widget: "list"
@@ -1764,8 +1764,8 @@ collections:
                   widget: "string",
                   required: false,
                 }
-              - { label: "Title", name: "title", widget: "string" , required: false }
-              - { label: "Description", name: "description", widget: "text" , required: false }
+              - { label: "Title", name: "title", widget: "markdown" , required: false }
+              - { label: "Description", name: "description", widget: "markdown" , required: false }
               - {
                   label: "Categories",
                   name: "categories",
@@ -1813,7 +1813,7 @@ collections:
                   required: false,
                   hint: "Type a recurring schedule such as “Every 1st Sunday,” or pick a specific date with the calendar.",
                 }
-              - { label: "Contact Name", name: "contactName", widget: "string" , required: false }
+              - { label: "Contact Name", name: "contactName", widget: "markdown" , required: false }
               - {
                   label: "Contact Phone",
                   name: "contactPhone",
@@ -1829,7 +1829,7 @@ collections:
               - {
                   label: "Landing Page Title",
                   name: "landingPageTitle",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1864,7 +1864,7 @@ collections:
               - {
                   label: "Landing Page Description",
                   name: "landingPageDescription",
-                  widget: "text",
+                  widget: "markdown",
                   required: false,
                 }
               - {
@@ -1876,7 +1876,7 @@ collections:
                     {
                       label: "Requirement",
                       name: "requirement",
-                      widget: "string",
+                      widget: "markdown",
                       required: false,
                     },
                 }
@@ -1893,8 +1893,8 @@ collections:
                       default: false,
                       required: false,
                     }
-                  - { label: "Question", name: "question", widget: "string" , required: false }
-                  - { label: "Answer", name: "answer", widget: "text" , required: false }
+                  - { label: "Question", name: "question", widget: "markdown" , required: false }
+                  - { label: "Answer", name: "answer", widget: "markdown" , required: false }
               - label: "Legacy Landing Page Photos"
                 name: "images"
                 widget: "list"
@@ -1907,7 +1907,7 @@ collections:
                 summary: "{{fields.caption}}"
                 fields:
                   - { label: "Photo", name: "photo", widget: "image", required: true }
-                  - { label: "Caption", name: "caption", widget: "string", required: false }
+                  - { label: "Caption", name: "caption", widget: "markdown", required: false }
                   - {
                       label: "Link URL (optional)",
                       name: "linkUrl",
@@ -1935,7 +1935,7 @@ collections:
                       default: false,
                       required: false,
                     }
-                  - { label: "Button Label", name: "label", widget: "string" , required: false }
+                  - { label: "Button Label", name: "label", widget: "markdown" , required: false }
                   - {
                       label: "External Sign-up URL",
                       name: "url",
@@ -1957,7 +1957,7 @@ collections:
               - {
                   label: "Construction Total",
                   name: "constructionTotal",
-                  widget: "string",
+                  widget: "markdown",
                   required: false,
                 }
               - label: "Construction Items"
@@ -1974,7 +1974,7 @@ collections:
                       required: false,
                     }
                   - { label: "Category", name: "category", widget: "string" , required: false }
-                  - { label: "Subtotal", name: "subtotal", widget: "string" , required: false }
+                  - { label: "Subtotal", name: "subtotal", widget: "markdown" , required: false }
                   - label: "Items"
                     name: "items"
                     widget: "list"
@@ -1987,8 +1987,8 @@ collections:
                           default: false,
                           required: false,
                         }
-                      - { label: "Name", name: "name", widget: "string" , required: false }
-                      - { label: "Cost", name: "cost", widget: "string" , required: false }
+                      - { label: "Name", name: "name", widget: "markdown" , required: false }
+                      - { label: "Cost", name: "cost", widget: "markdown" , required: false }
   - name: "organizations"
     label: "Organization Landing Pages"
     folder: "client/src/data/organization-pages"
@@ -2005,9 +2005,9 @@ collections:
           default: false,
           required: false,
         }
-      - { label: "Name", name: "name", widget: "string" , required: false }
-      - { label: "Tagline", name: "tagline", widget: "string", required: false }
-      - { label: "Description", name: "description", widget: "text" , required: false }
+      - { label: "Name", name: "name", widget: "markdown" , required: false }
+      - { label: "Tagline", name: "tagline", widget: "markdown", required: false }
+      - { label: "Description", name: "description", widget: "markdown" , required: false }
       - {
           label: "Audience Tag",
           name: "audienceTag",
@@ -2018,14 +2018,14 @@ collections:
       - {
           label: "Audience",
           name: "audience",
-          widget: "string",
+          widget: "markdown",
           required: false,
         }
       - { label: "Founded", name: "founded", widget: "number", required: false }
       - {
           label: "Meeting Schedule",
           name: "meetingSchedule",
-          widget: "string",
+          widget: "markdown",
           required: false,
         }
       - { label: "Room", name: "room", widget: "string", required: false }
@@ -2042,7 +2042,7 @@ collections:
         summary: "{{fields.caption}}"
         fields:
           - { label: "Photo", name: "photo", widget: "image", required: true }
-          - { label: "Caption", name: "caption", widget: "string", required: false }
+          - { label: "Caption", name: "caption", widget: "markdown", required: false }
           - {
               label: "Link URL (optional)",
               name: "linkUrl",
@@ -2057,7 +2057,7 @@ collections:
               required: false,
               hint: "Turn off to show this photo in the gallery below the carousel.",
             }
-      - { label: "Contact Name", name: "contactName", widget: "string" , required: false }
+      - { label: "Contact Name", name: "contactName", widget: "markdown" , required: false }
       - { label: "Contact Phone", name: "contactPhone", widget: "string" , required: false }
       - {
           label: "Contact Email",
@@ -2099,8 +2099,8 @@ collections:
               default: false,
               required: false,
             }
-          - { label: "Label", name: "label", widget: "string" , required: false }
-          - { label: "Value", name: "value", widget: "string" , required: false }
+          - { label: "Label", name: "label", widget: "markdown" , required: false }
+          - { label: "Value", name: "value", widget: "markdown" , required: false }
       - label: "Officers"
         name: "officers"
         widget: "list"
@@ -2115,8 +2115,8 @@ collections:
               required: false,
             }
           - { label: "ID", name: "id", widget: "string" , required: false }
-          - { label: "Name", name: "name", widget: "string" , required: false }
-          - { label: "Title", name: "title", widget: "string" , required: false }
+          - { label: "Name", name: "name", widget: "markdown" , required: false }
+          - { label: "Title", name: "title", widget: "markdown" , required: false }
           - { label: "Photo", name: "photo", widget: "image", required: false }
           - {
               label: "Photo Position",
@@ -2126,7 +2126,7 @@ collections:
             }
           - { label: "Email", name: "email", widget: "string", required: false }
           - { label: "Phone", name: "phone", widget: "string", required: false }
-          - { label: "Bio", name: "bio", widget: "text", required: false }
+          - { label: "Bio", name: "bio", widget: "markdown", required: false }
       - label: "Members"
         name: "members"
         widget: "list"
@@ -2134,7 +2134,7 @@ collections:
         summary: "{{fields.name}}"
         fields:
           - { label: "ID", name: "id", widget: "string" , required: false }
-          - { label: "Name", name: "name", widget: "string" , required: false }
+          - { label: "Name", name: "name", widget: "markdown" , required: false }
           - { label: "Photo", name: "photo", widget: "image", required: false }
           - {
               label: "Photo Position",
@@ -2150,7 +2150,7 @@ collections:
             }
           - { label: "Email", name: "email", widget: "string", required: false }
           - { label: "Phone", name: "phone", widget: "string", required: false }
-          - { label: "Bio", name: "bio", widget: "text", required: false }
+          - { label: "Bio", name: "bio", widget: "markdown", required: false }
           - {
               label: "Hide from Members Gallery",
               name: "isHidden",
