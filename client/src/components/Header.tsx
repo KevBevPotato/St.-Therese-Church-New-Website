@@ -6,7 +6,7 @@ import { staticEvents, generateRecurringEventsForMonth } from './eventfolders/ev
 import { organizations } from '@/data/organizations';
 import { staffMembers } from '../data/staff';
 import { faithCategories } from '@/data/faith-formation';
-import getInvolvedData from '@/data/get-involved';
+import headerData from '@/data/header_data.json';
 
 interface HeaderProps {
   showMassTimes?: boolean;
@@ -259,7 +259,7 @@ const searchableOpportunities: SearchResult[] = [
 
 export default function Header({
   showMassTimes = false,
-  donateUrl = 'https://secure.myvanco.com/L-ZAYT/home',
+  donateUrl,
 }: HeaderProps) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -282,46 +282,11 @@ export default function Header({
     return () => window.removeEventListener('resize', measure);
   }, []);
 
-  const primaryLinks = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About & Staff' },
-    { href: '/bulletin', label: 'Bulletin' },
-  ];
-
-  const parishLifeNavigation = getInvolvedData.settings.parishLifePages?.navigation;
-  const parishLifeLinks: ParishLifeLink[] = [
-    { href: '/announcements', label: parishLifeNavigation?.announcements ?? 'Announcements' },
-    {
-      label: parishLifeNavigation?.organizations ?? 'Join an Organization!',
-      children: [
-        { href: '/get-involved/knights-of-columbus', label: parishLifeNavigation?.knightsOfColumbus ?? 'Knights of Columbus' },
-        { href: '/get-involved/catholic-daughters', label: parishLifeNavigation?.catholicDaughters ?? 'Catholic Daughters' },
-        { href: '/get-involved/altar-society', label: parishLifeNavigation?.altarSociety ?? 'Altar Society' },
-        { href: '/get-involved/st-vincent-de-paul-food-drive', label: parishLifeNavigation?.stVincentDePaul ?? 'St. Vincent de Paul' },
-      ],
-    },
-    { href: '/faith-formation', label: parishLifeNavigation?.faithFormation ?? 'Wednesday Faith Formation' },
-    {
-      href: '/get-involved/liturgy',
-      label: parishLifeNavigation?.liturgy ?? 'Help with the Liturgy!',
-      children: [
-        { href: '/get-involved/lector', label: parishLifeNavigation?.lector ?? 'Lector' },
-        { href: '/get-involved/usher', label: parishLifeNavigation?.usher ?? 'Usher' },
-        { href: '/get-involved/altar-server', label: parishLifeNavigation?.altarServer ?? 'Altar Server' },
-        { href: '/get-involved/music', label: parishLifeNavigation?.musicMinistry ?? 'Music Ministry' },
-      ],
-    },
-    { href: '/get-involved/connect-groups', label: parishLifeNavigation?.connectGroups ?? 'Connect Groups' },
-    { href: '/get-involved/group-studies', label: parishLifeNavigation?.groupStudies ?? 'Group Studies' },
-    { href: '/sacraments', label: parishLifeNavigation?.sacraments ?? 'Sacraments' },
-    { href: '/resources', label: parishLifeNavigation?.resources ?? 'Resources' },
-    { href: '/need-help', label: parishLifeNavigation?.needHelp ?? 'Need Help?' },
-    { href: '/contribute', label: parishLifeNavigation?.contribute ?? 'Looking for a way to contribute?' },
-  ];
-
-  const externalLinks = [
-    { href: 'https://gods-call.com/', label: 'Vocations' },
-  ];
+  const primaryLinks = headerData.primaryLinks;
+  const parishLifeLinks: ParishLifeLink[] = headerData.parishLifeLinks;
+  const externalLinks = headerData.externalLinks;
+  const cmsDonateUrl = headerData.donateUrl;
+  const resolvedDonateUrl = donateUrl ?? cmsDonateUrl;
 
   const searchResults = useMemo<SearchResult[]>(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -499,7 +464,7 @@ export default function Header({
           </a>
 
           <a
-            href={donateUrl}
+            href={resolvedDonateUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="shrink-0"
@@ -562,7 +527,7 @@ export default function Header({
             </div>
             <div className="min-w-0 py-2 sm:pl-6 sm:py-3">
               <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">Daily Mass</p>
-              <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">7:30 AM (Mon - Fri)</p>
+              <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">7:30 AM (Mon - Fri) · 8:00 AM (Sat)</p>
             </div>
           </div>
         </div>
@@ -635,7 +600,7 @@ export default function Header({
             </div>
 
             <a
-              href={donateUrl}
+              href={resolvedDonateUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={() => setIsMenuOpen(false)}

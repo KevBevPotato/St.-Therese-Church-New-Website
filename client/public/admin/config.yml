@@ -50,6 +50,34 @@ collections:
               required: false,
             }
           - {
+              label: "Desktop Video File or URL",
+              name: "desktopVideoUrl",
+              widget: "file",
+              required: false,
+              hint: "Shown on tablet and desktop screens. Leave blank to use the original Hero Video File or URL.",
+            }
+          - {
+              label: "Desktop Poster Image",
+              name: "desktopPoster",
+              widget: "image",
+              required: false,
+              hint: "Shown on tablet and desktop screens when video is unavailable.",
+            }
+          - {
+              label: "Mobile Video File or URL",
+              name: "mobileVideoUrl",
+              widget: "file",
+              required: false,
+              hint: "Shown on phones. Leave blank to use the desktop video.",
+            }
+          - {
+              label: "Mobile Poster Image",
+              name: "mobilePoster",
+              widget: "image",
+              required: false,
+              hint: "Shown on phones when the mobile video is unavailable.",
+            }
+          - {
               label: "Media Fit",
               name: "mediaFit",
               widget: "select",
@@ -306,6 +334,59 @@ collections:
                   hint: "Adjusts the crop in the image preview and announcement card, e.g. center 35%.",
                   required: false,
                 }
+  - name: "navigation"
+    label: "Header Navigation"
+    files:
+      - file: "client/src/data/header_data.json"
+        label: "Header Links and Branches"
+        name: "header_navigation"
+        fields:
+          - label: "Primary Links"
+            name: "primaryLinks"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Label", name: "label", widget: "markdown", required: false }
+              - { label: "URL", name: "href", widget: "string", required: false }
+          - label: "Parish Life Links"
+            name: "parishLifeLinks"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}}"
+            hint: "Leave URL blank to create a branch heading. Add nested links under Children."
+            fields:
+              - { label: "Label", name: "label", widget: "markdown", required: false }
+              - { label: "URL", name: "href", widget: "string", required: false }
+              - label: "Children"
+                name: "children"
+                widget: "list"
+                required: false
+                summary: "{{fields.label}}"
+                fields:
+                  - { label: "Label", name: "label", widget: "markdown", required: false }
+                  - { label: "URL", name: "href", widget: "string", required: false }
+                  - label: "Children"
+                    name: "children"
+                    widget: "list"
+                    required: false
+                    fields:
+                      - { label: "Label", name: "label", widget: "markdown", required: false }
+                      - { label: "URL", name: "href", widget: "string", required: false }
+          - label: "External Links"
+            name: "externalLinks"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Label", name: "label", widget: "markdown", required: false }
+              - { label: "URL", name: "href", widget: "string", required: false }
+          - {
+              label: "Donate URL",
+              name: "donateUrl",
+              widget: "string",
+              required: false,
+            }
   - name: "staff"
     label: "About & Staff"
     files:

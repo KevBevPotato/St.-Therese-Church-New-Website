@@ -47,18 +47,6 @@ export function EventsListView({
         <Button variant="outline" size="sm" onClick={onReset} className="rounded-full font-bold text-xs uppercase tracking-widest border-2">Reset</Button>
       </div>
 
-      <div className="flex gap-2 flex-wrap">
-        {(['all', 'thisWeek', 'thisMonth', 'nextMonth', 'twoPlus', 'calendarMonth'] as ExtendedTimeFilter[]).map(filter => (
-          <button
-            key={filter}
-            onClick={() => setTimeFilter(filter)}
-            className={`px-4 py-2 rounded-full text-sm font-bold transition-all ${timeFilter === filter ? 'bg-primary text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
-          >
-            {filter === 'all' ? 'All' : filter === 'thisWeek' ? 'This Week' : filter === 'thisMonth' ? 'This Month' : filter === 'nextMonth' ? 'Next Month' : filter === 'twoPlus' ? '2+ Months' : 'Calendar Month'}
-          </button>
-        ))}
-      </div>
-
       <div className="lg:hidden border-y border-primary/10 py-4">
         <p className="mb-3 text-[10px] font-black uppercase tracking-widest text-primary/60">Filter by category</p>
         <div className="flex flex-wrap gap-2">
@@ -75,6 +63,12 @@ export function EventsListView({
         </div>
       </div>
 
+      {showCalendarLink && (
+        <Link href="/events?view=calendar" className="inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:text-accent lg:hidden">
+          <CalendarDays className="size-4" />
+          View full parish calendar
+        </Link>
+      )}
       <div id="events-scroll-container" className="flex flex-col items-start gap-4 lg:max-h-[calc(100vh-12rem)] overflow-y-auto pr-4 pb-8 custom-scrollbar">
         {displayedEvents.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border-2 border-dashed border-primary/10">
@@ -91,12 +85,6 @@ export function EventsListView({
           ))
         )}
       </div>
-      {showCalendarLink && (
-        <Link href="/events?view=calendar" className="inline-flex items-center gap-2 text-sm font-bold text-primary underline decoration-primary/30 underline-offset-4 hover:text-accent lg:hidden">
-          <CalendarDays className="size-4" />
-          View full parish calendar
-        </Link>
-      )}
     </div>
   );
 }

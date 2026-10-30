@@ -1,0 +1,40 @@
+{
+  "primaryLinks": [
+    { "href": "/", "label": "Home" },
+    { "href": "/about", "label": "About & Staff" },
+    { "href": "/bulletin", "label": "Bulletin" }
+  ],
+  "parishLifeLinks": [
+    { "href": "/announcements", "label": "Announcements" },
+    {
+      "label": "Join an Organization!",
+      "children": [
+        { "href": "/get-involved/knights-of-columbus", "label": "Knights of Columbus" },
+        { "href": "/get-involved/catholic-daughters", "label": "Catholic Daughters" },
+        { "href": "/get-involved/altar-society", "label": "Altar Society" },
+        { "href": "/get-involved/st-vincent-de-paul-food-drive", "label": "St. Vincent de Paul" }
+      ]
+    },
+    { "href": "/faith-formation", "label": "Wednesday Faith Formation" },
+    {
+      "href": "/get-involved/liturgy",
+      "label": "Help with the Liturgy!",
+      "children": [
+        { "href": "/get-involved/lector", "label": "Lector" },
+        { "href": "/get-involved/usher", "label": "Usher" },
+        { "href": "/get-involved/altar-server", "label": "Altar Server" },
+        { "href": "/get-involved/music", "label": "Music Ministry" }
+      ]
+    },
+    { "href": "/get-involved/connect-groups", "label": "Connect Groups" },
+    { "href": "/get-involved/group-studies", "label": "Group Studies" },
+    { "href": "/sacraments", "label": "Sacraments" },
+    { "href": "/resources", "label": "Resources" },
+    { "href": "/need-help", "label": "Need Help?" },
+    { "href": "/contribute", "label": "Looking for a way to contribute?" }
+  ],
+  "externalLinks": [
+    { "href": "https://gods-call.com/", "label": "Vocations" }
+  ],
+  "donateUrl": "https://secure.myvanco.com/L-ZAYT/home"
+}

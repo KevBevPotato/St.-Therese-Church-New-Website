@@ -90,30 +90,44 @@ export default function Home() {
           )}
           {/* Video background - Now purely a background layer */}
           <div className="absolute inset-0 z-0">
-            {heroData.videoUrl ? (
+            {heroData.mobileVideoUrl ? (
               <video
                 autoPlay
                 loop
                 muted
                 playsInline
-                poster={heroData.poster}
-                className="absolute inset-0 h-full w-full"
-                style={{
-                  objectFit: mediaFit,
-                  objectPosition: heroData.mediaPosition,
-                }}
+                poster={heroData.mobilePoster || heroData.poster}
+                className="absolute inset-0 h-full w-full md:hidden"
+                style={{ objectFit: mediaFit, objectPosition: heroData.mediaPosition }}
               >
-                <source src={heroData.videoUrl} type="video/mp4" />
+                <source src={heroData.mobileVideoUrl} type="video/mp4" />
               </video>
             ) : (
               <img
-                src={heroData.poster}
+                src={heroData.mobilePoster || heroData.poster}
                 alt="Saint Thérèse Church"
-                className="h-full w-full"
-                style={{
-                  objectFit: mediaFit,
-                  objectPosition: heroData.mediaPosition,
-                }}
+                className="absolute inset-0 h-full w-full md:hidden"
+                style={{ objectFit: mediaFit, objectPosition: heroData.mediaPosition }}
+              />
+            )}
+            {heroData.desktopVideoUrl || heroData.videoUrl ? (
+              <video
+                autoPlay
+                loop
+                muted
+                playsInline
+                poster={heroData.desktopPoster || heroData.poster}
+                className="absolute inset-0 hidden h-full w-full md:block"
+                style={{ objectFit: mediaFit, objectPosition: heroData.mediaPosition }}
+              >
+                <source src={heroData.desktopVideoUrl || heroData.videoUrl} type="video/mp4" />
+              </video>
+            ) : (
+              <img
+                src={heroData.desktopPoster || heroData.poster}
+                alt="Saint Thérèse Church"
+                className="absolute inset-0 hidden h-full w-full md:block"
+                style={{ objectFit: mediaFit, objectPosition: heroData.mediaPosition }}
               />
             )}
 
