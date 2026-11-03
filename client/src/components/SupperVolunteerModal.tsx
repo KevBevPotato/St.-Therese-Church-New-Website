@@ -9,7 +9,6 @@ import {
     User as UserIcon,
     Calendar,
     Users,
-    HandHeart,
     Check,
     XIcon,
 } from 'lucide-react';
@@ -284,7 +283,7 @@ export default function SupperVolunteerModal({
                                             : 'text-primary/70 hover:bg-white/60'
                                     }`}
                                 >
-                                    <HandHeart size={14} /> I'm Willing to Help
+                                    I'm Willing to Help
                                 </button>
                             </div>
                         )}
@@ -699,7 +698,7 @@ export default function SupperVolunteerModal({
                                 </>
                             ) : (
                                 <>
-                                    <HandHeart size={16} /> Submit My
+                                    Submit My
                                     Availability
                                 </>
                             )}

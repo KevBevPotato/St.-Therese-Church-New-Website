@@ -121,9 +121,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
     e.stopPropagation(); 
-    setHighlightedEventId(event.id);
-    const card = document.getElementById(`event-card-${event.id}`);
-    if (card) card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`);
   };
 
   const resetFilters = () => { 

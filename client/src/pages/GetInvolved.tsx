@@ -14,8 +14,6 @@ import {
     Phone,
     User,
     UserPlus,
-    Heart,
-    HandHeart,
     Shield,
     Flower,
     LayoutGrid,

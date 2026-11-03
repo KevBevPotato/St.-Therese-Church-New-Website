@@ -47,7 +47,9 @@
     const hash = window.location.hash.replace(/\/+$/, "");
     const isTargetEditor =
       pathname === "/admin" &&
-      hash === "#/collections/bulletins/entries/bulletins_file";
+      /^#\/collections\/bulletins\/(?:new|entries\/bulletins_file(?:\/[^/]+)?)$/.test(
+        hash
+      );
     if (!isTargetEditor) {
       links.forEach(link => setLinkVisibility(link, false));
       return;

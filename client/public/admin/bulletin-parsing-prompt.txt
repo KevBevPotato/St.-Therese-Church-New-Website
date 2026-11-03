@@ -26,7 +26,7 @@ GENERAL RULES
 FILES AND FORMATS
 
 1. mass_times.md
-- Include every Mass time for the bulletin date range.
+- Include every Mass time for the bulletin date range. Especially look at the first page for Mass times. Sometimes there are special masses that are outside the 'normal' times. Please include these for the Mass times for the week!
 - Include Reconciliation / Confession times as well.
 - Use one bullet per service or time.
 - Format:

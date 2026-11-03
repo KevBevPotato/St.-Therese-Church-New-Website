@@ -9,8 +9,6 @@ import {
     ArrowLeft,
     Cross,
     ExternalLink,
-    Heart,
-    Sparkles,
     Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -71,7 +69,6 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
                                 className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
                             >
                                 <a href={ROSARY_IN_A_YEAR_URL} target="_blank" rel="noopener noreferrer">
-                                    <Sparkles className="mr-2 size-4" />
                                     Pray with Fr. Mark-Mary
                                     <ExternalLink className="ml-2 size-4" />
                                 </a>
@@ -124,7 +121,6 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
                         </div>
                         <div>
                             <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-2">
-                                <Sparkles className="inline-block size-3.5 -mt-0.5 mr-1" />
                                 Featured Resource
                             </p>
                             <h2 className="font-serif text-3xl md:text-4xl font-bold text-primary mb-4">

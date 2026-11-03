@@ -7,7 +7,7 @@ import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-    ArrowLeft, Film, Calendar, MapPin, ExternalLink, Sparkles, Popcorn, Quote,
+    ArrowLeft, Film, Calendar, MapPin, ExternalLink, Popcorn, Quote,
 } from 'lucide-react';
 
 const DIOCESE_URL = 'https://www.rapidcitydiocese.org/cinema26/';
@@ -51,7 +51,6 @@ export default function CinemaWithTheShepherd({ event }: EventLandingPageProps) 
                         <div className="mt-8 flex flex-wrap gap-3">
                             <Button asChild className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg">
                                 <a href={DIOCESE_URL} target="_blank" rel="noopener noreferrer">
-                                    <Sparkles className="mr-2 size-4" />
                                     See This Year's Lineup
                                     <ExternalLink className="ml-2 size-4" />
                                 </a>

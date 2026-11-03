@@ -5,8 +5,6 @@ import {
     CheckCircle2,
     DollarSign,
     FileText,
-    Heart,
-    Sparkles,
 } from 'lucide-react';
 import { submitForm } from '@/lib/submit-form';
 import { type EngagementConfig } from '@/data/engagements';
@@ -234,10 +232,6 @@ export default function EngagementModal({
 
                         {showContextBanner && (
                             <div className="rounded-xl bg-primary/5 border border-primary/15 p-3 text-xs flex items-start gap-2 text-primary">
-                                <Sparkles
-                                    size={14}
-                                    className="flex-shrink-0 mt-0.5 text-accent"
-                                />
                                 <span>
                                     <span className="font-bold">
                                         In reference to:
@@ -476,7 +470,7 @@ export default function EngagementModal({
                                 </>
                             ) : isPledge ? (
                                 <>
-                                    <Heart size={16} /> Submit Pledge
+                                    Submit Pledge
                                 </>
                             ) : (
                                 'Submit'

@@ -83,7 +83,7 @@ export function CalendarView({
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
           <div key={day} className="relative p-3 text-center text-[10px] font-black uppercase tracking-widest text-primary/60 bg-gray-100 border-r-2 border-b-2 border-primary/30">{day}</div>
         ))}
-        {emptyDaysBefore.map(i => (<div key={`empty-${i}`} className="aspect-square border-r-2 border-b-2 border-primary/30 bg-gray-50/10" />))}
+        {emptyDaysBefore.map(i => (<div key={`empty-${i}`} className="calendar-grid-cell aspect-square border-r-2 border-b-2 border-primary/30 bg-gray-50/10" />))}
         {monthDays.map(date => {
           const events = getEventsForDay(date);
           const isToday = date.getDate() === today.getDate() && date.getMonth() === today.getMonth() && date.getFullYear() === today.getFullYear();
@@ -91,6 +91,7 @@ export function CalendarView({
           const isHovered = hoveredDate && date.getFullYear() === hoveredDate.getFullYear() && date.getMonth() === hoveredDate.getMonth() && date.getDate() === hoveredDate.getDate();
           const isPast = date < today && !isToday;
           const fontSize = events.length <= 2 ? 'text-[9px]' : events.length <= 4 ? 'text-[8px]' : 'text-[7px]';
+          const showDayDetailsButton = events.length > 3 || isHovered;
 
           return (
             <div
@@ -104,11 +105,11 @@ export function CalendarView({
                 setHoveredDate(null);
                 onDayLeave();
               }}
-              className={`relative aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isSelected ? 'bg-accent/10 border-accent' : isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
+              className={`calendar-grid-cell relative aspect-square border-r-2 border-b-2 p-1.5 transition-colors border-primary/30 ${isSelected ? 'bg-accent/10 border-accent' : isToday ? 'bg-primary/5' : 'bg-white hover:bg-gray-50/50'} cursor-pointer flex flex-col overflow-y-auto [&::-webkit-scrollbar]:hidden`}
             >
               <div className="mb-1 flex items-start justify-between gap-1">
                 <div className={`text-xs font-black flex-shrink-0 ${isToday ? 'text-primary' : 'text-gray-400'}`}>{date.getDate()}</div>
-                {isHovered && (
+                {showDayDetailsButton && (
                   <button
                     type="button"
                     onClick={(event) => {

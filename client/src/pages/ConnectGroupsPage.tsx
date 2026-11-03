@@ -2,7 +2,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, BookOpen, Heart, Users, Sparkles } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
@@ -44,17 +44,11 @@ export default function ConnectGroupsPage() {
 
             <div className="grid gap-4 md:grid-cols-2">
               <Card className="p-6 border-2 border-primary/10 bg-white">
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Users size={20} />
-                </div>
                 <h2 className="font-serif text-2xl font-bold text-primary mb-2">Faith & Friendship</h2>
                 <p className="text-muted-foreground">Meet with a welcoming group for Scripture discussion, prayer, and encouragement.</p>
               </Card>
 
               <Card className="p-6 border-2 border-primary/10 bg-white">
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Sparkles size={20} />
-                </div>
                 <h2 className="font-serif text-2xl font-bold text-primary mb-2">Life Together</h2>
                 <p className="text-muted-foreground">Build meaningful relationships and share your faith walk in a supportive community.</p>
               </Card>
@@ -62,9 +56,6 @@ export default function ConnectGroupsPage() {
           </div>
 
           <Card className="p-8 border-2 border-primary/10 bg-white shadow-xl rounded-[2rem]">
-            <div className="mb-6 flex size-12 items-center justify-center rounded-full bg-accent/10 text-accent">
-              <Heart size={22} />
-            </div>
             <h2 className="font-serif text-3xl font-bold text-primary mb-4">Who it’s for</h2>
             <ul className="space-y-3 text-muted-foreground">
               <li>• Adults and families seeking a welcoming faith community</li>
@@ -98,7 +89,6 @@ export default function ConnectGroupsPage() {
 
         <Card className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
           <div className="flex items-center gap-3 mb-4 text-primary">
-            <BookOpen size={20} />
             <h2 className="font-serif text-2xl font-bold">What to expect</h2>
           </div>
           <p className="text-muted-foreground leading-relaxed">

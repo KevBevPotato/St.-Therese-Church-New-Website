@@ -11,7 +11,6 @@ import {
     Flower,
     Users,
     Calendar,
-    Heart,
     Cross,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
@@ -184,7 +183,7 @@ export default function AltarSociety() {
                             variant="outline"
                             className="px-8 py-6 font-bold uppercase tracking-widest border-2"
                         >
-                            <Heart size={16} className="mr-2" /> Refer a Member
+                            Refer a Member
                         </Button>
                     </div>
                 </div>

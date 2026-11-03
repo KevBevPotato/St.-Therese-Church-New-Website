@@ -1240,12 +1240,14 @@ collections:
                       label: "Card Background Image (optional)",
                       name: "image",
                       widget: "image",
+                      hint: "Upload an image, then use Background Image Appearance below to preview its crop, position, size, and transparency.",
                       required: false,
                     }
                   - {
                       label: "App Logo Image (optional)",
                       name: "iconImage",
                       widget: "image",
+                      hint: "Upload an icon/logo and use Logo Appearance below to preview its size, shape, border, and opacity.",
                       required: false,
                     }
                   - {

@@ -7,7 +7,7 @@ import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-    ArrowLeft, Mic, ExternalLink, Headphones, Sparkles, Quote,
+    ArrowLeft, Mic, ExternalLink, Headphones, Quote,
 } from 'lucide-react';
 
 // 🔧 Replace with the actual Rise podcast URL when you have it.
@@ -76,7 +76,7 @@ export default function RisePodcast({ event }: EventLandingPageProps) {
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="text-center mb-12">
                         <p className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3">
-                            <Sparkles size={14} /> About the Show
+                            About the Show
                         </p>
                         <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-4">
                             Faith for the everyday.

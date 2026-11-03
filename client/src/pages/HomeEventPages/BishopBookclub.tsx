@@ -7,7 +7,7 @@ import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import {
-    ArrowLeft, BookOpen, ExternalLink, Headphones, Calendar, Sparkles, Quote,
+    ArrowLeft, BookOpen, ExternalLink, Headphones, Calendar, Quote,
 } from 'lucide-react';
 
 const DIOCESE_URL = 'https://www.rapidcitydiocese.org/bookclub/';
@@ -77,7 +77,7 @@ export default function BishopBookclub({ event }: EventLandingPageProps) {
                 <div className="container mx-auto px-4 max-w-4xl">
                     <div className="text-center mb-12">
                         <p className="flex items-center justify-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f] mb-3">
-                            <Sparkles size={14} /> How It Works
+                            How It Works
                         </p>
                         <h2 className="font-serif text-4xl md:text-5xl font-bold text-primary mb-4">
                             One book. One conversation.

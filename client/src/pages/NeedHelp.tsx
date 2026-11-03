@@ -2,7 +2,6 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { HandHeart } from 'lucide-react';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 import getInvolvedData from '@/data/get-involved';
 
@@ -17,7 +16,6 @@ export default function NeedHelp() {
 
       <main className="container mx-auto flex flex-grow items-center px-4 py-16">
         <Card className="mx-auto w-full max-w-3xl border-2 border-primary/10 bg-white p-8 text-center shadow-sm md:p-12">
-          <HandHeart className="mx-auto size-12 text-accent" aria-hidden="true" />
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">Parish Life</p>
           <h1 className="mt-3 font-serif text-4xl font-bold text-primary md:text-6xl">
             {pageSettings?.title ?? 'Need Help?'}

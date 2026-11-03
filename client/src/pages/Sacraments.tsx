@@ -5,7 +5,6 @@ import {
     BookOpen,
     Droplet,
     Wine,
-    Heart,
     Cross,
     Users,
     Phone,
@@ -89,7 +88,7 @@ const sacraments: Sacrament[] = [
         contactPhone: '(605) 342-1556',
         contactEmail: 'bobby.myers@strcstaff.org',
         preparation: 'Two-year preparation process for teens',
-        icon: <Heart size={20} />,
+        icon: null,
     },
     {
         id: 'ocia',

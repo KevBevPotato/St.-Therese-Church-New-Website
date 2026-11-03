@@ -292,7 +292,7 @@
 
   window.CMS.registerPreviewTemplate(
     "resources_file",
-    Preview(data =>
+    Preview((data, getAsset) =>
       h(
         "div",
         { style: { display: "grid", gap: 16 } },
@@ -324,10 +324,108 @@
                   },
                 },
                 ...(category.links || []).map(link =>
-                  card(link.title, h("p", null, asText(link.description)), {
-                    padding: 13,
-                    boxShadow: "none",
-                  })
+                  card(
+                    null,
+                    h(
+                      "article",
+                      {
+                        style: {
+                          position: "relative",
+                          minHeight: 220,
+                          overflow: "hidden",
+                          padding: 18,
+                          borderRadius: 16,
+                          border: "2px solid #dbe3ec",
+                          background: "#fff",
+                        },
+                      },
+                      link.image &&
+                        h("img", {
+                          src: getAsset(link.image).toString(),
+                          alt: "",
+                          style: {
+                            position: "absolute",
+                            inset: 0,
+                            width: "100%",
+                            height: "100%",
+                            objectFit: "cover",
+                            objectPosition: link.imageSettings?.position
+                              ?.replace("object-", "") || "center",
+                            opacity:
+                              Number(
+                                link.imageSettings?.opacity?.replace(
+                                  "opacity-",
+                                  ""
+                                )
+                              ) / 100 || 0.4,
+                            transform: `scale(${
+                              Number(
+                                link.imageSettings?.scale?.replace(
+                                  "scale-",
+                                  ""
+                                )
+                              ) / 100 || 1
+                            })`,
+                          },
+                        }),
+                      h("div", {
+                        style: {
+                          position: "absolute",
+                          inset: 0,
+                          background: "rgba(255,255,255,0.8)",
+                        },
+                      }),
+                      h(
+                        "div",
+                        {
+                          style: {
+                            position: "relative",
+                            display: "grid",
+                            gap: 8,
+                          },
+                        },
+                        link.iconImage &&
+                          h("img", {
+                            src: getAsset(link.iconImage).toString(),
+                            alt: "",
+                            style: {
+                              width: 56,
+                              height: 56,
+                              objectFit: "cover",
+                              objectPosition: "center",
+                              borderRadius:
+                                link.logoSettings?.rounded === "rounded-full"
+                                  ? "50%"
+                                  : 10,
+                              border:
+                                link.logoSettings?.border === "border-none"
+                                  ? "0"
+                                  : "1px solid #dbe3ec",
+                              opacity:
+                                Number(
+                                  link.logoSettings?.opacity?.replace(
+                                    "opacity-",
+                                    ""
+                                  )
+                                ) / 100 || 1,
+                            },
+                          }),
+                        h(
+                          "h3",
+                          {
+                            style: {
+                              margin: 0,
+                              color: "#17324f",
+                              font: "bold 19px Georgia, serif",
+                            },
+                          },
+                          asText(link.title, 100)
+                        ),
+                        h("p", null, asText(link.description))
+                      )
+                    ),
+                    { padding: 0, boxShadow: "none" }
+                  )
                 )
               )
             )

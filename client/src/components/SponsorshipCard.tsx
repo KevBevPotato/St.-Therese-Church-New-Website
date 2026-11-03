@@ -13,7 +13,6 @@ import {
     User,
     UserPlus,
     MessageSquare,
-    Heart,
 } from 'lucide-react';
 import {
     type SponsorshipProject,
@@ -268,7 +267,7 @@ export default function SponsorshipCard({
                     onClick={onContribute}
                     className="w-full bg-accent hover:bg-accent/90 text-white font-bold uppercase tracking-[0.2em] text-[10px] py-6 shadow-lg shadow-accent/20"
                 >
-                    <Heart size={14} className="mr-2" /> Contribute to {project.title}
+                    Contribute to {project.title}
                 </Button>
 
                 <Button

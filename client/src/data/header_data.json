@@ -5,14 +5,24 @@
     { "href": "/bulletin", "label": "Bulletin" }
   ],
   "parishLifeLinks": [
+    { "href": "/new-to-st-therese", "label": "New to St. Thérèse?" },
     { "href": "/announcements", "label": "Announcements" },
     {
       "label": "Join an Organization!",
       "children": [
-        { "href": "/get-involved/knights-of-columbus", "label": "Knights of Columbus" },
-        { "href": "/get-involved/catholic-daughters", "label": "Catholic Daughters" },
+        {
+          "href": "/get-involved/knights-of-columbus",
+          "label": "Knights of Columbus"
+        },
+        {
+          "href": "/get-involved/catholic-daughters",
+          "label": "Catholic Daughters"
+        },
         { "href": "/get-involved/altar-society", "label": "Altar Society" },
-        { "href": "/get-involved/st-vincent-de-paul-food-drive", "label": "St. Vincent de Paul" }
+        {
+          "href": "/get-involved/st-vincent-de-paul-food-drive",
+          "label": "St. Vincent de Paul"
+        }
       ]
     },
     { "href": "/faith-formation", "label": "Wednesday Faith Formation" },
@@ -33,8 +43,6 @@
     { "href": "/need-help", "label": "Need Help?" },
     { "href": "/contribute", "label": "Looking for a way to contribute?" }
   ],
-  "externalLinks": [
-    { "href": "https://gods-call.com/", "label": "Vocations" }
-  ],
+  "externalLinks": [{ "href": "https://gods-call.com/", "label": "Vocations" }],
   "donateUrl": "https://secure.myvanco.com/L-ZAYT/home"
 }

@@ -35,6 +35,7 @@ import AltarSociety from "./components/AltarSociety";
 
 import Sacraments from "./pages/Sacraments";
 import Resources from "./pages/Resources";
+import NewToStTherese from "./pages/NewToStTherese";
 
 function Router() {
   const [location] = useLocation();
@@ -82,6 +83,7 @@ function Router() {
 
       <Route path={"/sacraments"} component={Sacraments} />
       <Route path={"/resources"} component={Resources} />
+      <Route path={"/new-to-st-therese"} component={NewToStTherese} />
 
       <Route path={"/events"} component={UpcomingEventsCalendar} />
       <Route path={"/events/:id"} component={EventDetail} />

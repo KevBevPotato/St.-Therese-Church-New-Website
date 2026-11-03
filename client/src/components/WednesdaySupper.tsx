@@ -11,10 +11,8 @@ import {
     Users,
     Utensils,
     ShoppingCart,
-    Sparkles,
     Phone,
     ArrowLeft,
-    Heart,
 } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
@@ -49,7 +47,7 @@ const roleIcons: Record<RoleName, React.ReactNode> = {
     'Grocery Pick-up': <ShoppingCart size={14} />,
     'Food Prep': <Utensils size={14} />,
     'Food Server': <Users size={14} />,
-    'Clean-up Crew': <Sparkles size={14} />,
+    'Clean-up Crew': null,
 };
 
 // ============================================================
@@ -372,7 +370,7 @@ export default function WednesdaySupper() {
                             onClick={() => openEngagement('pledge-supper-week')}
                             className="bg-accent hover:bg-accent/90 text-white px-8 py-6 font-bold uppercase tracking-widest shadow-lg"
                         >
-                            <Heart size={16} className="mr-2" /> Sponsor a Week
+                            Sponsor a Week
                         </Button>
                         <Button
                             onClick={() => openVolunteerSignup()}

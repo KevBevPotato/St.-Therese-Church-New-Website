@@ -11,7 +11,6 @@ import {
     CheckCircle2,
     HelpCircle,
     Users,
-    Heart,
     MessageSquare,
     UserPlus
 } from 'lucide-react';
@@ -268,7 +267,6 @@ export default function OpportunityDetail() {
                             <div className="space-y-4 relative z-10">
                                 <div className="flex items-center gap-3">
                                     <div className="size-10 rounded-full bg-white/10 flex items-center justify-center">
-                                        <Heart size={20} />
                                     </div>
                                     <div>
                                         <p className="font-bold">{details.contact.name}</p>
