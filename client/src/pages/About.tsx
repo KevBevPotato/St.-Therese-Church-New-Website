@@ -5,6 +5,14 @@ import { Card } from '../components/ui/card';
 import { Mail, Phone } from 'lucide-react';
 import { staffMembers, StaffMember } from '../data/staff';
 import aboutPageData from '../data/about_page_data.json';
+import { EventMedia } from '../components/EventMedia';
+
+type AboutGalleryItem = {
+  photo: string;
+  caption?: string;
+  linkUrl?: string;
+  showInCarousel?: boolean;
+};
 
 export default function About() {
   // ✅ WHITELIST REMOVED: We now use the full list from staff_data.json
@@ -40,6 +48,22 @@ export default function About() {
           </aside>
         </div>
       </section>
+
+      {aboutPageData.gallery?.length > 0 && (
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <EventMedia
+              event={{
+                title: aboutPageData.title,
+                image: undefined,
+                photos: [],
+                gallery: aboutPageData.gallery as AboutGalleryItem[],
+              }}
+              galleryTitle="Parish Life Gallery"
+            />
+          </div>
+        </section>
+      )}
 
       <section className="py-10 bg-secondary/20">
         <div className="container mx-auto px-4">

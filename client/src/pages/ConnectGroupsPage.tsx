@@ -7,6 +7,7 @@ import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 import CmsMarkdown from '@/components/CmsMarkdown';
+import { EventMedia } from '@/components/EventMedia';
 
 type ContentBlock = {
   heading?: string;
@@ -17,6 +18,13 @@ type ContentBlock = {
   linkUrl?: string;
 };
 
+type GalleryItem = {
+  photo: string;
+  caption?: string;
+  linkUrl?: string;
+  showInCarousel?: boolean;
+};
+
 export default function ConnectGroupsPage() {
   const { openSignup } = useInterestSignup();
   const configuredPages = getInvolvedData.opportunities as Array<{
@@ -25,12 +33,16 @@ export default function ConnectGroupsPage() {
     landingPageDescription?: string;
     landingPageImage?: string;
     contentBlocks?: ContentBlock[];
+    audienceHeading?: string;
+    audienceItems?: string[];
+    gallery?: GalleryItem[];
     contactEmail?: string;
     signUpLinks?: Array<{ label: string; url: string }>;
   }>;
   const page = configuredPages.find((item) => item.id === 'connect-groups');
   const title = page?.landingPageTitle ?? 'Connect Groups';
   const contentBlocks = page?.contentBlocks ?? [];
+  const audienceItems = page?.audienceItems ?? [];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -68,13 +80,14 @@ export default function ConnectGroupsPage() {
           </div>
 
           <Card className="p-8 border-2 border-primary/10 bg-white shadow-xl rounded-[2rem]">
-            <h2 className="font-serif text-3xl font-bold text-primary mb-4">Who it’s for</h2>
-            <ul className="space-y-3 text-muted-foreground">
-              <li>• Adults and families seeking a welcoming faith community</li>
-              <li>• New parishioners looking to connect and build friendships</li>
-              <li>• Anyone interested in prayerful small-group discussion</li>
-              <li>• Catholics who want to grow in discipleship and community</li>
-            </ul>
+            <h2 className="font-serif text-3xl font-bold text-primary mb-4">
+              {page?.audienceHeading ?? 'Who it’s for'}
+            </h2>
+            {audienceItems.length > 0 && (
+              <ul className="space-y-3 text-muted-foreground">
+                {audienceItems.map((item, index) => <li key={`${item}-${index}`}>• {item}</li>)}
+              </ul>
+            )}
             <div className="mt-8">
               <Button
                 onClick={() =>
@@ -98,6 +111,15 @@ export default function ConnectGroupsPage() {
             ))}
           </Card>
         </div>
+
+        {page?.gallery && page.gallery.length > 0 && (
+          <div className="mt-10">
+            <EventMedia
+              event={{ title, image: undefined, photos: [], gallery: page.gallery }}
+              galleryTitle="Connect Groups Gallery"
+            />
+          </div>
+        )}
 
         {contentBlocks.slice(2).map((block, index) => (
           <Card key={`${block.heading ?? 'block'}-${index}`} className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">

@@ -19,6 +19,11 @@
   "primaryButtonLabel": "Become a Member",
   "secondaryButtonLabel": "Meet Our Parish Team",
   "secondaryButtonUrl": "/about",
+  "showMonthlyCalendarButton": true,
+  "monthlyCalendarButtonLabel": "Monthly Calendar PDF",
+  "monthlyCalendarPdf": "",
+  "monthlyCalendarStartDate": "",
+  "monthlyCalendarEndDate": "",
   "quote": "\"My vocation, at last I have found it; my vocation is love.\"",
   "quoteAttribution": "Saint Thérèse of Lisieux"
 }

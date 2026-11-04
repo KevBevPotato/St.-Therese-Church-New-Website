@@ -25,6 +25,18 @@ function colorWithOpacity(color: string, opacity: number): string {
   return `rgba(${parseInt(red, 16)}, ${parseInt(green, 16)}, ${parseInt(blue, 16)}, ${opacity})`;
 }
 
+function isCurrentDateInRange(startDate?: string, endDate?: string): boolean {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const start = startDate ? new Date(`${startDate}T00:00:00`) : undefined;
+  const end = endDate ? new Date(`${endDate}T23:59:59`) : undefined;
+
+  return (
+    (!start || !Number.isNaN(start.getTime()) && today >= start) &&
+    (!end || !Number.isNaN(end.getTime()) && today <= end)
+  );
+}
+
 /**
  * Home Page
  *
@@ -37,6 +49,10 @@ export default function Home() {
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
   const mediaFit = getMediaFit(heroData.mediaFit);
   const featuredAnnouncement = getActiveAnnouncements()[0];
+  const showMonthlyCalendar =
+    heroData.showMonthlyCalendarButton !== false &&
+    Boolean(heroData.monthlyCalendarPdf) &&
+    isCurrentDateInRange(heroData.monthlyCalendarStartDate, heroData.monthlyCalendarEndDate);
   const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
   const overlayStyle = {
     background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
@@ -192,6 +208,21 @@ export default function Home() {
                       {heroData.secondaryButtonLabel}
                     </Button>
                   </a>
+                  {showMonthlyCalendar && (
+                    <a
+                      href={heroData.monthlyCalendarPdf}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center"
+                    >
+                      <Button
+                        size="lg"
+                        className="w-full bg-accent px-8 py-6 font-bold uppercase tracking-widest text-white shadow-lg hover:bg-accent/90 sm:w-auto"
+                      >
+                        {heroData.monthlyCalendarButtonLabel || "Monthly Calendar PDF"}
+                      </Button>
+                    </a>
+                  )}
                 </div>
 
                 <div className="mt-12 sm:mt-16 lg:mt-20 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">

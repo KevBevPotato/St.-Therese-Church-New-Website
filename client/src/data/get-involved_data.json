@@ -173,6 +173,13 @@
       ],
       "contactEmail": "office@sttherese.org",
       "description": "Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion.\\\n\\\nThis is for anybody, especially new parishioners, to come meet our Parish community! If you have been here for years, or you are new, or have a large family, or just want to eat some snacks, this event is for you!\n\nIf you would like to contribute and bring a snack, look at some of the upcoming potluck links:\n- (November 19th, 2026)[https://www.mealtrain.com/potlucks/753692]",
+      "audienceHeading": "Who it’s for",
+      "audienceItems": [
+        "Adults and families seeking a welcoming faith community",
+        "New parishioners looking to connect and build friendships",
+        "Anyone interested in prayerful small-group discussion",
+        "Catholics who want to grow in discipleship and community"
+      ],
       "contentBlocks": [
         {
           "heading": "Faith & Friendship",
