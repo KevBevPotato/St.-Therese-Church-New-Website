@@ -163,6 +163,16 @@
       "landingPageTitle": "Connect Groups",
       "organization": "Parish Life",
       "landingPageDescription": "Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.",
+      "title": "Connect Groups",
+      "tags": [
+        "Parish Organizations"
+      ],
+      "id": "connect-groups",
+      "categories": [
+        "join"
+      ],
+      "contactEmail": "office@sttherese.org",
+      "description": "Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion.\\\n\\\nThis is for anybody, especially new parishioners, to come meet our Parish community! If you have been here for years, or you are new, or have a large family, or just want to eat some snacks, this event is for you!\n\nIf you would like to contribute and bring a snack, look at some of the upcoming potluck links:\n- (November 19th, 2026)[https://www.mealtrain.com/potlucks/753692]",
       "contentBlocks": [
         {
           "heading": "Faith & Friendship",
@@ -176,17 +186,7 @@
           "heading": "What to expect",
           "body": "Each Connect Group is rooted in prayer, scripture, and pastoral care. Groups meet regularly to learn together, pray together, and support one another in living out the faith in daily life."
         }
-      ],
-      "title": "Connect Groups",
-      "tags": [
-        "Parish Organizations"
-      ],
-      "id": "connect-groups",
-      "categories": [
-        "join"
-      ],
-      "contactEmail": "office@sttherese.org",
-      "description": "Join a welcoming small-group community for prayer, fellowship, and Gospel-centered discussion."
+      ]
     },
     {
       "signUpLinks": [],
@@ -216,6 +216,16 @@
       "landingPageTitle": "Group Studies",
       "organization": "Parish Life",
       "landingPageDescription": "Group Studies invite parishioners to explore Scripture, Catholic teaching, and spiritual formation in a prayerful, reflective setting. These seasonal studies help us deepen our relationship with Christ and one another.",
+      "title": "Group Studies",
+      "tags": [
+        "Parish Organizations"
+      ],
+      "id": "group-studies",
+      "categories": [
+        "join"
+      ],
+      "contactEmail": "office@sttherese.org",
+      "description": "Explore the Bible, Catholic teaching, and spiritual growth with a parish study group.",
       "contentBlocks": [
         {
           "heading": "Scripture & Catechesis",
@@ -229,17 +239,7 @@
           "heading": "Our aim",
           "body": "These studies help parishioners encounter the richness of the Catholic faith while growing in communion with one another. Whether you are looking for a first step in faith formation or a deeper dive into Scripture and doctrine, there is a place for you."
         }
-      ],
-      "title": "Group Studies",
-      "tags": [
-        "Parish Organizations"
-      ],
-      "id": "group-studies",
-      "categories": [
-        "join"
-      ],
-      "contactEmail": "office@sttherese.org",
-      "description": "Explore the Bible, Catholic teaching, and spiritual growth with a parish study group."
+      ]
     },
     {
       "signUpLinks": [],
