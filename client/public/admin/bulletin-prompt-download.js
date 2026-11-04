@@ -116,7 +116,17 @@
     });
   }
 
-  const observer = new MutationObserver(updateVisibility);
+  let scheduled = false;
+  const scheduleUpdate = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      updateVisibility();
+    });
+  };
+
+  const observer = new MutationObserver(scheduleUpdate);
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true,

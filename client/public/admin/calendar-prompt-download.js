@@ -37,10 +37,19 @@
     }
   }
 
-  new MutationObserver(updateVisibility).observe(document.documentElement, {
+  let scheduled = false;
+  const scheduleUpdate = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      updateVisibility();
+    });
+  };
+
+  new MutationObserver(scheduleUpdate).observe(document.documentElement, {
     childList: true,
     subtree: true,
-    characterData: true,
   });
   window.addEventListener("hashchange", updateVisibility);
   window.addEventListener("resize", updateVisibility);

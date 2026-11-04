@@ -134,7 +134,17 @@
     );
   }
 
-  const searchObserver = new MutationObserver(replaceCollectionSearch);
+  let searchScheduled = false;
+  const scheduleCollectionSearch = () => {
+    if (searchScheduled) return;
+    searchScheduled = true;
+    requestAnimationFrame(() => {
+      searchScheduled = false;
+      replaceCollectionSearch();
+    });
+  };
+
+  const searchObserver = new MutationObserver(scheduleCollectionSearch);
   searchObserver.observe(document.body, { childList: true, subtree: true });
   replaceCollectionSearch();
 

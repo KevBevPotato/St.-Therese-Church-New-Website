@@ -39,7 +39,17 @@
     });
   }
 
-  const observer = new MutationObserver(simplifyPublishMenu);
+  let scheduled = false;
+  const scheduleSimplify = () => {
+    if (scheduled) return;
+    scheduled = true;
+    requestAnimationFrame(() => {
+      scheduled = false;
+      simplifyPublishMenu();
+    });
+  };
+
+  const observer = new MutationObserver(scheduleSimplify);
   observer.observe(document.documentElement, {
     childList: true,
     subtree: true,
