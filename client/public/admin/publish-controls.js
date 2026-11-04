@@ -42,7 +42,6 @@
   const observer = new MutationObserver(simplifyPublishMenu);
   observer.observe(document.documentElement, {
     childList: true,
-    characterData: true,
     subtree: true,
   });
   simplifyPublishMenu();

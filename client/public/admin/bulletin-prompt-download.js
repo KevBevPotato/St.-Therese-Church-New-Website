@@ -105,7 +105,6 @@
   const observer = new MutationObserver(updateVisibility);
   observer.observe(document.documentElement, {
     childList: true,
-    characterData: true,
     subtree: true,
   });
   window.addEventListener("hashchange", updateVisibility);
