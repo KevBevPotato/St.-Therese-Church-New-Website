@@ -2,10 +2,20 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, BookOpen, Brain, CalendarClock, Compass } from 'lucide-react';
+import { ArrowLeft, CalendarClock, Compass } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
+import CmsMarkdown from '@/components/CmsMarkdown';
+
+type ContentBlock = {
+  heading?: string;
+  body?: string;
+  image?: string;
+  imageAlt?: string;
+  linkLabel?: string;
+  linkUrl?: string;
+};
 
 export default function GroupStudiesPage() {
   const { openSignup } = useInterestSignup();
@@ -13,11 +23,13 @@ export default function GroupStudiesPage() {
     id: string;
     landingPageTitle?: string;
     landingPageDescription?: string;
+    contentBlocks?: ContentBlock[];
     contactEmail?: string;
     signUpLinks?: Array<{ label: string; url: string }>;
   }>;
   const page = configuredPages.find((item) => item.id === 'group-studies');
   const title = page?.landingPageTitle ?? 'Group Studies';
+  const contentBlocks = page?.contentBlocks ?? [];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -38,26 +50,19 @@ export default function GroupStudiesPage() {
               <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary leading-tight">{title}</h1>
             </div>
 
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              {page?.landingPageDescription ?? 'Group Studies invite parishioners to explore Scripture, Catholic teaching, and spiritual formation in a prayerful, reflective setting. These seasonal studies help us deepen our relationship with Christ and one another.'}
-            </p>
+            <CmsMarkdown className="text-lg leading-relaxed text-muted-foreground">
+              {page?.landingPageDescription}
+            </CmsMarkdown>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Card className="p-6 border-2 border-primary/10 bg-white">
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <BookOpen size={20} />
-                </div>
-                <h2 className="font-serif text-2xl font-bold text-primary mb-2">Scripture & Catechesis</h2>
-                <p className="text-muted-foreground">Study the Bible and the Catholic faith with thoughtful teaching and discussion.</p>
-              </Card>
-
-              <Card className="p-6 border-2 border-primary/10 bg-white">
-                <div className="mb-4 flex size-10 items-center justify-center rounded-full bg-primary/10 text-primary">
-                  <Brain size={20} />
-                </div>
-                <h2 className="font-serif text-2xl font-bold text-primary mb-2">Spiritual Growth</h2>
-                <p className="text-muted-foreground">Reflect on prayer, discipleship, and how faith shapes everyday life.</p>
-              </Card>
+              {contentBlocks.slice(0, 2).map((block, index) => (
+                <Card key={`${block.heading ?? 'block'}-${index}`} className="p-6 border-2 border-primary/10 bg-white">
+                  {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-4 aspect-video w-full rounded-xl object-cover" />}
+                  <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-2">{block.heading}</CmsMarkdown>
+                  <CmsMarkdown className="text-muted-foreground">{block.body}</CmsMarkdown>
+                  {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
+                </Card>
+              ))}
             </div>
           </div>
 
@@ -96,16 +101,14 @@ export default function GroupStudiesPage() {
           </Card>
         </div>
 
-        <Card className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
-          <div className="flex items-center gap-3 mb-4 text-primary">
-            <Compass size={20} />
-            <h2 className="font-serif text-2xl font-bold">Our aim</h2>
-          </div>
-          <p className="text-muted-foreground leading-relaxed">
-            These studies help parishioners encounter the richness of the Catholic faith while growing in communion with one another.
-            Whether you are looking for a first step in faith formation or a deeper dive into Scripture and doctrine, there is a place for you.
-          </p>
-        </Card>
+        {contentBlocks.slice(2).map((block, index) => (
+          <Card key={`${block.heading ?? 'block'}-${index}`} className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
+            {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-6 aspect-video w-full rounded-xl object-cover" />}
+            <div className="flex items-center gap-3 mb-4 text-primary"><Compass size={20} /><CmsMarkdown className="font-serif text-2xl font-bold">{block.heading}</CmsMarkdown></div>
+            <CmsMarkdown className="text-muted-foreground leading-relaxed">{block.body}</CmsMarkdown>
+            {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
+          </Card>
+        ))}
       </main>
 
       <Footer />

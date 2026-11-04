@@ -6,6 +6,16 @@ import { ArrowLeft } from 'lucide-react';
 import { Link } from 'wouter';
 import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
+import CmsMarkdown from '@/components/CmsMarkdown';
+
+type ContentBlock = {
+  heading?: string;
+  body?: string;
+  image?: string;
+  imageAlt?: string;
+  linkLabel?: string;
+  linkUrl?: string;
+};
 
 export default function ConnectGroupsPage() {
   const { openSignup } = useInterestSignup();
@@ -13,11 +23,14 @@ export default function ConnectGroupsPage() {
     id: string;
     landingPageTitle?: string;
     landingPageDescription?: string;
+    landingPageImage?: string;
+    contentBlocks?: ContentBlock[];
     contactEmail?: string;
     signUpLinks?: Array<{ label: string; url: string }>;
   }>;
   const page = configuredPages.find((item) => item.id === 'connect-groups');
   const title = page?.landingPageTitle ?? 'Connect Groups';
+  const contentBlocks = page?.contentBlocks ?? [];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -38,20 +51,19 @@ export default function ConnectGroupsPage() {
               <h1 className="font-serif text-4xl md:text-6xl font-bold text-primary leading-tight">{title}</h1>
             </div>
 
-            <p className="text-lg leading-relaxed text-muted-foreground">
-              {page?.landingPageDescription ?? 'Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.'}
-            </p>
+            <CmsMarkdown className="text-lg leading-relaxed text-muted-foreground">
+              {page?.landingPageDescription}
+            </CmsMarkdown>
 
             <div className="grid gap-4 md:grid-cols-2">
-              <Card className="p-6 border-2 border-primary/10 bg-white">
-                <h2 className="font-serif text-2xl font-bold text-primary mb-2">Faith & Friendship</h2>
-                <p className="text-muted-foreground">Meet with a welcoming group for Scripture discussion, prayer, and encouragement.</p>
-              </Card>
-
-              <Card className="p-6 border-2 border-primary/10 bg-white">
-                <h2 className="font-serif text-2xl font-bold text-primary mb-2">Life Together</h2>
-                <p className="text-muted-foreground">Build meaningful relationships and share your faith walk in a supportive community.</p>
-              </Card>
+              {contentBlocks.slice(0, 2).map((block, index) => (
+                <Card key={`${block.heading ?? 'block'}-${index}`} className="p-6 border-2 border-primary/10 bg-white">
+                  {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-4 aspect-video w-full rounded-xl object-cover" />}
+                  <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-2">{block.heading}</CmsMarkdown>
+                  <CmsMarkdown className="text-muted-foreground">{block.body}</CmsMarkdown>
+                  {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
+                </Card>
+              ))}
             </div>
           </div>
 
@@ -87,15 +99,14 @@ export default function ConnectGroupsPage() {
           </Card>
         </div>
 
-        <Card className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
-          <div className="flex items-center gap-3 mb-4 text-primary">
-            <h2 className="font-serif text-2xl font-bold">What to expect</h2>
-          </div>
-          <p className="text-muted-foreground leading-relaxed">
-            Each Connect Group is rooted in prayer, scripture, and pastoral care. Groups meet regularly to learn together, pray together,
-            and support one another in living out the faith in daily life.
-          </p>
-        </Card>
+        {contentBlocks.slice(2).map((block, index) => (
+          <Card key={`${block.heading ?? 'block'}-${index}`} className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
+            {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-6 aspect-video w-full rounded-xl object-cover" />}
+            <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-4">{block.heading}</CmsMarkdown>
+            <CmsMarkdown className="text-muted-foreground leading-relaxed">{block.body}</CmsMarkdown>
+            {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
+          </Card>
+        ))}
       </main>
 
       <Footer />

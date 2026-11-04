@@ -974,6 +974,8 @@ collections:
             name: "bulletins"
             widget: "list"
             required: false
+            collapsed: true
+            minimize_collapsed: true
             summary: "{{fields.title}} ({{fields.startDate}})"
             fields:
               - {
@@ -1022,91 +1024,91 @@ collections:
               - {
                   label: "Mass Times",
                   name: "mass_times",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Saturday**: 4:30 pm. Add one bullet per Mass time; include Reconciliation hours below.",
                 }
               - {
                   label: "Announcements",
                   name: "announcements",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: **Event Title** on its own line, followed by the date, time, details, and contact information.",
                 }
               - {
                   label: "New Parishioners",
                   name: "new_parishioners",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - First Last (Baptism), followed by *Welcome to our parish family!*",
                 }
               - {
                   label: "Mass Intentions",
                   name: "mass_intentions",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Monday 7:30 am**: Name †. Add one bullet per Mass intention.",
                 }
               - {
                   label: "Daily Scriptures",
                   name: "daily_scriptures",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Monday**: First Reading, Psalm, Gospel. Add one bullet per day.",
                 }
               - {
                   label: "Lectors",
                   name: "lectors",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Reader names.",
                 }
               - {
                   label: "Ushers",
                   name: "ushers",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Usher names.",
                 }
               - {
                   label: "Altar Servers",
                   name: "altar_servers",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Saturday, Oct 3 (4:30 pm)**: Server names.",
                 }
               - {
                   label: "Contributions",
                   name: "contributions",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - General/Other: $4,625.00. Add one bullet per fund, then include Weekly Amount Needed and Total.",
                 }
               - {
                   label: "Prayer List",
                   name: "prayer_list",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Special Requests**: Names, then a **Bulletin List** heading and a bullet list of names.",
                 }
               - {
                   label: "A Little Laugh",
                   name: "a_little_laugh",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - *Write a short joke or riddle here.* Use one italicized bullet per joke.",
                 }
               - {
                   label: "Needs",
                   name: "needs",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - **Organization or category**: List the requested items or volunteer needs.",
                 }
               - {
                   label: "Sponsors",
                   name: "sponsors",
-                  widget: "markdown",
+                  widget: "text",
                   required: false,
                   hint: "Suggested format: - Business Name (Business Type). Add one bullet per sponsor.",
                 }
@@ -1950,6 +1952,25 @@ collections:
                   widget: "markdown",
                   required: false,
                 }
+              - {
+                  label: "Landing Page Hero Image",
+                  name: "landingPageImage",
+                  widget: "image",
+                  required: false,
+                }
+              - label: "Landing Page Content Blocks"
+                name: "contentBlocks"
+                widget: "list"
+                required: false
+                collapsed: true
+                summary: "{{fields.heading}}"
+                fields:
+                  - { label: "Heading", name: "heading", widget: "markdown", required: false }
+                  - { label: "Text", name: "body", widget: "text", required: false }
+                  - { label: "Image", name: "image", widget: "image", required: false }
+                  - { label: "Image Alt Text", name: "imageAlt", widget: "string", required: false }
+                  - { label: "Link Label", name: "linkLabel", widget: "markdown", required: false }
+                  - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
               - {
                   label: "Requirements",
                   name: "requirements",
