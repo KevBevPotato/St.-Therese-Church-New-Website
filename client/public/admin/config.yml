@@ -29,6 +29,26 @@ media_folder: "client/public/uploads"
 public_folder: "/uploads"
 
 collections:
+  - name: "admin_tools"
+    label: "Bulletin Tools"
+    files:
+      - file: "client/public/admin/bulletin-tools.json"
+        label: "AI Prompt and Upload Instructions"
+        name: "bulletin_tools_file"
+        fields:
+          - {
+              label: "Bulletin AI Parsing Prompt",
+              name: "parsingPrompt",
+              widget: "text",
+              required: true,
+              hint: "Copy this prompt into your AI tool when converting a bulletin into CMS sections.",
+            }
+          - {
+              label: "Bulletin Uploading Instructions",
+              name: "uploadingInstructions",
+              widget: "text",
+              required: true,
+            }
   - name: "homepage"
     label: "Home Page"
     files:
