@@ -45,12 +45,10 @@
   function updateVisibility() {
     const pathname = window.location.pathname.replace(/\/+$/, "");
     const hash = window.location.hash.replace(/\/+$/, "");
-    const isTargetEditor =
+    const isBulletinSection =
       pathname === "/admin" &&
-      /^#\/collections\/bulletins\/(?:new|entries\/bulletins_file(?:\/[^/]+)?)$/.test(
-        hash
-      );
-    if (!isTargetEditor) {
+      /^#\/collections\/bulletins(?:\/|$)/.test(hash);
+    if (!isBulletinSection) {
       links.forEach(link => setLinkVisibility(link, false));
       return;
     }
@@ -80,7 +78,16 @@
       .sort((left, right) => left.rect.top - right.rect.top)[0]?.control;
 
     if (!publishButton?.parentElement) {
-      links.forEach(link => setLinkVisibility(link, false));
+      links.forEach(link => {
+        setLinkVisibility(link, true);
+        Object.assign(link.style, {
+          position: "fixed",
+          top: "16px",
+          right: "16px",
+          zIndex: "1000",
+          marginLeft: "0",
+        });
+      });
       return;
     }
 
@@ -93,6 +100,13 @@
       gap: "8px",
     });
     links.forEach(link => setLinkVisibility(link, true));
+    links.forEach(link => {
+      link.style.position = "";
+      link.style.top = "";
+      link.style.right = "";
+      link.style.zIndex = "";
+      link.style.marginLeft = "8px";
+    });
     let previous = publishButton;
     links.forEach(link => {
       if (link.previousElementSibling !== previous) {
