@@ -2052,8 +2052,29 @@ collections:
                 collapsed: true
                 summary: "{{fields.heading}}"
                 fields:
+                  - {
+                      label: "Hide this block",
+                      name: "isHidden",
+                      widget: "boolean",
+                      default: false,
+                      required: false,
+                      hint: "Hide this block without deleting it.",
+                    }
+                  - {
+                      label: "Block Layout",
+                      name: "layout",
+                      widget: "select",
+                      options:
+                        [
+                          { label: "Card / grid tile", value: "card" },
+                          { label: "Full-width section", value: "full" },
+                        ],
+                      default: "card",
+                      required: false,
+                      hint: "Card blocks form a responsive two-column grid. Full-width blocks span the page.",
+                    }
                   - { label: "Heading", name: "heading", widget: "markdown", required: false }
-                  - { label: "Text", name: "body", widget: "text", required: false }
+                  - { label: "Text", name: "body", widget: "markdown", required: false }
                   - { label: "Image", name: "image", widget: "image", required: false }
                   - { label: "Image Alt Text", name: "imageAlt", widget: "string", required: false }
                   - { label: "Link Label", name: "linkLabel", widget: "markdown", required: false }

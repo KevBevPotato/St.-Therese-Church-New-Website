@@ -10,6 +10,8 @@ import CmsMarkdown from '@/components/CmsMarkdown';
 import { EventMedia } from '@/components/EventMedia';
 
 type ContentBlock = {
+  isHidden?: boolean;
+  layout?: 'card' | 'full';
   heading?: string;
   body?: string;
   image?: string;
@@ -31,6 +33,7 @@ export default function ConnectGroupsPage() {
     id: string;
     landingPageTitle?: string;
     landingPageDescription?: string;
+    description?: string;
     landingPageImage?: string;
     contentBlocks?: ContentBlock[];
     audienceHeading?: string;
@@ -41,7 +44,7 @@ export default function ConnectGroupsPage() {
   }>;
   const page = configuredPages.find((item) => item.id === 'connect-groups');
   const title = page?.landingPageTitle ?? 'Connect Groups';
-  const contentBlocks = page?.contentBlocks ?? [];
+  const contentBlocks = (page?.contentBlocks ?? []).filter(block => !block.isHidden);
   const audienceItems = page?.audienceItems ?? [];
 
   return (
@@ -64,18 +67,47 @@ export default function ConnectGroupsPage() {
             </div>
 
             <CmsMarkdown className="text-lg leading-relaxed text-muted-foreground">
-              {page?.landingPageDescription}
+              {page?.description ?? page?.landingPageDescription}
             </CmsMarkdown>
 
             <div className="grid gap-4 md:grid-cols-2">
-              {contentBlocks.slice(0, 2).map((block, index) => (
-                <Card key={`${block.heading ?? 'block'}-${index}`} className="p-6 border-2 border-primary/10 bg-white">
-                  {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-4 aspect-video w-full rounded-xl object-cover" />}
-                  <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-2">{block.heading}</CmsMarkdown>
-                  <CmsMarkdown className="text-muted-foreground">{block.body}</CmsMarkdown>
-                  {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
-                </Card>
-              ))}
+              {contentBlocks.map((block, index) => {
+                const isFullWidth = block.layout === 'full';
+                return (
+                  <Card
+                    key={`${block.heading ?? 'block'}-${index}`}
+                    className={`border-2 border-primary/10 bg-white ${
+                      isFullWidth ? 'md:col-span-2 p-8 md:p-10' : 'p-6'
+                    }`}
+                  >
+                    {block.image && (
+                      <img
+                        src={block.image}
+                        alt={block.imageAlt ?? ''}
+                        className={`mb-4 w-full rounded-xl object-cover ${
+                          isFullWidth ? 'max-h-96' : 'aspect-video'
+                        }`}
+                      />
+                    )}
+                    <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-2">
+                      {block.heading}
+                    </CmsMarkdown>
+                    <CmsMarkdown className="text-muted-foreground">
+                      {block.body}
+                    </CmsMarkdown>
+                    {block.linkUrl && block.linkLabel && (
+                      <a
+                        href={block.linkUrl}
+                        target={/^https?:\/\//i.test(block.linkUrl) ? '_blank' : undefined}
+                        rel={/^https?:\/\//i.test(block.linkUrl) ? 'noopener noreferrer' : undefined}
+                        className="mt-4 inline-block font-bold text-primary underline"
+                      >
+                        {block.linkLabel}
+                      </a>
+                    )}
+                  </Card>
+                );
+              })}
             </div>
           </div>
 
@@ -121,14 +153,6 @@ export default function ConnectGroupsPage() {
           </div>
         )}
 
-        {contentBlocks.slice(2).map((block, index) => (
-          <Card key={`${block.heading ?? 'block'}-${index}`} className="mt-10 border-2 border-primary/10 bg-white p-8 md:p-10">
-            {block.image && <img src={block.image} alt={block.imageAlt ?? ''} className="mb-6 aspect-video w-full rounded-xl object-cover" />}
-            <CmsMarkdown className="font-serif text-2xl font-bold text-primary mb-4">{block.heading}</CmsMarkdown>
-            <CmsMarkdown className="text-muted-foreground leading-relaxed">{block.body}</CmsMarkdown>
-            {block.linkUrl && block.linkLabel && <a href={block.linkUrl} className="mt-4 inline-block font-bold text-primary underline">{block.linkLabel}</a>}
-          </Card>
-        ))}
       </main>
 
       <Footer />
