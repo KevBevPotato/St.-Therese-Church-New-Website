@@ -147,16 +147,9 @@
     },
     {
       "isHidden": false,
-      "pdfUrl": "/uploads/november-7-8-2026.pdf"
-    },
-    {
-      "isHidden": false,
       "startDate": "2026-11-07",
       "endDate": "2026-11-14",
-      "pdfUrl": "/uploads/canva_welcome_poster.png"
-    },
-    {
-      "isHidden": false
+      "pdfUrl": "/uploads/november-7-8-2026.pdf"
     }
   ]
 }
