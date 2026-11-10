@@ -524,18 +524,18 @@ export default function Header({
     >
       {/* Increased py-3 to py-4 to restore height */}
       <div className="relative z-50 bg-white/95 backdrop-blur-md">
-        <div className="container mx-auto flex items-center justify-between gap-6 px-4 py-4">
+        <div className="container mx-auto flex items-center justify-between gap-2 px-3 py-3 sm:gap-6 sm:px-4 sm:py-4">
           {/* Logo - Restored to h-20 */}
           <Link
             href="/"
-            className="flex items-center gap-2 hover:opacity-80 transition-opacity shrink-0"
+            className="flex min-w-0 items-center gap-2 transition-opacity hover:opacity-80 sm:shrink-0"
           >
             <img
               src="/Logo.webp"
               alt="Saint Thérèse Church logo"
-              className="h-20 w-auto object-contain"
+              className="h-16 w-auto shrink-0 object-contain sm:h-20"
             />
-            <span className="font-serif font-bold text-lg text-primary hidden xl:inline">
+            <span className="min-w-0 max-w-[155px] break-words font-serif text-[clamp(0.55rem,3.4vw,0.875rem)] font-bold leading-tight text-primary md:hidden xl:inline xl:max-w-none xl:text-lg">
               Saint Thérèse · The Little Flower
             </span>
           </Link>
