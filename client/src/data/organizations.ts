@@ -53,6 +53,7 @@ export interface Organization {
     contactPhone: string;
     contactEmail?: string;
     joinUrl?: string;
+    monthlyNewsletterUrl?: string;
     stats?: Array<{ label: string; value: string }>;
     officers?: Officer[];
     members?: Member[];

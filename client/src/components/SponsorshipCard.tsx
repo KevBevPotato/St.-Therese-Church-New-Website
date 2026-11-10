@@ -78,7 +78,7 @@ export default function SponsorshipCard({
                     )}
                 </div>
 
-                <Link href={`/get-involved/${project.id}`}>
+                <Link href={`/${project.id}`}>
                     <a className="block mb-3 group/title">
                         <h3 className="font-serif text-2xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors cursor-pointer">
                             {project.title}

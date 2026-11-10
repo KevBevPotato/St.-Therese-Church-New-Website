@@ -207,23 +207,26 @@ collections:
           - {
               label: "Monthly Calendar Button Label",
               name: "monthlyCalendarButtonLabel",
-              widget: "markdown",
-              default: "Monthly Calendar PDF",
+              widget: "string",
+              default: "PDF of Monthly Calendar",
               required: false,
+              hint: "This button appears next to Parish Calendar on the home page.",
             }
           - {
-              label: "Monthly Calendar PDF",
+              label: "Monthly Calendar PDF Upload",
               name: "monthlyCalendarPdf",
               widget: "file",
               required: false,
-              hint: "Upload the current monthly calendar PDF. The button remains hidden when this is blank.",
+              hint: "Upload the PDF shown by the button next to Parish Calendar. The button remains hidden when this is blank.",
             }
           - {
               label: "Monthly Calendar Start Date",
               name: "monthlyCalendarStartDate",
               widget: "datetime",
+              format: "YYYY-MM-DD",
               date_format: "YYYY-MM-DD",
               time_format: false,
+              picker_utc: false,
               required: false,
               hint: "First date the PDF should be shown.",
             }
@@ -231,8 +234,10 @@ collections:
               label: "Monthly Calendar End Date",
               name: "monthlyCalendarEndDate",
               widget: "datetime",
+              format: "YYYY-MM-DD",
               date_format: "YYYY-MM-DD",
               time_format: false,
+              picker_utc: false,
               required: false,
               hint: "Last date the PDF should be shown.",
             }
@@ -1745,7 +1750,7 @@ collections:
                       required: false,
                     }
   - name: "get_involved"
-    label: "Get Involved"
+    label: "Parish Life"
     files:
       - file: "client/src/data/get-involved_data.json"
         label: "Parish Life Pages, Organizations, Opportunities, and Signup Links"
@@ -2282,6 +2287,13 @@ collections:
           name: "joinUrl",
           widget: "string",
           required: false,
+        }
+      - {
+          label: "Knights Monthly Newsletter PDF",
+          name: "monthlyNewsletterUrl",
+          widget: "file",
+          required: false,
+          hint: "Upload the current Knights of Columbus monthly newsletter PDF. This appears as a button on the Knights page.",
         }
       - {
           label: "Hide Knights Members Section",

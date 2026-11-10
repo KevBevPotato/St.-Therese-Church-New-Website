@@ -171,7 +171,7 @@ export function CalendarView({
             <div className="space-y-4">
               {getEventsForDay(popupDate).length > 0 ? (
                 getEventsForDay(popupDate).map((event) => {
-                  const eventHref = event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`;
+                  const eventHref = event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : `/events/${event.id}`;
 
                   return (
                     <Link

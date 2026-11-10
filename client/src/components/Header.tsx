@@ -192,16 +192,9 @@ const searchablePages: SearchResult[] = [
     searchableText: "faith formation catechism religious education",
   },
   {
-    title: "Get Involved",
-    type: "Page",
-    href: "/get-involved",
-    searchableText:
-      "get involved ministries volunteer organizations lector usher altar server music ministry volunteer opportunities",
-  },
-  {
     title: "Help with the Liturgy",
     type: "Page",
-    href: "/get-involved/liturgy",
+    href: "/liturgy",
     searchableText:
       "lector usher altar server music ministry liturgy serve at mass",
   },
@@ -221,14 +214,14 @@ const searchablePages: SearchResult[] = [
   {
     title: "Connect Groups",
     type: "Page",
-    href: "/get-involved/connect-groups",
+    href: "/connect-groups",
     searchableText:
       "connect groups parish life prayer fellowship scripture discussion small group community",
   },
   {
     title: "Group Studies",
     type: "Page",
-    href: "/get-involved/group-studies",
+    href: "/group-studies",
     searchableText:
       "group studies parish life bible study catholic teaching faith formation seasonal study groups",
   },
@@ -280,92 +273,92 @@ const searchableSacraments: SearchResult[] = [
 const searchableOpportunities: SearchResult[] = [
   {
     title: "Lector Sign-up",
-    type: "Get Involved",
-    href: "/get-involved/lector",
+    type: "Parish Life",
+    href: "/lector",
     searchableText:
       "lector sign up liturgy ministry proclaim the scriptures prayers of the faithful training scheduling support",
   },
   {
     title: "Usher Sign-up",
-    type: "Get Involved",
-    href: "/get-involved/usher",
+    type: "Parish Life",
+    href: "/usher",
     searchableText:
       "usher sign up liturgy ministry welcome parishioners help with pews offertory basket",
   },
   {
     title: "Altar Server Sign-up",
-    type: "Get Involved",
-    href: "/get-involved/altar-server",
+    type: "Parish Life",
+    href: "/altar-server",
     searchableText:
       "altar server sign up liturgy ministry serve at the altar book of the gospels chalice sacred items",
   },
   {
     title: "Music Ministry Sign-up",
-    type: "Get Involved",
-    href: "/get-involved/music",
+    type: "Parish Life",
+    href: "/music",
     searchableText:
       "music ministry sign up choir instrumentalist cantor sung prayer",
   },
   {
     title: "Wednesday Night Supper",
-    type: "Get Involved",
-    href: "/get-involved/supper-week",
+    type: "Parish Life",
+    href: "/supper-week",
     searchableText:
       "wednesday night supper sponsor volunteer grocery pick-up food prep serving cleanup parish hospitality",
   },
   {
     title: "Nursery",
-    type: "Get Involved",
-    href: "/get-involved/nursery",
+    type: "Parish Life",
+    href: "/nursery",
     searchableText:
       "nursery parish council side chapel mothers during mass donations volunteers",
   },
   {
     title: "Youth Ministry Mentors",
-    type: "Get Involved",
-    href: "/get-involved/youth-ministry-mentors",
+    type: "Parish Life",
+    href: "/youth-ministry-mentors",
     searchableText:
       "youth ministry mentors faith formation guide high school students small-group leader",
   },
   {
     title: "Connect Groups",
-    type: "Get Involved",
-    href: "/get-involved/connect-groups",
+    type: "Parish Life",
+    href: "/connect-groups",
     searchableText:
       "connect groups parish life prayer fellowship scripture discussion small group community",
   },
   {
     title: "Group Studies",
-    type: "Get Involved",
-    href: "/get-involved/group-studies",
+    type: "Parish Life",
+    href: "/group-studies",
     searchableText:
       "group studies parish life bible study catholic teaching faith formation seasonal study groups",
   },
   {
     title: "St. Vincent de Paul Food Drive",
-    type: "Get Involved",
-    href: "/get-involved/st-vincent-de-paul-food-drive",
+    type: "Parish Life",
+    href: "/st-vincent-de-paul-food-drive",
     searchableText:
       "st vincent de paul food drive sort and distribute food donations local families in need",
   },
   {
     title: "Altar Society",
-    type: "Get Involved",
-    href: "/get-involved/altar-society",
+    type: "Parish Life",
+    href: "/altar-society",
     searchableText:
       "altar society women of the parish care for sacred linens altar vessels flowers decorations church service",
   },
   {
     title: "Knights of Columbus",
-    type: "Get Involved",
-    href: "/get-involved/knights-of-columbus",
+    type: "Parish Life",
+    href: "/knights-of-columbus",
     searchableText:
       "knights of columbus catholic fraternal service organization charitable works faith formation support community fellowship",
   },
   {
     title: "Catholic Daughters of the Americas",
-    type: "Get Involved",
-    href: "/get-involved/catholic-daughters",
+    type: "Parish Life",
+    href: "/catholic-daughters",
     searchableText:
       "catholic daughters of the americas prayer fellowship charitable works",
   },
@@ -422,7 +415,10 @@ export default function Header({
       ...organizations.map(organization => ({
         title: organization.name,
         type: "Organization",
-        href: `/get-involved/${organization.id}`,
+        href:
+          organization.id === "st-vincent-de-paul"
+            ? "/st-vincent-de-paul-food-drive"
+            : `/${organization.id}`,
         searchableText: `${organization.name} ${organization.tagline} ${organization.description}`,
       })),
       ...staffMembers.map(member => ({
@@ -448,7 +444,7 @@ export default function Header({
           title: event.title,
           type: "Event",
           href: event.linkedOpportunityId
-            ? `/get-involved/${event.linkedOpportunityId}`
+            ? `/${event.linkedOpportunityId}`
             : `/events/${event.id}`,
           searchableText: `${event.title} ${event.description || ""} ${event.location}`,
         })),

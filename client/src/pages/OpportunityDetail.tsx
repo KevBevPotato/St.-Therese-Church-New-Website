@@ -54,7 +54,7 @@ interface OpportunityDetailData {
  */
 
 export default function OpportunityDetail() {
-    const [match, params] = useRoute('/get-involved/:id');
+    const [match, params] = useRoute('/:id');
     const { openSignup, openEngagement } = useInterestSignup();
 
     const id = params?.id;
@@ -71,8 +71,8 @@ export default function OpportunityDetail() {
                 <div className="pt-[var(--header-height)]" />
                 <main className="container mx-auto flex-grow px-4 py-16 text-center">
                     <h1 className="font-serif text-4xl font-bold text-primary">Opportunity Not Found</h1>
-                    <Link href="/get-involved">
-                        <Button className="mt-6">Back to Opportunities</Button>
+                    <Link href="/contribute">
+                        <Button className="mt-6">See Ways to Contribute</Button>
                     </Link>
                 </main>
                 <Footer />
@@ -135,9 +135,12 @@ export default function OpportunityDetail() {
             <div className="pt-[var(--header-height)]" />
 
             <main className="flex-grow container mx-auto px-4 py-12">
-                <Link href="/get-involved">
+                <Link href={isLiturgyOpportunity ? '/liturgy' : '/contribute'}>
                     <button className="flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-8 font-bold uppercase tracking-widest text-xs">
-                        <ArrowLeft size={16} /> Back to Opportunities
+                        <ArrowLeft size={16} />{' '}
+                        {isLiturgyOpportunity
+                            ? 'Back to Liturgy Ministries'
+                            : 'Back to Ways to Contribute'}
                     </button>
                 </Link>
 

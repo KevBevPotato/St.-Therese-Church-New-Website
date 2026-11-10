@@ -13,6 +13,10 @@ import { EventsListView } from './EventsListView';
 
 type UpcomingEventsCalendarProps = {
   homeView?: boolean;
+  monthlyCalendarButton?: {
+    pdfUrl: string;
+    label: string;
+  };
   params?: Record<number, string | undefined>;
 };
 
@@ -121,7 +125,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
     e.stopPropagation(); 
-    navigate(event.linkedOpportunityId ? `/get-involved/${event.linkedOpportunityId}` : `/events/${event.id}`);
+    navigate(event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : `/events/${event.id}`);
   };
 
   const resetFilters = () => { 
@@ -180,7 +184,20 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
     <div className="min-h-screen bg-[#fbfaf6] py-10 lg:py-16">
       <div className="container mx-auto px-4">
         <div className="mb-8 text-center lg:text-left">
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Parish Calendar</h2>
+          <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+            <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Parish Calendar</h2>
+            {props.monthlyCalendarButton && (
+              <Button asChild size="lg" className="bg-accent font-bold text-white shadow-lg hover:bg-accent/90">
+                <a
+                  href={props.monthlyCalendarButton.pdfUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {props.monthlyCalendarButton.label}
+                </a>
+              </Button>
+            )}
+          </div>
           <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">Browse upcoming events. Use the filters below to narrow by category.</p>
         </div>
         <div className="lg:hidden w-full">

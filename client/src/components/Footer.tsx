@@ -29,8 +29,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/get-involved" className="hover:opacity-80 transition-opacity block">
-                  Get Involved
+                <Link href="/liturgy" className="hover:opacity-80 transition-opacity block">
+                  Help with the Liturgy
                 </Link>
               </li>
               <li>

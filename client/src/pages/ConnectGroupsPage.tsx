@@ -53,9 +53,9 @@ export default function ConnectGroupsPage() {
       <div className="pt-[var(--header-height)]" />
 
       <main className="flex-grow container mx-auto px-4 py-12 md:py-16">
-        <Link href="/get-involved">
+        <Link href="/contribute">
           <button className="flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-8 font-bold uppercase tracking-widest text-xs">
-            <ArrowLeft size={16} /> Back to Get Involved
+            <ArrowLeft size={16} /> Back to Ways to Contribute
           </button>
         </Link>
 

@@ -1,5 +1,5 @@
 import { useState, type FormEvent } from "react";
-import { CheckCircle2, Loader2, MessageSquare } from "lucide-react";
+import { CheckCircle2, ExternalLink, Loader2, MessageSquare } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -57,15 +57,27 @@ export default function FeedbackButton() {
 
   return (
     <>
-      <Button
-        type="button"
-        className="fixed bottom-4 right-4 z-40 rounded-full px-4 shadow-lg sm:bottom-6 sm:right-6"
-        onClick={() => handleOpenChange(true)}
-        aria-label="Give feedback to the website"
-      >
-        <MessageSquare />
-        <span>Give Feedback</span>
-      </Button>
+      <div className="fixed bottom-4 right-4 z-40 flex flex-col items-end gap-2 sm:bottom-6 sm:right-6">
+        <Button asChild className="rounded-full px-4 shadow-lg">
+          <a
+            href="https://forms.gle/njA821UR3RCLXitR7"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <ExternalLink />
+            <span>Evening Sunday Mass Survey</span>
+          </a>
+        </Button>
+        <Button
+          type="button"
+          className="rounded-full px-4 shadow-lg"
+          onClick={() => handleOpenChange(true)}
+          aria-label="Give feedback to the website"
+        >
+          <MessageSquare />
+          <span>Give Feedback</span>
+        </Button>
+      </div>
       <Dialog open={open} onOpenChange={handleOpenChange}>
         <DialogContent className="max-h-[92dvh] overflow-y-auto sm:max-w-lg">
           <DialogHeader>

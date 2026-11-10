@@ -79,13 +79,6 @@ export default function AltarSociety() {
                             <ArrowLeft size={16} /> Back
                         </button>
 
-                        <span className="text-primary/20">|</span>
-
-                        <Link href="/get-involved">
-                            <a className="inline-flex items-center gap-2 text-primary/60 hover:text-accent transition-colors font-bold uppercase tracking-widest text-xs">
-                                All Opportunities
-                            </a>
-                        </Link>
                     </div>
 
                     <div className="max-w-3xl">

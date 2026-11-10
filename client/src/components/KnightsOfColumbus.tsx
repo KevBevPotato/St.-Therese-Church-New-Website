@@ -11,6 +11,7 @@ import {
     Shield,
     Calendar,
     Cross,
+    Newspaper,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
@@ -103,13 +104,6 @@ export default function KnightsOfColumbus() {
                             <ArrowLeft size={16} /> Back
                         </button>
 
-                        <span className="text-white/30">|</span>
-
-                        <Link href="/get-involved">
-                            <a className="inline-flex items-center gap-2 text-white/80 hover:text-white transition-colors font-bold uppercase tracking-widest text-xs">
-                                All Opportunities
-                            </a>
-                        </Link>
                     </div>
 
                     <div className="flex flex-col md:flex-row items-center gap-8 mb-10">
@@ -157,14 +151,27 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     {/* ✅ Calendar button at the bottom of the hero */}
-                    {showUpcomingEventsSection && (
-                        <div className="flex justify-center md:justify-start">
-                            <button
-                                onClick={scrollToUpcomingEvents}
-                                className="inline-flex items-center gap-2 bg-white hover:bg-[#f4ead5] text-primary px-8 py-4 rounded-full font-bold uppercase tracking-widest text-xs shadow-lg transition-all hover:scale-[1.02] active:scale-95"
-                            >
-                                <Calendar size={16} /> View Upcoming Calendar
-                            </button>
+                    {(showUpcomingEventsSection || org.monthlyNewsletterUrl) && (
+                        <div className="flex flex-wrap justify-center gap-3 md:justify-start">
+                            {showUpcomingEventsSection && (
+                                <button
+                                    onClick={scrollToUpcomingEvents}
+                                    className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-primary shadow-lg transition-all hover:scale-[1.02] hover:bg-[#f4ead5] active:scale-95"
+                                >
+                                    <Calendar size={16} /> View Upcoming Calendar
+                                </button>
+                            )}
+                            {org.monthlyNewsletterUrl && (
+                                <Button asChild className="rounded-full bg-accent px-8 py-4 text-xs font-bold uppercase tracking-widest text-white shadow-lg hover:bg-accent/90">
+                                    <a
+                                        href={org.monthlyNewsletterUrl}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                    >
+                                        <Newspaper size={16} /> Check out our Monthly Newsletter
+                                    </a>
+                                </Button>
+                            )}
                         </div>
                     )}
                 </div>

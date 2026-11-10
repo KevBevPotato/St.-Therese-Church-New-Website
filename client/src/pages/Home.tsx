@@ -208,21 +208,6 @@ export default function Home() {
                       {heroData.secondaryButtonLabel}
                     </Button>
                   </a>
-                  {showMonthlyCalendar && (
-                    <a
-                      href={heroData.monthlyCalendarPdf}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center"
-                    >
-                      <Button
-                        size="lg"
-                        className="w-full bg-accent px-8 py-6 font-bold uppercase tracking-widest text-white shadow-lg hover:bg-accent/90 sm:w-auto"
-                      >
-                        {heroData.monthlyCalendarButtonLabel || "Monthly Calendar PDF"}
-                      </Button>
-                    </a>
-                  )}
                 </div>
 
                 <div className="mt-12 sm:mt-16 lg:mt-20 border-t border-white/30 pt-4 lg:pt-5 max-w-xl">
@@ -245,7 +230,19 @@ export default function Home() {
         </div>
       </section>
       {/* Upcoming Events Calendar Section */}
-      <UpcomingEventsCalendar homeView />
+      <UpcomingEventsCalendar
+        homeView
+        monthlyCalendarButton={
+          showMonthlyCalendar
+            ? {
+                pdfUrl: heroData.monthlyCalendarPdf,
+                label:
+                  heroData.monthlyCalendarButtonLabel ||
+                  "PDF of Monthly Calendar",
+              }
+            : undefined
+        }
+      />
 
       {/* Contact Section */}
       <section id="contact" className="scroll-mt-20 bg-secondary/30 py-20">

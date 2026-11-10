@@ -98,10 +98,10 @@ export default function NewToStTherese() {
                 opportunities to serve.
               </p>
               <Link
-                href="/get-involved"
+                href="/contribute"
                 className="mt-5 inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-accent"
               >
-                Get involved <ArrowRight className="size-4" />
+                Ways to contribute <ArrowRight className="size-4" />
               </Link>
             </Card>
             <Card className="border-2 border-primary/10 bg-white p-7">

@@ -11,33 +11,33 @@
       "label": "Join an Organization!",
       "children": [
         {
-          "href": "/get-involved/knights-of-columbus",
+          "href": "/knights-of-columbus",
           "label": "Knights of Columbus"
         },
         {
-          "href": "/get-involved/catholic-daughters",
+          "href": "/catholic-daughters",
           "label": "Catholic Daughters"
         },
-        { "href": "/get-involved/altar-society", "label": "Altar Society" },
+        { "href": "/altar-society", "label": "Altar Society" },
         {
-          "href": "/get-involved/st-vincent-de-paul-food-drive",
+          "href": "/st-vincent-de-paul-food-drive",
           "label": "St. Vincent de Paul"
         }
       ]
     },
     { "href": "/faith-formation", "label": "Wednesday Faith Formation" },
     {
-      "href": "/get-involved/liturgy",
+      "href": "/liturgy",
       "label": "Help with the Liturgy!",
       "children": [
-        { "href": "/get-involved/lector", "label": "Lector" },
-        { "href": "/get-involved/usher", "label": "Usher" },
-        { "href": "/get-involved/altar-server", "label": "Altar Server" },
-        { "href": "/get-involved/music", "label": "Music Ministry" }
+        { "href": "/lector", "label": "Lector" },
+        { "href": "/usher", "label": "Usher" },
+        { "href": "/altar-server", "label": "Altar Server" },
+        { "href": "/music", "label": "Music Ministry" }
       ]
     },
-    { "href": "/get-involved/connect-groups", "label": "Connect Groups" },
-    { "href": "/get-involved/group-studies", "label": "Group Studies" },
+    { "href": "/connect-groups", "label": "Connect Groups" },
+    { "href": "/group-studies", "label": "Group Studies" },
     { "href": "/sacraments", "label": "Sacraments" },
     { "href": "/resources", "label": "Resources" },
     { "href": "/need-help", "label": "Need Help?" },

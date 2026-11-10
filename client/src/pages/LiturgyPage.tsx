@@ -70,7 +70,7 @@ export default function LiturgyPage() {
                 </Button>
               </div>
               <Link
-                href={`/get-involved/${role.id}`}
+                href={`/${role.id}`}
                 className="mt-4 inline-flex w-fit items-center text-xs font-bold uppercase tracking-widest text-primary underline-offset-4 hover:text-accent hover:underline"
               >
                 {pageSettings?.learnMoreButton ?? 'Learn More'}

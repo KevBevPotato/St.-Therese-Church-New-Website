@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { useEffect } from "react";
 import NotFound from "@/pages/NotFound";
-import { Route, Switch, useLocation } from "wouter";
+import { Redirect, Route, Switch, useLocation, useParams } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { InterestSignupProvider } from "./contexts/InterestSignupContext";
@@ -11,7 +11,6 @@ import { InterestSignupProvider } from "./contexts/InterestSignupContext";
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Announcements from "./pages/Announcements";
-import GetInvolved from "./pages/GetInvolved";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
 import StaffDetail from "./pages/StaffDetail";
@@ -37,6 +36,11 @@ import Sacraments from "./pages/Sacraments";
 import Resources from "./pages/Resources";
 import NewToStTherese from "./pages/NewToStTherese";
 
+function LegacyOpportunityRedirect() {
+  const { id } = useParams<{ id: string }>();
+  return <Redirect to={`/${id}`} />;
+}
+
 function Router() {
   const [location] = useLocation();
 
@@ -49,25 +53,23 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/announcements"} component={Announcements} />
-      <Route path={"/get-involved"} component={GetInvolved} />
-      <Route path={"/get-involved/supper-week"} component={WednesdaySupper} />
-      <Route path={"/get-involved/altar-society"} component={AltarSociety} />
       <Route
-        path={"/get-involved/knights-of-columbus"}
-        component={KnightsOfColumbus}
+        path={"/get-involved"}
+        component={() => <Redirect to="/contribute" />}
       />
+      <Route path={"/get-involved/:id"} component={LegacyOpportunityRedirect} />
       <Route
-        path={"/get-involved/connect-groups"}
-        component={ConnectGroupsPage}
+        path={"/st-vincent-de-paul"}
+        component={() => <Redirect to="/st-vincent-de-paul-food-drive" />}
       />
-      <Route
-        path={"/get-involved/group-studies"}
-        component={GroupStudiesPage}
-      />
-      <Route path={"/get-involved/liturgy"} component={LiturgyPage} />
+      <Route path={"/supper-week"} component={WednesdaySupper} />
+      <Route path={"/altar-society"} component={AltarSociety} />
+      <Route path={"/knights-of-columbus"} component={KnightsOfColumbus} />
+      <Route path={"/connect-groups"} component={ConnectGroupsPage} />
+      <Route path={"/group-studies"} component={GroupStudiesPage} />
+      <Route path={"/liturgy"} component={LiturgyPage} />
       <Route path={"/need-help"} component={NeedHelp} />
       <Route path={"/contribute"} component={Contribute} />
-      <Route path={"/get-involved/:id"} component={OpportunityDetail} />
       <Route path={"/faith-formation"} component={FaithFormation} />
       <Route
         path="/faith-formation/:categoryId"
@@ -89,6 +91,7 @@ function Router() {
       <Route path={"/events/:id"} component={EventDetail} />
 
       <Route path={"/404"} component={NotFound} />
+      <Route path={"/:id"} component={OpportunityDetail} />
       <Route component={NotFound} />
     </Switch>
   );

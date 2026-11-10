@@ -322,9 +322,9 @@ export default function WednesdaySupper() {
             {/* Hero */}
             <section className="relative py-20 bg-[#fbfaf6] border-b border-primary/10 overflow-hidden">
                 <div className="container mx-auto px-4">
-                    <Link href="/get-involved">
+                    <Link href="/contribute">
                         <a className="inline-flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-6 font-bold uppercase tracking-widest text-xs">
-                            <ArrowLeft size={16} /> Back to All Opportunities
+                            <ArrowLeft size={16} /> Back to Ways to Contribute
                         </a>
                     </Link>
                     <div className="max-w-3xl">

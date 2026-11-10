@@ -20,7 +20,7 @@
   "secondaryButtonLabel": "Meet Our Parish Team",
   "secondaryButtonUrl": "/about",
   "showMonthlyCalendarButton": true,
-  "monthlyCalendarButtonLabel": "Monthly Calendar PDF",
+  "monthlyCalendarButtonLabel": "PDF of Monthly Calendar",
   "monthlyCalendarPdf": "",
   "monthlyCalendarStartDate": "",
   "monthlyCalendarEndDate": "",
