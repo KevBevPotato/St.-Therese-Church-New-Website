@@ -661,34 +661,34 @@ export default function Header({
 
       {showMassTimes && (
         <div className="relative z-0 bg-white/80 text-primary backdrop-blur-md">
-          <div className="container mx-auto grid grid-cols-[0.9fr_0.8fr_1.3fr] items-center gap-0 px-1 sm:grid-cols-3 sm:gap-0 sm:px-4">
-            <div className="min-w-0 py-2 sm:py-3 sm:pr-6">
-              <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
+          <div className="container mx-auto grid grid-cols-3 items-center gap-1 px-1 sm:gap-0 sm:px-4">
+            <div className="min-w-0 py-2 text-center sm:py-3 sm:pr-6 sm:text-left">
+              <p className="break-words text-[clamp(0.5rem,2.2vw,0.625rem)] font-bold uppercase leading-tight tracking-[0.04em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
                 Sunday Mass
               </p>
-              <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">
+              <p className="mt-0.5 break-words font-serif text-[clamp(0.5rem,2.8vw,0.875rem)] font-bold leading-tight sm:mt-1 sm:text-sm lg:text-base">
                 9:00 AM · 5:30 PM{" "}
                 <span className="hidden text-[10px] font-sans font-medium opacity-80 lg:inline lg:ml-2">
                   | Confession starts 8 AM, 4:30 PM
                 </span>
               </p>
             </div>
-            <div className="min-w-0 py-2 sm:px-6 sm:py-3">
-              <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
+            <div className="min-w-0 py-2 text-center sm:px-6 sm:py-3 sm:text-left">
+              <p className="break-words text-[clamp(0.5rem,2.2vw,0.625rem)] font-bold uppercase leading-tight tracking-[0.04em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
                 Saturday Vigil
               </p>
-              <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">
+              <p className="mt-0.5 break-words font-serif text-[clamp(0.5rem,2.8vw,0.875rem)] font-bold leading-tight sm:mt-1 sm:text-sm lg:text-base">
                 4:30 PM{" "}
                 <span className="hidden text-[10px] font-sans font-medium opacity-80 lg:inline lg:ml-2">
                   | Confession starts 3 PM
                 </span>
               </p>
             </div>
-            <div className="min-w-0 py-2 sm:pl-6 sm:py-3">
-              <p className="truncate text-[8px] font-bold uppercase tracking-[0.1em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
+            <div className="min-w-0 py-2 text-center sm:pl-6 sm:py-3 sm:text-left">
+              <p className="break-words text-[clamp(0.5rem,2.2vw,0.625rem)] font-bold uppercase leading-tight tracking-[0.04em] text-[#9b762f] sm:text-[10px] sm:tracking-[0.18em]">
                 Daily Mass
               </p>
-              <p className="mt-0.5 whitespace-nowrap font-serif text-[10px] font-bold sm:mt-1 sm:text-sm lg:text-base">
+              <p className="mt-0.5 break-words font-serif text-[clamp(0.5rem,2.8vw,0.875rem)] font-bold leading-tight sm:mt-1 sm:text-sm lg:text-base">
                 7:30 AM (Mon - Fri) · 8:00 AM (Sat)
               </p>
             </div>
