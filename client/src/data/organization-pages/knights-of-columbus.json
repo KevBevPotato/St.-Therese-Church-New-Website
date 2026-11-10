@@ -1,29 +1,34 @@
 {
-  "id": "knights-of-columbus",
-  "name": "Knights of Columbus",
-  "tagline": "Charity, Unity, Fraternity, and Patriotism",
-  "description": "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship. All Catholic men 18 and older are invited to join.",
-  "audienceTag": "Men's",
-  "audience": "Catholic Men of the Parish",
   "founded": 1900,
+  "audience": "Catholic Men of the Parish",
+  "joinUrl": "https://www.kofc.org/join-kofc/",
+  "monthlyNewsletterUrl": "/uploads/10-oct-26-newsletter.pdf",
+  "name": "Knights of Columbus",
+  "contactName": "Grand Knight: Doug Keyser",
+  "contactPhone": "",
+  "tagline": "Charity, Unity, Fraternity, and Patriotism",
   "meetingSchedule": "2nd Monday of each month",
-  "room": "BKC",
-  "contactName": "Grand Knight",
-  "contactPhone": "(605) 867-5309",
-  "stats": [
+  "audienceTag": "Men's",
+  "members": [
     {
-      "label": "Active Members",
-      "value": "60+"
+      "id": "m1",
+      "name": "Member Name 1",
+      "isHidden": true
     },
     {
-      "label": "Years at Saint Thérèse",
-      "value": "50+"
+      "id": "m2",
+      "name": "Member Name 2",
+      "isHidden": true
     },
     {
-      "label": "Charity Funds Raised",
-      "value": "$15K+"
+      "id": "m3",
+      "name": "Member Name 3",
+      "isHidden": true
     }
   ],
+  "room": "BKC",
+  "id": "knights-of-columbus",
+  "description": "The Knights of Columbus is the world's largest Catholic fraternal service organization. Our local council serves Saint Thérèse parish through charitable works, faith formation support, and community fellowship. All Catholic men 18 and older are invited to join.",
   "officers": [
     {
       "id": "gk",
@@ -67,22 +72,18 @@
       "title": "Chaplain"
     }
   ],
-  "members": [
+  "stats": [
     {
-      "id": "m1",
-      "name": "Member Name 1",
-      "isHidden": true
+      "label": "Active Members",
+      "value": "60+"
     },
     {
-      "id": "m2",
-      "name": "Member Name 2",
-      "isHidden": true
+      "label": "Years at Saint Thérèse",
+      "value": "50+"
     },
     {
-      "id": "m3",
-      "name": "Member Name 3",
-      "isHidden": true
+      "label": "Charity Funds Raised",
+      "value": "$15K+"
     }
-  ],
-  "joinUrl": "https://www.kofc.org/get-involved/join-kofc/"
+  ]
 }
