@@ -1,0 +1,31 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "time": "8am",
+  "oneTimeOccurrences": [],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "isHidden": false,
+  "location": "Chapel",
+  "schedule": {
+    "startDate": "2026-11-14",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Saturday",
+    "exclusions": []
+  },
+  "title": "Daily Mass",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "sacramental"
+    }
+  ],
+  "description": "Join us for Daily Mass!"
+}

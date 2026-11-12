@@ -1,0 +1,25 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "time": "5:30pm",
+  "date": "2026-11-21",
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "isHidden": false,
+  "location": "Basement",
+  "title": "Parish Dinner hosted by KoC",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "description": "All our welcome to this Parish Dinner (you don't even have to go to this particular Mass!)"
+}
