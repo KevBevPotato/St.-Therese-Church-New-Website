@@ -39,12 +39,30 @@ const eventEntries = Object.entries(
       event.id ||
       path.split("/").at(-1)?.replace(/\.json$/, "") ||
       "event",
+    path,
   };
 });
 
-export const oneTimeEvents: CalendarEvent[] = eventEntries.map((event: any) => {
+const usedIds = new Set<string>();
+
+export const oneTimeEvents: CalendarEvent[] = eventEntries.map((entry: any) => {
+  const { path, ...event } = entry;
+  const baseId = event.id;
+  let id = baseId;
+  if (usedIds.has(id)) {
+    const fileId = path.split("/").at(-1)?.replace(/\.json$/, "") || "copy";
+    id = `${baseId}-${fileId}`;
+    let suffix = 2;
+    while (usedIds.has(id)) {
+      id = `${baseId}-${fileId}-${suffix}`;
+      suffix += 1;
+    }
+  }
+  usedIds.add(id);
+
   return {
     ...event,
+    id,
     date: getEventDate(event.date, event.time || ""),
     categories: (event.categories || []).map((c: any) => {
       if (typeof c === "object" && c.category) return c.category;

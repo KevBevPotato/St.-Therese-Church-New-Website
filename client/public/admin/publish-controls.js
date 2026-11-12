@@ -2,8 +2,6 @@
   const createActions = new Set([
     "publish and create new",
     "publish & create new",
-    "publish and duplicate",
-    "publish & duplicate",
   ]);
 
   function simplifyPublishMenu() {

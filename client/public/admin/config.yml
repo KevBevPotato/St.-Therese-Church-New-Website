@@ -611,6 +611,7 @@ collections:
           time_format: false,
           picker_utc: false,
           required: false,
+          hint: "To create another event with these details, choose Publish and Duplicate from the publish menu, then update the date and location. The duplicate keeps the same custom landing page.",
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "markdown" , required: false }
@@ -767,7 +768,7 @@ collections:
           name: "title",
           widget: "markdown",
           required: false,
-          hint: "Top-level event details are shared by every occurrence. Add an entry under One-time Occurrences below to adjust a single date.",
+          hint: "Top-level event details are shared by every occurrence. Use Date-specific Exceptions below to change or cancel a single date, even when this schedule has no end date.",
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "markdown" , required: false }
@@ -775,13 +776,13 @@ collections:
         name: "schedule"
         widget: "recurrence-schedule"
         required: false
-        hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it."
-      - label: "One-time Occurrences (edit individually)"
+        hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it, or use Date-specific Exceptions below to change details or show a cancellation notice."
+      - label: "Date-specific Exceptions (edit one date)"
         name: "oneTimeOccurrences"
         widget: "list"
         required: false
-        summary: "{{fields.date}} · {{fields.title}}"
-        hint: "Add a date from this recurring schedule to make that occurrence a separate, editable one-time event. It inherits this event's details unless you fill in an override below."
+        summary: "{{fields.date}} · {{fields.action}} · {{fields.title}}"
+        hint: "Add a date from this recurring schedule. Choose custom details, a cancellation notice, or remove that date from the calendar. For Mass, set the title override to “No Mass”. Unfilled detail fields inherit from the recurring event."
         fields:
           - {
               label: "Occurrence Date",
@@ -793,6 +794,16 @@ collections:
               picker_utc: false,
               required: true,
             }
+          - label: "What happens on this date?"
+            name: "action"
+            widget: "select"
+            required: false
+            default: "override"
+            hint: "For Mass, set the Title Override to “No Mass”. Choose Remove to hide this date completely."
+            options:
+              - { label: "Use custom details", value: "override" }
+              - { label: "Show cancellation notice", value: "cancelled" }
+              - { label: "Remove this date from the calendar", value: "skip" }
           - {
               label: "Title Override (optional)",
               name: "title",

@@ -58,18 +58,26 @@ function eventDateTime(dateString: string, timeString: string): Date {
     return date;
 }
 
-function recurringEventForDate(rule: any, dateString: string, override: any = {}) {
+export function recurringEventForDate(
+    rule: any,
+    dateString: string,
+    override: any = {}
+): CalendarEvent | null {
+    if (override.action === 'skip') return null;
+
     const appliedOverride = Object.fromEntries(
-        Object.entries(override).filter(
-            ([key, value]) =>
-                key === 'date' &&
-                typeof value === 'string' ||
-                (value !== undefined &&
-                    value !== null &&
-                    value !== '' &&
-                    (!Array.isArray(value) || value.length > 0))
-        )
+        Object.entries(override).filter(([key, value]) => {
+            if (key === 'action') return false;
+            if (key === 'date') return typeof value === 'string';
+            return value !== undefined &&
+                value !== null &&
+                value !== '' &&
+                (!Array.isArray(value) || value.length > 0);
+        })
     );
+    if (override.action === 'cancelled' && !appliedOverride.title) {
+        appliedOverride.title = 'Canceled';
+    }
     const merged = { ...rule, ...appliedOverride };
     const { schedule, oneTimeOccurrences, ...eventFields } = merged;
     return {
@@ -144,7 +152,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 (occurrence: any) => occurrence.date === dateStr
             );
             if (oneTimeOverride) {
-                events.push(recurringEventForDate(rule, dateStr, oneTimeOverride));
+                const event = recurringEventForDate(rule, dateStr, oneTimeOverride);
+                if (event) events.push(event);
                 return;
             }
 
@@ -186,7 +195,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 }
 
                 if (shouldShow) {
-                    events.push(recurringEventForDate(rule, dateStr));
+                    const event = recurringEventForDate(rule, dateStr);
+                    if (event) events.push(event);
                 }
             }
         });
