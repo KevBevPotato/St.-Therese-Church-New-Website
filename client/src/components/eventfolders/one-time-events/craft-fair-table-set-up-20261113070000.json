@@ -1,0 +1,28 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "time": "9am",
+  "contactPhone": "(605) 342-1556 Ext. 4",
+  "date": "2026-11-13",
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "isHidden": false,
+  "contactPerson": "Melanie Karp\n",
+  "location": "Basement ",
+  "title": "Craft Fair Table Set Up ",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "contactEmail": "melanie.karp@strcstaff.org",
+  "description": "All our welcome!"
+}
