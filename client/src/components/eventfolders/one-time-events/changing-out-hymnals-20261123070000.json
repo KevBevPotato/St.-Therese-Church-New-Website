@@ -1,0 +1,25 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "time": "6:30pm",
+  "date": "2026-11-23",
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "isHidden": false,
+  "location": "Chapel",
+  "title": "Changing out Hymnals",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "description": "Please come help us change out all our hymnals for the Advent Season!"
+}
