@@ -1,0 +1,31 @@
+{
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "time": "11:30am",
+  "oneTimeOccurrences": [],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "isHidden": false,
+  "location": "Pizza Ranch North",
+  "schedule": {
+    "startDate": "2026-11-12",
+    "recurrenceType": "monthly",
+    "dayOfWeek": "Thursday",
+    "ordinalWeek": "3"
+  },
+  "title": "Widow's Social Group",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "description": "All widows are welcome! Take note that location will change every month!"
+}
