@@ -154,15 +154,19 @@ export default function KnightsOfColumbus() {
                     {(showUpcomingEventsSection || org.monthlyNewsletterUrl) && (
                         <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                             {showUpcomingEventsSection && (
-                                <button
+                                <Button
+                                    type="button"
                                     onClick={scrollToUpcomingEvents}
-                                    className="inline-flex items-center gap-2 rounded-full bg-white px-8 py-4 text-xs font-bold uppercase tracking-widest text-primary shadow-lg transition-all hover:scale-[1.02] hover:bg-[#f4ead5] active:scale-95"
+                                    className="h-12 rounded-full bg-white px-5 py-0 text-[10px] font-bold uppercase tracking-wide text-primary shadow-lg transition-all hover:scale-[1.02] hover:bg-[#f4ead5] active:scale-95 sm:px-8 sm:text-xs sm:tracking-widest"
                                 >
                                     <Calendar size={16} /> View Upcoming Calendar
-                                </button>
+                                </Button>
                             )}
                             {org.monthlyNewsletterUrl && (
-                                <Button asChild className="rounded-full bg-accent px-8 py-4 text-xs font-bold uppercase tracking-widest text-white shadow-lg hover:bg-accent/90">
+                                <Button
+                                    asChild
+                                    className="h-12 rounded-full bg-accent px-5 py-0 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg hover:bg-accent/90 sm:px-8 sm:text-xs sm:tracking-widest"
+                                >
                                     <a
                                         href={org.monthlyNewsletterUrl}
                                         target="_blank"
