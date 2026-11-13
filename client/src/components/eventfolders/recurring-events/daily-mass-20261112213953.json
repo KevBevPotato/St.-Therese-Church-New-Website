@@ -4,7 +4,7 @@
       "isHidden": false
     }
   ],
-  "time": "8am",
+  "time": "7:30 AM",
   "oneTimeOccurrences": [],
   "gallery": [
     {
@@ -15,9 +15,15 @@
   "isHidden": false,
   "location": "Chapel",
   "schedule": {
-    "startDate": "2026-11-14",
+    "startDate": "2026-11-13",
     "recurrenceType": "weekly",
-    "dayOfWeek": "Saturday",
+    "daysOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
     "exclusions": []
   },
   "title": "Daily Mass",
@@ -27,5 +33,5 @@
       "category": "sacramental"
     }
   ],
-  "description": "Join us for Daily Mass!"
+  "description": "Join us for Daily Mass, Monday through Friday."
 }

@@ -1,0 +1,18 @@
+{
+  "time": "4:30 PM",
+  "oneTimeOccurrences": [],
+  "isHidden": false,
+  "location": "Main Sanctuary",
+  "schedule": {
+    "startDate": "2026-11-14",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Saturday",
+    "exclusions": []
+  },
+  "title": "Saturday Vigil Mass",
+  "categories": [
+    {
+      "category": "sacramental"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "time": "7:00 AM",
+  "oneTimeOccurrences": [],
+  "isHidden": false,
+  "location": "Main Sanctuary",
+  "schedule": {
+    "startDate": "2026-11-13",
+    "recurrenceType": "weekly",
+    "daysOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "exclusions": []
+  },
+  "title": "Daily Rosary",
+  "categories": [
+    {
+      "category": "sacramental"
+    }
+  ]
+}

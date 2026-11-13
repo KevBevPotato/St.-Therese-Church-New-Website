@@ -1,0 +1,18 @@
+{
+  "time": "9:00 AM",
+  "oneTimeOccurrences": [],
+  "isHidden": false,
+  "location": "Main Sanctuary",
+  "schedule": {
+    "startDate": "2026-11-15",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Sunday",
+    "exclusions": []
+  },
+  "title": "Sunday Mass (9:00 AM)",
+  "categories": [
+    {
+      "category": "sacramental"
+    }
+  ]
+}

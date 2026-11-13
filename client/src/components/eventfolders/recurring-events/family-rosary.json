@@ -1,0 +1,21 @@
+{
+  "time": "7:00 PM",
+  "oneTimeOccurrences": [],
+  "isHidden": false,
+  "location": "Main Sanctuary",
+  "schedule": {
+    "startDate": "2026-11-15",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Sunday",
+    "exclusions": []
+  },
+  "title": "Family Rosary",
+  "categories": [
+    {
+      "category": "sacramental"
+    },
+    {
+      "category": "parishEvents"
+    }
+  ]
+}

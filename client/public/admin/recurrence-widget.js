@@ -36,14 +36,22 @@
       : null;
   }
 
+  function getWeekdays(schedule) {
+    const selectedDays = Array.isArray(schedule.daysOfWeek)
+      ? schedule.daysOfWeek
+      : [schedule.dayOfWeek];
+    return selectedDays
+      .map(day => typeof day === "number" ? day : weekdays.indexOf(day))
+      .filter(day => day >= 0 && day < weekdays.length);
+  }
+
   function dateOccurs(schedule, value) {
     const date = parseDate(value);
     const start = parseDate(schedule.startDate);
     const end = parseDate(schedule.endDate);
     if (!date || !start || date < start || (end && date > end)) return false;
 
-    const weekdayMatches =
-      date.getDay() === weekdays.indexOf(schedule.dayOfWeek);
+    const weekdayMatches = getWeekdays(schedule).includes(date.getDay());
     switch (schedule.recurrenceType) {
       case "daily":
         return true;
@@ -141,8 +149,27 @@
       if (field === "recurrenceType" && value === "daily") {
         next.dayOfWeek = schedule.dayOfWeek || "Sunday";
       }
+      if (
+        field === "recurrenceType" &&
+        (value === "monthly" || value === "last_of_month") &&
+        Array.isArray(schedule.daysOfWeek) &&
+        schedule.daysOfWeek.length > 0
+      ) {
+        next.dayOfWeek = schedule.daysOfWeek[0];
+      }
 
       this.props.onChange(next);
+    },
+
+    toggleWeekday(day, checked) {
+      const schedule = this.getSchedule();
+      const selectedDays = Array.isArray(schedule.daysOfWeek)
+        ? schedule.daysOfWeek
+        : [schedule.dayOfWeek || "Sunday"];
+      const daysOfWeek = checked
+        ? [...new Set([...selectedDays, day])]
+        : selectedDays.filter(selectedDay => selectedDay !== day);
+      this.props.onChange({ ...schedule, daysOfWeek });
     },
 
     toggleExclusion(date, included) {
@@ -282,6 +309,52 @@
             )
           )
         );
+      const weekdayField = () => {
+        const selectedDays = Array.isArray(schedule.daysOfWeek)
+          ? schedule.daysOfWeek
+          : [schedule.dayOfWeek || "Sunday"];
+        return h(
+          "fieldset",
+          {
+            style: {
+              ...fieldStyle,
+              border: 0,
+              padding: 0,
+              marginLeft: 0,
+              marginRight: 0,
+            },
+          },
+          h("legend", { style: labelStyle }, "Days of week"),
+          h(
+            "div",
+            { style: { display: "flex", flexWrap: "wrap", gap: "8px 12px" } },
+            weekdays.map(day =>
+              h(
+                "label",
+                {
+                  key: day,
+                  style: {
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 5,
+                    fontWeight: 400,
+                    whiteSpace: "nowrap",
+                  },
+                },
+                h("input", {
+                  type: "checkbox",
+                  checked: selectedDays.includes(day),
+                  disabled:
+                    selectedDays.includes(day) && selectedDays.length === 1,
+                  onChange: event =>
+                    this.toggleWeekday(day, event.target.checked),
+                }),
+                day
+              )
+            )
+          )
+        );
+      };
       const occurrenceLabel = date => {
         const parsed = parseDate(date);
         return parsed
@@ -501,12 +574,14 @@
               label,
             }))
           ),
-          recurrenceType !== "daily" &&
-            selectField(
-              "Day of week",
-              "dayOfWeek",
-              weekdays.map(day => ({ value: day, label: day }))
-            ),
+          recurrenceType === "weekly"
+            ? weekdayField()
+            : recurrenceType !== "daily" &&
+              selectField(
+                "Day of week",
+                "dayOfWeek",
+                weekdays.map(day => ({ value: day, label: day }))
+              ),
           recurrenceType === "monthly" &&
             selectField(
               "Week of month",

@@ -106,45 +106,6 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         const d = new Date(year, month, day);
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-        // --- PERPETUAL RECURRING (Hard-coded for Mass) ---
-        if (d.getDay() >= 1 && d.getDay() <= 5) {
-            events.push({
-                id: `mass-daily-${dateStr}`,
-                title: 'Daily Mass',
-                date: new Date(year, month, day, 7, 30),
-                time: '7:30 AM',
-                location: 'Main Sanctuary',
-                categories: ['sacramental'],
-                description: 'Daily Mass — Monday through Friday.',
-            });
-            events.push({
-                id: `rosary-daily-${dateStr}`,
-                title: "Daily Rosary",
-                date: new Date(year, month, day, 7, 0),
-                time: "7:00 AM",
-                location: "Main Sanctuary",
-                categories: ["sacramental"],
-            });
-        }
-        if (d.getDay() === 6) {
-            events.push({
-                id: `mass-saturday-${dateStr}`,
-                title: 'Saturday Vigil Mass',
-                date: new Date(year, month, day, 16, 30),
-                time: '4:30 PM',
-                location: 'Main Sanctuary',
-                categories: ['sacramental'],
-            });
-        }
-        if (d.getDay() === 0) {
-            events.push({ id: `mass-sunday-am-${dateStr}`, title: 'Sunday Mass (9:00 AM)', date: new Date(year, month, day, 9, 0), time: '9:00 AM', location: 'Main Sanctuary', categories: ['sacramental'] });
-            events.push({ id: `mass-sunday-pm-${dateStr}`, title: 'Sunday Mass (5:30 PM)', date: new Date(year, month, day, 17, 30), time: '5:30 PM', location: 'Main Sanctuary', categories: ['sacramental'] });
-            events.push({ id: `rosary-sun-${dateStr}`, title: "Family Rosary", date: new Date(year, month, day, 19, 0), time: "7:00 PM", location: "Main Sanctuary", categories: ["sacramental", "parishEvents"] });
-        }
-        if (d.getDay() === 5) {
-            events.push({ id: `holyhour-${dateStr}`, title: "Holy Hour", date: new Date(year, month, day, 8, 0), time: "8:00 AM - 9:00 AM", location: "Main Sanctuary", categories: ["sacramental"] });
-        }
-
         // --- CMS-DRIVEN RECURRING RULES ---
         recurringRules.forEach((rule: any) => {
             const schedule = rule.schedule ?? rule;
@@ -167,6 +128,12 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                 ? schedule.exclusions.map((ex: any) => typeof ex === 'string' ? ex : ex.date)
                 : (schedule.exclusions ? schedule.exclusions.split(',').map((d: string) => d.trim()) : []);
 
+            const scheduledDays = Array.isArray(schedule.daysOfWeek)
+                ? schedule.daysOfWeek
+                : [schedule.dayOfWeek];
+            const ruleDays = scheduledDays
+                .map((day: string | number) => typeof day === 'string' ? DAY_MAP[day] : day)
+                .filter((day: number | undefined): day is number => day !== undefined);
             const ruleDay = typeof schedule.dayOfWeek === 'string'
                 ? DAY_MAP[schedule.dayOfWeek]
                 : schedule.dayOfWeek;
@@ -178,10 +145,8 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
                     // DAILY: Just show up every day
                     shouldShow = true;
                 } else if (schedule.recurrenceType === 'weekly') {
-                    // WEEKLY: Must be the correct day of the week
-                    if (d.getDay() === ruleDay) {
-                        shouldShow = true;
-                    }
+                    // WEEKLY: Show on each selected day, or the legacy single day.
+                    shouldShow = ruleDays.includes(d.getDay());
                 } else if (schedule.recurrenceType === 'monthly') {
                     // MONTHLY: Must be the correct day of the week AND the correct week of the month
                     const currentOrdinal = Math.ceil(day / 7);

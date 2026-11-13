@@ -1,0 +1,18 @@
+{
+  "time": "8:00 AM - 9:00 AM",
+  "oneTimeOccurrences": [],
+  "isHidden": false,
+  "location": "Main Sanctuary",
+  "schedule": {
+    "startDate": "2026-11-13",
+    "recurrenceType": "weekly",
+    "dayOfWeek": "Friday",
+    "exclusions": []
+  },
+  "title": "Holy Hour",
+  "categories": [
+    {
+      "category": "sacramental"
+    }
+  ]
+}
