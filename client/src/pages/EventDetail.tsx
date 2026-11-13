@@ -144,7 +144,7 @@ export default function EventDetail() {
           <Button
             variant="ghost"
             onClick={handleBack}
-            className="text-primary hover:text-accent font-bold uppercase tracking-widest text-xs"
+            className="text-primary hover:text-accent-foreground font-bold uppercase tracking-widest text-xs"
           >
             <ChevronLeft className="mr-2" /> Back
           </Button>

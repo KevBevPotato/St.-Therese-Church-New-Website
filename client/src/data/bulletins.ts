@@ -115,6 +115,7 @@ export function getAllScheduledWeeks(): Array<{ start: Date; end: Date; pdfUrl?:
 const CATEGORY_MAP = [
     { key: 'mass_times', label: 'Mass Times' },
     { key: 'announcements', label: 'Announcements' },
+    { key: 'message_from_fr_mark', label: 'A Message from Fr. Mark' },
     { key: 'new_parishioners', label: 'New Parishioners' },
     { key: 'mass_intentions', label: 'Mass Intentions' },
     { key: 'daily_scriptures', label: 'Daily Scriptures' },

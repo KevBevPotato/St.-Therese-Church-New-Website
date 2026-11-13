@@ -148,9 +148,13 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
         // --- CMS-DRIVEN RECURRING RULES ---
         recurringRules.forEach((rule: any) => {
             const schedule = rule.schedule ?? rule;
-            const oneTimeOverride = rule.oneTimeOccurrences?.find(
-                (occurrence: any) => occurrence.date === dateStr
-            );
+            const oneTimeOverride =
+                schedule.occurrenceOverrides?.find(
+                    (occurrence: any) => occurrence.date === dateStr
+                ) ??
+                rule.oneTimeOccurrences?.find(
+                    (occurrence: any) => occurrence.date === dateStr
+                );
             if (oneTimeOverride) {
                 const event = recurringEventForDate(rule, dateStr, oneTimeOverride);
                 if (event) events.push(event);

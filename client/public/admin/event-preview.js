@@ -92,6 +92,17 @@
       render() {
         const event = plainData(this.props.entry);
         const dateString = occurrenceFor(event, recurring);
+        const schedule = event.schedule || {};
+        const occurrenceOverrides = recurring
+          ? [
+              ...(schedule.occurrenceOverrides || []),
+              ...(event.oneTimeOccurrences || []),
+            ].filter(
+              (override, index, overrides) =>
+                overrides.findIndex(item => item.date === override.date) ===
+                index
+            )
+          : [];
         const date = /^\d{4}-\d{2}-\d{2}$/.test(dateString)
           ? new Date(`${dateString}T12:00:00`)
           : null;
@@ -114,6 +125,90 @@
               day: "numeric",
             })
           : "Choose a date to preview this event";
+        const exceptionPreviews = occurrenceOverrides.map(override => {
+          const exceptionDate = /^\d{4}-\d{2}-\d{2}$/.test(override.date || "")
+            ? new Date(`${override.date}T12:00:00`)
+            : null;
+          const exceptionDateLabel = exceptionDate
+            ? exceptionDate.toLocaleDateString(undefined, {
+                weekday: "long",
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })
+            : override.date;
+          const removed = override.action === "skip";
+          const canceled = override.action === "cancelled";
+          return h(
+            "article",
+            {
+              key: override.date,
+              style: {
+                padding: 14,
+                border: "1px solid #dbe3ec",
+                borderRadius: 8,
+                background: "#fff",
+                marginTop: 10,
+              },
+            },
+            h(
+              "strong",
+              { style: { display: "block", color: "#17324f" } },
+              exceptionDateLabel
+            ),
+            h(
+              "span",
+              {
+                style: {
+                  display: "block",
+                  marginTop: 4,
+                  color: removed ? "#b91c1c" : "#64748b",
+                  fontSize: 12,
+                  fontWeight: 700,
+                },
+              },
+              removed
+                ? "Removed from the calendar"
+                : canceled
+                  ? "Cancellation notice"
+                  : "Edited occurrence"
+            ),
+            !removed &&
+              h(
+                "div",
+                { style: { marginTop: 8 } },
+                h(
+                  "strong",
+                  null,
+                  override.title || (canceled ? "Canceled" : event.title)
+                ),
+                h(
+                  "p",
+                  {
+                    style: {
+                      margin: "4px 0 0",
+                      color: "#64748b",
+                      fontSize: 12,
+                    },
+                  },
+                  `${override.time || event.time || "Time"} · ${override.location || event.location || "Location"}`
+                ),
+                (override.description || event.description) &&
+                  h(
+                    "p",
+                    {
+                      style: {
+                        margin: "8px 0 0",
+                        color: "#475569",
+                        fontSize: 12,
+                        whiteSpace: "pre-wrap",
+                      },
+                    },
+                    override.description || event.description
+                  )
+              )
+          );
+        });
         const panelStyle = {
           flex: "1 1 320px",
           minWidth: 0,
@@ -359,9 +454,27 @@
                       },
                     },
                     `${gallery.length} gallery photos`
-                  )
+                    )
               )
-            )
+            ),
+            recurring &&
+              exceptionPreviews.length > 0 &&
+              h(
+                "div",
+                { style: { marginTop: 18 } },
+                h(
+                    "h3",
+                    {
+                      style: {
+                        margin: "0 0 8px",
+                        color: "#17324f",
+                        font: "bold 18px Georgia, serif",
+                      },
+                    },
+                    "Date-specific previews"
+                ),
+                exceptionPreviews
+              )
           )
         );
       },

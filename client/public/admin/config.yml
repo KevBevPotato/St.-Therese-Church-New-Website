@@ -768,160 +768,15 @@ collections:
           name: "title",
           widget: "markdown",
           required: false,
-          hint: "Top-level event details are shared by every occurrence. Use Date-specific Exceptions below to change or cancel a single date, even when this schedule has no end date.",
+          hint: "Top-level event details are shared by every occurrence. Use the date previews in Schedule, Previews, and Exceptions to customize or cancel a specific date, even when this schedule has no end date.",
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "markdown" , required: false }
-      - label: "Schedule and Occurrences"
+      - label: "Schedule, Previews, and Exceptions"
         name: "schedule"
         widget: "recurrence-schedule"
         required: false
-        hint: "Choose a date range and pattern. Uncheck Include beside a generated date to exclude it, or use Date-specific Exceptions below to change details or show a cancellation notice."
-      - label: "Date-specific Exceptions (edit one date)"
-        name: "oneTimeOccurrences"
-        widget: "list"
-        required: false
-        summary: "{{fields.date}} · {{fields.action}} · {{fields.title}}"
-        hint: "Add a date from this recurring schedule. Choose custom details, a cancellation notice, or remove that date from the calendar. For Mass, set the title override to “No Mass”. Unfilled detail fields inherit from the recurring event."
-        fields:
-          - {
-              label: "Occurrence Date",
-              name: "date",
-              widget: "datetime",
-              format: "YYYY-MM-DD",
-              date_format: "YYYY-MM-DD",
-              time_format: false,
-              picker_utc: false,
-              required: true,
-            }
-          - label: "What happens on this date?"
-            name: "action"
-            widget: "select"
-            required: false
-            default: "override"
-            hint: "For Mass, set the Title Override to “No Mass”. Choose Remove to hide this date completely."
-            options:
-              - { label: "Use custom details", value: "override" }
-              - { label: "Show cancellation notice", value: "cancelled" }
-              - { label: "Remove this date from the calendar", value: "skip" }
-          - {
-              label: "Title Override (optional)",
-              name: "title",
-              widget: "markdown",
-              required: false,
-            }
-          - {
-              label: "Time Override (optional)",
-              name: "time",
-              widget: "string",
-              required: false,
-            }
-          - {
-              label: "Location Override (optional)",
-              name: "location",
-              widget: "markdown",
-              required: false,
-            }
-          - {
-              label: "Description Override (optional)",
-              name: "description",
-              widget: "markdown",
-              required: false,
-            }
-          - {
-              label: "About this event Override (optional)",
-              name: "about",
-              widget: "markdown",
-              required: false,
-            }
-          - {
-              label: "Sign-up URL Override (optional)",
-              name: "signupLink",
-              widget: "string",
-              required: false,
-            }
-          - {
-              label: "Contact Person Override (optional)",
-              name: "contactPerson",
-              widget: "markdown",
-              required: false,
-            }
-          - {
-              label: "Contact Email Override (optional)",
-              name: "contactEmail",
-              widget: "string",
-              required: false,
-            }
-          - {
-              label: "Contact Phone Override (optional)",
-              name: "contactPhone",
-              widget: "string",
-              required: false,
-            }
-          - label: "Category Overrides (optional)"
-            name: "categories"
-            widget: "list"
-            required: false
-            fields:
-              - label: "Category"
-                name: "category"
-                widget: "select"
-                required: false
-                options:
-                  [
-                    "sacramental",
-                    "parishEvents",
-                    "meeting",
-                    "vocations",
-                    "diocesan",
-                  ]
-          - label: "Organization Calendar Overrides (optional)"
-            name: "organizationTags"
-            widget: "list"
-            required: false
-            field:
-              label: "Organization"
-              name: "organization"
-              widget: "select"
-              required: false
-              options:
-                - { label: "Knights of Columbus", value: "knights-of-columbus" }
-                - { label: "Altar Society", value: "altar-society" }
-                - { label: "Catholic Daughters", value: "catholic-daughters" }
-                - { label: "St. Vincent de Paul", value: "st-vincent-de-paul" }
-                - { label: "Faith Formation", value: "faith-formation" }
-          - label: "Event Photo Overrides (optional)"
-            name: "gallery"
-            widget: "list"
-            required: false
-            hint: "Optional photo collection for this occurrence. Turn off Include in carousel to archive a photo in the gallery."
-            summary: "{{fields.caption}}"
-            fields:
-              - {
-                  label: "Hide this photo",
-                  name: "isHidden",
-                  widget: "boolean",
-                  default: false,
-                  required: false,
-                }
-              - { label: "Photo", name: "photo", widget: "image", required: false }
-              - { label: "Caption", name: "caption", widget: "markdown", required: false }
-              - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
-              - {
-                  label: "Include in carousel",
-                  name: "showInCarousel",
-                  widget: "boolean",
-                  default: true,
-                  required: false,
-                  hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
-                }
-          - label: "FAQ Overrides (optional)"
-            name: "faqItems"
-            widget: "list"
-            required: false
-            fields:
-              - { label: "Question", name: "question", widget: "markdown", required: false }
-              - { label: "Answer", name: "answer", widget: "markdown", required: false }
+        hint: "Choose a date range and pattern. Preview generated dates, select Edit this date to customize its details, show a cancellation notice, or remove just that occurrence. Add a date exception for dates beyond the preview."
       - {
           label: "Description",
           name: "description",
@@ -1126,6 +981,13 @@ collections:
                   widget: "text",
                   required: false,
                   hint: "Suggested format: **Event Title** on its own line, followed by the date, time, details, and contact information.",
+                }
+              - {
+                  label: "A Message from Fr. Mark",
+                  name: "message_from_fr_mark",
+                  widget: "text",
+                  required: false,
+                  hint: "Enter the message as it should appear in the bulletin section.",
                 }
               - {
                   label: "New Parishioners",

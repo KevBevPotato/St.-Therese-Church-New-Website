@@ -147,7 +147,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
     return (
       <div className="min-h-screen bg-[#fbfaf6] pt-[69px]">
         <div className="container mx-auto px-4 py-12">
-          <Link href="/events"><Button variant="ghost" className="mb-8 text-primary hover:text-accent font-bold uppercase tracking-widest text-xs"><ChevronLeft className="mr-2" /> Back to All Events</Button></Link>
+          <Link href="/events"><Button variant="ghost" className="mb-8 text-primary hover:text-accent-foreground font-bold uppercase tracking-widest text-xs"><ChevronLeft className="mr-2" /> Back to All Events</Button></Link>
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
             <div className="lg:col-span-2 space-y-8">
               <div className="space-y-4">
