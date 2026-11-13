@@ -266,139 +266,6 @@ collections:
             }
           - { label: "Email", name: "email", widget: "string" , required: false }
           - { label: "Address", name: "address", widget: "markdown" , required: false }
-      - file: "client/src/data/announcements_data.json"
-        label: "Parish Announcements"
-        name: "announcements_file"
-        fields:
-          - label: "Page and Hero Link Settings"
-            name: "settings"
-            widget: "object"
-            required: false
-            fields:
-              - { label: "Page Title", name: "title", widget: "markdown" , required: false }
-              - { label: "Introduction", name: "description", widget: "markdown" , required: false }
-              - {
-                  label: "Announcement Card Columns",
-                  name: "cardColumns",
-                  widget: "number",
-                  value_type: "int",
-                  min: 2,
-                  max: 3,
-                  step: 1,
-                  default: 3,
-                  hint: "Choose the maximum number of cards per row on larger screens.",
-                  required: false,
-                }
-              - {
-                  label: "Card Image Aspect Ratio",
-                  name: "cardImageAspect",
-                  widget: "select",
-                  options: ["16/9", "4/3", "1/1"],
-                  default: "16/9",
-                  required: false,
-                }
-              - {
-                  label: "Home Hero Link Position",
-                  name: "heroLinkPosition",
-                  widget: "select",
-                  options:
-                    [
-                      { label: "Top right", value: "top-right" },
-                      { label: "Top left", value: "top-left" },
-                      { label: "Bottom right", value: "bottom-right" },
-                      { label: "Bottom left", value: "bottom-left" },
-                    ],
-                  default: "top-right",
-                  required: false,
-                }
-              - {
-                  label: "Hero Link Background Color",
-                  name: "heroLinkBackgroundColor",
-                  widget: "color",
-                  default: "#102a45",
-                  required: false,
-                }
-              - {
-                  label: "Hero Link Text Color",
-                  name: "heroLinkTextColor",
-                  widget: "color",
-                  default: "#ffffff",
-                  required: false,
-                }
-              - {
-                  label: "Hero Link Opacity",
-                  name: "heroLinkOpacity",
-                  widget: "number",
-                  value_type: "float",
-                  min: 0.1,
-                  max: 1,
-                  step: 0.05,
-                  default: 0.78,
-                  required: false,
-                }
-          - label: "Announcements (drag to reorder)"
-            name: "announcements"
-            widget: "list"
-            required: false
-            summary: "{{fields.title}} · {{fields.launchDate}}"
-            fields:
-              - {
-                  label: "Hide this announcement",
-                  name: "isHidden",
-                  widget: "boolean",
-                  default: false,
-                  required: false,
-                }
-              - { label: "ID (unique, URL-safe)", name: "id", widget: "string" , required: false }
-              - { label: "Title", name: "title", widget: "markdown" , required: false }
-              - {
-                  label: "Category (optional)",
-                  name: "category",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Announcement",
-                  name: "description",
-                  widget: "markdown",
-                  required: false,
-                }
-              - {
-                  label: "Launch Date",
-                  name: "launchDate",
-                  widget: "datetime",
-                  format: "YYYY-MM-DD",
-                  date_format: "YYYY-MM-DD",
-                  time_format: false,
-                  picker_utc: false,
-                  required: false,
-                }
-              - {
-                  label: "Expiration Date",
-                  name: "expirationDate",
-                  widget: "datetime",
-                  format: "YYYY-MM-DD",
-                  date_format: "YYYY-MM-DD",
-                  time_format: false,
-                  picker_utc: false,
-                  required: false,
-                  hint: "The announcement remains visible through this date.",
-                }
-              - { label: "Related Image", name: "image", widget: "image" , required: false }
-              - {
-                  label: "Image Description (alt text)",
-                  name: "imageAlt",
-                  widget: "string",
-                  required: false,
-                }
-              - {
-                  label: "Image Position",
-                  name: "imagePosition",
-                  widget: "string",
-                  default: "center",
-                  hint: "Adjusts the crop in the image preview and announcement card, e.g. center 35%.",
-                  required: false,
-                }
   - name: "navigation"
     label: "Header Navigation"
     files:
@@ -1671,20 +1538,18 @@ collections:
                     widget: "object"
                     required: false
                     fields:
-                      - { label: "Announcements", name: "announcements", widget: "markdown", required: false }
                       - { label: "Join an Organization", name: "organizations", widget: "markdown", required: false }
                       - { label: "Knights of Columbus", name: "knightsOfColumbus", widget: "markdown", required: false }
                       - { label: "Catholic Daughters", name: "catholicDaughters", widget: "markdown", required: false }
                       - { label: "Altar Society", name: "altarSociety", widget: "markdown", required: false }
                       - { label: "St. Vincent de Paul", name: "stVincentDePaul", widget: "markdown", required: false }
-                      - { label: "Wednesday Faith Formation", name: "faithFormation", widget: "markdown", required: false }
-                      - { label: "Help with the Liturgy", name: "liturgy", widget: "markdown", required: false }
+                      - { label: "Faith Formation", name: "faithFormation", widget: "markdown", required: false }
+                      - { label: "Liturgy", name: "liturgy", widget: "markdown", required: false }
                       - { label: "Lector", name: "lector", widget: "markdown", required: false }
                       - { label: "Usher", name: "usher", widget: "markdown", required: false }
                       - { label: "Altar Server", name: "altarServer", widget: "markdown", required: false }
                       - { label: "Music Ministry", name: "musicMinistry", widget: "markdown", required: false }
                       - { label: "Connect Groups", name: "connectGroups", widget: "markdown", required: false }
-                      - { label: "Group Studies", name: "groupStudies", widget: "markdown", required: false }
                       - { label: "Sacraments", name: "sacraments", widget: "markdown", required: false }
                       - { label: "Resources", name: "resources", widget: "markdown", required: false }
                       - { label: "Need Help", name: "needHelp", widget: "markdown", required: false }
@@ -1708,7 +1573,7 @@ collections:
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
                       - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
                       - { label: "Request Help Button", name: "requestButton", widget: "markdown", required: false }
-                  - label: "Contribute Page"
+                  - label: "Project Contributions Page"
                     name: "contribute"
                     widget: "object"
                     required: false
@@ -1890,7 +1755,6 @@ collections:
                       "altar-society",
                       "knights-of-columbus",
                       "connect-groups",
-                      "group-studies",
                     ],
                 }
               - {

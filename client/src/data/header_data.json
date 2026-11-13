@@ -5,8 +5,6 @@
     { "href": "/bulletin", "label": "Bulletin" }
   ],
   "parishLifeLinks": [
-    { "href": "/new-to-st-therese", "label": "New to St. Thérèse?" },
-    { "href": "/announcements", "label": "Announcements" },
     {
       "label": "Join an Organization!",
       "children": [
@@ -25,23 +23,31 @@
         }
       ]
     },
-    { "href": "/faith-formation", "label": "Wednesday Faith Formation" },
     {
-      "href": "/liturgy",
-      "label": "Help with the Liturgy!",
+      "href": "/get-involved",
+      "label": "Get Involved",
       "children": [
-        { "href": "/lector", "label": "Lector" },
-        { "href": "/usher", "label": "Usher" },
-        { "href": "/altar-server", "label": "Altar Server" },
-        { "href": "/music", "label": "Music Ministry" }
+        {
+          "href": "/liturgy",
+          "label": "Liturgy",
+          "children": [
+            { "href": "/lector", "label": "Lector" },
+            { "href": "/usher", "label": "Usher" },
+            { "href": "/altar-server", "label": "Altar Server" },
+            { "href": "/music", "label": "Music Ministry" }
+          ]
+        },
+        { "href": "/connect-groups", "label": "Connect Groups" },
+        { "href": "/faith-formation", "label": "Faith Formation" },
+        { "href": "/sacraments", "label": "Sacraments" },
+        { "href": "/need-help", "label": "Need Help" },
+        {
+          "href": "/contribute",
+          "label": "Contribute towards a Project"
+        }
       ]
     },
-    { "href": "/connect-groups", "label": "Connect Groups" },
-    { "href": "/group-studies", "label": "Group Studies" },
-    { "href": "/sacraments", "label": "Sacraments" },
-    { "href": "/resources", "label": "Resources" },
-    { "href": "/need-help", "label": "Need Help?" },
-    { "href": "/contribute", "label": "Looking for a way to contribute?" }
+    { "href": "/resources", "label": "Resources" }
   ],
   "externalLinks": [{ "href": "https://gods-call.com/", "label": "Vocations" }],
   "donateUrl": "https://secure.myvanco.com/L-ZAYT/home"

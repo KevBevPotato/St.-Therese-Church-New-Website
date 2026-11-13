@@ -133,7 +133,6 @@ export default function Bulletin() {
                             subtitle="Current Week"
                             schedulePdfUrl={activeSchedule?.pdfUrl}
                             hideSectionsWithoutPdf
-                            showAnnouncementsLink
                         />
                     </div>
 

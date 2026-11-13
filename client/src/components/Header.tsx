@@ -149,10 +149,11 @@ const searchablePages: SearchResult[] = [
     searchableText: "about staff parish team",
   },
   {
-    title: "Announcements",
+    title: "Get Involved",
     type: "Page",
-    href: "/announcements",
-    searchableText: "announcements alerts weather elevator parish updates",
+    href: "/get-involved",
+    searchableText:
+      "get involved serve volunteer connect groups liturgy faith formation sacraments",
   },
   {
     title: "New to St. Thérèse?",
@@ -192,20 +193,20 @@ const searchablePages: SearchResult[] = [
     searchableText: "faith formation catechism religious education",
   },
   {
-    title: "Help with the Liturgy",
+    title: "Liturgy",
     type: "Page",
     href: "/liturgy",
     searchableText:
       "lector usher altar server music ministry liturgy serve at mass",
   },
   {
-    title: "Need Help?",
+    title: "Need Help",
     type: "Page",
     href: "/need-help",
     searchableText: "request help parish assistance support",
   },
   {
-    title: "Looking for a way to contribute?",
+    title: "Contribute towards a Project",
     type: "Page",
     href: "/contribute",
     searchableText:
@@ -217,13 +218,6 @@ const searchablePages: SearchResult[] = [
     href: "/connect-groups",
     searchableText:
       "connect groups parish life prayer fellowship scripture discussion small group community",
-  },
-  {
-    title: "Group Studies",
-    type: "Page",
-    href: "/group-studies",
-    searchableText:
-      "group studies parish life bible study catholic teaching faith formation seasonal study groups",
   },
   {
     title: "Parish Calendar",
@@ -326,13 +320,6 @@ const searchableOpportunities: SearchResult[] = [
     href: "/connect-groups",
     searchableText:
       "connect groups parish life prayer fellowship scripture discussion small group community",
-  },
-  {
-    title: "Group Studies",
-    type: "Parish Life",
-    href: "/group-studies",
-    searchableText:
-      "group studies parish life bible study catholic teaching faith formation seasonal study groups",
   },
   {
     title: "St. Vincent de Paul Food Drive",

@@ -10,14 +10,13 @@ import { InterestSignupProvider } from "./contexts/InterestSignupContext";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
-import Announcements from "./pages/Announcements";
 import OpportunityDetail from "./pages/OpportunityDetail";
 import FaithFormation from "./pages/FaithFormation";
 import StaffDetail from "./pages/StaffDetail";
 import FaithFormationDetail from "./pages/FaithFormationDetail";
 import ConnectGroupsPage from "./pages/ConnectGroupsPage";
-import GroupStudiesPage from "./pages/GroupStudiesPage";
 import LiturgyPage from "./pages/LiturgyPage";
+import GetInvolvedPage from "./pages/GetInvolvedPage";
 import NeedHelp from "./pages/NeedHelp";
 import Contribute from "./pages/Contribute";
 import FeedbackButton from "./components/FeedbackButton";
@@ -52,11 +51,7 @@ function Router() {
     <Switch>
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
-      <Route path={"/announcements"} component={Announcements} />
-      <Route
-        path={"/get-involved"}
-        component={() => <Redirect to="/contribute" />}
-      />
+      <Route path={"/get-involved"} component={GetInvolvedPage} />
       <Route path={"/get-involved/:id"} component={LegacyOpportunityRedirect} />
       <Route
         path={"/st-vincent-de-paul"}
@@ -66,7 +61,6 @@ function Router() {
       <Route path={"/altar-society"} component={AltarSociety} />
       <Route path={"/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/connect-groups"} component={ConnectGroupsPage} />
-      <Route path={"/group-studies"} component={GroupStudiesPage} />
       <Route path={"/liturgy"} component={LiturgyPage} />
       <Route path={"/need-help"} component={NeedHelp} />
       <Route path={"/contribute"} component={Contribute} />

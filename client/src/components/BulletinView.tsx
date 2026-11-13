@@ -10,7 +10,6 @@ import {
   Filter,
   ExternalLink,
   ArrowLeft,
-  ArrowRight,
 } from "lucide-react";
 
 export interface BulletinSection {
@@ -36,7 +35,6 @@ interface BulletinViewProps {
   showEmptyPdfWarning?: boolean;
   emptyPdfMessage?: string;
   hideSectionsWithoutPdf?: boolean;
-  showAnnouncementsLink?: boolean;
   schedulePdfUrl?: string;
 }
 interface ContactInfo {
@@ -150,7 +148,6 @@ export default function BulletinView({
   showEmptyPdfWarning = false,
   emptyPdfMessage = "Next week's bulletin not uploaded yet — check back Saturday morning at 12:00 AM.",
   hideSectionsWithoutPdf = false,
-  showAnnouncementsLink = false,
   schedulePdfUrl,
 }: BulletinViewProps) {
   const [selectedSections, setSelectedSections] = useState<Set<string>>(
@@ -306,14 +303,6 @@ export default function BulletinView({
                           <CmsMarkdown className="text-sm">
                             {s.content}
                           </CmsMarkdown>
-                        )}
-                        {s.id === "announcements" && showAnnouncementsLink && (
-                          <Link
-                            href="/announcements"
-                            className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-primary/90"
-                          >
-                            View All Announcements <ArrowRight size={15} />
-                          </Link>
                         )}
                       </div>
                     </div>

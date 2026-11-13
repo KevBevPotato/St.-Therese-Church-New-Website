@@ -218,40 +218,6 @@
       "description": "Help form the faith of our parish children as a catechist or classroom helper, or register a participant for Wednesday Faith Formation."
     },
     {
-      "customPage": "group-studies",
-      "signUpLinks": [],
-      "contactName": "Parish Office",
-      "contactPhone": "(605) 867-5309",
-      "date": "Seasonal study groups",
-      "landingPageTitle": "Group Studies",
-      "organization": "Parish Life",
-      "landingPageDescription": "Group Studies invite parishioners to explore Scripture, Catholic teaching, and spiritual formation in a prayerful, reflective setting. These seasonal studies help us deepen our relationship with Christ and one another.",
-      "title": "Group Studies",
-      "tags": [
-        "Parish Organizations"
-      ],
-      "id": "group-studies",
-      "categories": [
-        "join"
-      ],
-      "contactEmail": "office@sttherese.org",
-      "description": "Explore the Bible, Catholic teaching, and spiritual growth with a parish study group.",
-      "contentBlocks": [
-        {
-          "heading": "Scripture & Catechesis",
-          "body": "Study the Bible and the Catholic faith with thoughtful teaching and discussion."
-        },
-        {
-          "heading": "Spiritual Growth",
-          "body": "Reflect on prayer, discipleship, and how faith shapes everyday life."
-        },
-        {
-          "heading": "Our aim",
-          "body": "These studies help parishioners encounter the richness of the Catholic faith while growing in communion with one another. Whether you are looking for a first step in faith formation or a deeper dive into Scripture and doctrine, there is a place for you."
-        }
-      ]
-    },
-    {
       "signUpLinks": [],
       "expired": true,
       "contactName": "John Doe",
@@ -347,16 +313,14 @@
         "musicMinistry": "Music Ministry",
         "resources": "Resources",
         "knightsOfColumbus": "Knights of Columbus",
-        "liturgy": "Help with the Liturgy!",
-        "groupStudies": "Group Studies",
+        "liturgy": "Liturgy",
         "stVincentDePaul": "St. Vincent de Paul",
-        "announcements": "Announcements",
-        "contribute": "Looking for a way to contribute?",
+        "contribute": "Contribute towards a Project",
         "lector": "Lector",
         "altarSociety": "Altar Society",
-        "faithFormation": "Wednesday Faith Formation",
+        "faithFormation": "Faith Formation",
         "sacraments": "Sacraments",
-        "needHelp": "Need Help?",
+        "needHelp": "Need Help",
         "usher": "Usher",
         "altarServer": "Altar Server",
         "connectGroups": "Connect Groups"
@@ -370,12 +334,12 @@
         "learnMoreButton": "Learn More"
       },
       "needHelp": {
-        "title": "Need Help?",
+        "title": "Need Help",
         "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",
         "requestButton": "Request Help"
       },
       "contribute": {
-        "title": "Looking for a way to contribute?",
+        "title": "Contribute towards a Project",
         "introduction": "Share your time and gifts with the parish community through these opportunities.",
         "opportunities": [
           {

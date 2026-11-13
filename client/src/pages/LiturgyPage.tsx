@@ -36,7 +36,12 @@ export default function LiturgyPage() {
           {roles.map((role) => (
             <Card key={role.id} className="flex flex-col border-2 border-primary/10 bg-white p-7">
               <h2 className="font-serif text-2xl font-bold text-primary">
-                {role.title.replace(' Sign-up', '')}
+                <Link
+                  href={`/${role.id}`}
+                  className="hover:text-accent hover:underline"
+                >
+                  {role.title.replace(' Sign-up', '')}
+                </Link>
               </h2>
               <p className="mt-3 flex-grow leading-relaxed text-muted-foreground">
                 {role.description}

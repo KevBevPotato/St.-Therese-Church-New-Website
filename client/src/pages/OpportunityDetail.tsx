@@ -71,8 +71,8 @@ export default function OpportunityDetail() {
                 <div className="pt-[var(--header-height)]" />
                 <main className="container mx-auto flex-grow px-4 py-16 text-center">
                     <h1 className="font-serif text-4xl font-bold text-primary">Opportunity Not Found</h1>
-                    <Link href="/contribute">
-                        <Button className="mt-6">See Ways to Contribute</Button>
+                    <Link href="/get-involved">
+                        <Button className="mt-6">Explore Get Involved</Button>
                     </Link>
                 </main>
                 <Footer />
@@ -135,12 +135,12 @@ export default function OpportunityDetail() {
             <div className="pt-[var(--header-height)]" />
 
             <main className="flex-grow container mx-auto px-4 py-12">
-                <Link href={isLiturgyOpportunity ? '/liturgy' : '/contribute'}>
+                <Link href={isLiturgyOpportunity ? '/liturgy' : '/get-involved'}>
                     <button className="flex items-center gap-2 text-primary/60 hover:text-accent transition-colors mb-8 font-bold uppercase tracking-widest text-xs">
                         <ArrowLeft size={16} />{' '}
                         {isLiturgyOpportunity
                             ? 'Back to Liturgy Ministries'
-                            : 'Back to Ways to Contribute'}
+                            : 'Back to Get Involved'}
                     </button>
                 </Link>
 

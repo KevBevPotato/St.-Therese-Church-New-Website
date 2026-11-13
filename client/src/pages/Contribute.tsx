@@ -44,7 +44,7 @@ export default function Contribute() {
             Parish Life
           </p>
           <h1 className="mt-3 font-serif text-4xl font-bold text-primary md:text-6xl">
-            {pageSettings?.title ?? "Looking for a way to contribute?"}
+            {pageSettings?.title ?? "Contribute towards a Project"}
           </h1>
           <p className="mt-5 text-lg leading-relaxed text-muted-foreground">
             {pageSettings?.introduction ??

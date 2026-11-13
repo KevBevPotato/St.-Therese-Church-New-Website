@@ -18,7 +18,7 @@ export default function NeedHelp() {
         <Card className="mx-auto w-full max-w-3xl border-2 border-primary/10 bg-white p-8 text-center shadow-sm md:p-12">
           <p className="mt-5 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">Parish Life</p>
           <h1 className="mt-3 font-serif text-4xl font-bold text-primary md:text-6xl">
-            {pageSettings?.title ?? 'Need Help?'}
+            {pageSettings?.title ?? 'Need Help'}
           </h1>
           <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed text-muted-foreground">
             {pageSettings?.introduction ?? 'Share a little about the help you are looking for. Parish staff will follow up with you.'}
