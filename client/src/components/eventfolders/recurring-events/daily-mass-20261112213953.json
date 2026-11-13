@@ -25,7 +25,14 @@
       "Thursday",
       "Friday"
     ],
-    "exclusions": []
+    "exclusions": [],
+    "occurrenceOverrides": [
+      {
+        "date": "2026-11-27",
+        "action": "cancelled",
+        "title": "No Daily Mass"
+      }
+    ]
   },
   "title": "Daily Mass",
   "categories": [
