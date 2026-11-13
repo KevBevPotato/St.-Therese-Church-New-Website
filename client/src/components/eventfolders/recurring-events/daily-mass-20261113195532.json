@@ -16,11 +16,11 @@
       "isHidden": false
     }
   ],
-  "title": "Daily Mass",
+  "title": "Saturday Daily Mass",
   "time": "8am",
   "location": "",
   "schedule": {
-    "startDate": "2026-11-14",
+    "startDate": "2026-11-07",
     "dayOfWeek": "Saturday",
     "daysOfWeek": [
       "Saturday"
