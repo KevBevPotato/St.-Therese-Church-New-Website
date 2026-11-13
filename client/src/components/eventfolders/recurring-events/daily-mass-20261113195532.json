@@ -21,9 +21,8 @@
   "location": "",
   "schedule": {
     "startDate": "2026-11-14",
-    "dayOfWeek": "Sunday",
+    "dayOfWeek": "Saturday",
     "daysOfWeek": [
-      "Sunday",
       "Saturday"
     ]
   }
