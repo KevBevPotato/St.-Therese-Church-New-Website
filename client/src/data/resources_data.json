@@ -2,8 +2,8 @@
   "categories": [
     {
       "id": "parish",
-      "title": "Parish Life",
-      "description": "Stay connected with the community and programs at St. Thérèse.",
+      "title": "Parish Basics",
+      "description": "Practical information for visiting, staying connected, and learning about St. Thérèse.",
       "links": [
         {
           "id": "bulletin",
@@ -12,7 +12,7 @@
           "href": "/bulletin",
           "external": false,
           "icon": "FileText",
-          "image": "/resources/bulletin.jpg"
+          "image": "/resources/parish-basics.svg"
         },
         {
           "id": "events",
@@ -21,16 +21,7 @@
           "href": "/events",
           "external": false,
           "icon": "Calendar",
-          "image": "/resources/calendar.jpg"
-        },
-        {
-          "id": "formation",
-          "title": "Faith Formation Programs",
-          "description": "Religious education for preschool through adult — register for the new school year.",
-          "href": "/faith-formation",
-          "external": false,
-          "icon": "GraduationCap",
-          "image": "/resources/formation.jpg"
+          "image": "/resources/parish-basics.svg"
         },
         {
           "id": "staff",
@@ -39,31 +30,42 @@
           "href": "/about",
           "external": false,
           "icon": "Users",
-          "image": "/resources/staff.jpg"
+          "image": "/resources/parish-basics.svg"
+        },
+        {
+          "id": "new-to-st-therese",
+          "title": "New to St. Thérèse?",
+          "description": "Learn about our parish and find practical next steps for visiting and getting connected.",
+          "href": "/new-to-st-therese",
+          "external": false,
+          "icon": "Church",
+          "image": "/resources/parish-basics.svg"
         }
       ]
     },
     {
-      "id": "giving",
-      "title": "Giving & Stewardship",
-      "description": "Support the mission and ministry of our parish.",
+      "id": "get-involved",
+      "title": "Get Involved",
+      "description": "Find ways to serve, grow, and participate in parish life.",
       "links": [
         {
-          "id": "donate",
-          "title": "Online Giving",
-          "description": "Make a one-time or recurring gift through our secure online giving system.",
-          "href": "https://secure.myvanco.com/L-ZAYT/home",
-          "external": true,
-          "icon": "Heart",
-          "image": "/resources/giving.jpg"
-        }
-      ]
-    },
-    {
-      "id": "safe",
-      "title": "Safe Environment",
-      "description": "Our commitment to the safety and dignity of every person.",
-      "links": [
+          "id": "formation",
+          "title": "Faith Formation Programs",
+          "description": "Religious education for preschool through adult — register for the new school year.",
+          "href": "/faith-formation",
+          "external": false,
+          "icon": "GraduationCap",
+          "image": "/resources/get-involved.svg"
+        },
+        {
+          "id": "sacraments",
+          "title": "The Seven Sacraments",
+          "description": "Learn about each of the seven sacraments and preparation.",
+          "href": "/sacraments",
+          "external": false,
+          "icon": "BookOpen",
+          "image": "/resources/get-involved.svg"
+        },
         {
           "id": "safe",
           "title": "Safe Environment Training",
@@ -71,14 +73,32 @@
           "href": "https://www.rapidcitydiocese.org/safe-environment",
           "external": true,
           "icon": "Shield",
-          "image": "/resources/safe-env.jpg"
+          "image": "/resources/get-involved.svg"
+        },
+        {
+          "id": "get-involved-hub",
+          "title": "Get Involved",
+          "description": "Explore ministries, service opportunities, and ways to participate in parish life.",
+          "href": "/get-involved",
+          "external": false,
+          "icon": "Users",
+          "image": "/resources/get-involved.svg"
+        },
+        {
+          "id": "join-an-organization",
+          "title": "Join an Organization",
+          "description": "Discover parish groups and organizations and find a community to grow with.",
+          "href": "/join-an-organization",
+          "external": false,
+          "icon": "Users",
+          "image": "/resources/get-involved.svg"
         }
       ]
     },
     {
       "id": "daily-walk",
-      "title": "The Daily Walk",
-      "description": "Prayer and digital wellness resources for building a faithful daily rhythm.",
+      "title": "Prayer & Worship",
+      "description": "Resources for daily prayer, the liturgy, and growing in a life of worship.",
       "links": [
         {
           "id": "daily-readings",
@@ -91,30 +111,13 @@
           "iconImage": "/resources/USCCB.png"
         },
         {
-          "id": "catechism",
-          "title": "Catechism of the Catholic Church",
-          "description": "The official guide to Catholic teaching and faith.",
-          "href": "https://www.vatican.va/archive/ccc/index.htm",
-          "external": true,
-          "icon": "BookOpen",
-          "image": "/resources/ccc.jpg"
-        },
-        {
           "id": "kindle-ebooks",
-          "title": "Kindle Ebooks",
+          "title": "Kindle E-Book",
           "description": "Digital versions of Mass times, Lauds, and Vespers.",
-          "external": false,
-          "icon": "BookOpen",
-          "image": "/resources/kindle.jpg"
-        },
-        {
-          "id": "formed",
-          "title": "FORMED",
-          "description": "The \"Catholic Netflix\" for the whole family.",
-          "href": "https://formed.org",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/formed.jpg"
+          "image": "/resources/prayer-worship.svg",
+          "href": "https://universalis.com/ebooks.htm"
         },
         {
           "id": "hallow",
@@ -155,30 +158,47 @@
           "iconImage": "/resources/MyBible.png"
         },
         {
-          "id": "shift",
-          "title": "Shift",
-          "description": "Take back your time by removing digital distractions.",
-          "href": "https://shiftyourphone.com",
+          "id": "rosary-year",
+          "title": "Rosary in a Year",
+          "description": "Daily meditation on the mysteries of the Holy Rosary.",
+          "href": "https://rosaryinayear.com",
           "external": true,
-          "icon": "Shield",
-          "image": "/resources/Shift.png",
-          "iconImage": "/resources/Shift.png"
+          "icon": "Heart",
+          "image": "/resources/Ascension.png",
+          "iconImage": "/resources/Ascension.png"
+        },
+        {
+          "id": "adoration",
+          "title": "Perpetual Adoration",
+          "description": "Find peace and silence in the 24/7 presence of the Blessed Sacrament.",
+          "external": false,
+          "icon": "Church",
+          "image": "/resources/prayer-worship.svg"
+        },
+        {
+          "id": "family-rosary",
+          "title": "Family Rosary at St. Thérèse",
+          "description": "A community prayer event for the whole family.",
+          "href": "/events",
+          "external": false,
+          "icon": "Heart",
+          "image": "/resources/prayer-worship.svg"
         }
       ]
     },
     {
-      "id": "search-for-truth",
-      "title": "The Search for Truth",
-      "description": "Apologetics and tools for finding trustworthy sources of Catholic teaching.",
+      "id": "growth-discipleship",
+      "title": "Learn the Faith",
+      "description": "Trusted Catholic teaching, study, and formation for every stage of your journey.",
       "links": [
         {
-          "id": "sacraments",
-          "title": "The Seven Sacraments",
-          "description": "Learn about each of the seven sacraments and preparation.",
-          "href": "/sacraments",
-          "external": false,
+          "id": "catechism",
+          "title": "Catechism of the Catholic Church",
+          "description": "The official guide to Catholic teaching and faith.",
+          "href": "https://www.vatican.va/archive/ccc/index.htm",
+          "external": true,
           "icon": "BookOpen",
-          "image": "/resources/sacraments.jpg"
+          "image": "/resources/learn-faith.svg"
         },
         {
           "id": "catholic-com",
@@ -197,7 +217,7 @@
           "href": "https://catholic.com/bible-navigator",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/bible-nav.jpg"
+          "image": "/resources/learn-faith.svg"
         },
         {
           "id": "catholic-qa",
@@ -208,15 +228,6 @@
           "icon": "HelpCircle",
           "image": "/resources/CatholicAnswers.png",
           "iconImage": "/resources/CatholicAnswers.png"
-        },
-        {
-          "id": "justin-ai",
-          "title": "Justin AI",
-          "description": "24/7 Catholic assistant for theological answers.",
-          "href": "https://justin.ai",
-          "external": true,
-          "icon": "HelpCircle",
-          "image": "/resources/justin-ai.jpg"
         },
         {
           "id": "magisterium-ai",
@@ -245,7 +256,7 @@
           "href": "https://schoolofapologetics.com",
           "external": true,
           "icon": "GraduationCap",
-          "image": "/resources/school-apologetics.jpg"
+          "image": "/resources/learn-faith.svg"
         },
         {
           "id": "new-advent",
@@ -254,15 +265,8 @@
           "href": "https://www.newadvent.org",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/new-advent.jpg"
-        }
-      ]
-    },
-    {
-      "id": "growth-discipleship",
-      "title": "Growth & Discipleship",
-      "description": "Bible study, missionary discipleship, and podcasts for continuing formation.",
-      "links": [
+          "image": "/resources/learn-faith.svg"
+        },
         {
           "id": "focus",
           "title": "FOCUS Bible Study Path",
@@ -300,16 +304,6 @@
           "href": "https://catechismInayear.com",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/Ascension.png",
-          "iconImage": "/resources/Ascension.png"
-        },
-        {
-          "id": "rosary-year",
-          "title": "Rosary in a Year",
-          "description": "Daily meditation on the mysteries of the Holy Rosary.",
-          "href": "https://rosaryinayear.com",
-          "external": true,
-          "icon": "Heart",
           "image": "/resources/Ascension.png",
           "iconImage": "/resources/Ascension.png"
         },
@@ -387,9 +381,28 @@
     },
     {
       "id": "domestic-church",
-      "title": "The Domestic Church",
-      "description": "Homeschooling, family catechesis, and supplemental resources for the home.",
+      "title": "Families & Home",
+      "description": "Resources to help families live and grow in faith together.",
       "links": [
+        {
+          "id": "formed",
+          "title": "FORMED",
+          "description": "The \"Catholic Netflix\" for the whole family.",
+          "href": "https://formed.org",
+          "external": true,
+          "icon": "BookOpen",
+          "image": "/resources/families-home.svg"
+        },
+        {
+          "id": "shift",
+          "title": "Shift",
+          "description": "Take back your time by removing digital distractions.",
+          "href": "https://shiftyourphone.com",
+          "external": true,
+          "icon": "Shield",
+          "image": "/resources/Shift.png",
+          "iconImage": "/resources/Shift.png"
+        },
         {
           "id": "bear-good-fruits",
           "title": "Bear Good Fruits",
@@ -397,15 +410,16 @@
           "href": "https://www.beargoodfruits.com",
           "external": true,
           "icon": "GraduationCap",
-          "image": "/resources/bear-good-fruits.jpg"
+          "image": "/resources/families-home.svg"
         },
         {
           "id": "into-the-deep",
           "title": "Into the Deep",
           "description": "Personal relationship and sound doctrine. (Grades 1–8).",
-          "external": false,
+          "href": "https://intothedeep.co/products/level-one-1?srsltid=AYCX9vJxbPXg5OmcPn21jHJCVfyxHQjYCt71rI10G17OJr0tQvxU0jeU",
+          "external": true,
           "icon": "BookOpen",
-          "image": "/resources/into-the-deep.jpg"
+          "image": "/resources/families-home.svg"
         },
         {
           "id": "spirit-of-truth",
@@ -414,7 +428,7 @@
           "href": "https://sophiainstituteforteachers.org",
           "external": true,
           "icon": "GraduationCap",
-          "image": "/resources/spirit-of-truth.jpg"
+          "image": "/resources/families-home.svg"
         },
         {
           "id": "our-holy-faith",
@@ -423,16 +437,16 @@
           "href": "https://tanbooks.com",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/our-holy-faith.jpg"
+          "image": "/resources/families-home.svg"
         },
         {
           "id": "sophia-teachers",
           "title": "SophiaTeachers eLessons",
           "description": "Ready-to-use lessons on the Liturgical Year and Beauty.",
-          "href": "https://sophiainstituteforteachers.org",
+          "href": "https://sophiateachers.org/elesson/",
           "external": true,
           "icon": "GraduationCap",
-          "image": "/resources/sophia-teachers.jpg"
+          "image": "/resources/families-home.svg"
         },
         {
           "id": "family-bible-study",
@@ -441,14 +455,14 @@
           "href": "https://www.usccb.org/bible",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/family-bible.jpg"
+          "image": "/resources/families-home.svg"
         }
       ]
     },
     {
       "id": "local-community",
-      "title": "Local Community",
-      "description": "Rapid City and diocesan resources for spiritual life and connection.",
+      "title": "Local & Diocesan",
+      "description": "Catholic resources, events, and media from Rapid City and the wider diocese.",
       "links": [
         {
           "id": "mustard-seed",
@@ -457,24 +471,7 @@
           "href": "https://www.mustardseedcatholicstore.com",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/mustard-seed.jpg"
-        },
-        {
-          "id": "adoration",
-          "title": "Perpetual Adoration",
-          "description": "Find peace and silence in the 24/7 presence of the Blessed Sacrament.",
-          "external": false,
-          "icon": "Church",
-          "image": "/resources/adoration.jpg"
-        },
-        {
-          "id": "family-rosary",
-          "title": "Family Rosary at St. Thérèse",
-          "description": "A community prayer event for the whole family.",
-          "href": "/events",
-          "external": false,
-          "icon": "Heart",
-          "image": "/resources/family-rosary.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "terra-sancta",
@@ -483,7 +480,7 @@
           "href": "https://terrasancta.org",
           "external": true,
           "icon": "Church",
-          "image": "/resources/terra-sancta.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "diocesan-retreats",
@@ -492,7 +489,7 @@
           "href": "https://www.rapidcitydiocese.org",
           "external": true,
           "icon": "Heart",
-          "image": "/resources/retreats.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "relevant-radio",
@@ -501,7 +498,7 @@
           "href": "https://relevantradio.com",
           "external": true,
           "icon": "Phone",
-          "image": "/resources/relevant-radio.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "ewtn",
@@ -510,7 +507,7 @@
           "href": "https://ewtn.com",
           "external": true,
           "icon": "Church",
-          "image": "/resources/ewtn.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "bishops-podcast",
@@ -519,7 +516,7 @@
           "href": "https://www.rapidcitydiocese.org",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/bishops-podcast.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "bishops-bookclub",
@@ -528,7 +525,7 @@
           "href": "https://www.rapidcitydiocese.org",
           "external": true,
           "icon": "BookOpen",
-          "image": "/resources/bishops-bookclub.jpg"
+          "image": "/resources/local-diocesan.svg"
         },
         {
           "id": "bishops-movie-nights",
@@ -537,7 +534,23 @@
           "href": "https://www.rapidcitydiocese.org",
           "external": true,
           "icon": "Church",
-          "image": "/resources/bishops-movies.jpg"
+          "image": "/resources/local-diocesan.svg"
+        }
+      ]
+    },
+    {
+      "id": "giving",
+      "title": "Giving & Stewardship",
+      "description": "Support the mission and ministry of our parish.",
+      "links": [
+        {
+          "id": "donate",
+          "title": "Online Giving",
+          "description": "Make a one-time or recurring gift through our secure online giving system.",
+          "href": "https://secure.myvanco.com/L-ZAYT/home",
+          "external": true,
+          "icon": "Heart",
+          "image": "/resources/giving-stewardship.svg"
         }
       ]
     }
@@ -545,7 +558,7 @@
   "settings": {
     "eyebrow": "At Your Fingertips",
     "title": "Parish Resources.",
-    "introduction": "A central place to find bulletins, calendars, diocesan links, formation programs, and other resources that help our parish family stay connected and grow in faith.",
+    "introduction": "Find parish information, prayer resources, Catholic formation, and local connections to help you stay connected and grow in faith.",
     "quote": "\"All things were made through him, and without him was not any thing made that was made.\"",
     "quoteAttribution": "John 1:3"
   }

@@ -55,7 +55,7 @@ function getSectionContent(link: ParishLifeLink) {
           {liturgyRoles.map(role => (
             <li
               key={role.id}
-              className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+              className="flex flex-col items-start gap-1 text-left"
             >
               <Link
                 href={`/${role.id}`}
@@ -63,7 +63,7 @@ function getSectionContent(link: ParishLifeLink) {
               >
                 {role.title.replace(" Sign-up", "")}
               </Link>
-              <span>{role.description}</span>
+              <span className="w-full text-left">{role.description}</span>
             </li>
           ))}
         </ul>

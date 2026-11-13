@@ -13,6 +13,7 @@ import {
     FileText,
     GraduationCap,
     HelpCircle,
+    Heart,
     Mail,
     Phone,
     Shield,
@@ -53,7 +54,7 @@ interface ResourceCategory {
     links: ResourceLink[];
 }
 
-const resourceIcons = { BookOpen, Calendar, Church, FileText, GraduationCap, HelpCircle, Phone, Shield, Users } as const;
+const resourceIcons = { BookOpen, Calendar, Church, FileText, GraduationCap, Heart, HelpCircle, Phone, Shield, Users } as const;
 const resourceData = visibleContent(importedResourceData);
 const allCategories = resourceData.categories as ResourceCategory[];
 const resourceSettings = resourceData.settings;
