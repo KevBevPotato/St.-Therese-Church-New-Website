@@ -36,13 +36,23 @@
       : null;
   }
 
-  function getWeekdays(schedule) {
-    const selectedDays = Array.isArray(schedule.daysOfWeek)
-      ? schedule.daysOfWeek
-      : [schedule.dayOfWeek];
+  function selectedWeekdays(schedule) {
+    let selectedDays = schedule.daysOfWeek;
+    if (selectedDays && typeof selectedDays.toJS === "function") {
+      selectedDays = selectedDays.toJS();
+    } else if (selectedDays && typeof selectedDays.toArray === "function") {
+      selectedDays = selectedDays.toArray();
+    }
+    if (!Array.isArray(selectedDays)) {
+      selectedDays = [schedule.dayOfWeek || "Sunday"];
+    }
     return selectedDays
-      .map(day => typeof day === "number" ? day : weekdays.indexOf(day))
-      .filter(day => day >= 0 && day < weekdays.length);
+      .map(day => typeof day === "number" ? weekdays[day] : day)
+      .filter(day => weekdays.includes(day));
+  }
+
+  function getWeekdays(schedule) {
+    return selectedWeekdays(schedule).map(day => weekdays.indexOf(day));
   }
 
   function dateOccurs(schedule, value) {
@@ -163,13 +173,15 @@
 
     toggleWeekday(day, checked) {
       const schedule = this.getSchedule();
-      const selectedDays = Array.isArray(schedule.daysOfWeek)
-        ? schedule.daysOfWeek
-        : [schedule.dayOfWeek || "Sunday"];
+      const selectedDays = selectedWeekdays(schedule);
       const daysOfWeek = checked
         ? [...new Set([...selectedDays, day])]
         : selectedDays.filter(selectedDay => selectedDay !== day);
-      this.props.onChange({ ...schedule, daysOfWeek });
+      this.props.onChange({
+        ...schedule,
+        dayOfWeek: daysOfWeek[0],
+        daysOfWeek,
+      });
     },
 
     toggleExclusion(date, included) {
@@ -310,9 +322,7 @@
           )
         );
       const weekdayField = () => {
-        const selectedDays = Array.isArray(schedule.daysOfWeek)
-          ? schedule.daysOfWeek
-          : [schedule.dayOfWeek || "Sunday"];
+        const selectedDays = selectedWeekdays(schedule);
         return h(
           "fieldset",
           {
@@ -352,6 +362,11 @@
                 day
               )
             )
+          ),
+          h(
+            "p",
+            { style: { margin: "8px 0 0", color: "#64748b", fontSize: 12 } },
+            `Selected: ${selectedDays.join(", ")}`
           )
         );
       };
