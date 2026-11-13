@@ -1,0 +1,30 @@
+{
+  "isHidden": false,
+  "categories": [
+    {
+      "isHidden": false
+    }
+  ],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "title": "Daily Mass",
+  "time": "8am",
+  "location": "",
+  "schedule": {
+    "startDate": "2026-11-14",
+    "dayOfWeek": "Sunday",
+    "daysOfWeek": [
+      "Sunday",
+      "Saturday"
+    ]
+  }
+}
