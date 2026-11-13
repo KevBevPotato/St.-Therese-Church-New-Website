@@ -156,6 +156,13 @@ const searchablePages: SearchResult[] = [
       "get involved serve volunteer connect groups liturgy faith formation sacraments",
   },
   {
+    title: "Join an Organization",
+    type: "Page",
+    href: "/join-an-organization",
+    searchableText:
+      "join an organization knights of columbus catholic daughters altar society st vincent de paul",
+  },
+  {
     title: "New to St. Thérèse?",
     type: "Page",
     href: "/new-to-st-therese",

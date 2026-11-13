@@ -17,6 +17,7 @@ import FaithFormationDetail from "./pages/FaithFormationDetail";
 import ConnectGroupsPage from "./pages/ConnectGroupsPage";
 import LiturgyPage from "./pages/LiturgyPage";
 import GetInvolvedPage from "./pages/GetInvolvedPage";
+import OrganizationsLandingPage from "./pages/OrganizationsLandingPage";
 import NeedHelp from "./pages/NeedHelp";
 import Contribute from "./pages/Contribute";
 import FeedbackButton from "./components/FeedbackButton";
@@ -52,6 +53,10 @@ function Router() {
       <Route path={"/"} component={Home} />
       <Route path={"/about"} component={About} />
       <Route path={"/get-involved"} component={GetInvolvedPage} />
+      <Route
+        path={"/join-an-organization"}
+        component={OrganizationsLandingPage}
+      />
       <Route path={"/get-involved/:id"} component={LegacyOpportunityRedirect} />
       <Route
         path={"/st-vincent-de-paul"}

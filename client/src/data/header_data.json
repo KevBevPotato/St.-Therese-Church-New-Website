@@ -6,7 +6,8 @@
   ],
   "parishLifeLinks": [
     {
-      "label": "Join an Organization!",
+      "href": "/join-an-organization",
+      "label": "Join an Organization",
       "children": [
         {
           "href": "/knights-of-columbus",

@@ -1,6 +1,9 @@
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import { Card } from "@/components/ui/card";
+import CmsMarkdown from "@/components/CmsMarkdown";
+import MinimalAccordion, {
+  type MinimalAccordionItem,
+} from "@/components/MinimalAccordion";
 import getInvolvedData from "@/data/get-involved";
 import headerData from "@/data/header_data.json";
 import { Link } from "wouter";
@@ -23,8 +26,71 @@ const descriptions: Record<string, string> = {
   "/need-help": "Let the parish know how we can support you.",
   "/contribute": "Support parish projects and share your gifts.",
 };
+const liturgyRoleIds = ["lector", "usher", "altar-server", "music"];
+const liturgyRoles = getInvolvedData.opportunities.filter(opportunity =>
+  liturgyRoleIds.includes(opportunity.id)
+);
+
+function getSectionContent(link: ParishLifeLink) {
+  const opportunityByPath: Record<string, string> = {
+    "/connect-groups": "connect-groups",
+    "/faith-formation": "wednesday-faith-formation",
+  };
+  const opportunity = getInvolvedData.opportunities.find(
+    item => item.id === opportunityByPath[link.href ?? ""]
+  );
+  const description =
+    opportunity?.landingPageDescription ??
+    opportunity?.description ??
+    (link.href === "/need-help"
+      ? getInvolvedData.settings.parishLifePages?.needHelp?.introduction
+      : link.href === "/contribute"
+        ? getInvolvedData.settings.parishLifePages?.contribute?.introduction
+        : descriptions[link.href ?? ""]);
+
+  return (
+    <div className="space-y-5">
+      {link.href === "/liturgy" ? (
+        <ul className="space-y-4">
+          {liturgyRoles.map(role => (
+            <li
+              key={role.id}
+              className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between sm:gap-6"
+            >
+              <Link
+                href={`/${role.id}`}
+                className="font-semibold text-primary underline-offset-4 hover:text-accent hover:underline"
+              >
+                {role.title.replace(" Sign-up", "")}
+              </Link>
+              <span>{role.description}</span>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <CmsMarkdown>{description}</CmsMarkdown>
+      )}
+      <Link
+        href={link.href ?? "/get-involved"}
+        className="inline-flex font-bold text-primary underline-offset-4 hover:text-accent hover:underline"
+      >
+        Explore {link.label}
+      </Link>
+    </div>
+  );
+}
 
 export default function GetInvolvedPage() {
+  const sections: MinimalAccordionItem[] = pageLinks
+    .filter((link): link is ParishLifeLink & { href: string } =>
+      Boolean(link.href)
+    )
+    .map(link => ({
+      id: link.href,
+      title: link.label,
+      content: getSectionContent(link),
+    }));
+
   return (
     <div className="flex min-h-screen flex-col bg-[#fbfaf6]">
       <Header />
@@ -44,25 +110,7 @@ export default function GetInvolvedPage() {
           </p>
         </header>
 
-        <div className="grid gap-5 md:grid-cols-2">
-          {pageLinks
-            .filter((link): link is ParishLifeLink & { href: string } =>
-              Boolean(link.href)
-            )
-            .map(link => (
-              <Link key={link.href} href={link.href} className="block">
-                <Card className="h-full border-2 border-primary/10 bg-white p-7 transition-colors hover:border-accent/50">
-                  <h2 className="font-serif text-2xl font-bold text-primary">
-                    {link.label}
-                  </h2>
-                  <p className="mt-3 leading-relaxed text-muted-foreground">
-                    {descriptions[link.href] ??
-                      "Explore this part of parish life and find your next step."}
-                  </p>
-                </Card>
-              </Link>
-            ))}
-        </div>
+        <MinimalAccordion items={sections} />
       </main>
 
       <Footer />
