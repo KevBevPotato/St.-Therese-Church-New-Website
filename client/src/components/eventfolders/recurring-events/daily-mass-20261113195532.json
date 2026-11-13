@@ -24,6 +24,8 @@
     "dayOfWeek": "Saturday",
     "daysOfWeek": [
       "Saturday"
-    ]
+    ],
+    "endDate": "",
+    "recurrenceType": "weekly"
   }
 }
