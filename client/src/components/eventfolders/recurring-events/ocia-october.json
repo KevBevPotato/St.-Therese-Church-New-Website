@@ -1,18 +1,18 @@
 {
+  "id": "ocia-october",
+  "title": "OCIA",
   "time": "6:30pm-7:30pm",
   "location": "Rm 103",
-  "title": "OCIA",
-  "id": "ocia-october",
-  "categories": [
-    {
-      "category": "sacramental"
-    }
-  ],
   "schedule": {
     "recurrenceType": "weekly",
     "dayOfWeek": "Monday",
     "startDate": "2026-10-05",
-    "endDate": "2026-10-26",
+    "endDate": "2027-03-28",
     "exclusions": []
-  }
+  },
+  "categories": [
+    {
+      "category": "sacramental"
+    }
+  ]
 }
