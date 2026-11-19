@@ -43,7 +43,8 @@
     "occurrenceOverrides": [
       {
         "date": "2026-11-25",
-        "action": "cancelled"
+        "action": "override",
+        "title": "No Wednesday Faith Formation!"
       }
     ]
   },
