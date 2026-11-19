@@ -643,7 +643,19 @@ collections:
         name: "schedule"
         widget: "recurrence-schedule"
         required: false
-        hint: "Choose a date range and pattern. Preview generated dates, select Edit this date to customize its details, show a cancellation notice, or remove just that occurrence. Add a date exception for dates beyond the preview."
+        hint: "Choose a date range and pattern. Preview generated dates, select Edit this date to customize its details, show a cancellation notice, or remove just that occurrence. Add a one-time date even when it does not match this schedule."
+      - label: "Additional schedule sets"
+        name: "additionalSchedules"
+        widget: "list"
+        required: false
+        summary: "{{time}}"
+        hint: "Add another time or recurrence pattern for this same event, such as a Saturday Mass alongside the weekday schedule above."
+        fields:
+          - { label: "Time", name: "time", widget: "string", required: false }
+          - label: "Schedule, Previews, and Exceptions"
+            name: "schedule"
+            widget: "recurrence-schedule"
+            required: false
       - {
           label: "Description",
           name: "description",

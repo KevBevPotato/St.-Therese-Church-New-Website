@@ -25,12 +25,8 @@
     return value ? getAsset(value).toString() : "";
   }
 
-  function occurrenceFor(event, recurring) {
-    if (!recurring) {
-      const date = String(event.date || "");
-      return date.length > 10 ? date.slice(0, 10) : date;
-    }
-    const schedule = event.schedule || {};
+  function occurrenceForSchedule(schedule, oneTimeOccurrences = []) {
+    const firstOccurrence = [];
     if (!/^\d{4}-\d{2}-\d{2}$/.test(schedule.startDate || "")) return "";
     const [year, month, day] = schedule.startDate.split("-").map(Number);
     const start = new Date(year, month - 1, day);
@@ -56,20 +52,27 @@
       "Friday",
       "Saturday",
     ];
+    const selectedDays =
+      schedule.recurrenceType === "weekly" &&
+      Array.isArray(schedule.daysOfWeek)
+      ? schedule.daysOfWeek.map(value =>
+          typeof value === "number" ? weekdays[value] : value
+        )
+      : [schedule.dayOfWeek || "Sunday"];
 
     for (
       const date = new Date(start);
       date <= end;
       date.setDate(date.getDate() + 1)
     ) {
-      const weekdayMatches =
-        date.getDay() === weekdays.indexOf(schedule.dayOfWeek);
+      const weekdayMatches = selectedDays.includes(weekdays[date.getDay()]);
       const ordinal = Math.ceil(date.getDate() / 7);
       let matches = false;
       if (schedule.recurrenceType === "daily") matches = true;
       if (schedule.recurrenceType === "weekly") matches = weekdayMatches;
       if (schedule.recurrenceType === "monthly")
-        matches = weekdayMatches && ordinal === Number(schedule.ordinalWeek);
+        matches =
+          weekdayMatches && ordinal === Number(schedule.ordinalWeek || "1");
       if (schedule.recurrenceType === "last_of_month") {
         matches =
           weekdayMatches &&
@@ -81,28 +84,99 @@
       }
       if (matches) {
         const result = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`;
-        if (!excluded.has(result)) return result;
+        const override = (schedule.occurrenceOverrides || []).find(
+          item => item.date === result
+        );
+        if (!excluded.has(result) && (!override || override.action !== "skip")) {
+          firstOccurrence.push(result);
+          break;
+        }
       }
     }
-    return "";
+    return [
+      ...firstOccurrence,
+      ...(schedule.occurrenceOverrides || []),
+      ...oneTimeOccurrences,
+    ]
+      .filter(item => typeof item === "string" || item.action !== "skip")
+      .map(item => (typeof item === "string" ? item : item.date))
+      .filter(date => /^\d{4}-\d{2}-\d{2}$/.test(date || ""))
+      .sort()[0] || "";
+  }
+
+  function occurrenceFor(event, recurring) {
+    if (!recurring) {
+      const date = String(event.date || "");
+      return {
+        date: date.length > 10 ? date.slice(0, 10) : date,
+        time: event.time,
+      };
+    }
+
+    return [
+      {
+        schedule: event.schedule || {},
+        time: event.time,
+        oneTimeOccurrences: event.oneTimeOccurrences || [],
+      },
+      ...(event.additionalSchedules || []).map(additional => ({
+        schedule: additional.schedule || additional,
+        time: additional.time || event.time,
+        oneTimeOccurrences: [],
+      })),
+    ]
+      .map(item => ({
+        ...item,
+        date: occurrenceForSchedule(item.schedule, item.oneTimeOccurrences),
+      }))
+      .filter(item => item.date)
+      .sort((left, right) => left.date.localeCompare(right.date))[0] || {
+      date: "",
+      time: event.time,
+    };
   }
 
   function EventPreview(recurring) {
     return window.createClass({
       render() {
         const event = plainData(this.props.entry);
-        const dateString = occurrenceFor(event, recurring);
+        const occurrence = occurrenceFor(event, recurring);
+        const dateString = occurrence.date;
         const schedule = event.schedule || {};
         const occurrenceOverrides = recurring
           ? [
-              ...(schedule.occurrenceOverrides || []),
-              ...(event.oneTimeOccurrences || []),
+              ...(schedule.occurrenceOverrides || []).map(override => ({
+                ...override,
+                scheduleTime: event.time,
+              })),
+              ...(event.oneTimeOccurrences || []).map(override => ({
+                ...override,
+                scheduleTime: event.time,
+              })),
+              ...(event.additionalSchedules || []).flatMap(additional =>
+                (additional.schedule?.occurrenceOverrides || []).map(
+                  override => ({
+                    ...override,
+                    scheduleTime: additional.time || event.time,
+                  })
+                )
+              ),
             ].filter(
               (override, index, overrides) =>
-                overrides.findIndex(item => item.date === override.date) ===
-                index
+                overrides.findIndex(
+                  item =>
+                    item.date === override.date &&
+                    item.scheduleTime === override.scheduleTime
+                ) === index
             )
           : [];
+        const previewOverride = occurrenceOverrides.find(
+          override =>
+            override.date === dateString &&
+            override.scheduleTime === occurrence.time
+        );
+        const previewTime =
+          previewOverride?.time || occurrence.time || event.time || "Time";
         const date = /^\d{4}-\d{2}-\d{2}$/.test(dateString)
           ? new Date(`${dateString}T12:00:00`)
           : null;
@@ -191,7 +265,7 @@
                       fontSize: 12,
                     },
                   },
-                  `${override.time || event.time || "Time"} · ${override.location || event.location || "Location"}`
+                  `${override.time || override.scheduleTime || event.time || "Time"} · ${override.location || event.location || "Location"}`
                 ),
                 (override.description || event.description) &&
                   h(
@@ -330,7 +404,7 @@
                       lineHeight: 1.6,
                     },
                   },
-                  `${event.time || "Time"} · ${event.location || "Location"}`
+                  `${previewTime} · ${event.location || "Location"}`
                 )
               )
             )
@@ -385,7 +459,7 @@
                 h(
                   "p",
                   { style: { margin: 0, color: "#ffffffd9", fontSize: 14 } },
-                  `${event.time || "Time"} · ${event.location || "Location"}`
+                  `${previewTime} · ${event.location || "Location"}`
                 )
               ),
               image &&

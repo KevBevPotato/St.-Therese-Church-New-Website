@@ -61,7 +61,8 @@ function eventDateTime(dateString: string, timeString: string): Date {
 export function recurringEventForDate(
     rule: any,
     dateString: string,
-    override: any = {}
+    override: any = {},
+    scheduleKey = ''
 ): CalendarEvent | null {
     if (override.action === 'skip') return null;
 
@@ -79,10 +80,10 @@ export function recurringEventForDate(
         appliedOverride.title = 'Canceled';
     }
     const merged = { ...rule, ...appliedOverride };
-    const { schedule, oneTimeOccurrences, ...eventFields } = merged;
+    const { schedule, oneTimeOccurrences, additionalSchedules, ...eventFields } = merged;
     return {
         ...eventFields,
-        id: `${rule.id}-${dateString}`,
+        id: `${rule.id}${scheduleKey ? `-${scheduleKey}` : ''}-${dateString}`,
         title: merged.title,
         date: eventDateTime(dateString, merged.time ?? ''),
         time: merged.time ?? '',
@@ -94,6 +95,101 @@ export function recurringEventForDate(
     } as CalendarEvent;
 }
 
+export function recurringEventsForDate(
+    rule: any,
+    dateString: string
+): CalendarEvent[] {
+    const date = normalizeDate(dateString);
+    if (!date || Number.isNaN(date.getTime())) return [];
+
+    const scheduleSets = [
+        {
+            schedule: rule.schedule ?? rule,
+            time: rule.time,
+            key: '',
+            isPrimary: true,
+        },
+        ...(Array.isArray(rule.additionalSchedules)
+            ? rule.additionalSchedules.map((additional: any, index: number) => ({
+                schedule: additional.schedule ?? additional,
+                time: additional.time ?? rule.time,
+                key: `schedule-${index + 1}`,
+                isPrimary: false,
+            }))
+            : []),
+    ];
+
+    const events: CalendarEvent[] = [];
+    for (const { schedule, time, key, isPrimary } of scheduleSets) {
+        const oneTimeOverride =
+            schedule.occurrenceOverrides?.find(
+                (occurrence: any) => occurrence.date === dateString
+            ) ??
+            (isPrimary
+                ? rule.oneTimeOccurrences?.find(
+                    (occurrence: any) => occurrence.date === dateString
+                )
+                : undefined);
+        const eventRule = time === rule.time ? rule : { ...rule, time };
+        if (oneTimeOverride) {
+            const event = recurringEventForDate(
+                eventRule,
+                dateString,
+                oneTimeOverride,
+                key
+            );
+            if (event) events.push(event);
+            continue;
+        }
+
+        const ruleStartDate = normalizeDate(schedule.startDate) || new Date(0);
+        const ruleEndDate = normalizeDate(schedule.endDate) || new Date(2100, 0, 1);
+        const exclusions = Array.isArray(schedule.exclusions)
+            ? schedule.exclusions.map((ex: any) => typeof ex === 'string' ? ex : ex.date)
+            : (schedule.exclusions ? schedule.exclusions.split(',').map((d: string) => d.trim()) : []);
+
+        const scheduledDays = Array.isArray(schedule.daysOfWeek)
+            ? schedule.daysOfWeek
+            : [schedule.dayOfWeek];
+        const ruleDays = scheduledDays
+            .map((day: string | number) => typeof day === 'string' ? DAY_MAP[day] : day)
+            .filter((day: number | undefined): day is number => day !== undefined);
+        const ruleDay = typeof schedule.dayOfWeek === 'string'
+            ? DAY_MAP[schedule.dayOfWeek]
+            : schedule.dayOfWeek;
+
+        if (date < ruleStartDate || date > ruleEndDate || exclusions.includes(dateString)) {
+            continue;
+        }
+
+        let shouldShow = false;
+        if (schedule.recurrenceType === 'daily') {
+            shouldShow = true;
+        } else if (schedule.recurrenceType === 'weekly') {
+            shouldShow = ruleDays.includes(date.getDay());
+        } else if (schedule.recurrenceType === 'monthly') {
+            const currentOrdinal = Math.ceil(date.getDate() / 7);
+            shouldShow = date.getDay() === ruleDay &&
+                currentOrdinal === parseInt(schedule.ordinalWeek || "1");
+        } else if (schedule.recurrenceType === 'last_of_month') {
+            const nextWeek = new Date(
+                date.getFullYear(),
+                date.getMonth(),
+                date.getDate() + 7
+            );
+            shouldShow = date.getDay() === ruleDay &&
+                nextWeek.getMonth() !== date.getMonth();
+        }
+
+        if (shouldShow) {
+            const event = recurringEventForDate(eventRule, dateString, {}, key);
+            if (event) events.push(event);
+        }
+    }
+
+    return events;
+}
+
 export const staticEvents: CalendarEvent[] = [
     ...oneTimeEvents,
 ];
@@ -103,74 +199,13 @@ export function generateRecurringEventsForMonth(month: number, year: number): Ca
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
     for (let day = 1; day <= daysInMonth; day++) {
-        const d = new Date(year, month, day);
         const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
 
-        // --- CMS-DRIVEN RECURRING RULES ---
         recurringRules.forEach((rule: any) => {
-            const schedule = rule.schedule ?? rule;
-            const oneTimeOverride =
-                schedule.occurrenceOverrides?.find(
-                    (occurrence: any) => occurrence.date === dateStr
-                ) ??
-                rule.oneTimeOccurrences?.find(
-                    (occurrence: any) => occurrence.date === dateStr
-                );
-            if (oneTimeOverride) {
-                const event = recurringEventForDate(rule, dateStr, oneTimeOverride);
-                if (event) events.push(event);
-                return;
-            }
-
-            const ruleStartDate = normalizeDate(schedule.startDate) || new Date(0);
-            const ruleEndDate = normalizeDate(schedule.endDate) || new Date(2100, 0, 1);
-            const exclusions = Array.isArray(schedule.exclusions)
-                ? schedule.exclusions.map((ex: any) => typeof ex === 'string' ? ex : ex.date)
-                : (schedule.exclusions ? schedule.exclusions.split(',').map((d: string) => d.trim()) : []);
-
-            const scheduledDays = Array.isArray(schedule.daysOfWeek)
-                ? schedule.daysOfWeek
-                : [schedule.dayOfWeek];
-            const ruleDays = scheduledDays
-                .map((day: string | number) => typeof day === 'string' ? DAY_MAP[day] : day)
-                .filter((day: number | undefined): day is number => day !== undefined);
-            const ruleDay = typeof schedule.dayOfWeek === 'string'
-                ? DAY_MAP[schedule.dayOfWeek]
-                : schedule.dayOfWeek;
-
-            if (d >= ruleStartDate && d <= ruleEndDate && !exclusions.includes(dateStr)) {
-                let shouldShow = false;
-
-                if (schedule.recurrenceType === 'daily') {
-                    // DAILY: Just show up every day
-                    shouldShow = true;
-                } else if (schedule.recurrenceType === 'weekly') {
-                    // WEEKLY: Show on each selected day, or the legacy single day.
-                    shouldShow = ruleDays.includes(d.getDay());
-                } else if (schedule.recurrenceType === 'monthly') {
-                    // MONTHLY: Must be the correct day of the week AND the correct week of the month
-                    const currentOrdinal = Math.ceil(day / 7);
-                    if (d.getDay() === ruleDay && currentOrdinal === parseInt(schedule.ordinalWeek || "0")) {
-                        shouldShow = true;
-                    }
-                } else if (schedule.recurrenceType === 'last_of_month') {
-                    // LAST OF MONTH: Must be the correct day of the week AND adding 7 days must be in the next month
-                    if (d.getDay() === ruleDay) {
-                        const nextWeek = new Date(year, month, day + 7);
-                        if (nextWeek.getMonth() !== month) {
-                            shouldShow = true;
-                        }
-                    }
-                }
-
-                if (shouldShow) {
-                    const event = recurringEventForDate(rule, dateStr);
-                    if (event) events.push(event);
-                }
-            }
+            events.push(...recurringEventsForDate(rule, dateStr));
         });
-    } // <--- FIXED: This closes the for loop
-    return events; // <--- FIXED: Now the function returns the events array
+    }
+    return events;
 }
 
 export function getLatestRecurringScheduleEndDate(
@@ -180,7 +215,14 @@ export function getLatestRecurringScheduleEndDate(
         rule.organizationTags?.includes(organizationTag)
     );
     const endDates = matchingRules
-        .map((rule: any) => normalizeDate((rule.schedule ?? rule).endDate))
+        .flatMap((rule: any) => [
+            normalizeDate((rule.schedule ?? rule).endDate),
+            ...(Array.isArray(rule.additionalSchedules)
+                ? rule.additionalSchedules.map((additional: any) =>
+                    normalizeDate((additional.schedule ?? additional).endDate)
+                )
+                : []),
+        ])
         .filter((date: Date | null): date is Date => date !== null);
     if (endDates.length === 0) return null;
     return endDates.reduce((latest, date) => date > latest ? date : latest);

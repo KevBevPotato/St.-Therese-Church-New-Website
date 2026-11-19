@@ -37,7 +37,11 @@
   }
 
   function selectedWeekdays(schedule) {
-    let selectedDays = schedule.daysOfWeek;
+    let selectedDays =
+      schedule.recurrenceType === "monthly" ||
+      schedule.recurrenceType === "last_of_month"
+        ? [schedule.dayOfWeek || "Sunday"]
+        : schedule.daysOfWeek;
     if (selectedDays && typeof selectedDays.toJS === "function") {
       selectedDays = selectedDays.toJS();
     } else if (selectedDays && typeof selectedDays.toArray === "function") {
@@ -70,7 +74,7 @@
       case "monthly":
         return (
           weekdayMatches &&
-          Math.ceil(date.getDate() / 7) === Number(schedule.ordinalWeek)
+          Math.ceil(date.getDate() / 7) === Number(schedule.ordinalWeek || "1")
         );
       case "last_of_month":
         return (
@@ -128,12 +132,13 @@
     for (const override of schedule.occurrenceOverrides || []) {
       if (
         !occurrenceDates.has(override.date) &&
-        dateOccurs(schedule, override.date)
+        parseDate(override.date)
       ) {
         occurrences.push({
           date: override.date,
           included: override.action !== "skip",
           override,
+          oneTime: !dateOccurs(schedule, override.date),
         });
       }
     }
@@ -241,10 +246,9 @@
     addExceptionDate() {
       const schedule = this.getSchedule();
       const date = this.state.exceptionDate;
-      if (!dateOccurs(schedule, date)) {
+      if (!parseDate(date)) {
         this.setState({
-          dateError:
-            "Choose a date that matches this schedule and falls within its date range.",
+          dateError: "Choose a valid date.",
         });
         return;
       }
@@ -405,11 +409,13 @@
             ? "Removed from calendar"
             : action === "cancelled"
               ? override.title || "Canceled"
-              : Object.keys(override).some(
+              : occurrence.oneTime
+                ? "One-time event"
+                : Object.keys(override).some(
                     key => key !== "date" && key !== "action"
                   )
-                ? "Custom details"
-                : "Using recurring details";
+                  ? "Custom details"
+                  : "Using recurring details";
 
         return h(
           "div",
@@ -611,8 +617,8 @@
           "p",
           { style: { margin: "0 0 10px", color: "#475569" } },
           schedule.endDate
-            ? "Preview generated dates. Uncheck Include to remove a date, or choose Edit this date to customize it. The preview is capped at 400 dates."
-            : "No end date is set. The preview shows the first year; add an exception date below to edit a later occurrence."
+            ? "Preview generated dates. Uncheck Include to remove a date, or choose Edit this date to customize it. Add a one-time date even when it does not match this schedule. The preview is capped at 400 dates."
+            : "No end date is set. The preview shows the first year; add a one-time date below to add an occurrence on any date."
         ),
         h(
           "div",
@@ -628,7 +634,7 @@
           h(
             "label",
             { style: { ...fieldStyle, marginBottom: 0 } },
-            h("span", { style: labelStyle }, "Add exception for another date"),
+            h("span", { style: labelStyle }, "Add one-time date or exception"),
             h("input", {
               type: "date",
               value: this.state.exceptionDate,
