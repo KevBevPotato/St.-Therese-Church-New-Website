@@ -1,18 +1,7 @@
 {
-  "faqItems": [
-    {
-      "isHidden": false
-    }
-  ],
-  "time": "7:30 AM",
-  "oneTimeOccurrences": [],
-  "gallery": [
-    {
-      "isHidden": false,
-      "showInCarousel": true
-    }
-  ],
   "isHidden": false,
+  "title": "Daily Mass",
+  "time": "7:30 AM",
   "location": "Chapel",
   "schedule": {
     "startDate": "2026-11-13",
@@ -31,15 +20,32 @@
         "date": "2026-11-27",
         "action": "cancelled",
         "title": "No Daily Mass"
+      },
+      {
+        "date": "2026-11-26",
+        "action": "override",
+        "title": "Thanksgiving Mass",
+        "time": "9 am"
       }
     ]
   },
-  "title": "Daily Mass",
+  "description": "Join us for Daily Mass, Monday through Friday.",
   "categories": [
     {
       "isHidden": false,
       "category": "sacramental"
     }
   ],
-  "description": "Join us for Daily Mass, Monday through Friday."
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ],
+  "oneTimeOccurrences": []
 }
