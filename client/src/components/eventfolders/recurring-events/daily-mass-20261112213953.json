@@ -26,6 +26,13 @@
         "action": "override",
         "title": "Thanksgiving Mass",
         "time": "9 am"
+      },
+      {
+        "date": "2026-12-08",
+        "action": "override",
+        "title": "Immaculate Conception Holy Day Mass",
+        "time": "7:30am or 7pm",
+        "description": "Holy Day of Oblig-get-to!"
       }
     ]
   },
