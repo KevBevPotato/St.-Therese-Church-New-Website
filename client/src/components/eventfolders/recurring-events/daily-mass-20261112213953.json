@@ -33,6 +33,30 @@
         "title": "Immaculate Conception Holy Day Mass",
         "time": "7:30am or 7pm",
         "description": "Holy Day of Oblig-get-to!"
+      },
+      {
+        "date": "2026-12-24",
+        "action": "override",
+        "title": "4pm & 9pm Christmas Mass",
+        "time": "4pm/9pm"
+      },
+      {
+        "date": "2026-12-25",
+        "action": "override",
+        "title": "9am Christmas Mass",
+        "time": "9am"
+      },
+      {
+        "date": "2026-12-31",
+        "action": "override",
+        "title": "Solemnity of Mary 5:30pm",
+        "time": "5:30pm "
+      },
+      {
+        "date": "2027-01-01",
+        "action": "override",
+        "title": "SOlemnity of Mary ",
+        "time": "8:30am"
       }
     ]
   },
@@ -45,6 +69,14 @@
         "dayOfWeek": "Saturday",
         "daysOfWeek": [
           "Saturday"
+        ],
+        "exclusions": [],
+        "occurrenceOverrides": [
+          {
+            "date": "2026-12-26",
+            "action": "override",
+            "title": "No Daily Mass"
+          }
         ]
       }
     }
