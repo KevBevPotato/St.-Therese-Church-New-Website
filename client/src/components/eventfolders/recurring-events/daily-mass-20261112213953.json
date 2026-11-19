@@ -36,7 +36,20 @@
       }
     ]
   },
-  "description": "Join us for Daily Mass, Monday through Friday.",
+  "additionalSchedules": [
+    {
+      "time": "8am",
+      "schedule": {
+        "startDate": "2026-11-07",
+        "recurrenceType": "weekly",
+        "dayOfWeek": "Saturday",
+        "daysOfWeek": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "description": "Join us for Daily Mass, Monday through Saturday!",
   "categories": [
     {
       "isHidden": false,
