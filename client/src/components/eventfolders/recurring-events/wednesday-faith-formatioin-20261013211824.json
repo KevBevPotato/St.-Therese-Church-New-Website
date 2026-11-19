@@ -1,23 +1,7 @@
 {
-  "faqItems": [
-    {
-      "isHidden": false,
-      "question": "Will Bobby update this?",
-      "answer": "He sure will!"
-    }
-  ],
-  "organizationTags": [
-    "faith-formation"
-  ],
-  "time": "5:30-7:30pm",
-  "about": "Bobby will update this as well",
-  "gallery": [
-    {
-      "isHidden": false
-    }
-  ],
   "isHidden": false,
-  "contactPerson": "Bobby Myers",
+  "title": "Wednesday Faith Formation",
+  "time": "5:30-7:30pm",
   "location": "St. Therese Church",
   "schedule": {
     "startDate": "2026-10-21",
@@ -27,9 +11,6 @@
     "exclusions": [
       {
         "date": "2026-11-04"
-      },
-      {
-        "date": "2026-11-25"
       },
       {
         "date": "2026-12-02"
@@ -58,15 +39,38 @@
       {
         "date": "2027-05-05"
       }
+    ],
+    "occurrenceOverrides": [
+      {
+        "date": "2026-11-25",
+        "action": "override",
+        "title": "No Wednesday Faith Formation!"
+      }
     ]
   },
-  "title": "Wednesday Faith Formation",
+  "description": "Bobby will update",
+  "about": "Bobby will update this as well",
+  "contactPerson": "Bobby Myers",
+  "contactEmail": "bobby@strcstaff.org",
   "categories": [
     {
       "isHidden": false,
       "category": "parishEvents"
     }
   ],
-  "contactEmail": "bobby@strcstaff.org",
-  "description": "Bobby will update"
+  "organizationTags": [
+    "faith-formation"
+  ],
+  "gallery": [
+    {
+      "isHidden": false
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false,
+      "question": "Will Bobby update this?",
+      "answer": "He sure will!"
+    }
+  ]
 }

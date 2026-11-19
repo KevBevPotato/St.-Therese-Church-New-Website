@@ -1,0 +1,30 @@
+{
+  "isHidden": false,
+  "title": "First Fridays Adoration",
+  "time": "6-7pm",
+  "location": "",
+  "schedule": {
+    "startDate": "2026-12-04",
+    "recurrenceType": "monthly",
+    "dayOfWeek": "Friday",
+    "endDate": "2027-03-12"
+  },
+  "description": "Adoration for the first fridays devotion, followed by a social afterwards with light snacks!",
+  "categories": [
+    {
+      "isHidden": false,
+      "category": "parishEvents"
+    }
+  ],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ]
+}
