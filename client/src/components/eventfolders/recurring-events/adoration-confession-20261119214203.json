@@ -1,0 +1,50 @@
+{
+  "isHidden": false,
+  "title": "Adoration & Confession",
+  "time": "4:30-5:30pm",
+  "location": "",
+  "schedule": {
+    "dayOfWeek": "Sunday",
+    "daysOfWeek": [
+      "Sunday"
+    ],
+    "startDate": "2026-11-22",
+    "recurrenceType": "weekly"
+  },
+  "additionalSchedules": [
+    {
+      "time": "8-9am",
+      "schedule": {
+        "startDate": "2026-11-22",
+        "recurrenceType": "weekly"
+      }
+    },
+    {
+      "time": "3-4:30pm",
+      "schedule": {
+        "startDate": "2026-11-07",
+        "recurrenceType": "weekly",
+        "dayOfWeek": "Saturday",
+        "daysOfWeek": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "categories": [
+    {
+      "isHidden": false
+    }
+  ],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ]
+}
