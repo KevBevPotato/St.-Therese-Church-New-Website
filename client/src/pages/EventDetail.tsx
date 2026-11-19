@@ -112,6 +112,14 @@ export default function EventDetail() {
     );
   }
 
+  const faqItems = (event.faqItems ?? []).filter(
+    faq =>
+      typeof faq?.question === "string" &&
+      faq.question.trim().length > 0 &&
+      typeof faq?.answer === "string" &&
+      faq.answer.trim().length > 0
+  );
+
   const handleBack = () => {
     if (window.history.length > 1) window.history.back();
     else navigate("/");
@@ -221,13 +229,13 @@ export default function EventDetail() {
               )}
             </Card>
 
-            {event.faqItems && event.faqItems.length > 0 && (
+            {faqItems.length > 0 && (
               <div className="space-y-6">
                 <h3 className="font-serif text-3xl font-bold text-primary">
                   Frequently Asked Questions
                 </h3>
                 <div className="grid gap-4">
-                  {event.faqItems.map((faq, i) => (
+                  {faqItems.map((faq, i) => (
                     <Card
                       key={i}
                       className="p-6 border-2 border-primary/5 bg-white rounded-2xl"
