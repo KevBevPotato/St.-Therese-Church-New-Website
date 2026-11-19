@@ -1,9 +1,16 @@
 {
-  "showMonthlyCalendarButton": true,
   "primaryButtonLabel": "Become a Member",
   "quoteAttribution": "Saint Thérèse of Lisieux",
-  "monthlyCalendarStartDate": "2026-11-01",
-  "monthlyCalendarPdf": "/uploads/untitled-design-4-.pdf",
+  "monthlyCalendarArchiveLabel": "View Monthly PDF Archive",
+  "monthlyCalendarArchiveUrl": "",
+  "monthlyCalendarPdfs": [
+    {
+      "label": "PDF of Monthly Calendar",
+      "pdfUrl": "/uploads/untitled-design-4-.pdf",
+      "startDate": "2026-11-01",
+      "endDate": "2026-11-30"
+    }
+  ],
   "desktopPoster": "/manus-storage/ChurchwithPeopleoutside_V2_5702e1f6.png",
   "secondaryButtonUrl": "/new-to-st-therese",
   "eyebrow": "Saint Thérèse · The Little Flower",
@@ -20,10 +27,9 @@
   "backgroundColor": "#102a45",
   "mobileVideoUrl": "/StThereseHeroMovie.mp4",
   "textColor": "#ffffff",
-  "monthlyCalendarButtonLabel": "PDF of Monthly Calendar",
   "title": "A parish family formed by prayer and little ways of love.",
   "accentColor": "#f1d99d",
   "quote": "\"My vocation, at last I have found it; my vocation is love.\"",
   "description": "Rooted in the Eucharist and serving Rapid City with the joyful, faithful spirit of Saint Thérèse of Lisieux.",
-  "monthlyCalendarEndDate": "2026-11-30"
+  "showMonthlyCalendarButtons": true
 }

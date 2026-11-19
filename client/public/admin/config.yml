@@ -197,50 +197,63 @@ collections:
               required: false,
             }
           - {
-              label: "Show Monthly Calendar Button",
-              name: "showMonthlyCalendarButton",
+              label: "Show Monthly Calendar PDF Buttons",
+              name: "showMonthlyCalendarButtons",
               widget: "boolean",
               default: true,
               required: false,
-              hint: "Turn this off to hide the button even when a PDF is uploaded and within date range.",
+              hint: "Turn this off to hide the dated PDF buttons. The archive button is controlled separately.",
             }
           - {
-              label: "Monthly Calendar Button Label",
-              name: "monthlyCalendarButtonLabel",
+              label: "Monthly Calendar Archive Button Label",
+              name: "monthlyCalendarArchiveLabel",
               widget: "string",
-              default: "PDF of Monthly Calendar",
+              default: "View Monthly PDF Archive",
               required: false,
-              hint: "This button appears next to Parish Calendar on the home page.",
             }
           - {
-              label: "Monthly Calendar PDF Upload",
-              name: "monthlyCalendarPdf",
-              widget: "file",
+              label: "Monthly Calendar Archive URL",
+              name: "monthlyCalendarArchiveUrl",
+              widget: "string",
               required: false,
-              hint: "Upload the PDF shown by the button next to Parish Calendar. The button remains hidden when this is blank.",
+              hint: "The archive button is hidden until a URL is provided.",
             }
-          - {
-              label: "Monthly Calendar Start Date",
-              name: "monthlyCalendarStartDate",
-              widget: "datetime",
-              format: "YYYY-MM-DD",
-              date_format: "YYYY-MM-DD",
-              time_format: false,
-              picker_utc: false,
-              required: false,
-              hint: "First date the PDF should be shown.",
-            }
-          - {
-              label: "Monthly Calendar End Date",
-              name: "monthlyCalendarEndDate",
-              widget: "datetime",
-              format: "YYYY-MM-DD",
-              date_format: "YYYY-MM-DD",
-              time_format: false,
-              picker_utc: false,
-              required: false,
-              hint: "Last date the PDF should be shown.",
-            }
+          - label: "Monthly Calendar PDFs"
+            name: "monthlyCalendarPdfs"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}} ({{fields.startDate}} to {{fields.endDate}})"
+            hint: "Add PDFs in the order you want them shown. At most two PDFs whose date ranges include today appear; expired PDFs disappear and the next eligible one moves into place."
+            fields:
+              - { label: "Button Label", name: "label", widget: "string", required: true }
+              - {
+                  label: "PDF Upload",
+                  name: "pdfUrl",
+                  widget: "file",
+                  required: true,
+                }
+              - {
+                  label: "Start Date",
+                  name: "startDate",
+                  widget: "datetime",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  picker_utc: false,
+                  required: true,
+                  hint: "First date this PDF should be shown.",
+                }
+              - {
+                  label: "End Date",
+                  name: "endDate",
+                  widget: "datetime",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  picker_utc: false,
+                  required: true,
+                  hint: "Last date this PDF should be shown.",
+                }
           - { label: "Quote", name: "quote", widget: "markdown" , required: false }
           - {
               label: "Quote Attribution",

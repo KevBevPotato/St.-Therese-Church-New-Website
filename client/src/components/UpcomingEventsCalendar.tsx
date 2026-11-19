@@ -10,13 +10,15 @@ import { staticEvents, generateRecurringEventsForMonth, ExtendedTimeFilter, EVEN
 import { EventCategoryPill } from './event-components';
 import { CalendarView } from './CalendarView';
 import { EventsListView } from './EventsListView';
+import type { MonthlyCalendarPdf } from '@/lib/monthly-calendar-pdfs';
 
 type UpcomingEventsCalendarProps = {
   homeView?: boolean;
-  monthlyCalendarButton?: {
-    pdfUrl: string;
+  monthlyCalendarArchiveButton?: {
+    url: string;
     label: string;
   };
+  monthlyCalendarPdfs?: MonthlyCalendarPdf[];
   params?: Record<number, string | undefined>;
 };
 
@@ -186,17 +188,29 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
         <div className="mb-8 text-center lg:text-left">
           <div className="flex flex-wrap items-center justify-center gap-4 lg:justify-start">
             <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-primary">Parish Calendar</h2>
-            {props.monthlyCalendarButton && (
+            {props.monthlyCalendarArchiveButton && (
               <Button asChild size="lg" className="bg-accent font-bold text-white shadow-lg hover:bg-accent/90">
                 <a
-                  href={props.monthlyCalendarButton.pdfUrl}
+                  href={props.monthlyCalendarArchiveButton.url}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {props.monthlyCalendarButton.label}
+                  {props.monthlyCalendarArchiveButton.label}
                 </a>
               </Button>
             )}
+            {props.monthlyCalendarPdfs?.map((pdf, index) => (
+              <Button
+                key={`${pdf.pdfUrl}-${index}`}
+                asChild
+                size="lg"
+                className="bg-accent font-bold text-white shadow-lg hover:bg-accent/90"
+              >
+                <a href={pdf.pdfUrl} target="_blank" rel="noopener noreferrer">
+                  {pdf.label}
+                </a>
+              </Button>
+            ))}
           </div>
           <p className="mt-2 text-muted-foreground text-sm sm:text-base max-w-2xl lg:mx-0 mx-auto">Browse upcoming events. Use the filters below to narrow by category.</p>
         </div>

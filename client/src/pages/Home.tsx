@@ -10,6 +10,7 @@ import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 import CmsMarkdown from "@/components/CmsMarkdown";
 import heroData from "@/data/hero_data.json";
 import homeContactData from "@/data/home_contact_data.json";
+import { getActiveMonthlyCalendarPdfs } from "@/lib/monthly-calendar-pdfs";
 
 function getMediaFit(value: string): "cover" | "contain" {
   return value === "contain" ? "contain" : "cover";
@@ -23,18 +24,6 @@ function colorWithOpacity(color: string, opacity: number): string {
   return `rgba(${parseInt(red, 16)}, ${parseInt(green, 16)}, ${parseInt(blue, 16)}, ${opacity})`;
 }
 
-function isCurrentDateInRange(startDate?: string, endDate?: string): boolean {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const start = startDate ? new Date(`${startDate}T00:00:00`) : undefined;
-  const end = endDate ? new Date(`${endDate}T23:59:59`) : undefined;
-
-  return (
-    (!start || !Number.isNaN(start.getTime()) && today >= start) &&
-    (!end || !Number.isNaN(end.getTime()) && today <= end)
-  );
-}
-
 /**
  * Home Page
  *
@@ -46,10 +35,10 @@ function isCurrentDateInRange(startDate?: string, endDate?: string): boolean {
 export default function Home() {
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
   const mediaFit = getMediaFit(heroData.mediaFit);
-  const showMonthlyCalendar =
-    heroData.showMonthlyCalendarButton !== false &&
-    Boolean(heroData.monthlyCalendarPdf) &&
-    isCurrentDateInRange(heroData.monthlyCalendarStartDate, heroData.monthlyCalendarEndDate);
+  const monthlyCalendarPdfs =
+    heroData.showMonthlyCalendarButtons === false
+      ? []
+      : getActiveMonthlyCalendarPdfs(heroData.monthlyCalendarPdfs);
   const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
   const overlayStyle = {
     background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
@@ -202,16 +191,17 @@ export default function Home() {
       {/* Upcoming Events Calendar Section */}
       <UpcomingEventsCalendar
         homeView
-        monthlyCalendarButton={
-          showMonthlyCalendar
+        monthlyCalendarArchiveButton={
+          heroData.monthlyCalendarArchiveUrl
             ? {
-                pdfUrl: heroData.monthlyCalendarPdf,
+                url: heroData.monthlyCalendarArchiveUrl,
                 label:
-                  heroData.monthlyCalendarButtonLabel ||
-                  "PDF of Monthly Calendar",
+                  heroData.monthlyCalendarArchiveLabel ||
+                  "View Monthly PDF Archive",
               }
             : undefined
         }
+        monthlyCalendarPdfs={monthlyCalendarPdfs}
       />
 
       {/* Contact Section */}
