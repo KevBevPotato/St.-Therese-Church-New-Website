@@ -64,6 +64,41 @@
           }
         ]
       },
+      "rosaryPage": {
+        "eyebrow": "Sacramental Life",
+        "title": "The Daily Rosary.",
+        "introduction": "Every weekday morning at **7:00 AM** in the Main Sanctuary, our parish family gathers to pray the rosary together before the day begins. All are welcome — join us for the full rosary, a single decade, or simply to sit in prayer.",
+        "heroImage": "/landingpagephotos/Rosary.png",
+        "resourcesTitle": "Scriptural Rosary Guides",
+        "resourcesIntroduction": "Pray with Scripture through the mysteries of the rosary. Download a guide for each Gospel.",
+        "resources": [
+          {
+            "title": "Scriptural Rosary - All Gospels",
+            "description": "",
+            "document": "/uploads/scriptural-rosary-all-gospels.pdf"
+          },
+          {
+            "title": "Scriptural Rosary — Matthew",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Matthew.",
+            "document": "/uploads/scriptural-rosary-matthew.pdf"
+          },
+          {
+            "title": "Scriptural Rosary — Mark",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Mark.",
+            "document": "/uploads/scriptural-rosary-mark.pdf"
+          },
+          {
+            "title": "Scriptural Rosary — Luke",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Luke.",
+            "document": "/uploads/scriptural-rosary-luke.pdf"
+          },
+          {
+            "title": "Scriptural Rosary — John",
+            "description": "A Scripture-guided rosary using passages from the Gospel of John.",
+            "document": "/uploads/scriptural-rosary-john.pdf"
+          }
+        ]
+      },
       "needHelp": {
         "title": "Need Help",
         "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",
@@ -88,6 +123,27 @@
             "button": "Share Your Interest",
             "action": "lead_connect_group",
             "url": ""
+          }
+        ]
+      },
+      "adorationConfessionPage": {
+        "eyebrow": "Sacramental Life",
+        "title": "Adoration & Confession",
+        "introduction": "Spend time in prayer before the Blessed Sacrament and encounter God's mercy in the Sacrament of Reconciliation.",
+        "heroImage": "",
+        "heroImageAlt": "Adoration before the Blessed Sacrament",
+        "resourcesTitle": "Guides for Prayer and Reconciliation",
+        "resourcesIntroduction": "Resources to help you prepare for confession and spend time in prayer during adoration.",
+        "resources": [
+          {
+            "title": "Examination of Conscience",
+            "description": "A guide to prayerfully preparing for the Sacrament of Reconciliation.",
+            "document": ""
+          },
+          {
+            "title": "Eucharistic Adoration Guide",
+            "description": "A guide to spending time in prayer before the Blessed Sacrament.",
+            "document": ""
           }
         ]
       }
@@ -431,184 +487,5 @@
       ],
       "description": "Join us for prayer, fellowship, and planning charitable works."
     }
-  ],
-  "settings": {
-    "pageTitle": "Get Involved",
-    "parishLifePages": {
-      "navigation": {
-        "organizations": "Join an Organization",
-        "catholicDaughters": "Catholic Daughters",
-        "musicMinistry": "Music Ministry",
-        "resources": "Resources",
-        "knightsOfColumbus": "Knights of Columbus",
-        "liturgy": "Liturgy",
-        "stVincentDePaul": "St. Vincent de Paul",
-        "contribute": "Contribute towards a Project",
-        "lector": "Lector",
-        "altarSociety": "Altar Society",
-        "faithFormation": "Faith Formation",
-        "sacraments": "Sacraments",
-        "needHelp": "Need Help",
-        "usher": "Usher",
-        "altarServer": "Altar Server",
-        "connectGroups": "Connect Groups"
-      },
-      "liturgy": {
-        "title": "Help with the Liturgy!",
-        "introduction": "Help our parish celebrate the Mass through one of these liturgical ministries. Learn more about each role and sign up to serve.",
-        "signUpButton": "Sign Up to Help",
-        "suggestionButton": "Suggestion",
-        "referralButton": "Refer",
-        "learnMoreButton": "Learn More"
-      },
-      "massPage": {
-        "eyebrow": "Sacramental Life",
-        "title": "The Holy Mass",
-        "introduction": "At every Mass, we gather as a parish family to worship God and receive Jesus Christ in the Eucharist. Whether you are a longtime parishioner or visiting for the first time, you are welcome.",
-        "heroImage": "/uploads/mystical-lamb.jpg",
-        "aboutTitle": "A sacred encounter",
-        "about": "The Mass is the source and summit of Christian life. In the Liturgy of the Word, we listen to Scripture and pray together. In the Liturgy of the Eucharist, we give thanks and receive Christ in Holy Communion.",
-        "resourcesTitle": "Explore the Mass",
-        "resources": [
-          {
-            "title": "Prayer Before and After Mass",
-            "description": "Prayers to help you prepare for Mass and give thanks afterward.",
-            "document": "/uploads/prayer-before-and-after-mass-2026.pdf"
-          },
-          {
-            "title": "Explanation Guide to the Mass",
-            "description": "An overview of the parts of the Mass and their meaning.",
-            "document": "/uploads/explanation-guide-to-the-mass.pdf"
-          },
-          {
-            "title": "Concise Order of the Mass",
-            "description": "A brief reference to the order of the Mass.",
-            "document": "/uploads/concise-order-of-the-mass.pdf"
-          },
-          {
-            "title": "Longer Form Order of the Mass",
-            "description": "A fuller guide to the order and prayers of the Mass.",
-            "document": "/uploads/longer-form-order-of-the-mass.pdf"
-          },
-          {
-            "title": "Devotions Before and After Holy Communion",
-            "description": "Prayers for time before and after receiving Holy Communion.",
-            "document": "/uploads/devotions-before-and-after-holy-communion.pdf"
-          }
-        ]
-      },
-      "rosaryPage": {
-        "eyebrow": "Sacramental Life",
-        "title": "The Daily Rosary.",
-        "introduction": "Every weekday morning at **7:00 AM** in the Main Sanctuary, our parish family gathers to pray the rosary together before the day begins. All are welcome — join us for the full rosary, a single decade, or simply to sit in prayer.",
-        "heroImage": "/landingpagephotos/Rosary.png",
-        "resourcesTitle": "Scriptural Rosary Guides",
-        "resourcesIntroduction": "Pray with Scripture through the mysteries of the rosary. Download a guide for each Gospel.",
-        "resources": [
-          {
-            "title": "Scriptural Rosary — Mark",
-            "description": "A Scripture-guided rosary using passages from the Gospel of Mark.",
-            "document": ""
-          },
-          {
-            "title": "Scriptural Rosary — Matthew",
-            "description": "A Scripture-guided rosary using passages from the Gospel of Matthew.",
-            "document": ""
-          },
-          {
-            "title": "Scriptural Rosary — Luke",
-            "description": "A Scripture-guided rosary using passages from the Gospel of Luke.",
-            "document": ""
-          },
-          {
-            "title": "Scriptural Rosary — John",
-            "description": "A Scripture-guided rosary using passages from the Gospel of John.",
-            "document": ""
-          }
-        ]
-      },
-      "adorationConfessionPage": {
-        "eyebrow": "Sacramental Life",
-        "title": "Adoration & Confession",
-        "introduction": "Spend time in prayer before the Blessed Sacrament and encounter God's mercy in the Sacrament of Reconciliation.",
-        "heroImage": "",
-        "heroImageAlt": "Adoration before the Blessed Sacrament",
-        "resourcesTitle": "Guides for Prayer and Reconciliation",
-        "resourcesIntroduction": "Resources to help you prepare for confession and spend time in prayer during adoration.",
-        "resources": [
-          {
-            "title": "Examination of Conscience",
-            "description": "A guide to prayerfully preparing for the Sacrament of Reconciliation.",
-            "document": ""
-          },
-          {
-            "title": "Eucharistic Adoration Guide",
-            "description": "A guide to spending time in prayer before the Blessed Sacrament.",
-            "document": ""
-          }
-        ]
-      },
-      "needHelp": {
-        "title": "Need Help",
-        "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",
-        "requestButton": "Request Help"
-      },
-      "contribute": {
-        "title": "Contribute towards a Project",
-        "introduction": "Share your time and gifts with the parish community through these opportunities.",
-        "opportunities": [
-          {
-            "id": "wednesday-supper",
-            "title": "Wednesday Night Supper Signup",
-            "description": "Help with grocery pickup, food preparation, serving, or cleanup for Wednesday Night Supper.",
-            "button": "Sign Up",
-            "action": "wednesday_supper_signup",
-            "url": ""
-          },
-          {
-            "id": "lead-connect-group",
-            "title": "Lead a Connect Group",
-            "description": "Let parish staff know you are interested in helping lead a Connect Group.",
-            "button": "Share Your Interest",
-            "action": "lead_connect_group",
-            "url": ""
-          }
-        ]
-      }
-    },
-    "contactName": "Parish Office",
-    "contactPhone": "(605) 342-1556",
-    "serveHeading": "How Would You Like to Serve",
-    "interestHeading": "By Interest",
-    "tags": [
-      "Liturgy",
-      "Parish Events",
-      "Parish Organizations",
-      "Diocesan"
-    ],
-    "introduction": "Discover ways to serve, connect, and support our parish community.",
-    "categories": [
-      {
-        "id": "all",
-        "label": "All Ways"
-      },
-      {
-        "id": "sponsor",
-        "label": "Sponsor"
-      },
-      {
-        "id": "help",
-        "label": "Help"
-      },
-      {
-        "id": "join",
-        "label": "Join"
-      },
-      {
-        "id": "request",
-        "label": "Request"
-      }
-    ],
-    "contactEmail": "connie.heeren@strcstaff.org"
-  }
+  ]
 }
