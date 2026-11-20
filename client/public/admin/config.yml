@@ -97,12 +97,11 @@ collections:
               required: false,
             }
           - {
-              label: "Media Position",
+              label: "Video Focal Point",
               name: "mediaPosition",
-              widget: "select",
-              options: ["center", "top", "bottom", "left", "right"],
+              widget: "video-focal-point",
               default: "center",
-              hint: "Choose which part stays visible when Media Fit is set to Cover.",
+              hint: "Upload a video above, then click the point you want to keep centered in the hero.",
               required: false,
             }
           - {

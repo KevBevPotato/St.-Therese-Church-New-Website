@@ -1,5 +1,5 @@
 // Home.tsx
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ChurchMap from "@/components/ChurchMap";
@@ -24,6 +24,40 @@ function colorWithOpacity(color: string, opacity: number): string {
   return `rgba(${parseInt(red, 16)}, ${parseInt(green, 16)}, ${parseInt(blue, 16)}, ${opacity})`;
 }
 
+function updateFocalPosition(
+  media: HTMLVideoElement | HTMLImageElement,
+  focalPoint: string
+): void {
+  const match = /^([\d.]+)%\s+([\d.]+)%$/.exec(focalPoint);
+  if (!match) {
+    media.style.objectPosition = focalPoint;
+    return;
+  }
+
+  const [focalX, focalY] = [Number(match[1]) / 100, Number(match[2]) / 100];
+  const box = media.parentElement?.getBoundingClientRect();
+  const mediaWidth =
+    media instanceof HTMLVideoElement ? media.videoWidth : media.naturalWidth;
+  const mediaHeight =
+    media instanceof HTMLVideoElement ? media.videoHeight : media.naturalHeight;
+  if (!box || !box.width || !box.height || !mediaWidth || !mediaHeight) return;
+
+  const scale = Math.max(box.width / mediaWidth, box.height / mediaHeight);
+  const overflowX = mediaWidth * scale - box.width;
+  const overflowY = mediaHeight * scale - box.height;
+  const positionX =
+    overflowX > 0
+      ? (focalX * mediaWidth * scale - box.width / 2) / overflowX
+      : 0.5;
+  const positionY =
+    overflowY > 0
+      ? (focalY * mediaHeight * scale - box.height / 2) / overflowY
+      : 0.5;
+  const clamp = (value: number) => Math.max(0, Math.min(1, value));
+
+  media.style.objectPosition = `${clamp(positionX) * 100}% ${clamp(positionY) * 100}%`;
+}
+
 /**
  * Home Page
  *
@@ -34,6 +68,7 @@ function colorWithOpacity(color: string, opacity: number): string {
 
 export default function Home() {
   const [isMembershipModalOpen, setIsMembershipModalOpen] = useState(false);
+  const mediaContainerRef = useRef<HTMLDivElement>(null);
   const mediaFit = getMediaFit(heroData.mediaFit);
   const monthlyCalendarPdfs =
     heroData.showMonthlyCalendarButtons === false
@@ -43,6 +78,45 @@ export default function Home() {
   const overlayStyle = {
     background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
   };
+
+  useEffect(() => {
+    const container = mediaContainerRef.current;
+    if (!container) return;
+
+    const media = Array.from(
+      container.querySelectorAll<HTMLVideoElement | HTMLImageElement>(
+        "video, img"
+      )
+    );
+    const updateAll = () => {
+      const mediaPosition = heroData.mediaPosition || "center";
+      if (mediaFit !== "cover") {
+        if (/^[\d.]+%\s+[\d.]+%$/.test(mediaPosition)) {
+          media.forEach(element => {
+            element.style.objectPosition = "50% 50%";
+          });
+        }
+        return;
+      }
+      media.forEach(element => updateFocalPosition(element, mediaPosition));
+    };
+    const resizeObserver = new ResizeObserver(updateAll);
+    resizeObserver.observe(container);
+    media.forEach(element => {
+      resizeObserver.observe(element);
+      element.addEventListener("loadedmetadata", updateAll);
+      element.addEventListener("load", updateAll);
+    });
+    updateAll();
+
+    return () => {
+      resizeObserver.disconnect();
+      media.forEach(element => {
+        element.removeEventListener("loadedmetadata", updateAll);
+        element.removeEventListener("load", updateAll);
+      });
+    };
+  }, [mediaFit]);
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -64,7 +138,7 @@ export default function Home() {
           style={{ backgroundColor: heroData.backgroundColor }}
         >
           {/* Video background - Now purely a background layer */}
-          <div className="absolute inset-0 z-0">
+          <div ref={mediaContainerRef} className="absolute inset-0 z-0">
             {heroData.mobileVideoUrl ? (
               <video
                 autoPlay
