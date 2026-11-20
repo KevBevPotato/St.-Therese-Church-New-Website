@@ -1,0 +1,45 @@
+{
+  "isHidden": false,
+  "title": "Adoration",
+  "time": "8-9am",
+  "location": "",
+  "schedule": {
+    "recurrenceType": "weekly",
+    "startDate": "2026-11-22"
+  },
+  "additionalSchedules": [
+    {
+      "time": "4:30-5:30pm",
+      "schedule": {
+        "startDate": "2026-11-22",
+        "recurrenceType": "weekly"
+      }
+    },
+    {
+      "time": "3:30-4:30pm",
+      "schedule": {
+        "startDate": "2026-11-21",
+        "dayOfWeek": "Saturday",
+        "daysOfWeek": [
+          "Saturday"
+        ]
+      }
+    }
+  ],
+  "categories": [
+    {
+      "isHidden": false
+    }
+  ],
+  "gallery": [
+    {
+      "isHidden": false,
+      "showInCarousel": true
+    }
+  ],
+  "faqItems": [
+    {
+      "isHidden": false
+    }
+  ]
+}
