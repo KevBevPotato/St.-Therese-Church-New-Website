@@ -1,7 +1,7 @@
 // App.tsx
 import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { useEffect } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import NotFound from "@/pages/NotFound";
 import { Redirect, Route, Switch, useLocation, useParams } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -16,6 +16,7 @@ import StaffDetail from "./pages/StaffDetail";
 import FaithFormationDetail from "./pages/FaithFormationDetail";
 import ConnectGroupsPage from "./pages/ConnectGroupsPage";
 import LiturgyPage from "./pages/LiturgyPage";
+const MassPage = lazy(() => import("./pages/MassPage"));
 import GetInvolvedPage from "./pages/GetInvolvedPage";
 import OrganizationsLandingPage from "./pages/OrganizationsLandingPage";
 import NeedHelp from "./pages/NeedHelp";
@@ -68,6 +69,14 @@ function Router() {
       <Route path={"/knights-of-columbus"} component={KnightsOfColumbus} />
       <Route path={"/connect-groups"} component={ConnectGroupsPage} />
       <Route path={"/liturgy"} component={LiturgyPage} />
+      <Route
+        path={"/mass"}
+        component={() => (
+          <Suspense fallback={null}>
+            <MassPage />
+          </Suspense>
+        )}
+      />
       <Route path={"/need-help"} component={NeedHelp} />
       <Route path={"/contribute"} component={Contribute} />
       <Route path={"/faith-formation"} component={FaithFormation} />

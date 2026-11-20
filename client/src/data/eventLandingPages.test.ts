@@ -2,8 +2,20 @@ import { describe, expect, it } from "vitest";
 import { getCustomLandingPage } from "./eventLandingPages";
 
 describe("getCustomLandingPage", () => {
-  it("uses the custom landing pages for recurring daily Mass and Rosary events", () => {
-    expect(getCustomLandingPage("daily-mass-2026-11-26")).not.toBeNull();
+  it("uses one shared Mass page for daily and Sunday Mass events", () => {
+    const dailyMassPage = getCustomLandingPage("daily-mass-2026-11-26");
+
+    expect(dailyMassPage).not.toBeNull();
+    expect(getCustomLandingPage("sunday-mass-9am-2026-11-22")).toBe(
+      dailyMassPage
+    );
+    expect(getCustomLandingPage("sunday-mass-530pm-2026-11-22")).toBe(
+      dailyMassPage
+    );
+  });
+
+  it("keeps the custom landing page for recurring Rosary events", () => {
+    expect(getCustomLandingPage("daily-rosary-2026-11-20")).not.toBeNull();
     expect(getCustomLandingPage("daily-rosary-2026-11-20")).not.toBeNull();
   });
 

@@ -333,6 +333,42 @@
         "referralButton": "Refer",
         "learnMoreButton": "Learn More"
       },
+      "massPage": {
+        "eyebrow": "Sacramental Life",
+        "title": "The Holy Mass",
+        "introduction": "At every Mass, we gather as a parish family to worship God and receive Jesus Christ in the Eucharist. Whether you are a longtime parishioner or visiting for the first time, you are welcome.",
+        "heroImage": "",
+        "aboutTitle": "A sacred encounter",
+        "about": "The Mass is the source and summit of Christian life. In the Liturgy of the Word, we listen to Scripture and pray together. In the Liturgy of the Eucharist, we give thanks and receive Christ in Holy Communion.",
+        "resourcesTitle": "Explore the Mass",
+        "resources": [
+          {
+            "title": "Prayer Before and After Mass",
+            "description": "Prayers to help you prepare for Mass and give thanks afterward.",
+            "document": ""
+          },
+          {
+            "title": "Explanation Guide to the Mass",
+            "description": "An overview of the parts of the Mass and their meaning.",
+            "document": ""
+          },
+          {
+            "title": "Concise Order of the Mass",
+            "description": "A brief reference to the order of the Mass.",
+            "document": ""
+          },
+          {
+            "title": "Longer Form Order of the Mass",
+            "description": "A fuller guide to the order and prayers of the Mass.",
+            "document": ""
+          },
+          {
+            "title": "Devotions Before and After Holy Communion",
+            "description": "Prayers for time before and after receiving Holy Communion.",
+            "document": ""
+          }
+        ]
+      },
       "needHelp": {
         "title": "Need Help",
         "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",
