@@ -73,14 +73,19 @@
         "resourcesIntroduction": "Pray with Scripture through the mysteries of the rosary. Download a guide for each Gospel.",
         "resources": [
           {
-            "title": "Scriptural Rosary — Mark",
-            "description": "A Scripture-guided rosary using passages from the Gospel of Mark.",
-            "document": "/uploads/scriptural-rosary-mark.pdf"
+            "title": "Scriptural Rosary - All Gospels",
+            "description": "",
+            "document": "/uploads/scriptural-rosary-all-gospels.pdf"
           },
           {
             "title": "Scriptural Rosary — Matthew",
             "description": "A Scripture-guided rosary using passages from the Gospel of Matthew.",
             "document": "/uploads/scriptural-rosary-matthew.pdf"
+          },
+          {
+            "title": "Scriptural Rosary — Mark",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Mark.",
+            "document": "/uploads/scriptural-rosary-mark.pdf"
           },
           {
             "title": "Scriptural Rosary — Luke",
