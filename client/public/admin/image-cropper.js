@@ -1,4 +1,5 @@
 (function () {
+  const h = window.h;
   const handledInputs = new WeakSet();
   const aspectRatios = {
     original: null,
@@ -435,6 +436,147 @@
     handledInputs.add(input);
     input.dispatchEvent(new Event("change", { bubbles: true }));
   }
+
+  function getPublicMediaPath(filePath, props) {
+    if (/^(https?:)?\/\//i.test(filePath)) return filePath;
+
+    const fileName = filePath.split("/").pop();
+    if (!fileName)
+      throw new Error("The cropped image upload returned no file path.");
+
+    const publicFolder =
+      props.field.get("public_folder") ||
+      (props.config && props.config.get("public_folder")) ||
+      "";
+    const normalizedFolder = publicFolder.replace(/\/+$/, "");
+    return normalizedFolder ? `${normalizedFolder}/${fileName}` : fileName;
+  }
+
+  function getEditedFileName(file) {
+    const dot = file.name.lastIndexOf(".");
+    const baseName = dot > 0 ? file.name.slice(0, dot) : file.name;
+    const extension = dot > 0 ? file.name.slice(dot) : "";
+    return `${baseName}-cropped-${Date.now()}${extension}`;
+  }
+
+  const imageWidget = window.CMS.getWidget("image");
+  if (!imageWidget || !imageWidget.control) {
+    throw new Error("The Decap CMS image widget could not be loaded.");
+  }
+  const BuiltInImageControl = imageWidget.control;
+
+  const EditableImageControl = window.createClass({
+    getInitialState() {
+      return { busy: false, error: "" };
+    },
+
+    async handleEditPicture() {
+      if (this.state.busy) return;
+      this.setState({ busy: true, error: "" });
+
+      try {
+        const asset = this.props.getAsset(this.props.value, this.props.field);
+        const imageUrl = String(asset || "");
+        if (!imageUrl)
+          throw new Error("The existing image could not be loaded.");
+
+        const response = await fetch(imageUrl);
+        if (!response.ok) {
+          throw new Error(
+            `The existing image could not be loaded (${response.status}).`
+          );
+        }
+
+        const blob = await response.blob();
+        const fileName =
+          String(this.props.value).split("/").pop() || "cms-image.png";
+        const imageFile = new File([blob], fileName, {
+          type: blob.type || "image/png",
+          lastModified: Date.now(),
+        });
+        const image = await loadImage(imageFile);
+        const croppedFile = await createCropDialog(image, imageFile);
+        if (!croppedFile) return;
+
+        const uploadFile = new File(
+          [croppedFile],
+          getEditedFileName(croppedFile),
+          { type: croppedFile.type, lastModified: Date.now() }
+        );
+        const result = await this.props.onPersistMedia(uploadFile, {
+          field: this.props.field,
+          privateUpload: this.props.field.get("private"),
+        });
+        const mediaFile = result?.payload?.file || result?.payload;
+        if (!mediaFile?.path) {
+          throw new Error(
+            "The cropped image could not be uploaded to the CMS."
+          );
+        }
+
+        this.props.onChange(getPublicMediaPath(mediaFile.path, this.props));
+      } catch (error) {
+        console.error("Editing an existing CMS image failed:", error);
+        this.setState({
+          error:
+            error instanceof Error
+              ? error.message
+              : "The image could not be edited. Please try again.",
+        });
+      } finally {
+        this.setState({ busy: false });
+      }
+    },
+
+    render() {
+      return h(
+        "div",
+        null,
+        h(BuiltInImageControl, this.props),
+        typeof this.props.value === "string" && this.props.value
+          ? h(
+              "div",
+              { style: { marginTop: "8px" } },
+              h(
+                "button",
+                {
+                  type: "button",
+                  disabled: this.state.busy,
+                  onClick: this.handleEditPicture,
+                  style: {
+                    padding: "8px 12px",
+                    border: "1px solid #737373",
+                    borderRadius: "5px",
+                    background: "#fff",
+                    color: "#171717",
+                    font: "inherit",
+                    cursor: this.state.busy ? "wait" : "pointer",
+                  },
+                },
+                this.state.busy ? "Editing picture..." : "Edit picture"
+              ),
+              this.state.error
+                ? h(
+                    "p",
+                    {
+                      role: "alert",
+                      style: { color: "#b91c1c", fontSize: "13px" },
+                    },
+                    this.state.error
+                  )
+                : null
+            )
+          : null
+      );
+    },
+  });
+
+  window.CMS.registerWidget(
+    "image",
+    EditableImageControl,
+    imageWidget.preview,
+    imageWidget.schema
+  );
 
   document.addEventListener(
     "change",

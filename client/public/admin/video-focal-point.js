@@ -1,8 +1,9 @@
 (function () {
   const h = window.h;
 
-  function createFocalPointDialog(file, onSave) {
-    const videoUrl = URL.createObjectURL(file);
+  function createFocalPointDialog(source, onSave) {
+    const objectUrl = source instanceof File ? URL.createObjectURL(source) : "";
+    const videoUrl = objectUrl || source;
 
     return new Promise(resolve => {
       const state = { point: null, dimensions: null, finished: false };
@@ -149,7 +150,7 @@
         video.pause();
         video.removeAttribute("src");
         video.load();
-        URL.revokeObjectURL(videoUrl);
+        if (objectUrl) URL.revokeObjectURL(objectUrl);
         overlay.remove();
         if (previousFocus instanceof HTMLElement) previousFocus.focus();
         if (point) onSave(point);
@@ -249,11 +250,33 @@
       await this.openFocalPointDialog(file);
     },
 
-    async openFocalPointDialog(file) {
+    getExistingVideoUrl() {
+      const data = this.props.entry && this.props.entry.get("data");
+      const videoPath =
+        data &&
+        (data.get("desktopVideoUrl") ||
+          data.get("videoUrl") ||
+          data.get("mobileVideoUrl"));
+      if (!videoPath) return "";
+
+      const asset = this.props.getAsset(videoPath, this.props.field);
+      return String(asset || videoPath);
+    },
+
+    async handleEditExistingVideo() {
+      const videoUrl = this.getExistingVideoUrl();
+      if (!videoUrl) {
+        this.setState({ error: "No homepage video is selected to edit." });
+        return;
+      }
+      await this.openFocalPointDialog(videoUrl);
+    },
+
+    async openFocalPointDialog(source) {
       if (this.state.busy) return;
       this.setState({ busy: true, error: "" });
       try {
-        await createFocalPointDialog(file, point => {
+        await createFocalPointDialog(source, point => {
           const value = `${(point.x * 100).toFixed(1)}% ${(point.y * 100).toFixed(1)}%`;
           this.props.onChange(value);
         });
@@ -272,6 +295,7 @@
 
     render() {
       const value = this.props.value || "center";
+      const existingVideoUrl = this.getExistingVideoUrl();
       return h(
         "div",
         { className: this.props.classNameWrapper },
@@ -302,6 +326,28 @@
             },
           },
           "Choose focal point"
+        ),
+        h(
+          "button",
+          {
+            type: "button",
+            disabled: this.state.busy || !existingVideoUrl,
+            onClick: this.handleEditExistingVideo,
+            style: {
+              marginLeft: "8px",
+              padding: "8px 12px",
+              border: "1px solid #737373",
+              borderRadius: "5px",
+              background: existingVideoUrl ? "#fff" : "#f5f5f5",
+              color: "#171717",
+              font: "inherit",
+              cursor:
+                existingVideoUrl && !this.state.busy
+                  ? "pointer"
+                  : "not-allowed",
+            },
+          },
+          "Edit current video focal point"
         ),
         h(
           "p",

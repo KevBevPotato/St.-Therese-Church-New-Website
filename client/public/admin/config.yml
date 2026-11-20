@@ -101,7 +101,7 @@ collections:
               name: "mediaPosition",
               widget: "video-focal-point",
               default: "center",
-              hint: "Upload a video above, then click the point you want to keep centered in the hero.",
+              hint: "Upload a video and choose its focal point, or edit the focal point of the current homepage video.",
               required: false,
             }
           - {
