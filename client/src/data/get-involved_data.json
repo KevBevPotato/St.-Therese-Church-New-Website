@@ -527,6 +527,27 @@
           }
         ]
       },
+      "adorationConfessionPage": {
+        "eyebrow": "Sacramental Life",
+        "title": "Adoration & Confession",
+        "introduction": "Spend time in prayer before the Blessed Sacrament and encounter God's mercy in the Sacrament of Reconciliation.",
+        "heroImage": "",
+        "heroImageAlt": "Adoration before the Blessed Sacrament",
+        "resourcesTitle": "Guides for Prayer and Reconciliation",
+        "resourcesIntroduction": "Resources to help you prepare for confession and spend time in prayer during adoration.",
+        "resources": [
+          {
+            "title": "Examination of Conscience",
+            "description": "A guide to prayerfully preparing for the Sacrament of Reconciliation.",
+            "document": ""
+          },
+          {
+            "title": "Eucharistic Adoration Guide",
+            "description": "A guide to spending time in prayer before the Blessed Sacrament.",
+            "document": ""
+          }
+        ]
+      },
       "needHelp": {
         "title": "Need Help",
         "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",

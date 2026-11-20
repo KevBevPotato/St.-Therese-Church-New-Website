@@ -1617,6 +1617,27 @@ collections:
                           - { label: "Resource Title", name: "title", widget: "string", required: true }
                           - { label: "Description", name: "description", widget: "markdown", required: false }
                           - { label: "PDF File", name: "document", widget: "file", required: false, hint: "Upload the PDF for this resource. It will appear as a download on the Rosary page." }
+                  - label: "Adoration & Confession Page"
+                    name: "adorationConfessionPage"
+                    widget: "object"
+                    required: false
+                    fields:
+                      - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
+                      - { label: "Page Title", name: "title", widget: "markdown", required: false }
+                      - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
+                      - { label: "Header Picture", name: "heroImage", widget: "image", required: false }
+                      - { label: "Header Picture Alt Text", name: "heroImageAlt", widget: "string", required: false }
+                      - { label: "Resources Heading", name: "resourcesTitle", widget: "markdown", required: false }
+                      - { label: "Resources Introduction", name: "resourcesIntroduction", widget: "markdown", required: false }
+                      - label: "Adoration & Confession Resources"
+                        name: "resources"
+                        widget: "list"
+                        required: false
+                        summary: "{{fields.title}}"
+                        fields:
+                          - { label: "Resource Title", name: "title", widget: "string", required: true }
+                          - { label: "Description", name: "description", widget: "markdown", required: false }
+                          - { label: "PDF File", name: "document", widget: "file", required: false, hint: "Upload the PDF for this resource. It will appear as a download on the Adoration & Confession page." }
                   - label: "Need Help Page"
                     name: "needHelp"
                     widget: "object"

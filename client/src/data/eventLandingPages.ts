@@ -18,6 +18,7 @@ const PREFIXES_IN_PRIORITY_ORDER: string[] = [
     'mass-sunday-am',
     'mass-sunday-pm',
     'daily-rosary',
+    'adoration-confession',
     'rosary-sun',
     'holyhour',
     'koc-officer',
@@ -29,6 +30,7 @@ const PREFIXES_IN_PRIORITY_ORDER: string[] = [
 ];
 
 const DailyRosary = lazy(() => import('@/pages/HomeEventPages/DailyRosary'));
+const AdorationConfession = lazy(() => import('@/pages/HomeEventPages/AdorationConfession'));
 const MassPage = lazy(() => import('@/pages/MassPage'));
 const CinemaWithTheShepherd = lazy(() => import('@/pages/HomeEventPages/CinemaWithTheShepherd'));
 const BishopBookclub = lazy(() => import('@/pages/HomeEventPages/BishopBookclub'));
@@ -39,6 +41,7 @@ const CUSTOM_PAGES: Record<string, ComponentType<EventLandingPageProps>> = {
     'sunday-mass-9am': MassPage,
     'sunday-mass-530pm': MassPage,
     'daily-rosary': DailyRosary,
+    'adoration-confession': AdorationConfession,
     'cinema-': CinemaWithTheShepherd,
     'bookclub-': BishopBookclub,
     'rise-podcast': RisePodcast,

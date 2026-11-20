@@ -19,6 +19,12 @@ describe("getCustomLandingPage", () => {
     expect(getCustomLandingPage("daily-rosary-2026-11-20")).not.toBeNull();
   });
 
+  it("uses a custom landing page for Adoration and Confession events", () => {
+    expect(
+      getCustomLandingPage("adoration-confession-2026-11-22")
+    ).not.toBeNull();
+  });
+
   it("falls back to the generic page for events without a custom landing page", () => {
     expect(getCustomLandingPage("parish-dinner-2026-11-21")).toBeNull();
   });
