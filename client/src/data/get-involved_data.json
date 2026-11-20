@@ -369,6 +369,36 @@
           }
         ]
       },
+      "rosaryPage": {
+        "eyebrow": "Sacramental Life",
+        "title": "The Daily Rosary.",
+        "introduction": "Every weekday morning at **7:00 AM** in the Main Sanctuary, our parish family gathers to pray the rosary together before the day begins. All are welcome — join us for the full rosary, a single decade, or simply to sit in prayer.",
+        "heroImage": "/landingpagephotos/Rosary.png",
+        "resourcesTitle": "Scriptural Rosary Guides",
+        "resourcesIntroduction": "Pray with Scripture through the mysteries of the rosary. Download a guide for each Gospel.",
+        "resources": [
+          {
+            "title": "Scriptural Rosary — Mark",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Mark.",
+            "document": ""
+          },
+          {
+            "title": "Scriptural Rosary — Matthew",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Matthew.",
+            "document": ""
+          },
+          {
+            "title": "Scriptural Rosary — Luke",
+            "description": "A Scripture-guided rosary using passages from the Gospel of Luke.",
+            "document": ""
+          },
+          {
+            "title": "Scriptural Rosary — John",
+            "description": "A Scripture-guided rosary using passages from the Gospel of John.",
+            "document": ""
+          }
+        ]
+      },
       "needHelp": {
         "title": "Need Help",
         "introduction": "Share a little about the help you are looking for. Parish staff will follow up with you.",

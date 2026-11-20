@@ -8,10 +8,12 @@ import { Card } from '@/components/ui/card';
 import {
     ArrowLeft,
     Cross,
+    Download,
     ExternalLink,
-    Users,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import CmsMarkdown from '@/components/CmsMarkdown';
+import getInvolvedData from '@/data/get-involved';
 
 /**
  * Daily Rosary — landing page
@@ -31,6 +33,15 @@ const MARYKNOLL_ROSARY_GUIDE =
     'https://www.maryknollsisters.org/pray-with-us/pray-rosary-us/?gad_source=1&gad_campaignid=23374479357&gbraid=0AAAAABtvOnY7g8nyvAdYShNA80_tMmxfx&gclid=Cj0KCQjw4orUBhCjARIsAIbF3qy2U8ni3lrwxi_-ukzHYXnDQclEm5tbqJaxn_U-9KQIW6nJ9Dt4BV8aAgaaEALw_wcB';
 
 export default function DailyRosary({ event }: EventLandingPageProps) {
+    const page = getInvolvedData.settings.parishLifePages?.rosaryPage;
+    const resources = (page?.resources ?? []).filter(
+        resource =>
+            typeof resource?.title === 'string' &&
+            resource.title.trim().length > 0 &&
+            typeof resource?.document === 'string' &&
+            resource.document.trim().length > 0
+    );
+
     return (
         <div className="min-h-screen flex flex-col bg-background">
             <Header />
@@ -51,17 +62,17 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
                 <div className="grid gap-10 md:grid-cols-[1.1fr_0.9fr] md:items-center max-w-6xl mx-auto">
                     <div>
                         <p className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
-                            Sacramental Life
+                            {page?.eyebrow || 'Sacramental Life'}
                         </p>
                         <h1 className="mt-4 font-serif text-5xl font-bold leading-[0.98] text-primary md:text-7xl">
-                            The Daily Rosary.
+                            {page?.title || 'The Daily Rosary.'}
                         </h1>
-                        <p className="mt-6 text-lg leading-relaxed text-muted-foreground">
-                            Every weekday morning at <strong>7:00 AM</strong> in the Main Sanctuary,
-                            our parish family gathers to pray the rosary together before the day begins.
-                            All are welcome — join us for the full rosary, a single decade, or
-                            simply to sit in prayer.
-                        </p>
+                        <div className="mt-6 text-lg leading-relaxed text-muted-foreground">
+                            <CmsMarkdown>
+                                {page?.introduction ||
+                                    'Every weekday morning at **7:00 AM** in the Main Sanctuary, our parish family gathers to pray the rosary together before the day begins. All are welcome — join us for the full rosary, a single decade, or simply to sit in prayer.'}
+                            </CmsMarkdown>
+                        </div>
 
                         <div className="mt-8 flex flex-wrap gap-3">
                             <Button
@@ -90,7 +101,7 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
                     <aside className="flex justify-center md:justify-end">
                         <div className="w-full max-w-md aspect-square overflow-hidden rounded-3xl border-2 border-primary/10 shadow-xl bg-white">
                             <img
-                                src="/landingpagephotos/Rosary.png"
+                                src={page?.heroImage || '/landingpagephotos/Rosary.png'}
                                 alt="The Rosary"
                                 loading="eager"
                                 decoding="async"
@@ -100,6 +111,54 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
                     </aside>
                 </div>
             </section>
+
+            {resources.length > 0 && (
+                <section className="border-y border-primary/10 bg-[#f3efe5] py-16 md:py-20">
+                    <div className="container mx-auto px-4">
+                        <div className="mx-auto max-w-3xl text-center">
+                            <p className="text-xs font-bold uppercase tracking-[0.22em] text-[#9b762f]">
+                                Pray with Scripture
+                            </p>
+                            <h2 className="mt-3 font-serif text-3xl font-bold text-primary md:text-4xl">
+                                {page?.resourcesTitle || 'Scriptural Rosary Guides'}
+                            </h2>
+                            {page?.resourcesIntroduction && (
+                                <div className="mt-4 leading-relaxed text-muted-foreground">
+                                    <CmsMarkdown>{page.resourcesIntroduction}</CmsMarkdown>
+                                </div>
+                            )}
+                        </div>
+                        <div className="mx-auto mt-10 grid max-w-5xl gap-4 md:grid-cols-2">
+                            {resources.map((resource, index) => (
+                                <Card
+                                    key={`${resource.title}-${index}`}
+                                    className="flex flex-col border border-primary/10 bg-white p-6 shadow-sm transition-shadow hover:shadow-md sm:flex-row sm:items-center sm:justify-between sm:gap-6"
+                                >
+                                    <div>
+                                        <h3 className="font-serif text-xl font-bold text-primary">
+                                            {resource.title}
+                                        </h3>
+                                        {resource.description && (
+                                            <div className="mt-2 text-sm leading-relaxed text-muted-foreground">
+                                                <CmsMarkdown>{resource.description}</CmsMarkdown>
+                                            </div>
+                                        )}
+                                    </div>
+                                    <a
+                                        href={resource.document}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="mt-5 inline-flex shrink-0 items-center justify-center gap-2 rounded-full border border-primary/15 px-4 py-2.5 text-xs font-bold uppercase tracking-widest text-primary transition-colors hover:border-primary hover:bg-primary hover:text-white sm:mt-0"
+                                    >
+                                        <Download className="size-4" aria-hidden="true" />
+                                        Download
+                                    </a>
+                                </Card>
+                            ))}
+                        </div>
+                    </div>
+                </section>
+            )}
 
             <section className="container mx-auto px-4">
                 <EventMedia event={event} />
