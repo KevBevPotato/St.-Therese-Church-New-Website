@@ -5,6 +5,11 @@ export type MonthlyCalendarPdf = {
   endDate?: string;
 };
 
+type ScheduledMonthlyCalendarPdf = MonthlyCalendarPdf & {
+  startDate: string;
+  endDate: string;
+};
+
 function isValidDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
 
@@ -24,20 +29,37 @@ function localDateKey(date: Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function getActiveMonthlyCalendarPdfs(
+function isValidMonthlyCalendarPdf(
+  pdf: MonthlyCalendarPdf
+): pdf is ScheduledMonthlyCalendarPdf {
+  const { label, pdfUrl, startDate, endDate } = pdf;
+  return Boolean(
+    label?.trim() &&
+      pdfUrl?.trim() &&
+      startDate &&
+      endDate &&
+      isValidDate(startDate) &&
+      isValidDate(endDate) &&
+      startDate <= endDate
+  );
+}
+
+export function getUpcomingMonthlyCalendarPdfs(
   pdfs: readonly MonthlyCalendarPdf[] | undefined,
   today = new Date()
-): MonthlyCalendarPdf[] {
+): ScheduledMonthlyCalendarPdf[] {
   const todayKey = localDateKey(today);
 
   return (pdfs ?? [])
-    .filter(({ label, pdfUrl, startDate, endDate }) => {
-      if (!label?.trim() || !pdfUrl?.trim()) return false;
-      if (!startDate || !endDate) return false;
-      if (!isValidDate(startDate) || !isValidDate(endDate)) return false;
-      if (startDate > endDate) return false;
-
-      return todayKey >= startDate && todayKey <= endDate;
-    })
+    .filter(isValidMonthlyCalendarPdf)
+    .filter(({ endDate }) => endDate >= todayKey)
     .slice(0, 2);
+}
+
+export function getAllMonthlyCalendarPdfs(
+  pdfs: readonly MonthlyCalendarPdf[] | undefined
+): ScheduledMonthlyCalendarPdf[] {
+  return (pdfs ?? [])
+    .filter(isValidMonthlyCalendarPdf)
+    .sort((first, second) => second.startDate.localeCompare(first.startDate));
 }

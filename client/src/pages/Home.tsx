@@ -10,7 +10,7 @@ import UpcomingEventsCalendar from "@/components/UpcomingEventsCalendar";
 import CmsMarkdown from "@/components/CmsMarkdown";
 import heroData from "@/data/hero_data.json";
 import homeContactData from "@/data/home_contact_data.json";
-import { getActiveMonthlyCalendarPdfs } from "@/lib/monthly-calendar-pdfs";
+import { getUpcomingMonthlyCalendarPdfs } from "@/lib/monthly-calendar-pdfs";
 
 function getMediaFit(value: string): "cover" | "contain" {
   return value === "contain" ? "contain" : "cover";
@@ -38,7 +38,7 @@ export default function Home() {
   const monthlyCalendarPdfs =
     heroData.showMonthlyCalendarButtons === false
       ? []
-      : getActiveMonthlyCalendarPdfs(heroData.monthlyCalendarPdfs);
+      : getUpcomingMonthlyCalendarPdfs(heroData.monthlyCalendarPdfs);
   const overlayStrength = Math.max(0, Math.min(1, heroData.overlayStrength));
   const overlayStyle = {
     background: `linear-gradient(90deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength)} 0%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.64)} 58%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.1)} 100%), linear-gradient(0deg, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.7)} 0%, transparent 65%, ${colorWithOpacity(heroData.overlayColor, overlayStrength * 0.2)} 100%)`,
@@ -191,16 +191,11 @@ export default function Home() {
       {/* Upcoming Events Calendar Section */}
       <UpcomingEventsCalendar
         homeView
-        monthlyCalendarArchiveButton={
-          heroData.monthlyCalendarArchiveUrl
-            ? {
-                url: heroData.monthlyCalendarArchiveUrl,
-                label:
-                  heroData.monthlyCalendarArchiveLabel ||
-                  "View Monthly PDF Archive",
-              }
-            : undefined
-        }
+        monthlyCalendarArchiveButton={{
+          url: heroData.monthlyCalendarArchiveUrl || "/calendar/archive",
+          label:
+            heroData.monthlyCalendarArchiveLabel || "View Monthly PDF Archive",
+        }}
         monthlyCalendarPdfs={monthlyCalendarPdfs}
       />
 

@@ -29,26 +29,6 @@ media_folder: "client/public/uploads"
 public_folder: "/uploads"
 
 collections:
-  - name: "admin_tools"
-    label: "Bulletin Tools"
-    files:
-      - file: "client/public/admin/bulletin-tools.json"
-        label: "AI Prompt and Upload Instructions"
-        name: "bulletin_tools_file"
-        fields:
-          - {
-              label: "Bulletin AI Parsing Prompt",
-              name: "parsingPrompt",
-              widget: "text",
-              required: true,
-              hint: "Copy this prompt into your AI tool when converting a bulletin into CMS sections.",
-            }
-          - {
-              label: "Bulletin Uploading Instructions",
-              name: "uploadingInstructions",
-              widget: "text",
-              required: true,
-            }
   - name: "homepage"
     label: "Home Page"
     files:
@@ -216,14 +196,14 @@ collections:
               name: "monthlyCalendarArchiveUrl",
               widget: "string",
               required: false,
-              hint: "The archive button is hidden until a URL is provided.",
+              hint: "Optional destination for the archive button. Leave blank to use the monthly calendar archive page.",
             }
           - label: "Monthly Calendar PDFs"
             name: "monthlyCalendarPdfs"
             widget: "list"
             required: false
             summary: "{{fields.label}} ({{fields.startDate}} to {{fields.endDate}})"
-            hint: "Add PDFs in the order you want them shown. At most two PDFs whose date ranges include today appear; expired PDFs disappear and the next eligible one moves into place."
+            hint: "Add PDFs in the order you want them shown. Up to two PDFs that have not expired appear as buttons; expired PDFs remain available in the archive."
             fields:
               - { label: "Button Label", name: "label", widget: "string", required: true }
               - {
@@ -481,7 +461,13 @@ collections:
           required: false,
         }
       - { label: "Automatic event ID", name: "id", widget: "hidden", required: false }
-      - { label: "Title", name: "title", widget: "markdown" , required: false }
+      - {
+          label: "Title",
+          name: "title",
+          widget: "markdown",
+          required: false,
+          hint: "Use this collection for a separate one-time event, including an additional event on a recurring Mass date.",
+        }
       - {
           label: "Date",
           name: "date",
@@ -648,7 +634,7 @@ collections:
           name: "title",
           widget: "markdown",
           required: false,
-          hint: "Top-level event details are shared by every occurrence. Use the date previews in Schedule, Previews, and Exceptions to customize or cancel a specific date, even when this schedule has no end date.",
+          hint: "Top-level event details are shared by every occurrence. Use Schedule, Previews, and Exceptions to customize or cancel one occurrence; use One-Time Events to add a separate event on the same date.",
         }
       - { label: "Time", name: "time", widget: "string" , required: false }
       - { label: "Location", name: "location", widget: "markdown" , required: false }
@@ -656,7 +642,7 @@ collections:
         name: "schedule"
         widget: "recurrence-schedule"
         required: false
-        hint: "Choose a date range and pattern. Preview generated dates, select Edit this date to customize its details, show a cancellation notice, or remove just that occurrence. Add a one-time date even when it does not match this schedule."
+        hint: "Choose a date range and pattern. Edit this date changes this event's occurrence (including its title); it does not add a second event. Use Parish Events · One-Time Events for a separate event on the same date."
       - label: "Additional schedule sets"
         name: "additionalSchedules"
         widget: "list"
@@ -2143,4 +2129,31 @@ collections:
               widget: "boolean",
               default: false,
               required: false,
+            }
+  - name: "admin_tools"
+    label: "Tools"
+    files:
+      - file: "client/public/admin/bulletin-tools.json"
+        label: "AI Prompts and Upload Instructions"
+        name: "bulletin_tools_file"
+        fields:
+          - {
+              label: "Bulletin AI Parsing Prompt",
+              name: "parsingPrompt",
+              widget: "text",
+              required: true,
+              hint: "Copy this prompt into your AI tool when converting a bulletin into CMS sections.",
+            }
+          - {
+              label: "Calendar AI Parsing Prompt",
+              name: "calendarParsingPrompt",
+              widget: "text",
+              required: true,
+              hint: "The Calendar AI Prompt download uses this text.",
+            }
+          - {
+              label: "Bulletin Uploading Instructions",
+              name: "uploadingInstructions",
+              widget: "text",
+              required: true,
             }

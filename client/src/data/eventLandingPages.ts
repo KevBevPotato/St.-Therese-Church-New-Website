@@ -11,11 +11,11 @@ import type { EventLandingPageProps } from '@/components/eventfolders/types';
  */
 
 const PREFIXES_IN_PRIORITY_ORDER: string[] = [
-    'mass-daily',
+    'daily-mass',
     'mass-saturday',
     'mass-sunday-am',
     'mass-sunday-pm',
-    'rosary-daily',
+    'daily-rosary',
     'rosary-sun',
     'holyhour',
     'koc-officer',
@@ -27,12 +27,14 @@ const PREFIXES_IN_PRIORITY_ORDER: string[] = [
 ];
 
 const DailyRosary = lazy(() => import('@/pages/HomeEventPages/DailyRosary'));
+const DailyMass = lazy(() => import('@/pages/HomeEventPages/DailyMass'));
 const CinemaWithTheShepherd = lazy(() => import('@/pages/HomeEventPages/CinemaWithTheShepherd'));
 const BishopBookclub = lazy(() => import('@/pages/HomeEventPages/BishopBookclub'));
 const RisePodcast = lazy(() => import('@/pages/HomeEventPages/RisePodcast'));
 
 const CUSTOM_PAGES: Record<string, ComponentType<EventLandingPageProps>> = {
-    'rosary-daily': DailyRosary,
+    'daily-mass': DailyMass,
+    'daily-rosary': DailyRosary,
     'cinema-': CinemaWithTheShepherd,
     'bookclub-': BishopBookclub,
     'rise-podcast': RisePodcast,

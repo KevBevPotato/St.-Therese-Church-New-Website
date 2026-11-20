@@ -27,6 +27,7 @@ import PreviousBulletins from "./components/PreviousBulletins";
 import NextWeekBulletin from "./components/NextWeekBulletin";
 import UpcomingEventsCalendar from "./components/UpcomingEventsCalendar";
 import EventDetail from "./pages/EventDetail";
+import MonthlyCalendarArchive from "./pages/MonthlyCalendarArchive";
 
 import WednesdaySupper from "./components/WednesdaySupper";
 import KnightsOfColumbus from "./components/KnightsOfColumbus";
@@ -87,6 +88,7 @@ function Router() {
       <Route path={"/new-to-st-therese"} component={NewToStTherese} />
 
       <Route path={"/events"} component={UpcomingEventsCalendar} />
+      <Route path={"/calendar/archive"} component={MonthlyCalendarArchive} />
       <Route path={"/events/:id"} component={EventDetail} />
 
       <Route path={"/404"} component={NotFound} />

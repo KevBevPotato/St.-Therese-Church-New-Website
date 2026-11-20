@@ -617,8 +617,8 @@
           "p",
           { style: { margin: "0 0 10px", color: "#475569" } },
           schedule.endDate
-            ? "Preview generated dates. Uncheck Include to remove a date, or choose Edit this date to customize it. Add a one-time date even when it does not match this schedule. The preview is capped at 400 dates."
-            : "No end date is set. The preview shows the first year; add a one-time date below to add an occurrence on any date."
+            ? "Preview generated dates. Uncheck Include to remove a date, or choose Edit this date to customize its title and details. Add a one-time occurrence to this event even when it does not match the schedule. To add a separate event, use Parish Events · One-Time Events. The preview is capped at 400 dates."
+            : "No end date is set. The preview shows the first year; add a one-time occurrence to this event below. To add a separate event, use Parish Events · One-Time Events."
         ),
         h(
           "div",
@@ -634,7 +634,7 @@
           h(
             "label",
             { style: { ...fieldStyle, marginBottom: 0 } },
-            h("span", { style: labelStyle }, "Add one-time date or exception"),
+            h("span", { style: labelStyle }, "Add one-time occurrence date"),
             h("input", {
               type: "date",
               value: this.state.exceptionDate,

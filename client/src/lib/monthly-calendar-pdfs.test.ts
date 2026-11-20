@@ -1,8 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { getActiveMonthlyCalendarPdfs } from "./monthly-calendar-pdfs";
+import {
+  getAllMonthlyCalendarPdfs,
+  getUpcomingMonthlyCalendarPdfs,
+} from "./monthly-calendar-pdfs";
 
-describe("getActiveMonthlyCalendarPdfs", () => {
-  it("shows at most the first two PDFs active on the current date", () => {
+describe("getUpcomingMonthlyCalendarPdfs", () => {
+  it("shows the first two non-expired PDFs, including the upcoming month", () => {
     const pdfs = [
       {
         label: "November",
@@ -25,13 +28,13 @@ describe("getActiveMonthlyCalendarPdfs", () => {
     ];
 
     expect(
-      getActiveMonthlyCalendarPdfs(pdfs, new Date(2026, 10, 19)).map(
+      getUpcomingMonthlyCalendarPdfs(pdfs, new Date(2026, 10, 19)).map(
         ({ label }) => label
       )
-    ).toEqual(["November", "Extra"]);
+    ).toEqual(["November", "December"]);
   });
 
-  it("moves the next active PDF into the first position after a date range expires", () => {
+  it("moves the next non-expired PDF into the first position after a range expires", () => {
     const pdfs = [
       {
         label: "November",
@@ -48,16 +51,16 @@ describe("getActiveMonthlyCalendarPdfs", () => {
     ];
 
     expect(
-      getActiveMonthlyCalendarPdfs(pdfs, new Date(2026, 11, 1)).map(
+      getUpcomingMonthlyCalendarPdfs(pdfs, new Date(2026, 11, 1)).map(
         ({ label }) => label
       )
     ).toEqual(["December"]);
-    expect(getActiveMonthlyCalendarPdfs(pdfs, new Date(2027, 0, 1))).toEqual(
+    expect(getUpcomingMonthlyCalendarPdfs(pdfs, new Date(2027, 0, 1))).toEqual(
       []
     );
   });
 
-  it("includes both the first and last dates in a PDF's date range", () => {
+  it("includes a PDF on its last date", () => {
     const pdf = {
       label: "November",
       pdfUrl: "/nov.pdf",
@@ -65,12 +68,9 @@ describe("getActiveMonthlyCalendarPdfs", () => {
       endDate: "2026-11-30",
     };
 
-    expect(getActiveMonthlyCalendarPdfs([pdf], new Date(2026, 10, 1))).toEqual([
-      pdf,
-    ]);
-    expect(getActiveMonthlyCalendarPdfs([pdf], new Date(2026, 10, 30))).toEqual(
-      [pdf]
-    );
+    expect(
+      getUpcomingMonthlyCalendarPdfs([pdf], new Date(2026, 10, 30))
+    ).toEqual([pdf]);
   });
 
   it("omits PDFs with invalid dates or missing required content", () => {
@@ -90,8 +90,39 @@ describe("getActiveMonthlyCalendarPdfs", () => {
       { label: "Missing dates", pdfUrl: "/unscheduled.pdf" },
     ];
 
-    expect(getActiveMonthlyCalendarPdfs(pdfs, new Date(2026, 0, 15))).toEqual(
+    expect(getUpcomingMonthlyCalendarPdfs(pdfs, new Date(2026, 0, 15))).toEqual(
       []
     );
+  });
+});
+
+describe("getAllMonthlyCalendarPdfs", () => {
+  it("includes past, current, and future PDFs in newest-first order", () => {
+    const pdfs = [
+      {
+        label: "November",
+        pdfUrl: "/nov.pdf",
+        startDate: "2026-11-01",
+        endDate: "2026-11-30",
+      },
+      {
+        label: "October",
+        pdfUrl: "/oct.pdf",
+        startDate: "2026-10-01",
+        endDate: "2026-10-31",
+      },
+      {
+        label: "December",
+        pdfUrl: "/dec.pdf",
+        startDate: "2026-12-01",
+        endDate: "2026-12-31",
+      },
+    ];
+
+    expect(getAllMonthlyCalendarPdfs(pdfs).map(({ label }) => label)).toEqual([
+      "December",
+      "November",
+      "October",
+    ]);
   });
 });
