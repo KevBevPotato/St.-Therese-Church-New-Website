@@ -130,7 +130,7 @@
         "eyebrow": "Sacramental Life",
         "title": "Adoration & Confession",
         "introduction": "Spend time in prayer before the Blessed Sacrament and encounter God's mercy in the Sacrament of Reconciliation.",
-        "heroImage": "",
+        "heroImage": "/uploads/adorationpicture.webp",
         "heroImageAlt": "Adoration before the Blessed Sacrament",
         "resourcesTitle": "Guides for Prayer and Reconciliation",
         "resourcesIntroduction": "Resources to help you prepare for confession and spend time in prayer during adoration.",
@@ -138,12 +138,12 @@
           {
             "title": "Examination of Conscience",
             "description": "A guide to prayerfully preparing for the Sacrament of Reconciliation.",
-            "document": ""
+            "document": "/uploads/a-detailed-catholic-examination-of-conscience-2nd-ed.pdf"
           },
           {
-            "title": "Eucharistic Adoration Guide",
+            "title": "15 Minutes Before the Blessed Sacrament",
             "description": "A guide to spending time in prayer before the Blessed Sacrament.",
-            "document": ""
+            "document": "/uploads/fifteen-minutes-in-the-company-of-jesus-2026.pdf"
           }
         ]
       }
