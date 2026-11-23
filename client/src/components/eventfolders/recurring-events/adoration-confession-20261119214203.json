@@ -47,6 +47,10 @@
       "isHidden": false,
       "showInCarousel": true,
       "caption": "Adoration"
+    },
+    {
+      "isHidden": false,
+      "showInCarousel": true
     }
   ],
   "faqItems": [
