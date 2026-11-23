@@ -40,20 +40,17 @@
   "gallery": [
     {
       "isHidden": false,
-      "showInCarousel": true,
-      "caption": "Adoration",
-      "photo": "/uploads/img_3526.jpg"
+      "showInCarousel": false,
+      "caption": "Adoration"
     },
     {
       "isHidden": false,
-      "showInCarousel": true,
-      "caption": "Adoration",
-      "photo": "/uploads/img_3822.jpg"
+      "showInCarousel": false,
+      "caption": "Adoration"
     },
     {
       "isHidden": false,
-      "showInCarousel": true,
-      "photo": "/uploads/img_3849.jpg"
+      "showInCarousel": false
     }
   ],
   "faqItems": [
