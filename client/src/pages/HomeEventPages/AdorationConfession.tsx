@@ -134,6 +134,7 @@ export default function AdorationConfession({
               <EventMedia
                 event={event}
                 galleryTitle="Adoration & Confession Gallery"
+                includeCarouselPhotosInGallery
               />
             </div>
           </section>

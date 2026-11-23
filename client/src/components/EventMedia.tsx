@@ -5,9 +5,14 @@ import type { CalendarEvent } from "@/components/eventfolders/types";
 interface EventMediaProps {
   event: Pick<CalendarEvent, "title" | "image" | "photos" | "gallery">;
   galleryTitle?: string;
+  includeCarouselPhotosInGallery?: boolean;
 }
 
-export function EventMedia({ event, galleryTitle = "Event Gallery" }: EventMediaProps) {
+export function EventMedia({
+  event,
+  galleryTitle = "Event Gallery",
+  includeCarouselPhotosInGallery = false,
+}: EventMediaProps) {
   const { title, image, photos, gallery } = event;
   const mediaByPhoto = new Map<
     string,
@@ -29,6 +34,7 @@ export function EventMedia({ event, galleryTitle = "Event Gallery" }: EventMedia
   const media = Array.from(mediaByPhoto.values());
   const carouselPhotos = media.filter(item => item.showInCarousel !== false);
   const archivedPhotos = media.filter(item => item.showInCarousel === false);
+  const galleryPhotos = includeCarouselPhotosInGallery ? media : archivedPhotos;
 
   if (media.length === 0) return null;
 
@@ -43,7 +49,7 @@ export function EventMedia({ event, galleryTitle = "Event Gallery" }: EventMedia
         />
       )}
 
-      {archivedPhotos.length > 0 && (
+      {galleryPhotos.length > 0 && (
         <section className="space-y-6">
           <div className="flex items-center gap-2">
             <ImageIcon className="size-5 text-primary" />
@@ -52,7 +58,7 @@ export function EventMedia({ event, galleryTitle = "Event Gallery" }: EventMedia
             </h2>
           </div>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
-            {archivedPhotos.map((item, index) => {
+            {galleryPhotos.map((item, index) => {
               const configuredLink = item.linkUrl?.trim() || "";
               const isValidLink =
                 /^https?:\/\//i.test(configuredLink) ||

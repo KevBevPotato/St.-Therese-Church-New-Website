@@ -560,7 +560,7 @@ collections:
         name: "gallery"
         widget: "list"
         required: false
-        hint: "Add flyers and pictures here; they appear together in the event carousel. Turn off Include in carousel to archive a picture in the gallery below it."
+        hint: "Add flyers and pictures here; included photos appear in both the carousel and gallery. Turn off Include in carousel to show a picture only in the gallery."
         summary: "{{fields.caption}}"
         fields:
           - {
@@ -590,7 +590,7 @@ collections:
               widget: "boolean",
               default: true,
               required: false,
-              hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
+              hint: "Turn off to show this photo only in the Event Gallery.",
             }
       - label: "Frequently Asked Questions (Optional)"
         name: "faqItems"
@@ -733,7 +733,7 @@ collections:
         name: "gallery"
         widget: "list"
         required: false
-        hint: "Add flyers and pictures here; they appear together in each occurrence's event carousel. Turn off Include in carousel to archive a picture in the gallery below it."
+        hint: "Add flyers and pictures here; included photos appear in each occurrence's carousel and gallery. Turn off Include in carousel to show a picture only in the gallery."
         summary: "{{fields.caption}}"
         fields:
           - {
@@ -763,7 +763,7 @@ collections:
               widget: "boolean",
               default: true,
               required: false,
-              hint: "Turn off to keep this photo in the Event Gallery without showing it in the carousel.",
+              hint: "Turn off to show this photo only in the Event Gallery.",
             }
       - label: "Frequently Asked Questions (Optional)"
         name: "faqItems"

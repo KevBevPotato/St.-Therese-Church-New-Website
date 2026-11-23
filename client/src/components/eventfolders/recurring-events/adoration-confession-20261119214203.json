@@ -41,16 +41,19 @@
     {
       "isHidden": false,
       "showInCarousel": true,
-      "caption": "Adoration"
+      "caption": "Adoration",
+      "photo": "/uploads/img_3526.jpg"
     },
     {
       "isHidden": false,
       "showInCarousel": true,
-      "caption": "Adoration"
+      "caption": "Adoration",
+      "photo": "/uploads/img_3822.jpg"
     },
     {
       "isHidden": false,
-      "showInCarousel": true
+      "showInCarousel": true,
+      "photo": "/uploads/img_3849.jpg"
     }
   ],
   "faqItems": [

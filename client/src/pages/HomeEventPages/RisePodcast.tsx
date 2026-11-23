@@ -68,7 +68,7 @@ export default function RisePodcast({ event }: EventLandingPageProps) {
             </section>
 
             <section className="container mx-auto px-4">
-                <EventMedia event={event} />
+                <EventMedia event={event} includeCarouselPhotosInGallery />
             </section>
 
             {/* About */}

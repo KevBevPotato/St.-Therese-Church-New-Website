@@ -198,7 +198,7 @@ export default function MassPage({ event }: MassPageProps) {
 
         {event && (
           <section className="container mx-auto px-4 pb-16">
-            <EventMedia event={event} />
+            <EventMedia event={event} includeCarouselPhotosInGallery />
           </section>
         )}
 

@@ -161,7 +161,7 @@ export default function DailyRosary({ event }: EventLandingPageProps) {
             )}
 
             <section className="container mx-auto px-4">
-                <EventMedia event={event} />
+                <EventMedia event={event} includeCarouselPhotosInGallery />
             </section>
 
             {/* Fr. Mark-Mary Ames feature */}

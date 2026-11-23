@@ -200,7 +200,7 @@ export default function EventDetail() {
               </h1>
             </div>
 
-            <EventMedia event={event} />
+            <EventMedia event={event} includeCarouselPhotosInGallery />
 
             <Card className="p-8 border-none shadow-xl bg-white rounded-3xl">
               <h2 className="font-serif text-2xl font-bold text-primary mb-4">
