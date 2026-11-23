@@ -5,6 +5,7 @@ import {
   MapPin,
 } from "lucide-react";
 import type { EventLandingPageProps } from "@/components/eventfolders/types";
+import { EventMedia } from "@/components/EventMedia";
 import CmsMarkdown from "@/components/CmsMarkdown";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -39,6 +40,13 @@ export default function AdorationConfession({
       resource.title.trim().length > 0 &&
       typeof resource?.document === "string" &&
       resource.document.trim().length > 0
+  );
+  const hasEventMedia = Boolean(
+    event.image?.trim() ||
+      event.photos?.some(photo => typeof photo === "string" && photo.trim()) ||
+      event.gallery?.some(
+        item => typeof item?.photo === "string" && item.photo.trim()
+      )
   );
 
   return (
@@ -119,6 +127,17 @@ export default function AdorationConfession({
             </Card>
           </div>
         </section>
+
+        {hasEventMedia && (
+          <section className="border-b border-primary/10 bg-white py-12 md:py-16">
+            <div className="container mx-auto max-w-6xl px-4">
+              <EventMedia
+                event={event}
+                galleryTitle="Adoration & Confession Gallery"
+              />
+            </div>
+          </section>
+        )}
 
         {resources.length > 0 && (
           <section className="border-y border-primary/10 bg-[#f3efe5] py-16 md:py-20">

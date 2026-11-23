@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import { Link } from "wouter";
 import type { EventLandingPageProps } from "@/components/eventfolders/types";
+import { EventMedia } from "@/components/EventMedia";
 import CmsMarkdown from "@/components/CmsMarkdown";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header";
@@ -194,6 +195,12 @@ export default function MassPage({ event }: MassPageProps) {
             </Card>
           )}
         </section>
+
+        {event && (
+          <section className="container mx-auto px-4 pb-16">
+            <EventMedia event={event} />
+          </section>
+        )}
 
         {resources.length > 0 && (
           <section className="border-y border-primary/10 bg-[#f3efe5] py-16 md:py-20">
