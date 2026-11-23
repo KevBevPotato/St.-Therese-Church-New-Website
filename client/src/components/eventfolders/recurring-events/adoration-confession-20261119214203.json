@@ -40,19 +40,19 @@
   "gallery": [
     {
       "isHidden": false,
-      "showInCarousel": true,
+      "showInCarousel": false,
       "caption": "Adoration",
       "photo": "/uploads/img_3526.jpg"
     },
     {
       "isHidden": false,
-      "showInCarousel": true,
+      "showInCarousel": false,
       "caption": "Adoration",
       "photo": "/uploads/img_3822.jpg"
     },
     {
       "isHidden": false,
-      "showInCarousel": true,
+      "showInCarousel": false,
       "photo": "/uploads/img_3849.jpg"
     }
   ],
