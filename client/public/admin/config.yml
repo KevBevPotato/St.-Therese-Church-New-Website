@@ -951,14 +951,14 @@ collections:
             name: "schedules"
             widget: "list"
             required: false
-            summary: "{{fields.title}} ({{fields.startDate}} - {{fields.endDate}})"
-            hint: "Schedules are shown on the current bulletin only within their start and end dates. If ranges overlap, the schedule with the latest start date is shown."
+            summary: "{{fields.title}}"
+            hint: "Add one row per schedule using Add Liturgical Schedules. The current and next non-expired uploaded schedules appear as buttons on the bulletin. Set each button's label, dates, and PDF here."
             fields:
               - {
-                  label: "Schedule Title",
+                  label: "Button Label",
                   name: "title",
-                  widget: "markdown",
-                  required: false,
+                  widget: "string",
+                  required: true,
                 }
               - {
                   label: "Start Date",

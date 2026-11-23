@@ -86,13 +86,13 @@ export default function Bulletin() {
     const currentRange = getCurrentWeekRange();
     const currentBulletin = buildBulletinForRange(currentRange.start, currentRange.end);
     const currentDate = formatDateKey(new Date());
-    const activeSchedule = (liturgicalSchedule.schedules ?? [])
+    const upcomingSchedules = (liturgicalSchedule.schedules ?? [])
         .filter(schedule =>
             schedule.pdfUrl &&
-            schedule.startDate <= currentDate &&
             schedule.endDate >= currentDate
         )
-        .sort((a, b) => b.startDate.localeCompare(a.startDate))[0];
+        .sort((a, b) => a.startDate.localeCompare(b.startDate))
+        .slice(0, 2);
 
     return (
         <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -131,7 +131,7 @@ export default function Bulletin() {
                             bulletin={currentBulletin}
                             title="This Week's Bulletin"
                             subtitle="Current Week"
-                            schedulePdfUrl={activeSchedule?.pdfUrl}
+                            schedulePdfs={upcomingSchedules}
                             hideSectionsWithoutPdf
                         />
                     </div>
