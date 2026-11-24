@@ -1339,6 +1339,24 @@ collections:
                   hint: "Controls the crop of the 16:9 program photo carousel images. Preview these under Programs.",
                   required: false,
                 }
+          - label: "Potluck Sign-Up Links"
+            name: "potlucks"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Date / Link Label", name: "label", widget: "string" }
+              - { label: "Potluck Sign-Up URL", name: "url", widget: "string" }
+              - {
+                  label: "Expiration Date (hide starting on this date)",
+                  name: "expiresOn",
+                  widget: "datetime",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  picker_utc: false,
+                  required: true,
+                }
           - label: "Programs (drag to reorder)"
             name: "categories"
             widget: "list"

@@ -22,6 +22,12 @@ export interface Resource {
     link?: string;
 }
 
+export interface FaithPotluck {
+    label: string;
+    url: string;
+    expiresOn: string;
+}
+
 export type FaithGroup = 'elementary' | 'middle-school' | 'high-school' | 'adult';
 
 export interface FaithCategory {
@@ -59,6 +65,22 @@ export const faithFormationSettings = visibleFaithFormation.settings as
 
 export const faithCategories: FaithCategory[] =
     visibleFaithFormation.categories as FaithCategory[];
+
+export const faithPotlucks: FaithPotluck[] =
+    visibleFaithFormation.potlucks as FaithPotluck[];
+
+export function getActiveFaithPotlucks(
+    potlucks: FaithPotluck[],
+    today = new Date(),
+): FaithPotluck[] {
+    const todayKey = [
+        today.getFullYear(),
+        String(today.getMonth() + 1).padStart(2, '0'),
+        String(today.getDate()).padStart(2, '0'),
+    ].join('-');
+
+    return potlucks.filter(potluck => potluck.expiresOn > todayKey);
+}
 
 export const substituteTeachers: Catechist[] = [
     {

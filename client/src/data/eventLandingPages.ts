@@ -28,7 +28,6 @@ const PREFIXES_IN_PRIORITY_ORDER: string[] = [
     'koc-members',
     'family-formation',
     'wednesday-faith-formation',
-    'wednesday-faith-formatioin',
     'cinema-',
     'bookclub-',
     'rise-podcast',
@@ -56,7 +55,6 @@ const CUSTOM_PAGES: Record<string, ComponentType<EventLandingPageProps>> = {
     'adoration-confession': AdorationConfession,
     'holy-hour': AdorationConfession,
     'wednesday-faith-formation': FaithFormationPage,
-    'wednesday-faith-formatioin': FaithFormationPage,
     'cinema-': CinemaWithTheShepherd,
     'bookclub-': BishopBookclub,
     'rise-podcast': RisePodcast,
@@ -75,4 +73,11 @@ export function getCustomLandingPage(
         return FaithFormationPage;
     }
     return null;
+}
+
+export function canonicalizeEventId(eventId: string): string {
+    return eventId.replace(
+        /^wednesday-faith-formatioin(?=-|$)/,
+        'wednesday-faith-formation'
+    );
 }

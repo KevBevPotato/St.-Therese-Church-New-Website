@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { getCustomLandingPage } from "./eventLandingPages";
+import { canonicalizeEventId, getCustomLandingPage } from "./eventLandingPages";
 
 describe("getCustomLandingPage", () => {
   it("uses one shared Mass page for daily, Saturday, and Sunday Mass events", () => {
@@ -41,12 +41,18 @@ describe("getCustomLandingPage", () => {
     );
 
     expect(faithFormationPage).not.toBeNull();
-    expect(
-      getCustomLandingPage("wednesday-faith-formatioin-2026-11-18")
-    ).toBe(faithFormationPage);
+    expect(getCustomLandingPage("wednesday-faith-formation-2026-11-18")).toBe(
+      faithFormationPage
+    );
     expect(
       getCustomLandingPage("teacher-night-2026-11-18", ["faith-formation"])
     ).toBe(faithFormationPage);
+  });
+
+  it("corrects the misspelled Wednesday Faith Formation event URL", () => {
+    expect(canonicalizeEventId("wednesday-faith-formatioin-2026-11-18")).toBe(
+      "wednesday-faith-formation-2026-11-18"
+    );
   });
 
   it("falls back to the generic page for events without a custom landing page", () => {

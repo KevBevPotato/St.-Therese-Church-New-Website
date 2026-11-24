@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { cn } from "@/lib/utils";
 
 export interface MinimalAccordionItem {
   id: string;
@@ -15,22 +16,35 @@ export interface MinimalAccordionItem {
 
 export default function MinimalAccordion({
   items,
+  nested = false,
 }: {
   items: MinimalAccordionItem[];
+  nested?: boolean;
 }) {
   return (
     <Accordion
       type="single"
       collapsible
-      className="w-full border-t border-primary/15"
+      className={cn(
+        "w-full border-t border-primary/15",
+        nested && "ml-4 border-t-[0.5px] border-primary/10 pl-4"
+      )}
     >
       {items.map(item => (
         <AccordionItem
           key={item.id}
           value={item.id}
-          className="border-primary/15 last:border-b"
+          className={cn(
+            "border-primary/15 last:border-b",
+            nested && "border-b-[0.5px] border-primary/10 last:border-b-[0.5px]"
+          )}
         >
-          <AccordionTrigger className="group items-center py-6 text-left font-serif text-xl font-semibold text-primary hover:no-underline [&>svg]:hidden">
+          <AccordionTrigger
+            className={cn(
+              "group items-center py-6 text-left font-serif text-xl font-semibold text-primary hover:no-underline [&>svg]:hidden",
+              nested && "py-4 text-base font-medium"
+            )}
+          >
             <span className="flex w-full items-center justify-between gap-6">
               <span>{item.title}</span>
               <span

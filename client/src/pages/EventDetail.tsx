@@ -1,5 +1,5 @@
 // client/src/pages/EventDetail.tsx
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useRoute, Link, useLocation } from "wouter";
 import {
   ChevronLeft,
@@ -25,11 +25,24 @@ import {
   generateRecurringEventsForMonth,
   EVENT_COLORS,
 } from "@/components/eventfolders/events";
-import { getCustomLandingPage } from "@/data/eventLandingPages";
+import {
+  canonicalizeEventId,
+  getCustomLandingPage,
+} from "@/data/eventLandingPages";
 
 export default function EventDetail() {
   const [match, params] = useRoute("/events/:id");
   const [, navigate] = useLocation();
+  const requestedEventId = params?.id;
+  const eventId = requestedEventId
+    ? canonicalizeEventId(requestedEventId)
+    : undefined;
+
+  useEffect(() => {
+    if (match && requestedEventId && eventId !== requestedEventId) {
+      navigate(`/events/${eventId}`, { replace: true });
+    }
+  }, [eventId, match, navigate, requestedEventId]);
 
   if (!match || !params) {
     return (
@@ -64,7 +77,6 @@ export default function EventDetail() {
     );
   }
 
-  const eventId = params.id;
   const allEvents = [...staticEvents];
   const currentDate = new Date();
   const startMonth = currentDate.getMonth();

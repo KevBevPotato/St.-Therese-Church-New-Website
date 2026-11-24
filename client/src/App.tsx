@@ -115,6 +115,14 @@ function Router() {
       <Route path={"/new-to-st-therese"} component={NewToStTherese} />
 
       <Route path={"/events"} component={UpcomingEventsCalendar} />
+      <Route
+        path="/events/wednesday-faith-formation"
+        component={FaithFormation}
+      />
+      <Route
+        path="/events/wednesday-faith-formatioin"
+        component={() => <Redirect to="/events/wednesday-faith-formation" />}
+      />
       <Route path={"/calendar/archive"} component={MonthlyCalendarArchive} />
       <Route path={"/events/:id"} component={EventDetail} />
 

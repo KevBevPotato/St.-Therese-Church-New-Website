@@ -143,6 +143,14 @@ describe("recurringEventsForDate", () => {
 });
 
 describe("generateRecurringEventsForMonth", () => {
+  it("uses the correctly spelled Wednesday Faith Formation event URL", () => {
+    const events = generateRecurringEventsForMonth(9, 2026);
+
+    expect(
+      events.some(event => event.id === "wednesday-faith-formation-2026-10-21")
+    ).toBe(true);
+  });
+
   it("generates CMS weekday Mass and Rosary once per selected day", () => {
     const events = generateRecurringEventsForMonth(10, 2026);
     const dailyMasses = events.filter(event => event.title === "Daily Mass");

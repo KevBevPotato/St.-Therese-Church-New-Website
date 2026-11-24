@@ -483,5 +483,42 @@
     "introduction": "Nurturing faith at every stage of life. From our littlest nursery babies to lifelong adult learners, discover programs designed to deepen your relationship with Christ and our parish community. - Bobby Myers",
     "registrationLabel": "Register!",
     "signupLabel": "Help us serve food!"
-  }
+  },
+  "potlucks": [
+    {
+      "label": "November 4, 2026",
+      "url": "https://www.mealtrain.com/potlucks/061mv9",
+      "expiresOn": "2026-11-04"
+    },
+    {
+      "label": "December 2, 2026",
+      "url": "https://www.mealtrain.com/potlucks/d2v974",
+      "expiresOn": "2026-12-02"
+    },
+    {
+      "label": "January 6, 2027",
+      "url": "https://www.mealtrain.com/potlucks/ogw67l",
+      "expiresOn": "2027-01-06"
+    },
+    {
+      "label": "February 3, 2027",
+      "url": "https://www.mealtrain.com/potlucks/6m34kd",
+      "expiresOn": "2027-02-03"
+    },
+    {
+      "label": "March 3, 2027",
+      "url": "https://www.mealtrain.com/potlucks/4238km",
+      "expiresOn": "2027-03-03"
+    },
+    {
+      "label": "April 7, 2027",
+      "url": "https://www.mealtrain.com/potlucks/yd529k",
+      "expiresOn": "2027-04-07"
+    },
+    {
+      "label": "May 5, 2027",
+      "url": "https://www.mealtrain.com/potlucks/w503g0",
+      "expiresOn": "2027-05-05"
+    }
+  ]
 }

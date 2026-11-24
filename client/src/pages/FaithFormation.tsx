@@ -8,16 +8,16 @@ import {
   getLatestRecurringScheduleEndDate,
 } from "../components/eventfolders/events";
 import { EventCard } from "../components/event-components";
-import { Card } from "../components/ui/card";
 import { Button } from "../components/ui/button";
+import MinimalAccordion from "../components/MinimalAccordion";
 import { submitForm } from "@/lib/submit-form";
 import { useSubmissionReview } from "@/hooks/use-submission-review";
 import { BookOpen, X, FileText, ArrowRight } from "lucide-react";
 import {
   faithCategories,
+  faithPotlucks,
+  getActiveFaithPotlucks,
   faithFormationSettings,
-  type FaithCategory,
-  type FaithGroup,
 } from "../data/faith-formation";
 
 const FAITH_FORMATION_DONATION_URL =
@@ -71,16 +71,6 @@ interface FormData {
   parent2ZipCode: string;
 }
 
-type GroupFilter = FaithGroup | "all";
-
-const groupFilters: { id: GroupFilter; label: string }[] = [
-  { id: "all", label: "All Programs" },
-  { id: "elementary", label: "Elementary" },
-  { id: "middle-school", label: "Middle School" },
-  { id: "high-school", label: "High School" },
-  { id: "adult", label: "Adult" },
-];
-
 const createDefaultChildData = (): ChildData => ({
   firstName: "",
   lastName: "",
@@ -125,9 +115,6 @@ const createDefaultFormData = (): FormData => ({
 
 export default function FaithFormation() {
   const [, navigate] = useLocation();
-  const [selectedGroups, setSelectedGroups] = useState<Set<GroupFilter>>(
-    new Set<GroupFilter>(["all"])
-  );
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [registrationSuccessTuition, setRegistrationSuccessTuition] = useState<
@@ -153,29 +140,7 @@ export default function FaithFormation() {
     }
   };
 
-  const toggleGroup = (id: GroupFilter) => {
-    const next = new Set(selectedGroups);
-    if (id === "all") {
-      setSelectedGroups(new Set<GroupFilter>(["all"]));
-      return;
-    }
-    if (next.has("all")) next.delete("all");
-    if (next.has(id)) {
-      next.delete(id);
-      if (next.size === 0) next.add("all");
-    } else {
-      next.add(id);
-    }
-    setSelectedGroups(next);
-  };
-
-  const deselectAll = () => setSelectedGroups(new Set());
-
-  const filtered = faithCategories.filter(cat => {
-    if (selectedGroups.has("all")) return true;
-    if (selectedGroups.size === 0) return false;
-    return selectedGroups.has(cat.group);
-  });
+  const activePotlucks = getActiveFaithPotlucks(faithPotlucks);
 
   const upcomingFaithFormationEvents = (() => {
     const now = new Date();
@@ -375,7 +340,7 @@ export default function FaithFormation() {
       <Header donateUrl={FAITH_FORMATION_DONATION_URL} />
       <div className="pt-[69px]" />
 
-      <section className="relative overflow-hidden border-b border-primary/10 bg-[#fbfaf6] py-16 md:py-20">
+      <section className="relative overflow-hidden bg-[#fbfaf6] py-16 md:py-20">
         <div
           className="absolute -right-20 -top-24 size-80 rounded-full bg-[#b8954f]/10 blur-3xl"
           aria-hidden="true"
@@ -496,71 +461,80 @@ export default function FaithFormation() {
 
       <main className="flex-grow py-12">
         <div className="container mx-auto px-4">
-          <div className="mb-12">
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 mb-8">
-              <h2 className="font-serif text-3xl font-bold text-primary">
-                Explore Our Programs
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-3 justify-center md:justify-start">
-              <button
-                onClick={() => toggleGroup("all")}
-                className={`px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs transition-all border-2 ${
-                  selectedGroups.has("all")
-                    ? "bg-primary border-primary text-white shadow-lg"
-                    : "bg-white border-primary/10 text-primary hover:border-primary/30"
-                }`}
-              >
-                All Programs
-              </button>
-              {groupFilters
-                .filter(g => g.id !== "all")
-                .map(g => (
-                  <button
-                    key={g.id}
-                    onClick={() => toggleGroup(g.id as FaithGroup)}
-                    className={`px-6 py-3 rounded-full font-bold uppercase tracking-widest text-xs transition-all border-2 ${
-                      selectedGroups.has(g.id)
-                        ? "bg-primary border-primary text-white shadow-lg"
-                        : "bg-white border-primary/10 text-primary hover:border-primary/30"
-                    }`}
-                  >
-                    {g.label}
-                  </button>
-                ))}
-              <button
-                onClick={deselectAll}
-                className="text-xs font-bold text-primary/40 hover:text-accent uppercase tracking-widest transition-colors"
-              >
-                Deselect All
-              </button>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6 md:gap-8">
-            {filtered.map(cat => (
-              <CategoryCard key={cat.id} category={cat} />
-            ))}
-          </div>
-
-          {filtered.length === 0 && (
-            <div className="text-center py-24 bg-gray-50 rounded-[2rem] border-2 border-dashed border-gray-200">
-              <BookOpen className="size-12 text-gray-200 mx-auto mb-4" />
-              <h3 className="text-xl font-serif font-bold text-primary mb-2">
-                No programs selected
-              </h3>
-              <p className="text-muted-foreground">
-                Select a category above to view our faith formation offerings.
-              </p>
-              <Button
-                variant="link"
-                onClick={() => setSelectedGroups(new Set<GroupFilter>(["all"]))}
-                className="mt-4 text-accent font-bold"
-              >
-                View All Programs
-              </Button>
-            </div>
-          )}
+          <MinimalAccordion
+            items={[
+              {
+                id: "programs",
+                title: "Explore Our Programs",
+                content: (
+                  <MinimalAccordion
+                    nested
+                    items={faithCategories.map(category => ({
+                      id: category.id,
+                      title: category.title,
+                      content: (
+                        <div className="text-base leading-relaxed text-muted-foreground">
+                          <p>{category.shortDescription}</p>
+                          <p className="mt-2 text-sm">
+                            <span className="font-semibold text-primary">
+                              Ages:
+                            </span>{" "}
+                            {category.ageRange}
+                          </p>
+                          <dl className="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+                            <div>
+                              <dt className="font-semibold text-primary">
+                                Meeting time
+                              </dt>
+                              <dd>{category.meetingTime}</dd>
+                            </div>
+                            <div>
+                              <dt className="font-semibold text-primary">
+                                Classroom
+                              </dt>
+                              <dd>{category.location}</dd>
+                            </div>
+                          </dl>
+                          <Link
+                            href={`/faith-formation/${category.id}`}
+                            className="mt-5 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-3 text-xs font-bold uppercase tracking-widest text-white transition hover:bg-primary/90"
+                          >
+                            Learn More <ArrowRight size={14} />
+                          </Link>
+                        </div>
+                      ),
+                    }))}
+                  />
+                ),
+              },
+              {
+                id: "potlucks",
+                title: "Potlucks",
+                content:
+                  activePotlucks.length > 0 ? (
+                    <ul className="divide-y divide-primary/10 border-y border-primary/10">
+                      {activePotlucks.map(potluck => (
+                        <li key={`${potluck.url}-${potluck.expiresOn}`}>
+                          <a
+                            href={potluck.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="flex items-center justify-between gap-4 py-4 font-medium text-primary transition-colors hover:text-accent"
+                          >
+                            {potluck.label}
+                            <ArrowRight size={16} aria-hidden="true" />
+                          </a>
+                        </li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="py-4 text-muted-foreground">
+                      There are no current potluck sign-ups.
+                    </p>
+                  ),
+              },
+            ]}
+          />
         </div>
       </main>
 
@@ -591,8 +565,7 @@ export default function FaithFormation() {
             >
               <div className="bg-accent/5 p-6 rounded-2xl border border-accent/10">
                 <h4 className="font-bold text-primary mb-2 flex items-center gap-2">
-                  Registration
-                  Information
+                  Registration Information
                 </h4>
                 <p className="text-sm text-muted-foreground leading-relaxed">
                   Please fill out the form below to register your children for
@@ -1304,80 +1277,5 @@ export default function FaithFormation() {
       {reviewDialog}
       <Footer />
     </div>
-  );
-}
-
-function CategoryCard({ category }: { category: FaithCategory }) {
-  const primaryCatechist = category.catechists[0];
-  const extraCatechists = category.catechists.length - 1;
-
-  return (
-    <Card className="group flex h-full flex-col border-2 border-primary/5 hover:border-primary/30 transition-all duration-300 overflow-hidden bg-white shadow-sm hover:shadow-xl p-6 pb-3">
-      <Link
-        href={`/faith-formation/${category.id}`}
-        className="block mb-2 group/title"
-      >
-        <h3 className="font-serif text-2xl font-bold text-primary leading-tight group-hover/title:text-accent transition-colors">
-          {category.title}
-          {category.subtitle && (
-            <span className="block text-base font-medium text-muted-foreground mt-1 italic">
-              {category.subtitle}
-            </span>
-          )}
-        </h3>
-      </Link>
-      <p className="text-muted-foreground leading-relaxed text-sm mb-3">
-        {category.shortDescription}
-        <span className="mt-2 block text-primary">
-          {category.location?.startsWith("Room")
-            ? category.location
-            : `Room: ${category.location}`}
-        </span>
-      </p>
-      <div className="mt-auto -mx-6 px-6 py-4 bg-gray-50/50 border-t border-gray-100">
-        {primaryCatechist && (
-          <div className="flex items-center gap-3 mb-4">
-            {(category.id === "adult-education" ||
-              primaryCatechist.name === "Kevin Baltzer") &&
-              primaryCatechist.photo && (
-                <div className="size-10 rounded-full overflow-hidden bg-primary/10 shrink-0 ring-2 ring-white">
-                  <img
-                    src={primaryCatechist.photo}
-                    alt={primaryCatechist.name}
-                    className="w-full h-full object-cover"
-                    style={{
-                      objectPosition:
-                        primaryCatechist.photoPosition ?? "center 25%",
-                    }}
-                  />
-                </div>
-              )}
-            <div className="min-w-0">
-              <p className="text-[9px] font-bold text-primary/40 uppercase tracking-widest">
-                Catechist
-              </p>
-              <p className="text-sm font-bold text-primary truncate">
-                {primaryCatechist.name}
-                {extraCatechists > 0 && (
-                  <span className="text-muted-foreground font-normal">
-                    {" "}
-                    +{extraCatechists} more
-                  </span>
-                )}
-              </p>
-            </div>
-          </div>
-        )}
-        <Link href={`/faith-formation/${category.id}`}>
-          <a className="flex items-center justify-center gap-2 bg-primary hover:bg-primary/90 text-white py-3 rounded-full font-bold uppercase tracking-widest text-[10px] transition-all group/btn">
-            Learn More
-            <ArrowRight
-              size={14}
-              className="group-hover/btn:translate-x-1 transition-transform"
-            />
-          </a>
-        </Link>
-      </div>
-    </Card>
   );
 }
