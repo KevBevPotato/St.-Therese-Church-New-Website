@@ -26,9 +26,9 @@ import {
   EVENT_COLORS,
 } from "@/components/eventfolders/events";
 import {
-  canonicalizeEventId,
   getCustomLandingPage,
 } from "@/data/eventLandingPages";
+import { canonicalizeEventId } from "@/data/eventIds";
 
 export default function EventDetail() {
   const [match, params] = useRoute("/events/:id");
@@ -89,7 +89,9 @@ export default function EventDetail() {
     );
   }
 
-  const event = allEvents.find(e => e.id === eventId);
+  const event = allEvents.find(
+    currentEvent => canonicalizeEventId(currentEvent.id) === eventId
+  );
 
   if (!event) {
     return (

@@ -11,6 +11,7 @@ import { EventCategoryPill } from './event-components';
 import { CalendarView } from './CalendarView';
 import { EventsListView } from './EventsListView';
 import type { MonthlyCalendarPdf } from '@/lib/monthly-calendar-pdfs';
+import { getEventDetailPath } from '@/data/eventIds';
 
 type UpcomingEventsCalendarProps = {
   homeView?: boolean;
@@ -127,7 +128,7 @@ export default function UpcomingEventsCalendar(props: UpcomingEventsCalendarProp
 
   const handleEventClick = (e: React.MouseEvent, event: CalendarEvent) => {
     e.stopPropagation(); 
-    navigate(event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : `/events/${event.id}`);
+    navigate(event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : getEventDetailPath(event.id));
   };
 
   const resetFilters = () => { 

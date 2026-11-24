@@ -4,6 +4,7 @@ import { createElement, lazy, type ComponentType } from 'react';
 import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import FaithFormation from '@/pages/FaithFormation';
 import ConnectGroupsPage from '@/pages/ConnectGroupsPage';
+export { canonicalizeEventId } from './eventIds';
 
 /**
  * Maps an event ID prefix to a custom landing page component.
@@ -78,11 +79,4 @@ export function getCustomLandingPage(
         return FaithFormationPage;
     }
     return null;
-}
-
-export function canonicalizeEventId(eventId: string): string {
-    return eventId.replace(
-        /^wednesday-faith-formatioin(?=-|$)/,
-        'wednesday-faith-formation'
-    );
 }

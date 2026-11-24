@@ -2,6 +2,7 @@
 import { Link } from 'wouter';
 import { Calendar, ArrowRight, MapPin, Clock } from 'lucide-react';
 import { EVENT_COLORS, type CalendarEvent, type EventCategory } from './eventfolders/events';
+import { getEventDetailPath } from '@/data/eventIds';
 
 interface UpcomingOrgEventsProps {
     events: CalendarEvent[];
@@ -33,7 +34,7 @@ export default function UpcomingOrgEvents({
                 const colors = EVENT_COLORS[primaryCategory];
 
                 return (
-                    <Link key={event.id} href={`/events/${event.id}`}>
+                    <Link key={event.id} href={getEventDetailPath(event.id)}>
                         <a className="block group">
                             <div className="bg-white rounded-2xl border-2 border-primary/10 hover:border-primary/30 p-5 transition-all hover:-translate-y-0.5 hover:shadow-md">
                                 <div className="flex items-start gap-4">

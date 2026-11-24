@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { canonicalizeEventId, getCustomLandingPage } from "./eventLandingPages";
+import { getEventDetailPath } from "./eventIds";
 
 describe("getCustomLandingPage", () => {
   it("uses one shared Mass page for daily, Saturday, and Sunday Mass events", () => {
@@ -56,6 +57,13 @@ describe("getCustomLandingPage", () => {
   it("corrects the misspelled Wednesday Faith Formation event URL", () => {
     expect(canonicalizeEventId("wednesday-faith-formatioin-2026-11-18")).toBe(
       "wednesday-faith-formation-2026-11-18"
+    );
+    expect(
+      getEventDetailPath(
+        "wednesday-faith-formatioin-20261013211824-2026-11-25"
+      )
+    ).toBe(
+      "/events/wednesday-faith-formation-20261013211824-2026-11-25"
     );
   });
 

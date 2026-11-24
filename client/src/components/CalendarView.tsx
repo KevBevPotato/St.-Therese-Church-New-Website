@@ -5,6 +5,7 @@ import { Link } from 'wouter';
 import { EventCategory, EVENT_COLORS, CalendarEvent } from './eventfolders/events';
 import { CalendarCellEvent } from './event-components';
 import CmsMarkdown from './CmsMarkdown';
+import { getEventDetailPath } from '@/data/eventIds';
 
 interface CalendarViewProps {
   currentDate: Date;
@@ -171,7 +172,7 @@ export function CalendarView({
             <div className="space-y-4">
               {getEventsForDay(popupDate).length > 0 ? (
                 getEventsForDay(popupDate).map((event) => {
-                  const eventHref = event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : `/events/${event.id}`;
+                  const eventHref = event.linkedOpportunityId ? `/${event.linkedOpportunityId}` : getEventDetailPath(event.id);
 
                   return (
                     <Link

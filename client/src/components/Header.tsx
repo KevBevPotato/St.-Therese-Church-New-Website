@@ -9,6 +9,7 @@ import {
 import { organizations } from "@/data/organizations";
 import { staffMembers } from "../data/staff";
 import { faithCategories } from "@/data/faith-formation";
+import { getEventDetailPath } from "@/data/eventIds";
 import headerData from "@/data/header_data.json";
 
 interface HeaderProps {
@@ -439,7 +440,7 @@ export default function Header({
           type: "Event",
           href: event.linkedOpportunityId
             ? `/${event.linkedOpportunityId}`
-            : `/events/${event.id}`,
+            : getEventDetailPath(event.id),
           searchableText: `${event.title} ${event.description || ""} ${event.location}`,
         })),
     ];
