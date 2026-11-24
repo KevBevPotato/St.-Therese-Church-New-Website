@@ -125,7 +125,7 @@ export default function EventDetail() {
     else navigate("/");
   };
 
-  const CustomPage = getCustomLandingPage(event.id);
+  const CustomPage = getCustomLandingPage(event.id, event.organizationTags);
   if (CustomPage) {
     return (
       <Suspense

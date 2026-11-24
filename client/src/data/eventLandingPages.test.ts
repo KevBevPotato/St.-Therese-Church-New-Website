@@ -2,10 +2,13 @@ import { describe, expect, it } from "vitest";
 import { getCustomLandingPage } from "./eventLandingPages";
 
 describe("getCustomLandingPage", () => {
-  it("uses one shared Mass page for daily and Sunday Mass events", () => {
+  it("uses one shared Mass page for daily, Saturday, and Sunday Mass events", () => {
     const dailyMassPage = getCustomLandingPage("daily-mass-2026-11-26");
 
     expect(dailyMassPage).not.toBeNull();
+    expect(getCustomLandingPage("saturday-vigil-mass-2026-11-21")).toBe(
+      dailyMassPage
+    );
     expect(getCustomLandingPage("sunday-mass-9am-2026-11-22")).toBe(
       dailyMassPage
     );
@@ -14,15 +17,36 @@ describe("getCustomLandingPage", () => {
     );
   });
 
-  it("keeps the custom landing page for recurring Rosary events", () => {
-    expect(getCustomLandingPage("daily-rosary-2026-11-20")).not.toBeNull();
-    expect(getCustomLandingPage("daily-rosary-2026-11-20")).not.toBeNull();
+  it("uses the Daily Rosary page for Daily and Family Rosary events", () => {
+    const dailyRosaryPage = getCustomLandingPage("daily-rosary-2026-11-20");
+
+    expect(dailyRosaryPage).not.toBeNull();
+    expect(getCustomLandingPage("family-rosary-2026-11-22")).toBe(
+      dailyRosaryPage
+    );
   });
 
-  it("uses a custom landing page for Adoration and Confession events", () => {
+  it("uses the Adoration and Confession page for Holy Hour events", () => {
+    const adorationPage = getCustomLandingPage(
+      "adoration-confession-2026-11-22"
+    );
+
+    expect(adorationPage).not.toBeNull();
+    expect(getCustomLandingPage("holy-hour-2026-11-20")).toBe(adorationPage);
+  });
+
+  it("uses one shared page for Wednesday Faith Formation events", () => {
+    const faithFormationPage = getCustomLandingPage(
+      "wednesday-faith-formation-xlt-2026-11-04"
+    );
+
+    expect(faithFormationPage).not.toBeNull();
     expect(
-      getCustomLandingPage("adoration-confession-2026-11-22")
-    ).not.toBeNull();
+      getCustomLandingPage("wednesday-faith-formatioin-2026-11-18")
+    ).toBe(faithFormationPage);
+    expect(
+      getCustomLandingPage("teacher-night-2026-11-18", ["faith-formation"])
+    ).toBe(faithFormationPage);
   });
 
   it("falls back to the generic page for events without a custom landing page", () => {
