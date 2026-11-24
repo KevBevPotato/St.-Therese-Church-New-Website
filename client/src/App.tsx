@@ -3,7 +3,14 @@ import { Toaster } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { lazy, Suspense, useEffect } from "react";
 import NotFound from "@/pages/NotFound";
-import { Redirect, Route, Switch, useLocation, useParams } from "wouter";
+import {
+  Redirect,
+  Route,
+  Router as WouterRouter,
+  Switch,
+  useLocation,
+  useParams,
+} from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { InterestSignupProvider } from "./contexts/InterestSignupContext";
@@ -38,9 +45,20 @@ import Sacraments from "./pages/Sacraments";
 import Resources from "./pages/Resources";
 import NewToStTherese from "./pages/NewToStTherese";
 
+const spriteFusionProxyBase = "/p/https/www.stthereserapidcity.org";
+
 function LegacyOpportunityRedirect() {
   const { id } = useParams<{ id: string }>();
   return <Redirect to={`/${id}`} />;
+}
+
+function getRouterBase() {
+  const { hostname, pathname } = window.location;
+  return hostname === "destroy.spritefusion.com" &&
+    (pathname === spriteFusionProxyBase ||
+      pathname.startsWith(`${spriteFusionProxyBase}/`))
+    ? spriteFusionProxyBase
+    : undefined;
 }
 
 function Router() {
@@ -114,7 +132,9 @@ function App() {
         <TooltipProvider>
           <InterestSignupProvider>
             <Toaster />
-            <Router />
+            <WouterRouter base={getRouterBase()}>
+              <Router />
+            </WouterRouter>
             <FeedbackButton />
           </InterestSignupProvider>
         </TooltipProvider>
