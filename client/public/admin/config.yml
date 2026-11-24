@@ -1568,13 +1568,14 @@ collections:
     label: "Parish Life"
     files:
       - file: "client/src/data/get-involved_data.json"
-        label: "Parish Life Pages, Organizations, Opportunities, and Signup Links"
+        label: "Get Involved and Ways to Serve"
         name: "get_involved_file"
         fields:
-          - label: "Page Settings and Forms"
+          - label: "Get Involved Page"
             name: "settings"
             widget: "object"
             required: false
+            hint: "Page title, introduction, accordion copy, and directory filters. Organization descriptions and Connect Groups content are edited in their own Parish Life entries."
             fields:
               - { label: "Page Title", name: "pageTitle", widget: "markdown" , required: false }
               - { label: "Introduction", name: "introduction", widget: "markdown" , required: false }
@@ -1603,15 +1604,29 @@ collections:
                   widget: "string",
                   required: false,
                 }
-              - label: "Parish Life Pages and Navigation"
+              - label: "Page Content and Accordion Summaries"
                 name: "parishLifePages"
                 widget: "object"
                 required: false
+                collapsed: true
                 fields:
+                  - label: "Get Involved Accordion Summaries"
+                    name: "getInvolvedAccordion"
+                    widget: "object"
+                    required: false
+                    hint: "Edit the text shown inside each expandable row on Get Involved. Section headings are managed under Header Navigation."
+                    fields:
+                      - { label: "Liturgy", name: "liturgy", widget: "markdown", required: false }
+                      - { label: "Faith Formation", name: "faithFormation", widget: "markdown", required: false }
+                      - { label: "Connect Groups", name: "connectGroups", widget: "markdown", required: false }
+                      - { label: "Sacraments", name: "sacraments", widget: "markdown", required: false }
+                      - { label: "Need Help", name: "needHelp", widget: "markdown", required: false }
+                      - { label: "Contribute towards a Project", name: "contribute", widget: "markdown", required: false }
                   - label: "Navigation Labels"
                     name: "navigation"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Join an Organization", name: "organizations", widget: "markdown", required: false }
                       - { label: "Knights of Columbus", name: "knightsOfColumbus", widget: "markdown", required: false }
@@ -1633,6 +1648,7 @@ collections:
                     name: "liturgy"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
                       - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
@@ -1644,6 +1660,7 @@ collections:
                     name: "massPage"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
@@ -1665,6 +1682,7 @@ collections:
                     name: "rosaryPage"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
@@ -1685,6 +1703,7 @@ collections:
                     name: "adorationConfessionPage"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Eyebrow", name: "eyebrow", widget: "string", required: false }
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
@@ -1706,6 +1725,7 @@ collections:
                     name: "needHelp"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
                       - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
@@ -1714,6 +1734,7 @@ collections:
                     name: "contribute"
                     widget: "object"
                     required: false
+                    collapsed: true
                     fields:
                       - { label: "Page Title", name: "title", widget: "markdown", required: false }
                       - { label: "Introduction", name: "introduction", widget: "markdown", required: false }
@@ -1751,6 +1772,7 @@ collections:
                 name: "categories"
                 widget: "list"
                 required: false
+                collapsed: true
                 summary: "{{fields.label}}"
                 fields:
                   - {
@@ -1772,6 +1794,7 @@ collections:
                 name: "tags"
                 widget: "list"
                 required: false
+                collapsed: true
                 field:
                   {
                     label: "Tag",
@@ -1790,6 +1813,8 @@ collections:
             name: "opportunities"
             widget: "list"
             required: false
+            collapsed: true
+            hint: "Edit ministry descriptions, dates, contact details, and signup links here. Use the ID / URL slug carefully; changing it can break existing links."
             summary: "{{fields.title}}"
             fields:
               - {

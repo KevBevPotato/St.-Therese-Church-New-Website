@@ -2,6 +2,13 @@
   "settings": {
     "pageTitle": "Get Involved",
     "parishLifePages": {
+      "getInvolvedAccordion": {
+        "faithFormation": "Our Wednesday Faith Formation program helps children and families grow in the Catholic faith. Share your interest in serving as a catechist or helper, or request information about registering a participant.",
+        "connectGroups": "Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.",
+        "sacraments": "Learn about the sacraments and prepare to receive them.",
+        "needHelp": "Share a little about the help you are looking for. Parish staff will follow up with you.",
+        "contribute": "Share your time and gifts with the parish community through these opportunities."
+      },
       "navigation": {
         "organizations": "Join an Organization",
         "catholicDaughters": "Catholic Daughters",

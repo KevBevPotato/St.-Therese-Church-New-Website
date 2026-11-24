@@ -30,44 +30,60 @@ const liturgyRoleIds = ["lector", "usher", "altar-server", "music"];
 const liturgyRoles = getInvolvedData.opportunities.filter(opportunity =>
   liturgyRoleIds.includes(opportunity.id)
 );
+const accordionSummaries: Record<string, string | undefined> =
+  getInvolvedData.settings.parishLifePages?.getInvolvedAccordion ?? {};
+const accordionSectionByPath: Record<string, string> = {
+  "/liturgy": "liturgy",
+  "/faith-formation": "faithFormation",
+  "/connect-groups": "connectGroups",
+  "/sacraments": "sacraments",
+  "/need-help": "needHelp",
+  "/contribute": "contribute",
+};
 
 function getSectionContent(link: ParishLifeLink) {
   const opportunityByPath: Record<string, string> = {
     "/faith-formation": "wednesday-faith-formation",
   };
+  const accordionSummary =
+    accordionSummaries[accordionSectionByPath[link.href ?? ""] ?? ""];
   const opportunity = getInvolvedData.opportunities.find(
     item => item.id === opportunityByPath[link.href ?? ""]
   );
   const description =
-    link.href === "/connect-groups"
+    accordionSummary ||
+    (link.href === "/connect-groups"
       ? connectGroupsPage.description
-      : opportunity?.landingPageDescription ??
+      : (opportunity?.landingPageDescription ??
         opportunity?.description ??
         (link.href === "/need-help"
           ? getInvolvedData.settings.parishLifePages?.needHelp?.introduction
           : link.href === "/contribute"
             ? getInvolvedData.settings.parishLifePages?.contribute?.introduction
-            : descriptions[link.href ?? ""]);
+            : descriptions[link.href ?? ""])));
 
   return (
     <div className="space-y-5">
       {link.href === "/liturgy" ? (
-        <ul className="space-y-4">
-          {liturgyRoles.map(role => (
-            <li
-              key={role.id}
-              className="flex flex-col items-start gap-1 text-left"
-            >
-              <Link
-                href={`/${role.id}`}
-                className="font-semibold text-primary underline-offset-4 hover:text-accent hover:underline"
+        <>
+          {accordionSummary && <CmsMarkdown>{accordionSummary}</CmsMarkdown>}
+          <ul className="space-y-4">
+            {liturgyRoles.map(role => (
+              <li
+                key={role.id}
+                className="flex flex-col items-start gap-1 text-left"
               >
-                {role.title.replace(" Sign-up", "")}
-              </Link>
-              <span className="w-full text-left">{role.description}</span>
-            </li>
-          ))}
-        </ul>
+                <Link
+                  href={`/${role.id}`}
+                  className="font-semibold text-primary underline-offset-4 hover:text-accent hover:underline"
+                >
+                  {role.title.replace(" Sign-up", "")}
+                </Link>
+                <span className="w-full text-left">{role.description}</span>
+              </li>
+            ))}
+          </ul>
+        </>
       ) : (
         <CmsMarkdown>{description}</CmsMarkdown>
       )}
