@@ -49,6 +49,10 @@ describe("getCustomLandingPage", () => {
     ).toBe(faithFormationPage);
   });
 
+  it("uses the Connect Groups landing page for Connect Groups events", () => {
+    expect(getCustomLandingPage("connect-groups-2026-11-24")).not.toBeNull();
+  });
+
   it("corrects the misspelled Wednesday Faith Formation event URL", () => {
     expect(canonicalizeEventId("wednesday-faith-formatioin-2026-11-18")).toBe(
       "wednesday-faith-formation-2026-11-18"

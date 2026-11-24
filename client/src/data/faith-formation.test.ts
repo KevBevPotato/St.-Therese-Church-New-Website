@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { getActiveFaithPotlucks, type FaithPotluck } from "./faith-formation";
+import { getActivePotlucks, type PotluckSignup } from "./potlucks";
 
-const potlucks: FaithPotluck[] = [
+const potlucks: PotluckSignup[] = [
   {
     label: "Earlier",
     url: "https://example.com/earlier",
@@ -19,10 +19,10 @@ const potlucks: FaithPotluck[] = [
   },
 ];
 
-describe("getActiveFaithPotlucks", () => {
+describe("getActivePotlucks", () => {
   it("hides links on their expiration date and keeps later ones", () => {
     expect(
-      getActiveFaithPotlucks(potlucks, new Date(2026, 10, 24)).map(
+      getActivePotlucks(potlucks, new Date(2026, 10, 24)).map(
         potluck => potluck.label
       )
     ).toEqual(["Upcoming"]);

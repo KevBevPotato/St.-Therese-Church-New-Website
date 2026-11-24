@@ -4,48 +4,46 @@ import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft } from 'lucide-react';
 import { Link } from 'wouter';
-import getInvolvedData from '@/data/get-involved';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
 import CmsMarkdown from '@/components/CmsMarkdown';
 import { EventMedia } from '@/components/EventMedia';
-
-type ContentBlock = {
-  isHidden?: boolean;
-  layout?: 'card' | 'full';
-  heading?: string;
-  body?: string;
-  image?: string;
-  imageAlt?: string;
-  linkLabel?: string;
-  linkUrl?: string;
-};
-
-type GalleryItem = {
-  photo: string;
-  caption?: string;
-  linkUrl?: string;
-  showInCarousel?: boolean;
-};
+import MinimalAccordion, { type MinimalAccordionItem } from '@/components/MinimalAccordion';
+import connectGroupsPage from '@/data/connect-groups';
+import { getActivePotlucks } from '@/data/potlucks';
 
 export default function ConnectGroupsPage() {
   const { openSignup } = useInterestSignup();
-  const configuredPages = getInvolvedData.opportunities as Array<{
-    id: string;
-    landingPageTitle?: string;
-    landingPageDescription?: string;
-    description?: string;
-    landingPageImage?: string;
-    contentBlocks?: ContentBlock[];
-    audienceHeading?: string;
-    audienceItems?: string[];
-    gallery?: GalleryItem[];
-    contactEmail?: string;
-    signUpLinks?: Array<{ label: string; url: string }>;
-  }>;
-  const page = configuredPages.find((item) => item.id === 'connect-groups');
-  const title = page?.landingPageTitle ?? 'Connect Groups';
-  const contentBlocks = (page?.contentBlocks ?? []).filter(block => !block.isHidden);
-  const audienceItems = page?.audienceItems ?? [];
+  const page = connectGroupsPage;
+  const title = page.title || 'Connect Groups';
+  const activePotlucks = getActivePotlucks(page.potlucks);
+  const contentBlocks = page.contentBlocks;
+  const audienceItems = page.audienceItems;
+  const potluckItems: MinimalAccordionItem[] = [
+    {
+      id: 'connect-group-potlucks',
+      title: 'Potlucks',
+      content: activePotlucks.length > 0 ? (
+        <ul className="divide-y divide-primary/10 border-y border-primary/10">
+          {activePotlucks.map(potluck => (
+            <li key={`${potluck.url}-${potluck.expiresOn}`}>
+              <a
+                href={potluck.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-between gap-4 py-4 font-medium text-primary transition-colors hover:text-accent"
+              >
+                {potluck.label}
+              </a>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p className="py-4 text-muted-foreground">
+          There are no current potluck sign-ups.
+        </p>
+      ),
+    },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -67,7 +65,7 @@ export default function ConnectGroupsPage() {
             </div>
 
             <CmsMarkdown className="text-lg leading-relaxed text-muted-foreground">
-              {page?.description ?? page?.landingPageDescription}
+              {page.description}
             </CmsMarkdown>
 
             <div className="grid gap-4 md:grid-cols-2">
@@ -113,7 +111,7 @@ export default function ConnectGroupsPage() {
 
           <Card className="p-8 border-2 border-primary/10 bg-white shadow-xl rounded-[2rem]">
             <h2 className="font-serif text-3xl font-bold text-primary mb-4">
-              {page?.audienceHeading ?? 'Who it’s for'}
+              {page.audienceHeading ?? 'Who it’s for'}
             </h2>
             {audienceItems.length > 0 && (
               <ul className="space-y-3 text-muted-foreground">
@@ -134,7 +132,7 @@ export default function ConnectGroupsPage() {
                 Get Connected
               </Button>
             </div>
-            {page?.signUpLinks?.map((link) => (
+            {page.signUpLinks.map((link) => (
               <a key={`${link.label}-${link.url}`} href={link.url} target="_blank" rel="noopener noreferrer" className="mt-3 block">
                 <Button variant="outline" className="w-full uppercase tracking-widest font-bold">
                   {link.label}
@@ -144,7 +142,11 @@ export default function ConnectGroupsPage() {
           </Card>
         </div>
 
-        {page?.gallery && page.gallery.length > 0 && (
+        <div className="mt-10">
+          <MinimalAccordion items={potluckItems} />
+        </div>
+
+        {page.gallery.length > 0 && (
           <div className="mt-10">
             <EventMedia
               event={{ title, image: undefined, photos: [], gallery: page.gallery }}

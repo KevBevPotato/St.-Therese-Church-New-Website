@@ -10,18 +10,63 @@ import {
 import { EventCard } from "../components/event-components";
 import { Button } from "../components/ui/button";
 import MinimalAccordion from "../components/MinimalAccordion";
+import CmsMarkdown from "../components/CmsMarkdown";
 import { submitForm } from "@/lib/submit-form";
 import { useSubmissionReview } from "@/hooks/use-submission-review";
 import { BookOpen, X, FileText, ArrowRight } from "lucide-react";
 import {
   faithCategories,
   faithPotlucks,
-  getActiveFaithPotlucks,
+  faithFormationEvents,
+  faithFormationFaqs,
   faithFormationSettings,
+  type FaithFormationResourceLink,
 } from "../data/faith-formation";
+import { getActivePotlucks } from "../data/potlucks";
 
 const FAITH_FORMATION_DONATION_URL =
   "https://secure.myvanco.com/L-ZAYT/campaign/C-10ACK";
+
+function FaithFormationResourceLinks({
+  resources,
+}: {
+  resources?: FaithFormationResourceLink[];
+}) {
+  const visibleResources = resources?.filter(
+    resource => resource.url || resource.file
+  );
+  if (!visibleResources?.length) return null;
+
+  return (
+    <ul className="mt-4 flex flex-wrap gap-3">
+      {visibleResources.map((resource, index) => (
+        <li key={`${resource.title}-${index}`} className="flex flex-wrap gap-3">
+          {resource.url && (
+            <a
+              href={resource.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-semibold text-primary underline underline-offset-4 hover:text-accent"
+            >
+              {resource.title} <ArrowRight size={14} aria-hidden="true" />
+            </a>
+          )}
+          {resource.file && (
+            <a
+              href={resource.file}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 font-semibold text-primary underline underline-offset-4 hover:text-accent"
+            >
+              <FileText size={16} aria-hidden="true" />
+              {resource.title}
+            </a>
+          )}
+        </li>
+      ))}
+    </ul>
+  );
+}
 
 /**
  * Faith Formation Landing Page
@@ -140,7 +185,7 @@ export default function FaithFormation() {
     }
   };
 
-  const activePotlucks = getActiveFaithPotlucks(faithPotlucks);
+  const activePotlucks = getActivePotlucks(faithPotlucks);
 
   const upcomingFaithFormationEvents = (() => {
     const now = new Date();
@@ -530,6 +575,73 @@ export default function FaithFormation() {
                   ) : (
                     <p className="py-4 text-muted-foreground">
                       There are no current potluck sign-ups.
+                    </p>
+                  ),
+              },
+              {
+                id: "faqs",
+                title: "Frequently Asked Questions",
+                content:
+                  faithFormationFaqs.length > 0 ? (
+                    <div className="divide-y divide-primary/10">
+                      {faithFormationFaqs.map((faq, index) => (
+                        <section
+                          key={`${faq.question}-${index}`}
+                          className="py-5 first:pt-0 last:pb-0"
+                        >
+                          <h3 className="font-semibold text-primary">
+                            {faq.question}
+                          </h3>
+                          {faq.answer && (
+                            <CmsMarkdown className="mt-2 text-muted-foreground">
+                              {faq.answer}
+                            </CmsMarkdown>
+                          )}
+                          <FaithFormationResourceLinks
+                            resources={faq.resources}
+                          />
+                        </section>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="py-4 text-muted-foreground">
+                      Frequently asked questions will be added soon.
+                    </p>
+                  ),
+              },
+              {
+                id: "events-and-fundraisers",
+                title: "Upcoming Events & Fundraisers",
+                content:
+                  faithFormationEvents.length > 0 ? (
+                    <div className="divide-y divide-primary/10">
+                      {faithFormationEvents.map((event, index) => (
+                        <section
+                          key={`${event.title}-${index}`}
+                          className="py-5 first:pt-0 last:pb-0"
+                        >
+                          <h3 className="font-semibold text-primary">
+                            {event.title}
+                          </h3>
+                          {event.date && (
+                            <p className="mt-1 text-sm font-medium text-accent">
+                              {event.date}
+                            </p>
+                          )}
+                          {event.description && (
+                            <CmsMarkdown className="mt-2 text-muted-foreground">
+                              {event.description}
+                            </CmsMarkdown>
+                          )}
+                          <FaithFormationResourceLinks
+                            resources={event.resources}
+                          />
+                        </section>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="py-4 text-muted-foreground">
+                      There are no upcoming events or fundraisers posted.
                     </p>
                   ),
               },

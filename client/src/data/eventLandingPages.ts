@@ -3,6 +3,7 @@
 import { createElement, lazy, type ComponentType } from 'react';
 import type { EventLandingPageProps } from '@/components/eventfolders/types';
 import FaithFormation from '@/pages/FaithFormation';
+import ConnectGroupsPage from '@/pages/ConnectGroupsPage';
 
 /**
  * Maps an event ID prefix to a custom landing page component.
@@ -28,6 +29,7 @@ const PREFIXES_IN_PRIORITY_ORDER: string[] = [
     'koc-members',
     'family-formation',
     'wednesday-faith-formation',
+    'connect-groups',
     'cinema-',
     'bookclub-',
     'rise-podcast',
@@ -38,6 +40,8 @@ const AdorationConfession = lazy(() => import('@/pages/HomeEventPages/AdorationC
 const MassPage = lazy(() => import('@/pages/MassPage'));
 const FaithFormationPage: ComponentType<EventLandingPageProps> = () =>
     createElement(FaithFormation);
+const ConnectGroupsEventPage: ComponentType<EventLandingPageProps> = () =>
+    createElement(ConnectGroupsPage);
 const CinemaWithTheShepherd = lazy(() => import('@/pages/HomeEventPages/CinemaWithTheShepherd'));
 const BishopBookclub = lazy(() => import('@/pages/HomeEventPages/BishopBookclub'));
 const RisePodcast = lazy(() => import('@/pages/HomeEventPages/RisePodcast'));
@@ -55,6 +59,7 @@ const CUSTOM_PAGES: Record<string, ComponentType<EventLandingPageProps>> = {
     'adoration-confession': AdorationConfession,
     'holy-hour': AdorationConfession,
     'wednesday-faith-formation': FaithFormationPage,
+    'connect-groups': ConnectGroupsEventPage,
     'cinema-': CinemaWithTheShepherd,
     'bookclub-': BishopBookclub,
     'rise-podcast': RisePodcast,

@@ -1,0 +1,31 @@
+{
+  "title": "Connect Groups",
+  "description": "Connect Groups are small communities where parishioners gather for prayer, fellowship, and faith-filled conversation. They help us grow in friendship, support one another, and bring the Gospel into everyday life.",
+  "audienceHeading": "Who it’s for",
+  "audienceItems": [
+    "Adults and families seeking a welcoming faith community",
+    "New parishioners looking to connect and build friendships",
+    "Anyone interested in prayerful small-group discussion",
+    "Catholics who want to grow in discipleship and community"
+  ],
+  "contentBlocks": [
+    {
+      "layout": "card",
+      "heading": "Faith & Friendship",
+      "body": "Meet with a welcoming group for Scripture discussion, prayer, and encouragement."
+    },
+    {
+      "layout": "card",
+      "heading": "Life Together",
+      "body": "Build meaningful relationships and share your faith walk in a supportive community."
+    },
+    {
+      "layout": "full",
+      "heading": "What to expect",
+      "body": "Each Connect Group is rooted in prayer, scripture, and pastoral care. Groups meet regularly to learn together, pray together, and support one another in living out the faith in daily life."
+    }
+  ],
+  "gallery": [],
+  "signUpLinks": [],
+  "potlucks": []
+}

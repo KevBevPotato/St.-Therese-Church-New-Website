@@ -5,6 +5,7 @@ import MinimalAccordion, {
   type MinimalAccordionItem,
 } from "@/components/MinimalAccordion";
 import getInvolvedData from "@/data/get-involved";
+import connectGroupsPage from "@/data/connect-groups";
 import headerData from "@/data/header_data.json";
 import { Link } from "wouter";
 
@@ -20,7 +21,6 @@ const getInvolvedLink = (headerData.parishLifeLinks as ParishLifeLink[]).find(
 const pageLinks = getInvolvedLink?.children ?? [];
 const descriptions: Record<string, string> = {
   "/liturgy": "Explore ways to serve during the celebration of Mass.",
-  "/connect-groups": "Build community through prayer, fellowship, and discussion.",
   "/faith-formation": "Grow in faith and help form the next generation.",
   "/sacraments": "Learn about the sacraments and prepare to receive them.",
   "/need-help": "Let the parish know how we can support you.",
@@ -33,20 +33,21 @@ const liturgyRoles = getInvolvedData.opportunities.filter(opportunity =>
 
 function getSectionContent(link: ParishLifeLink) {
   const opportunityByPath: Record<string, string> = {
-    "/connect-groups": "connect-groups",
     "/faith-formation": "wednesday-faith-formation",
   };
   const opportunity = getInvolvedData.opportunities.find(
     item => item.id === opportunityByPath[link.href ?? ""]
   );
   const description =
-    opportunity?.landingPageDescription ??
-    opportunity?.description ??
-    (link.href === "/need-help"
-      ? getInvolvedData.settings.parishLifePages?.needHelp?.introduction
-      : link.href === "/contribute"
-        ? getInvolvedData.settings.parishLifePages?.contribute?.introduction
-        : descriptions[link.href ?? ""]);
+    link.href === "/connect-groups"
+      ? connectGroupsPage.description
+      : opportunity?.landingPageDescription ??
+        opportunity?.description ??
+        (link.href === "/need-help"
+          ? getInvolvedData.settings.parishLifePages?.needHelp?.introduction
+          : link.href === "/contribute"
+            ? getInvolvedData.settings.parishLifePages?.contribute?.introduction
+            : descriptions[link.href ?? ""]);
 
   return (
     <div className="space-y-5">

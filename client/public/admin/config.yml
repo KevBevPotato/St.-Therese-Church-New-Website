@@ -1357,6 +1357,53 @@ collections:
                   picker_utc: false,
                   required: true,
                 }
+          - label: "Frequently Asked Questions"
+            name: "faqs"
+            widget: "list"
+            required: false
+            collapsed: true
+            summary: "{{fields.question}}"
+            hint: "Add as many questions as needed. Each question can have any number of links or PDF uploads."
+            fields:
+              - { label: "Hide this question", name: "isHidden", widget: "boolean", default: false, required: false }
+              - { label: "Question", name: "question", widget: "string", required: true }
+              - { label: "Answer", name: "answer", widget: "markdown", required: false }
+              - label: "Links and PDFs"
+                name: "resources"
+                widget: "list"
+                required: false
+                collapsed: true
+                summary: "{{fields.title}}"
+                hint: "Add a URL, upload a PDF, or include both. You can add any number of resources."
+                fields:
+                  - { label: "Hide this resource", name: "isHidden", widget: "boolean", default: false, required: false }
+                  - { label: "Link or PDF label", name: "title", widget: "string", required: true }
+                  - { label: "Link URL (optional)", name: "url", widget: "string", required: false }
+                  - { label: "PDF upload (optional)", name: "file", widget: "file", required: false }
+          - label: "Upcoming Events & Fundraisers"
+            name: "eventsAndFundraisers"
+            widget: "list"
+            required: false
+            collapsed: true
+            summary: "{{fields.title}}"
+            hint: "Add as many events or fundraisers as needed, with any number of links or PDF uploads for each."
+            fields:
+              - { label: "Hide this event or fundraiser", name: "isHidden", widget: "boolean", default: false, required: false }
+              - { label: "Event or fundraiser name", name: "title", widget: "string", required: true }
+              - { label: "Date or date range", name: "date", widget: "string", required: false }
+              - { label: "Description", name: "description", widget: "markdown", required: false }
+              - label: "Links and PDFs"
+                name: "resources"
+                widget: "list"
+                required: false
+                collapsed: true
+                summary: "{{fields.title}}"
+                hint: "Add a URL, upload a PDF, or include both. You can add any number of resources."
+                fields:
+                  - { label: "Hide this resource", name: "isHidden", widget: "boolean", default: false, required: false }
+                  - { label: "Link or PDF label", name: "title", widget: "string", required: true }
+                  - { label: "Link URL (optional)", name: "url", widget: "string", required: false }
+                  - { label: "PDF upload (optional)", name: "file", widget: "file", required: false }
           - label: "Programs (drag to reorder)"
             name: "categories"
             widget: "list"
@@ -1759,7 +1806,13 @@ collections:
                   required: false,
                 }
               - { label: "Title", name: "title", widget: "markdown" , required: false }
-              - { label: "Description", name: "description", widget: "markdown" , required: false }
+              - {
+                  label: "Opportunity / Directory Summary",
+                  name: "description",
+                  widget: "markdown",
+                  required: false,
+                  hint: "This short description is used in directory listings. Connect Groups landing-page content is managed in its separate CMS entry.",
+                }
               - {
                   label: "Categories",
                   name: "categories",
@@ -1821,10 +1874,11 @@ collections:
                   required: false,
                 }
               - {
-                  label: "Landing Page Title",
+                  label: "Landing Page Title (other opportunities)",
                   name: "landingPageTitle",
                   widget: "markdown",
                   required: false,
+                  hint: "Connect Groups has a dedicated landing-page CMS entry.",
                 }
               - {
                   label: "Hide / Expired",
@@ -1855,10 +1909,11 @@ collections:
                   options: ["shield", "flower"],
                 }
               - {
-                  label: "Landing Page Description",
+                  label: "Landing Page Description (other opportunities)",
                   name: "landingPageDescription",
                   widget: "markdown",
                   required: false,
+                  hint: "Connect Groups has a dedicated landing-page CMS entry.",
                 }
               - {
                   label: "Audience Panel Heading",
@@ -2033,6 +2088,81 @@ collections:
                         }
                       - { label: "Name", name: "name", widget: "markdown" , required: false }
                       - { label: "Cost", name: "cost", widget: "markdown" , required: false }
+      - file: "client/src/data/connect-groups-page.json"
+        label: "Connect Groups Landing Page"
+        name: "connect_groups_page"
+        fields:
+          - { label: "Page Title", name: "title", widget: "markdown", required: true }
+          - { label: "Introduction", name: "description", widget: "markdown", required: false }
+          - { label: "Audience Panel Heading", name: "audienceHeading", widget: "markdown", required: false }
+          - label: "Audience Panel Items"
+            name: "audienceItems"
+            widget: "list"
+            required: false
+            field: { label: "Item", name: "item", widget: "markdown", required: false }
+          - label: "Landing Page Content Blocks"
+            name: "contentBlocks"
+            widget: "list"
+            required: false
+            collapsed: true
+            summary: "{{fields.heading}}"
+            fields:
+              - { label: "Hide this block", name: "isHidden", widget: "boolean", default: false, required: false }
+              - label: "Block Layout"
+                name: "layout"
+                widget: "select"
+                options:
+                  - { label: "Card / grid tile", value: "card" }
+                  - { label: "Full-width section", value: "full" }
+                default: "card"
+                required: false
+              - { label: "Heading", name: "heading", widget: "markdown", required: false }
+              - { label: "Text", name: "body", widget: "markdown", required: false }
+              - { label: "Image", name: "image", widget: "image", required: false }
+              - { label: "Image Alt Text", name: "imageAlt", widget: "string", required: false }
+              - { label: "Link Label", name: "linkLabel", widget: "markdown", required: false }
+              - { label: "Link URL", name: "linkUrl", widget: "string", required: false }
+          - label: "Sign-up Links"
+            name: "signUpLinks"
+            widget: "list"
+            required: false
+            summary: "{{fields.label}}"
+            fields:
+              - { label: "Hide this sign-up link", name: "isHidden", widget: "boolean", default: false, required: false }
+              - { label: "Button Label", name: "label", widget: "markdown", required: true }
+              - { label: "External Sign-up URL", name: "url", widget: "string", required: true }
+          - label: "Potluck Sign-up Links"
+            name: "potlucks"
+            widget: "list"
+            required: false
+            collapsed: true
+            summary: "{{fields.label}} (expires {{fields.expiresOn}})"
+            hint: "Each link is automatically hidden on its expiration date. Add a new item for each potluck sign-up."
+            fields:
+              - { label: "Hide this potluck link", name: "isHidden", widget: "boolean", default: false, required: false }
+              - { label: "Potluck Name", name: "label", widget: "string", required: true }
+              - { label: "Sign-up URL", name: "url", widget: "string", required: true }
+              - {
+                  label: "Expiration Date",
+                  name: "expiresOn",
+                  widget: "date",
+                  format: "YYYY-MM-DD",
+                  date_format: "YYYY-MM-DD",
+                  time_format: false,
+                  required: true,
+                  hint: "This link will no longer appear starting on this date.",
+                }
+          - label: "Page Photo Carousel and Gallery"
+            name: "gallery"
+            widget: "list"
+            required: false
+            summary: "{{fields.caption}}"
+            fields:
+              - { label: "Hide this photo", name: "isHidden", widget: "boolean", default: false, required: false }
+              - { label: "Photo", name: "photo", widget: "image", required: true }
+              - { label: "Caption", name: "caption", widget: "markdown", required: false }
+              - { label: "Link URL (optional)", name: "linkUrl", widget: "string", required: false }
+              - { label: "Include in carousel", name: "showInCarousel", widget: "boolean", default: true, required: false }
   - name: "organizations"
     label: "Organization Landing Pages"
     folder: "client/src/data/organization-pages"

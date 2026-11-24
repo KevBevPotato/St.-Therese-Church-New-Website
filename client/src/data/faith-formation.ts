@@ -1,5 +1,6 @@
 import faithFormationData from './faith-formation.json';
 import { visibleContent } from './visible-content';
+import type { PotluckSignup } from './potlucks';
 
 // 2026-2027 Wednesday Night Catechists & Faith Formation Programs
 
@@ -22,10 +23,23 @@ export interface Resource {
     link?: string;
 }
 
-export interface FaithPotluck {
-    label: string;
-    url: string;
-    expiresOn: string;
+export interface FaithFormationResourceLink {
+    title: string;
+    url?: string;
+    file?: string;
+}
+
+export interface FaithFormationFaq {
+    question: string;
+    answer?: string;
+    resources?: FaithFormationResourceLink[];
+}
+
+export interface FaithFormationEvent {
+    title: string;
+    date?: string;
+    description?: string;
+    resources?: FaithFormationResourceLink[];
 }
 
 export type FaithGroup = 'elementary' | 'middle-school' | 'high-school' | 'adult';
@@ -66,21 +80,14 @@ export const faithFormationSettings = visibleFaithFormation.settings as
 export const faithCategories: FaithCategory[] =
     visibleFaithFormation.categories as FaithCategory[];
 
-export const faithPotlucks: FaithPotluck[] =
-    visibleFaithFormation.potlucks as FaithPotluck[];
+export const faithPotlucks: PotluckSignup[] =
+    visibleFaithFormation.potlucks as PotluckSignup[];
 
-export function getActiveFaithPotlucks(
-    potlucks: FaithPotluck[],
-    today = new Date(),
-): FaithPotluck[] {
-    const todayKey = [
-        today.getFullYear(),
-        String(today.getMonth() + 1).padStart(2, '0'),
-        String(today.getDate()).padStart(2, '0'),
-    ].join('-');
+export const faithFormationFaqs: FaithFormationFaq[] =
+    visibleFaithFormation.faqs as FaithFormationFaq[];
 
-    return potlucks.filter(potluck => potluck.expiresOn > todayKey);
-}
+export const faithFormationEvents: FaithFormationEvent[] =
+    visibleFaithFormation.eventsAndFundraisers as FaithFormationEvent[];
 
 export const substituteTeachers: Catechist[] = [
     {
