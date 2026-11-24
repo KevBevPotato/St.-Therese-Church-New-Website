@@ -72,6 +72,19 @@ export default function Footer() {
 
         <div className="border-t border-primary-foreground/20 pt-8 text-center text-sm opacity-80">
           <p>&copy; 2026 Saint Thérèse Church. All rights reserved.</p>
+          <a
+            href="https://destroy.spritefusion.com/?from=badge&url=https%3A%2F%2Fstthereserapidcity.org"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block"
+          >
+            <img
+              src="https://destroy.spritefusion.com/badge.svg"
+              alt="Destroy this website"
+              width="180"
+              height="40"
+            />
+          </a>
         </div>
       </div>
     </footer>
