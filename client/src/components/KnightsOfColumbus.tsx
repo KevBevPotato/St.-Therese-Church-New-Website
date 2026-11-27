@@ -14,6 +14,7 @@ import {
     Newspaper,
 } from 'lucide-react';
 import { getOrganizationById } from '@/data/organizations';
+import { getCurrentKnightsNewsletters } from '@/lib/knights-newsletters';
 import { staticEvents, generateRecurringEventsForMonth, type CalendarEvent } from '@/components/eventfolders/events';
 import UpcomingOrgEvents from './UpcomingOrgEvents';
 import { useInterestSignup } from '@/contexts/InterestSignupContext';
@@ -74,8 +75,8 @@ export default function KnightsOfColumbus() {
     };
     const showMembersSection = org.hideMembersSection !== true;
     const showUpcomingEventsSection = org.hideUpcomingEventsSection !== true;
-    const hasNewsletters =
-        Boolean(org.monthlyNewsletterUrl) || Boolean(org.newsletterArchive?.length);
+    const currentNewsletters = getCurrentKnightsNewsletters(org.newsletters);
+    const hasNewsletters = Boolean(org.newsletters?.length);
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
@@ -164,20 +165,21 @@ export default function KnightsOfColumbus() {
                                     <Calendar size={16} /> View Upcoming Calendar
                                 </Button>
                             )}
-                            {org.monthlyNewsletterUrl && (
+                            {currentNewsletters.map((newsletter) => (
                                 <Button
+                                    key={newsletter.pdfUrl}
                                     asChild
                                     className="h-12 rounded-full bg-accent px-5 py-0 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg hover:bg-accent/90 sm:px-8 sm:text-xs sm:tracking-widest"
                                 >
                                     <a
-                                        href={org.monthlyNewsletterUrl}
+                                        href={newsletter.pdfUrl}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                     >
-                                        <Newspaper size={16} /> Check out our Monthly Newsletter
+                                        <Newspaper size={16} /> {newsletter.title}
                                     </a>
                                 </Button>
-                            )}
+                            ))}
                             {hasNewsletters && (
                                 <Button
                                     asChild

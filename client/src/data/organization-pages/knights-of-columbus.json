@@ -2,7 +2,13 @@
   "founded": 1900,
   "audience": "Catholic Men of the Parish",
   "joinUrl": "https://www.kofc.org/join-kofc/",
-  "monthlyNewsletterUrl": "/uploads/10-oct-26-newsletter.pdf",
+  "newsletters": [
+    {
+      "title": "October 2026",
+      "pdfUrl": "/uploads/10-oct-26-newsletter.pdf",
+      "expiresOn": "2026-10-31"
+    }
+  ],
   "name": "Knights of Columbus",
   "contactName": "Grand Knight: Doug Keyser",
   "contactPhone": "",

@@ -53,9 +53,11 @@ export interface Organization {
     contactPhone: string;
     contactEmail?: string;
     joinUrl?: string;
-    monthlyNewsletterUrl?: string;
-    monthlyNewsletterTitle?: string;
-    newsletterArchive?: Array<{ title: string; pdfUrl: string }>;
+    newsletters?: Array<{
+        title: string;
+        pdfUrl: string;
+        expiresOn: string;
+    }>;
     stats?: Array<{ label: string; value: string }>;
     officers?: Officer[];
     members?: Member[];

@@ -4,20 +4,11 @@ import { Card } from "@/components/ui/card";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { getOrganizationById } from "@/data/organizations";
+import { getArchivedKnightsNewsletters } from "@/lib/knights-newsletters";
 
 export default function KnightsNewsletterArchive() {
   const organization = getOrganizationById("knights-of-columbus");
-  const newsletters = [
-    ...(organization?.monthlyNewsletterUrl
-      ? [
-          {
-            title: organization.monthlyNewsletterTitle || "Current Newsletter",
-            pdfUrl: organization.monthlyNewsletterUrl,
-          },
-        ]
-      : []),
-    ...(organization?.newsletterArchive ?? []),
-  ];
+  const newsletters = getArchivedKnightsNewsletters(organization?.newsletters);
 
   return (
     <div className="min-h-screen flex flex-col bg-[#fbfaf6]">
@@ -40,7 +31,8 @@ export default function KnightsNewsletterArchive() {
             </h1>
           </div>
           <p className="max-w-2xl text-lg text-muted-foreground">
-            Browse current and past newsletters from the Knights of Columbus.
+            Browse past newsletters from the Knights of Columbus. Current
+            newsletters appear on the Knights page until their expiration date.
           </p>
         </div>
 
@@ -52,10 +44,10 @@ export default function KnightsNewsletterArchive() {
               aria-hidden="true"
             />
             <h2 className="mb-2 font-serif text-2xl font-bold text-primary">
-              No newsletters available yet
+              No archived newsletters yet
             </h2>
             <p className="text-sm text-muted-foreground">
-              Newsletters will appear here once they are added.
+              Expired newsletters will appear here automatically.
             </p>
           </Card>
         ) : (
