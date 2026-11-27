@@ -2278,6 +2278,22 @@ collections:
           hint: "Upload the current Knights of Columbus monthly newsletter PDF. This appears as a button on the Knights page.",
         }
       - {
+          label: "Knights Monthly Newsletter Title",
+          name: "monthlyNewsletterTitle",
+          widget: "string",
+          required: false,
+          hint: "Optional title for the current newsletter, such as November 2026. This title appears in the archive.",
+        }
+      - label: "Knights Newsletter Archive"
+        name: "newsletterArchive"
+        widget: "list"
+        required: false
+        summary: "{{fields.title}}"
+        hint: "Add past Knights newsletters here so they remain available after you replace the current monthly newsletter."
+        fields:
+          - { label: "Newsletter Title", name: "title", widget: "string", required: true }
+          - { label: "Newsletter PDF", name: "pdfUrl", widget: "file", required: true }
+      - {
           label: "Hide Knights Members Section",
           name: "hideMembersSection",
           widget: "boolean",

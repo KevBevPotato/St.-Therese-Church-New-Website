@@ -74,6 +74,8 @@ export default function KnightsOfColumbus() {
     };
     const showMembersSection = org.hideMembersSection !== true;
     const showUpcomingEventsSection = org.hideUpcomingEventsSection !== true;
+    const hasNewsletters =
+        Boolean(org.monthlyNewsletterUrl) || Boolean(org.newsletterArchive?.length);
 
     return (
         <div className="min-h-screen flex flex-col bg-background">
@@ -151,7 +153,7 @@ export default function KnightsOfColumbus() {
                     </div>
 
                     {/* ✅ Calendar button at the bottom of the hero */}
-                    {(showUpcomingEventsSection || org.monthlyNewsletterUrl) && (
+                    {(showUpcomingEventsSection || hasNewsletters) && (
                         <div className="flex flex-wrap justify-center gap-3 md:justify-start">
                             {showUpcomingEventsSection && (
                                 <Button
@@ -174,6 +176,17 @@ export default function KnightsOfColumbus() {
                                     >
                                         <Newspaper size={16} /> Check out our Monthly Newsletter
                                     </a>
+                                </Button>
+                            )}
+                            {hasNewsletters && (
+                                <Button
+                                    asChild
+                                    variant="outline"
+                                    className="h-12 rounded-full border-white/60 bg-white/10 px-5 py-0 text-[10px] font-bold uppercase tracking-wide text-white shadow-lg hover:bg-white/20 hover:text-white sm:px-8 sm:text-xs sm:tracking-widest"
+                                >
+                                    <Link href="/knights-of-columbus/newsletter-archive">
+                                        <Newspaper size={16} /> Newsletter Archive
+                                    </Link>
                                 </Button>
                             )}
                         </div>

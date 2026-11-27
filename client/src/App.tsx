@@ -36,6 +36,7 @@ import NextWeekBulletin from "./components/NextWeekBulletin";
 import UpcomingEventsCalendar from "./components/UpcomingEventsCalendar";
 import EventDetail from "./pages/EventDetail";
 import MonthlyCalendarArchive from "./pages/MonthlyCalendarArchive";
+import KnightsNewsletterArchive from "./pages/KnightsNewsletterArchive";
 
 import WednesdaySupper from "./components/WednesdaySupper";
 import KnightsOfColumbus from "./components/KnightsOfColumbus";
@@ -85,6 +86,10 @@ function Router() {
       <Route path={"/supper-week"} component={WednesdaySupper} />
       <Route path={"/altar-society"} component={AltarSociety} />
       <Route path={"/knights-of-columbus"} component={KnightsOfColumbus} />
+      <Route
+        path={"/knights-of-columbus/newsletter-archive"}
+        component={KnightsNewsletterArchive}
+      />
       <Route path={"/connect-groups"} component={ConnectGroupsPage} />
       <Route path={"/liturgy"} component={LiturgyPage} />
       <Route
